@@ -10,6 +10,15 @@
 
 (** {b The methods, signals and properties of a [ComboBox].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Cell_editable.class-type-cell_editable_t}Ocgtk.Cell_editable}
+    - {{!Ocgtk.Cell_layout.class-type-cell_layout_t}Ocgtk.Cell_layout}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     A [GtkComboBox] is a widget that allows the user to choose from a list of
     valid choices.
 
@@ -69,12 +78,11 @@
 
     [GtkComboBox] uses the [Gtk.AccessibleRole.combo_box] role. *)
 class type combo_box_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Cell_editable.cell_editable_t
-  inherit Cell_area_and__cell_area_context_and__cell_layout.cell_layout_t
+  inherit Cell_layout.cell_layout_t
+
+  (** {2:signals Signals} *)
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -149,6 +157,8 @@ class type combo_box_t = object
 
       The default binding for this signal is Alt+Down. *)
 
+  (** {2:methods Methods} *)
+
   method get_active : unit -> int
   (** Returns the index of the currently active item.
 
@@ -176,11 +186,7 @@ class type combo_box_t = object
   (** Returns whether the combo box sets the dropdown button sensitive or not
       when there are no items in the model. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [combo_box]. *)
 
   method get_entry_text_column : unit -> int
@@ -246,11 +252,7 @@ class type combo_box_t = object
   (** Sets whether the dropdown button of the combo box should update its
       sensitivity depending on the model contents. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [combo_box]. *)
 
   method set_entry_text_column : int -> unit
@@ -288,6 +290,8 @@ class type combo_box_t = object
       If [fixed] is [TRUE], the popup's width is set to match the allocated
       width of the combo box. *)
 
+  (** {2:properties Properties} *)
+
   method has_frame : bool
   (** The [has-frame] property controls whether a frame is drawn around the
       entry. *)
@@ -301,6 +305,8 @@ class type combo_box_t = object
 
       Note that this property is mainly useful, because it allows you to connect
       to notify::popup-shown. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_combo_box : Raw.Combo_box.t
 end

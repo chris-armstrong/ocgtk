@@ -2,6 +2,8 @@
 (* Combined classes for cyclic dependencies *)
 
 class type font_face_t = object
+  (** {2:methods Methods} *)
+
   method describe : unit -> Raw.Font_description.t
   (** Returns a font description that matches the face.
 
@@ -24,11 +26,15 @@ class type font_face_t = object
       face from another face, by shearing, emboldening, lightening or modifying
       it in some other way. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_font_face : Raw.Font_face.t
 end
 
 and font_family_t = object
   inherit Ocgio.List_model.list_model_t
+
+  (** {2:methods Methods} *)
 
   method get_face : string option -> font_face_t option
   (** Gets the [PangoFontFace] of [family] with the given name. *)
@@ -62,11 +68,15 @@ and font_family_t = object
       Such axes are also known as _variations_; see
       [Pango.FontDescription.set_variations] for more information. *)
 
+  (** {2:properties Properties} *)
+
   method item_type : Gobject.Type.t
   (** The type of items contained in this list. *)
 
   method n_items : int
   (** The number of items contained in this list. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_font_family : Raw.Font_family.t
 end

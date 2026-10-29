@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [CellRendererAccel].}
 
+    Inherits from:
+    {{!Ocgtk.Cell_renderer_text.class-type-cell_renderer_text_t}Ocgtk.Cell_renderer_text}
+
     Renders a keyboard accelerator in a cell
 
     [GtkCellRendererAccel] displays a keyboard accelerator (i.e. a key
@@ -16,6 +19,8 @@
     accelerator can be changed by simply typing the new combination. *)
 class type cell_renderer_accel_t = object
   inherit Cell_renderer_text.cell_renderer_text_t
+
+  (** {2:signals Signals} *)
 
   method on_accel_cleared :
     ?after:bool ->
@@ -35,6 +40,8 @@ class type cell_renderer_accel_t = object
     unit ->
     Gobject.Signal.handler_id
   (** Gets emitted when the user has selected a new accelerator. *)
+
+  (** {2:properties Properties} *)
 
   method accel_key : int
   (** The keyval of the accelerator. *)
@@ -69,6 +76,8 @@ class type cell_renderer_accel_t = object
   (** The hardware keycode of the accelerator. Note that the hardware keycode is
       only relevant if the key does not have a keyval. Normally, the keyboard
       configuration should assign keyvals to all keys. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_cell_renderer_accel : Raw.Cell_renderer_accel.t
 end

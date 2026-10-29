@@ -1,7 +1,8 @@
 (** Entry point for using GIO functionality.
 
-    Its methods, signals and properties are on {!class-type-vfs_t}. The
-    functions it is built on are in {!Ocgio.Raw.Vfs}. *)
+    Its methods, signals and properties are on {!class-type-vfs_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgio.Raw.Vfs}. *)
 
 (** {1:class Class} *)
 
@@ -9,10 +10,12 @@
 
     Entry point for using GIO functionality. *)
 class type vfs_t = object
-  method get_file_for_path : string -> App_info_cycle_64c425a0.file_t
+  (** {2:methods Methods} *)
+
+  method get_file_for_path : string -> File.file_t
   (** Gets a [GFile] for [path]. *)
 
-  method get_file_for_uri : string -> App_info_cycle_64c425a0.file_t
+  method get_file_for_uri : string -> File.file_t
   (** Gets a [GFile] for [uri].
 
       This operation never fails, but the returned object might not support any
@@ -25,7 +28,7 @@ class type vfs_t = object
   method is_active : unit -> bool
   (** Checks if the VFS is active. *)
 
-  method parse_name : string -> App_info_cycle_64c425a0.file_t
+  method parse_name : string -> File.file_t
   (** This operation never fails, but the returned object might not support any
       I/O operations if the [parse_name] cannot be parsed by the [GVfs] module.
   *)
@@ -34,8 +37,15 @@ class type vfs_t = object
   (** Unregisters the URI handler for [scheme] previously registered with
       g_vfs_register_uri_scheme(). *)
 
+  (** {2:conversions Conversions} *)
+
   method as_vfs : Raw.Vfs.t
 end
 
 class vfs : Raw.Vfs.t -> vfs_t
 (** Wraps a raw handle of {!Ocgio.Raw.Vfs.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

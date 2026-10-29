@@ -1,7 +1,7 @@
 class type list_box_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:signals Signals} *)
 
   method on_activate_cursor_row :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -77,10 +77,9 @@ class type list_box_t = object
       The default binding for this signal is
       <kbd>Ctrl</kbd>-<kbd>Shift</kbd>-<kbd>a</kbd>. *)
 
-  method append :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  (** {2:methods Methods} *)
+
+  method append : Widget.widget_t -> unit
   (** Append a widget to the list.
 
       If a sort function is set, the widget will actually be inserted at the
@@ -136,11 +135,7 @@ class type list_box_t = object
   (** Returns the behavior of the <kbd>Tab</kbd> and
       <kbd>Shift</kbd>+<kbd>Tab</kbd> keys. *)
 
-  method insert :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int ->
-    unit
+  method insert : Widget.widget_t -> int -> unit
   (** Insert the [child] into the [box] at [position].
 
       If a sort function is set, the widget will actually be inserted at the
@@ -169,19 +164,13 @@ class type list_box_t = object
       Call this when result of the sort function on the [box] is changed due to
       an external factor. *)
 
-  method prepend :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method prepend : Widget.widget_t -> unit
   (** Prepend a widget to the list.
 
       If a sort function is set, the widget will actually be inserted at the
       calculated position. *)
 
-  method remove :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method remove : Widget.widget_t -> unit
   (** Removes a child from [box]. *)
 
   method remove_all : unit -> unit
@@ -210,11 +199,7 @@ class type list_box_t = object
       the adjustment from that will be picked up automatically, so there is no
       need to manually do that. *)
 
-  method set_placeholder :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_placeholder : Widget.widget_t option -> unit
   (** Sets the placeholder widget that is shown in the list when it doesn't
       display any visible children. *)
 
@@ -234,11 +219,15 @@ class type list_box_t = object
   method unselect_row : List_box_row.list_box_row_t -> unit
   (** Unselects a single row of [box], if the selection mode allows it. *)
 
+  (** {2:properties Properties} *)
+
   method accept_unpaired_release : bool
   (** Whether to accept unpaired release events. *)
 
   method set_accept_unpaired_release : bool -> unit
   (** Whether to accept unpaired release events. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_list_box : Raw.List_box.t
 end
@@ -246,10 +235,7 @@ end
 (* High-level class for ListBox *)
 class list_box (obj : Raw.List_box.t) : list_box_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     method on_activate_cursor_row ?(after = false) ~callback () =
       Raw.List_box.on_activate_cursor_row ~after self#as_list_box ~callback
@@ -280,10 +266,7 @@ class list_box (obj : Raw.List_box.t) : list_box_t =
     method on_unselect_all ?(after = false) ~callback () =
       Raw.List_box.on_unselect_all ~after self#as_list_box ~callback
 
-    method append :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        unit =
+    method append : Widget.widget_t -> unit =
       fun child ->
         let child = child#as_widget in
         Raw.List_box.append obj child
@@ -337,11 +320,7 @@ class list_box (obj : Raw.List_box.t) : list_box_t =
     method get_tab_behavior : unit -> Enums.listtabbehavior =
       fun () -> Raw.List_box.get_tab_behavior obj
 
-    method insert :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        int ->
-        unit =
+    method insert : Widget.widget_t -> int -> unit =
       fun child position ->
         let child = child#as_widget in
         Raw.List_box.insert obj child position
@@ -355,18 +334,12 @@ class list_box (obj : Raw.List_box.t) : list_box_t =
     method invalidate_sort : unit -> unit =
       fun () -> Raw.List_box.invalidate_sort obj
 
-    method prepend :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        unit =
+    method prepend : Widget.widget_t -> unit =
       fun child ->
         let child = child#as_widget in
         Raw.List_box.prepend obj child
 
-    method remove :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        unit =
+    method remove : Widget.widget_t -> unit =
       fun child ->
         let child = child#as_widget in
         Raw.List_box.remove obj child
@@ -387,11 +360,7 @@ class list_box (obj : Raw.List_box.t) : list_box_t =
         let adjustment = Option.map (fun c -> c#as_adjustment) adjustment in
         Raw.List_box.set_adjustment obj adjustment
 
-    method set_placeholder :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        unit =
+    method set_placeholder : Widget.widget_t option -> unit =
       fun placeholder ->
         let placeholder = Option.map (fun c -> c#as_widget) placeholder in
         Raw.List_box.set_placeholder obj placeholder

@@ -4,12 +4,15 @@
     method of returning lists of data, with support for updates.
 
     Its methods, signals and properties are on {!class-type-list_model_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgio.Raw.List_model}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.List_model}. *)
 
 (** {1:class Class} *)
 
 class type list_model_t = object
+  (** {2:signals Signals} *)
+
   method on_items_changed :
     ?after:bool ->
     callback:(position:int -> removed:int -> added:int -> unit) ->
@@ -21,6 +24,8 @@ class type list_model_t = object
 
       Note: If [removed != added], the positions of all later items in the model
       change. *)
+
+  (** {2:methods Methods} *)
 
   method get_item_type : unit -> Gobject.Type.t
   (** Gets the type of the items in [list].
@@ -73,6 +78,8 @@ class type list_model_t = object
       accesses to the model via the API, without returning to the mainloop, and
       without calling other code, will continue to view the same contents of the
       model. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_list_model : Raw.List_model.t
 end
@@ -194,3 +201,8 @@ class list_model : Raw.List_model.t -> list_model_t
 \  g_param_spec_uint (\"n-items\", NULL, NULL, 0, G_MAXUINT, 0,\n\
 \                     G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);\n\
  ]}"]
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

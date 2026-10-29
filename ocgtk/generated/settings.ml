@@ -1,12 +1,16 @@
 class type settings_t = object
   inherit Style_provider.style_provider_t
 
+  (** {2:methods Methods} *)
+
   method reset_property : string -> unit
   (** Undoes the effect of calling g_object_set() to install an
       application-specific value for a setting.
 
       After this call, the setting will again follow the session-wide value for
       this setting. *)
+
+  (** {2:properties Properties} *)
 
   method gtk_alternative_button_order : bool
   (** Whether buttons in dialogs should use the alternative button order. *)
@@ -685,6 +689,8 @@ class type settings_t = object
 
       Note that GSK does not support subpixel antialiasing, and this setting has
       no effect on font rendering in GTK. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_settings : Raw.Settings.t
 end

@@ -24,18 +24,19 @@
     and [Gio.ThreadedSocketService] which are subclasses of [GSocketListener]
     that make this even easier. *)
 class type socket_listener_t = object
+  (** {2:signals Signals} *)
+
   method on_event :
     ?after:bool ->
-    callback:
-      (event:Enums.socketlistenerevent ->
-      socket:Socket_and__socket_connection.socket_t ->
-      unit) ->
+    callback:(event:Enums.socketlistenerevent -> socket:Socket.socket_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
   (** Emitted when [listener]'s activity on [socket] changes state. Note that
       when [listener] is used to listen on both IPv4 and IPv6, a separate set of
       signals will be emitted for each, and the order they happen in is
       undefined. *)
+
+  (** {2:methods Methods} *)
 
   method add_any_inet_port :
     [ `object_ ] Gobject.obj option -> (UInt16.t, GError.t) result
@@ -82,7 +83,7 @@ class type socket_listener_t = object
       references may be held internally. *)
 
   method add_socket :
-    Socket_and__socket_connection.socket_t ->
+    Socket.socket_t ->
     [ `object_ ] Gobject.obj option ->
     (bool, GError.t) result
   (** Adds [socket] to the set of sockets that we try to accept new clients
@@ -112,11 +113,15 @@ class type socket_listener_t = object
 
       See g_socket_set_listen_backlog() for details *)
 
+  (** {2:properties Properties} *)
+
   method listen_backlog : int
   (** The number of outstanding connections in the listen queue. *)
 
   method set_listen_backlog : int -> unit
   (** The number of outstanding connections in the listen queue. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_socket_listener : Raw.Socket_listener.t
 end

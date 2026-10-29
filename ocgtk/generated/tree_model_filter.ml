@@ -2,6 +2,8 @@ class type tree_model_filter_t = object
   inherit Tree_drag_source.tree_drag_source_t
   inherit Tree_model.tree_model_t
 
+  (** {2:methods Methods} *)
+
   method clear_cache : unit -> unit
   (** This function should almost never be called. It clears the [filter] of any
       cached iterators that haven’t been reffed with gtk_tree_model_ref_node().
@@ -41,11 +43,15 @@ class type tree_model_filter_t = object
       gtk_tree_model_filter_set_visible_column() can only be called once for a
       given filter model. *)
 
+  (** {2:properties Properties} *)
+
   method child_model : Tree_model.tree_model_t
   (** The child model of the tree model filter. *)
 
   method virtual_root : Raw.Tree_path.t
   (** The virtual root of the tree model filter. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tree_model_filter : Raw.Tree_model_filter.t
 end

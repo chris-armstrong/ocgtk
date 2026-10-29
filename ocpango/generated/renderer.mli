@@ -2,8 +2,9 @@
     [PangoGlyphString] or [PangoLayout].
 
     Its methods, signals and properties are on {!class-type-renderer_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocpango.Raw.Renderer}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocpango.Raw.Renderer}. *)
 
 (** {1:class Class} *)
 
@@ -16,6 +17,8 @@
     [draw_glyphs] and [draw_rectangle], renderers for particular font backends
     and destinations can be created. *)
 class type renderer_t = object
+  (** {2:methods Methods} *)
+
   method activate : unit -> unit
   (** Does initial setup before rendering operations on [renderer].
 
@@ -43,12 +46,7 @@ class type renderer_t = object
       This should be called while [renderer] is already active. Use
       [Pango.Renderer.activate] to activate a renderer. *)
 
-  method draw_glyph :
-    Context_and__font_and__font_map_and__fontset.font_t ->
-    int ->
-    float ->
-    float ->
-    unit
+  method draw_glyph : Font.font_t -> int -> float -> float -> unit
   (** Draws a single glyph with coordinates in device space. *)
 
   method draw_glyph_item :
@@ -72,15 +70,10 @@ class type renderer_t = object
       The default implementation of this method simply falls back to
       [Pango.Renderer.draw_glyphs]. *)
 
-  method draw_glyphs :
-    Context_and__font_and__font_map_and__fontset.font_t ->
-    Raw.Glyph_string.t ->
-    int ->
-    int ->
-    unit
+  method draw_glyphs : Font.font_t -> Raw.Glyph_string.t -> int -> int -> unit
   (** Draws the glyphs in [glyphs] with the specified [PangoRenderer]. *)
 
-  method draw_layout : Layout_and__layout_iter.layout_t -> int -> int -> unit
+  method draw_layout : Layout.layout_t -> int -> int -> unit
   (** Draws [layout] with the specified [PangoRenderer].
 
       This is equivalent to drawing the lines of the layout, at their respective
@@ -118,7 +111,7 @@ class type renderer_t = object
   method get_color : Enums.renderpart -> Raw.Color.t option
   (** Gets the current rendering color for the specified part. *)
 
-  method get_layout : unit -> Layout_and__layout_iter.layout_t option
+  method get_layout : unit -> Layout.layout_t option
   (** Gets the layout currently being rendered using [renderer].
 
       Calling this function only makes sense from inside a subclass's methods,
@@ -171,6 +164,8 @@ class type renderer_t = object
   method set_matrix : Raw.Matrix.t option -> unit
   (** Sets the transformation matrix that will be applied when rendering. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_renderer : Raw.Renderer.t
 end
 
@@ -185,3 +180,8 @@ class renderer : Raw.Renderer.t -> renderer_t
     By subclassing [PangoRenderer] and overriding operations such as
     [draw_glyphs] and [draw_rectangle], renderers for particular font backends
     and destinations can be created. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

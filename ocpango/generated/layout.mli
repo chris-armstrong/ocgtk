@@ -74,6 +74,6 @@ class layout : Raw.Layout.t -> layout_t
 
 (** {1:constructors Constructors} *)
 
-val new_ : Context_and__font_and__font_map_and__fontset.context_t -> layout_t
+val new_ : Context.context_t -> layout_t
 (** Create a new [PangoLayout] object with attributes initialized to default
     values for a particular [PangoContext]. *)

@@ -8,19 +8,17 @@
 (** {1:class Class} *)
 
 class type expander_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:signals Signals} *)
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Activates the [GtkExpander]. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  (** {2:methods Methods} *)
+
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [expander]. *)
 
   method get_expanded : unit -> bool
@@ -36,11 +34,7 @@ class type expander_t = object
       set the return value will be [NULL]. This will be the case if you create
       an empty button with gtk_button_new() to use as a container. *)
 
-  method get_label_widget :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_label_widget : unit -> Widget.widget_t option
   (** Retrieves the label widget for the frame. *)
 
   method get_resize_toplevel : unit -> bool
@@ -53,11 +47,7 @@ class type expander_t = object
   method get_use_underline : unit -> bool
   (** Returns whether an underline in the text indicates a mnemonic. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [expander]. *)
 
   method set_expanded : bool -> unit
@@ -71,11 +61,7 @@ class type expander_t = object
 
       This will also clear any previously set labels. *)
 
-  method set_label_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_label_widget : Widget.widget_t option -> unit
   (** Set the label widget for the expander.
 
       This is the widget that will appear embedded alongside the expander arrow.
@@ -91,10 +77,18 @@ class type expander_t = object
   method set_use_underline : bool -> unit
   (** If true, an underline in the text indicates a mnemonic. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_expander : Raw.Expander.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Expander].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      Allows the user to reveal or conceal a child widget.\n\n\
      An example GtkExpander\n\n\
      This is similar to the triangles used in a [GtkTreeView].\n\n\

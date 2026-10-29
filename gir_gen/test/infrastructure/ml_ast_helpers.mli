@@ -59,6 +59,9 @@ val doc_of_attributes : Ppxlib.Parsetree.attributes -> string option
 (** The text of an [ocaml.doc] attribute, which is also what a doc comment
     before or after an item parses to. *)
 
+val floating_docs : Ppxlib.Parsetree.signature -> string list
+(** The floating docs ([ocaml.text]) of a signature, in order. *)
+
 val module_preamble : Ppxlib.Parsetree.signature -> string option
 (** The text of the first floating doc ([ocaml.text]) of a signature. *)
 
@@ -96,6 +99,9 @@ val find_method_in_class_type :
   Ppxlib.Parsetree.class_type ->
   string ->
   Ppxlib.Parsetree.class_type_field option
+
+val class_type_floating_docs : Ppxlib.Parsetree.class_type -> string list
+(** The floating docs ([ocaml.text]) in a class type body, in order. *)
 
 val get_method_type_from_class_type_field :
   Ppxlib.Parsetree.class_type_field -> Ppxlib.Parsetree.core_type option

@@ -1,4 +1,6 @@
 class type tree_drag_dest_t = object
+  (** {2:methods Methods} *)
+
   method drag_data_received : Raw.Tree_path.t -> Gobject.Value.t -> bool
   (** Asks the [GtkTreeDragDest] to insert a row before the path [dest],
       deriving the contents of the row from [value]. If [dest] is outside the
@@ -13,6 +15,8 @@ class type tree_drag_dest_t = object
       location. [dest_path] does not have to exist; the return value will almost
       certainly be [FALSE] if the parent of [dest_path] doesn’t exist, though.
   *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tree_drag_dest : Raw.Tree_drag_dest.t
 end

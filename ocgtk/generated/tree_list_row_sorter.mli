@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [TreeListRowSorter].}
 
+    Inherits from: {{!Ocgtk.Sorter.class-type-sorter_t}Ocgtk.Sorter}
+
     Applies a gives sorter to the levels in a tree.
 
     Here is an example for setting up a column view with a tree model and a
@@ -24,6 +26,8 @@
 class type tree_list_row_sorter_t = object
   inherit Sorter.sorter_t
 
+  (** {2:methods Methods} *)
+
   method get_sorter : unit -> Sorter.sorter_t option
   (** Returns the sorter used by [self]. *)
 
@@ -32,6 +36,8 @@ class type tree_list_row_sorter_t = object
 
       This sorter will be passed the [Gtk.TreeListRow:item] of the tree list
       rows passed to [self]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tree_list_row_sorter : Raw.Tree_list_row_sorter.t
 end

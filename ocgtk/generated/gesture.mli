@@ -1,15 +1,16 @@
 (** The base class for gesture recognition.
 
     Its methods, signals and properties are on {!class-type-gesture_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgtk.Raw.Gesture}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Gesture}. *)
 
 (** {1:class Class} *)
 
 class type gesture_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .event_controller_t
+  inherit Event_controller.event_controller_t
+
+  (** {2:methods Methods} *)
 
   method get_device : unit -> Ocgdk.Device.device_t option
   (** Returns the logical [GdkDevice] that is currently operating on [gesture].
@@ -165,13 +166,19 @@ class type gesture_t = object
   method ungroup : unit -> unit
   (** Separates [gesture] into an isolated group. *)
 
+  (** {2:properties Properties} *)
+
   method n_points : int
   (** The number of touch points that trigger recognition on this gesture. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_gesture : Raw.Gesture.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Gesture].}\n\n\
+     Inherits from: \
+     {{!Ocgtk.Event_controller.class-type-event_controller_t}Ocgtk.Event_controller}\n\n\
      The base class for gesture recognition.\n\n\
      Although [GtkGesture] is quite generalized to serve as a base for\n\
      multi-touch gestures, it is suitable to implement single-touch and\n\
@@ -317,3 +324,8 @@ class gesture : Raw.Gesture.t -> gesture_t
  do to enable this support are:\n\n\
  - If the gesture has [GTK_PHASE_NONE], ensuring events of type\n\
  [GDK_TOUCHPAD_SWIPE] and [GDK_TOUCHPAD_PINCH] are handled by the [GtkGesture]"]
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

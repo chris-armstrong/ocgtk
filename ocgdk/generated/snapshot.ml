@@ -1,4 +1,6 @@
 class type snapshot_t = object
+  (** {2:conversions Conversions} *)
+
   method as_snapshot : Raw.Snapshot.t
 end
 

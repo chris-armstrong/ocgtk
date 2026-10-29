@@ -1,4 +1,6 @@
 class type path_t = object
+  (** {2:conversions Conversions} *)
+
   method as_path : Raw.Path.t
 end
 

@@ -1,7 +1,7 @@
 class type calendar_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:signals Signals} *)
 
   method on_day_selected :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -22,6 +22,8 @@ class type calendar_t = object
   method on_prev_year :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when user switches to the previous year. *)
+
+  (** {2:methods Methods} *)
 
   method clear_marks : unit -> unit
   (** Remove all visual markers. *)
@@ -89,16 +91,15 @@ class type calendar_t = object
   method unmark_day : int -> unit
   (** Removes the visual marker from a particular day. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_calendar : Raw.Calendar.t
 end
 
 (* High-level class for Calendar *)
 class calendar (obj : Raw.Calendar.t) : calendar_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     method on_day_selected ?(after = false) ~callback () =
       Raw.Calendar.on_day_selected ~after self#as_calendar ~callback

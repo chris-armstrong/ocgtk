@@ -1,12 +1,16 @@
 (** A surface that is attached to another surface.
 
     Its methods, signals and properties are on {!class-type-popup_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgdk.Raw.Popup}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Popup}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [Popup].}
+
+    Requires:
+    - {{!Ocgdk.Surface.class-type-surface_t}Ocgdk.Surface}
 
     A surface that is attached to another surface.
 
@@ -15,10 +19,12 @@
     [GdkPopup]s are typically used to implement menus and similar popups. They
     can be modal, which is indicated by the [Gdk.Popup:autohide] property. *)
 class type popup_t = object
+  (** {2:methods Methods} *)
+
   method get_autohide : unit -> bool
   (** Returns whether this popup is set to hide on outside clicks. *)
 
-  method get_parent : unit -> App_launch_context_cycle_de440b34.surface_t option
+  method get_parent : unit -> Surface.surface_t option
   (** Returns the parent surface of a popup. *)
 
   method get_position_x : unit -> int
@@ -56,6 +62,8 @@ class type popup_t = object
       immediately hidden upon being presented. If presenting failed, the
       [Gdk.Surface::layout] signal will not me emitted. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_popup : Raw.Popup.t
 end
 
@@ -70,3 +78,8 @@ class popup : Raw.Popup.t -> popup_t
 
     [GdkPopup]s are typically used to implement menus and similar popups. They
     can be modal, which is indicated by the [Gdk.Popup:autohide] property. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

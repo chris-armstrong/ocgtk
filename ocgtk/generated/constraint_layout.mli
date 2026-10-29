@@ -8,11 +8,10 @@
 (** {1:class Class} *)
 
 class type constraint_layout_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .layout_manager_t
-
+  inherit Layout_manager.layout_manager_t
   inherit Buildable.buildable_t
+
+  (** {2:methods Methods} *)
 
   method add_constraint : Constraint.constraint__t -> unit
   (** Adds a constraint to the layout manager.
@@ -70,10 +69,16 @@ class type constraint_layout_t = object
   (** Removes [guide] from the layout manager, so that it no longer influences
       the layout. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_constraint_layout : Raw.Constraint_layout.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [ConstraintLayout].}\n\n\
+     Inherits from: \
+     {{!Ocgtk.Layout_manager.class-type-layout_manager_t}Ocgtk.Layout_manager}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\n\
      Uses constraints to describe relations between widgets.\n\n\
      [GtkConstraintLayout] is a layout manager that uses relations between\n\
      widget attributes, expressed via [Gtk.Constraint] instances, to\n\

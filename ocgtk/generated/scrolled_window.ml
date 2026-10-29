@@ -1,7 +1,7 @@
 class type scrolled_window_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:signals Signals} *)
 
   method on_edge_overshot :
     ?after:bool ->
@@ -57,11 +57,9 @@ class type scrolled_window_t = object
       The horizontal or vertical adjustment is updated which triggers a signal
       that the scrolled window’s child may listen to and scroll itself. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  (** {2:methods Methods} *)
+
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [scrolled_window].
 
       If the scrolled window automatically added a [Gtk.Viewport], this function
@@ -77,10 +75,7 @@ class type scrolled_window_t = object
   method get_has_frame : unit -> bool
   (** Gets whether the scrolled window draws a frame. *)
 
-  method get_hscrollbar :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  method get_hscrollbar : unit -> Widget.widget_t
   (** Returns the horizontal scrollbar of [scrolled_window]. *)
 
   method get_kinetic_scrolling : unit -> bool
@@ -118,17 +113,10 @@ class type scrolled_window_t = object
       This is the adjustment used to connect the vertical scrollbar to the child
       widget’s vertical scroll functionality. *)
 
-  method get_vscrollbar :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  method get_vscrollbar : unit -> Widget.widget_t
   (** Returns the vertical scrollbar of [scrolled_window]. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [scrolled_window].
 
       If [child] does not implement the [Gtk.Scrollable] interface, the scrolled
@@ -225,6 +213,8 @@ class type scrolled_window_t = object
       If no window placement is set for a scrolled window, it defaults to
       [GTK_CORNER_TOP_LEFT]. *)
 
+  (** {2:properties Properties} *)
+
   method hscrollbar_policy : Enums.policytype
   (** When the horizontal scrollbar is displayed.
 
@@ -245,16 +235,15 @@ class type scrolled_window_t = object
 
       Use [Gtk.ScrolledWindow.set_policy] to set this property. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_scrolled_window : Raw.Scrolled_window.t
 end
 
 (* High-level class for ScrolledWindow *)
 class scrolled_window (obj : Raw.Scrolled_window.t) : scrolled_window_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     method on_edge_overshot ?(after = false) ~callback () =
       Raw.Scrolled_window.on_edge_overshot ~after self#as_scrolled_window
@@ -272,18 +261,10 @@ class scrolled_window (obj : Raw.Scrolled_window.t) : scrolled_window_t =
       Raw.Scrolled_window.on_scroll_child ~after self#as_scrolled_window
         ~callback
 
-    method get_child :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_child : unit -> Widget.widget_t option =
       fun () ->
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.Scrolled_window.get_child obj)
 
     method get_hadjustment : unit -> Adjustment.adjustment_t =
@@ -293,15 +274,8 @@ class scrolled_window (obj : Raw.Scrolled_window.t) : scrolled_window_t =
     method get_has_frame : unit -> bool =
       fun () -> Raw.Scrolled_window.get_has_frame obj
 
-    method get_hscrollbar :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t =
-      fun () ->
-        new
-          Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-          .widget
-          (Raw.Scrolled_window.get_hscrollbar obj)
+    method get_hscrollbar : unit -> Widget.widget_t =
+      fun () -> new Widget.widget (Raw.Scrolled_window.get_hscrollbar obj)
 
     method get_kinetic_scrolling : unit -> bool =
       fun () -> Raw.Scrolled_window.get_kinetic_scrolling obj
@@ -334,21 +308,10 @@ class scrolled_window (obj : Raw.Scrolled_window.t) : scrolled_window_t =
       fun () ->
         new Adjustment.adjustment (Raw.Scrolled_window.get_vadjustment obj)
 
-    method get_vscrollbar :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t =
-      fun () ->
-        new
-          Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-          .widget
-          (Raw.Scrolled_window.get_vscrollbar obj)
+    method get_vscrollbar : unit -> Widget.widget_t =
+      fun () -> new Widget.widget (Raw.Scrolled_window.get_vscrollbar obj)
 
-    method set_child :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        unit =
+    method set_child : Widget.widget_t option -> unit =
       fun child ->
         let child = Option.map (fun c -> c#as_widget) child in
         Raw.Scrolled_window.set_child obj child

@@ -1,20 +1,23 @@
 (** An auxiliary class used by [GtkStack].
 
-    Its methods, signals and properties are on {!class-type-stack_page_t}. The
-    functions it is built on are in {!Ocgtk.Raw.Stack_page}. *)
+    Its methods, signals and properties are on {!class-type-stack_page_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Stack_page}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [StackPage].}
 
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+
     An auxiliary class used by [GtkStack]. *)
 class type stack_page_t = object
-  inherit At_context_and__accessible.accessible_t
+  inherit Accessible.accessible_t
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  (** {2:methods Methods} *)
+
+  method get_child : unit -> Widget.widget_t
   (** Returns the stack child to which [self] belongs. *)
 
   method get_icon_name : unit -> string option
@@ -56,8 +59,15 @@ class type stack_page_t = object
   method set_visible : bool -> unit
   (** Sets whether [page] is visible in its [GtkStack]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_stack_page : Raw.Stack_page.t
 end
 
 class stack_page : Raw.Stack_page.t -> stack_page_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Stack_page.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

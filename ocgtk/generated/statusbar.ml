@@ -1,7 +1,7 @@
 class type statusbar_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:signals Signals} *)
 
   method on_text_popped :
     ?after:bool ->
@@ -16,6 +16,8 @@ class type statusbar_t = object
     unit ->
     Gobject.Signal.handler_id
   (** Emitted whenever a new message gets pushed onto a statusbar's stack. *)
+
+  (** {2:methods Methods} *)
 
   method get_context_id : string -> int
   (** Returns a new context identifier, given a description of the actual
@@ -41,16 +43,15 @@ class type statusbar_t = object
   (** Forces the removal of all messages from a statusbar's stack with the exact
       [context_id]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_statusbar : Raw.Statusbar.t
 end
 
 (* High-level class for Statusbar *)
 class statusbar (obj : Raw.Statusbar.t) : statusbar_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     method on_text_popped ?(after = false) ~callback () =
       Raw.Statusbar.on_text_popped ~after self#as_statusbar ~callback

@@ -1,4 +1,6 @@
 class type shadow_t = object
+  (** {2:conversions Conversions} *)
+
   method as_shadow : Raw.Shadow.t
 end
 

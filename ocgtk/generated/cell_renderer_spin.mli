@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [CellRendererSpin].}
 
+    Inherits from:
+    {{!Ocgtk.Cell_renderer_text.class-type-cell_renderer_text_t}Ocgtk.Cell_renderer_text}
+
     Renders a spin button in a cell
 
     [GtkCellRendererSpin] renders text in a cell like [GtkCellRendererText] from
@@ -26,6 +29,8 @@
 *)
 class type cell_renderer_spin_t = object
   inherit Cell_renderer_text.cell_renderer_text_t
+
+  (** {2:properties Properties} *)
 
   method adjustment : Adjustment.adjustment_t
   (** The adjustment that holds the value of the spinbutton. This must be
@@ -46,6 +51,8 @@ class type cell_renderer_spin_t = object
 
   method set_digits : int -> unit
   (** The number of decimal places to display. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_cell_renderer_spin : Raw.Cell_renderer_spin.t
 end

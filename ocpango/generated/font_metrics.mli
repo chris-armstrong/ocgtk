@@ -2,8 +2,9 @@
     font.
 
     Its methods, signals and properties are on {!class-type-font_metrics_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocpango.Raw.Font_metrics}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocpango.Raw.Font_metrics}. *)
 
 (** {1:class Class} *)
 
@@ -21,6 +22,8 @@
 
     Font metrics *)
 class type font_metrics_t = object
+  (** {2:methods Methods} *)
+
   method get_approximate_char_width : unit -> int
   (** Gets the approximate character width for a font metrics structure.
 
@@ -83,6 +86,8 @@ class type font_metrics_t = object
   method ref : unit -> Raw.Font_metrics.t option
   (** Increase the reference count of a font metrics structure by one. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_font_metrics : Raw.Font_metrics.t
 end
 
@@ -102,3 +107,8 @@ class font_metrics : Raw.Font_metrics.t -> font_metrics_t
     For an overview of the most important metrics, see:
 
     Font metrics *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

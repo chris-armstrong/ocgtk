@@ -10,6 +10,12 @@
 
 (** {b The methods, signals and properties of a [BufferedInputStream].}
 
+    Inherits from:
+    {{!Ocgio.Filter_input_stream.class-type-filter_input_stream_t}Ocgio.Filter_input_stream}
+
+    Implements:
+    - {{!Ocgio.Seekable.class-type-seekable_t}Ocgio.Seekable}
+
     Buffered input stream implements [Gio.FilterInputStream] and provides for
     buffered reads.
 
@@ -27,6 +33,8 @@
 class type buffered_input_stream_t = object
   inherit Filter_input_stream.filter_input_stream_t
   inherit Seekable.seekable_t
+
+  (** {2:methods Methods} *)
 
   method fill :
     int -> Cancellable.cancellable_t option -> (int, GError.t) result
@@ -84,6 +92,8 @@ class type buffered_input_stream_t = object
   (** Sets the size of the internal buffer of [stream] to [size], or to the size
       of the contents of the buffer. The buffer can never be resized smaller
       than its current contents. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_buffered_input_stream : Raw.Buffered_input_stream.t
 end

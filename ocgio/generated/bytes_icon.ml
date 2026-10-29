@@ -2,8 +2,12 @@ class type bytes_icon_t = object
   inherit Icon.icon_t
   inherit Loadable_icon.loadable_icon_t
 
+  (** {2:methods Methods} *)
+
   method get_bytes : unit -> Glib_bytes.t
   (** Gets the [GBytes] associated with the given [icon]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_bytes_icon : Raw.Bytes_icon.t
 end

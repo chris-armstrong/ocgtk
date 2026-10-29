@@ -1,15 +1,20 @@
 (** An event related to a key-based device.
 
-    Its methods, signals and properties are on {!class-type-key_event_t}. The
-    functions it is built on are in {!Ocgdk.Raw.Key_event}. *)
+    Its methods, signals and properties are on {!class-type-key_event_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgdk.Raw.Key_event}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [KeyEvent].}
 
+    Inherits from: {{!Ocgdk.Event.class-type-event_t}Ocgdk.Event}
+
     An event related to a key-based device. *)
 class type key_event_t = object
-  inherit App_launch_context_cycle_de440b34.event_t
+  inherit Event.event_t
+
+  (** {2:methods Methods} *)
 
   method get_consumed_modifiers : unit -> Enums.modifiertype
   (** Extracts the consumed modifiers from a key event. *)
@@ -39,8 +44,15 @@ class type key_event_t = object
 
       Note that we ignore Caps Lock for matching. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_key_event : Raw.Key_event.t
 end
 
 class key_event : Raw.Key_event.t -> key_event_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Key_event.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

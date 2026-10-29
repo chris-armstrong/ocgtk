@@ -1,8 +1,9 @@
 (** Allows objects to extend and customize deserialization from ui files.
 
     Its methods, signals and properties are on {!class-type-buildable_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.Buildable}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Buildable}. *)
 
 (** {1:class Class} *)
 
@@ -22,11 +23,15 @@
     [GtkBuilder] XML format or run any extra routines at deserialization time.
 *)
 class type buildable_t = object
+  (** {2:methods Methods} *)
+
   method get_buildable_id : unit -> string option
   (** Gets the ID of the [buildable] object.
 
       [GtkBuilder] sets the name based on the ID attribute of the [<object>] tag
       used to construct the [buildable]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_buildable : Raw.Buildable.t
 end
@@ -49,3 +54,8 @@ class buildable : Raw.Buildable.t -> buildable_t
     An object only needs to implement this interface if it needs to extend the
     [GtkBuilder] XML format or run any extra routines at deserialization time.
 *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

@@ -1,6 +1,8 @@
 class type gesture_drag_t = object
   inherit Gesture_single.gesture_single_t
 
+  (** {2:signals Signals} *)
+
   method on_drag_begin :
     ?after:bool ->
     callback:(start_x:float -> start_y:float -> unit) ->
@@ -21,6 +23,8 @@ class type gesture_drag_t = object
     unit ->
     Gobject.Signal.handler_id
   (** Emitted whenever the dragging point moves. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_gesture_drag : Raw.Gesture_drag.t
 end

@@ -21,6 +21,8 @@
 
     To launch uris that don't represent files, use [Gtk.UriLauncher]. *)
 class type file_launcher_t = object
+  (** {2:methods Methods} *)
+
   method get_always_ask : unit -> bool
   (** Returns whether to ask the user which app to use. *)
 
@@ -50,6 +52,8 @@ class type file_launcher_t = object
 
   method set_writable : bool -> unit
   (** Sets whether to make the file writable for the handler. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_file_launcher : Raw.File_launcher.t
 end

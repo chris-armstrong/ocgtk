@@ -1,12 +1,16 @@
 (** An interface that adds support for sections to list models.
 
     Its methods, signals and properties are on {!class-type-section_model_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Section_model}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Section_model}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [SectionModel].}
+
+    Requires:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
 
     An interface that adds support for sections to list models.
 
@@ -24,6 +28,8 @@
     signal has the same effect, all sections in that range are invalidated, too.
 *)
 class type section_model_t = object
+  (** {2:signals Signals} *)
+
   method on_sections_changed :
     ?after:bool ->
     callback:(position:int -> n_items:int -> unit) ->
@@ -41,6 +47,8 @@ class type section_model_t = object
       [Gtk.SectionModel::sections-changed] signal for all the items it covers.
   *)
 
+  (** {2:methods Methods} *)
+
   method sections_changed : int -> int -> unit
   (** This function emits the [Gtk.SectionModel::sections-changed] signal to
       notify about changes to sections.
@@ -55,6 +63,8 @@ class type section_model_t = object
       It is recommended that when changes to the items cause section changes in
       a larger range, that the larger range is included in the emission of the
       [Gio.ListModel::items-changed] instead of emitting two signals. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_section_model : Raw.Section_model.t
 end
@@ -79,3 +89,8 @@ class section_model : Raw.Section_model.t -> section_model_t
     range then need to be queried again. The [Gio.ListModel::items-changed]
     signal has the same effect, all sections in that range are invalidated, too.
 *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

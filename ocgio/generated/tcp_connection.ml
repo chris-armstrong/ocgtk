@@ -1,5 +1,7 @@
 class type tcp_connection_t = object
-  inherit Socket_and__socket_connection.socket_connection_t
+  inherit Socket_connection.socket_connection_t
+
+  (** {2:methods Methods} *)
 
   method get_graceful_disconnect : unit -> bool
   (** Checks if graceful disconnects are used. See
@@ -16,15 +18,15 @@ class type tcp_connection_t = object
       side and for it to acknowledge this by closing the socket, which may take
       a while. For this reason it is disabled by default. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_tcp_connection : Raw.Tcp_connection.t
 end
 
 (* High-level class for TcpConnection *)
 class tcp_connection (obj : Raw.Tcp_connection.t) : tcp_connection_t =
   object (self)
-    inherit
-      Socket_and__socket_connection.socket_connection
-        (obj :> Raw.Socket_connection.t)
+    inherit Socket_connection.socket_connection (obj :> Raw.Socket_connection.t)
 
     method get_graceful_disconnect : unit -> bool =
       fun () -> Raw.Tcp_connection.get_graceful_disconnect obj

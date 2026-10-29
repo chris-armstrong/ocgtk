@@ -1,18 +1,18 @@
 (** [GtkMessageDialog] presents a dialog with some message text.
 
     Its methods, signals and properties are on {!class-type-message_dialog_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Message_dialog}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Message_dialog}. *)
 
 (** {1:class Class} *)
 
 class type message_dialog_t = object
   inherit Dialog.dialog_t
 
-  method get_message_area :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  (** {2:methods Methods} *)
+
+  method get_message_area : unit -> Widget.widget_t
   (** Returns the message area of the dialog.
 
       This is the box where the dialog’s primary and secondary labels are
@@ -22,6 +22,8 @@ class type message_dialog_t = object
 
   method set_markup : string -> unit
   (** Sets the text of the message dialog. *)
+
+  (** {2:properties Properties} *)
 
   method message_type : Enums.messagetype
   (** The type of the message. *)
@@ -65,10 +67,22 @@ class type message_dialog_t = object
 
       See [Pango.parse_markup]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_message_dialog : Raw.Message_dialog.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [MessageDialog].}\n\n\
+     Inherits from: {{!Ocgtk.Dialog.class-type-dialog_t}Ocgtk.Dialog}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\
+     - {{!Ocgtk.Native.class-type-native_t}Ocgtk.Native}\n\
+     - {{!Ocgtk.Root.class-type-root_t}Ocgtk.Root}\n\
+     - \
+     {{!Ocgtk.Shortcut_manager.class-type-shortcut_manager_t}Ocgtk.Shortcut_manager}\n\n\
      [GtkMessageDialog] presents a dialog with some message text.\n\n\
      An example GtkMessageDialog\n\n\
      It’s simply a convenience widget; you could construct the equivalent of\n\
@@ -169,3 +183,8 @@ class message_dialog : Raw.Message_dialog.t -> message_dialog_t
  {b GtkMessageDialog as GtkBuildable}\n\n\
  The [GtkMessageDialog] implementation of the [GtkBuildable] interface exposes\n\
  the message area as an internal child with the name “message_area”."]
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

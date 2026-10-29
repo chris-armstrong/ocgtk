@@ -5,12 +5,15 @@
 
     Its methods, signals and properties are on
     {!class-type-pollable_input_stream_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgio.Raw.Pollable_input_stream}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.Pollable_input_stream}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [PollableInputStream].}
+
+    Requires:
+    - {{!Ocgio.Input_stream.class-type-input_stream_t}Ocgio.Input_stream}
 
     [GPollableInputStream] is implemented by [Gio.InputStream]s that can be
     polled for readiness to read. This can be used when interfacing with a
@@ -22,6 +25,8 @@
     returns false, then the behavior of other [GPollableInputStream] methods is
     undefined. *)
 class type pollable_input_stream_t = object
+  (** {2:methods Methods} *)
+
   method can_poll : unit -> bool
   (** Checks if [stream] is actually pollable. Some classes may implement
       [GPollableInputStream] but have only certain instances of that class be
@@ -43,6 +48,8 @@ class type pollable_input_stream_t = object
       The behaviour of this method is undefined if
       g_pollable_input_stream_can_poll() returns [FALSE] for [stream]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_pollable_input_stream : Raw.Pollable_input_stream.t
 end
 
@@ -62,3 +69,8 @@ class pollable_input_stream :
     instances of that class be pollable. If [Gio.PollableInputStream.can_poll]
     returns false, then the behavior of other [GPollableInputStream] methods is
     undefined. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

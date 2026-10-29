@@ -9,6 +9,13 @@
 
 (** {b The methods, signals and properties of a [Revealer].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     Animates the transition of its child from invisible to visible.
 
     The style of transition can be controlled with
@@ -30,15 +37,11 @@
     The child of [GtkRevealer], if set, is always available in the accessibility
     tree, regardless of the state of the revealer widget. *)
 class type revealer_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  (** {2:methods Methods} *)
+
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [revealer]. *)
 
   method get_child_revealed : unit -> bool
@@ -62,11 +65,7 @@ class type revealer_t = object
   (** Gets the type of animation that will be used for transitions in
       [revealer]. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [revealer]. *)
 
   method set_reveal_child : bool -> unit
@@ -83,6 +82,8 @@ class type revealer_t = object
       [revealer].
 
       Available types include various kinds of fades and slides. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_revealer : Raw.Revealer.t
 end

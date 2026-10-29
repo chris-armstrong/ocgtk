@@ -1,4 +1,6 @@
 class type item_t = object
+  (** {2:methods Methods} *)
+
   method apply_attrs : Raw.Attr_iterator.t -> unit
   (** Add attributes to a [PangoItem].
 
@@ -31,6 +33,8 @@ class type item_t = object
       length of the first item in chars, and must be provided because the text
       used to generate the item isn't available, so [pango_item_split()] can't
       count the char length of the split items itself. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_item : Raw.Item.t
 end

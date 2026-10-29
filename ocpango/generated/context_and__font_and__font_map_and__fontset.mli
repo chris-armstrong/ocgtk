@@ -14,6 +14,8 @@
 
     To obtain a [PangoContext], use [Pango.FontMap.create_context]. *)
 class type context_t = object
+  (** {2:methods Methods} *)
+
   method changed : unit -> unit
   (** Forces a change in the context, which will cause any [PangoLayout] using
       this context to re-layout.
@@ -158,6 +160,8 @@ class type context_t = object
       The default value is to round glyph positions, to remain compatible with
       previous Pango behavior. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_context : Raw.Context.t
 end
 
@@ -166,6 +170,8 @@ end
     A [PangoFont] is used to represent a font in a rendering-system-independent
     manner. *)
 and font_t = object
+  (** {2:methods Methods} *)
+
   method describe : unit -> Raw.Font_description.t
   (** Returns a description of the font, with font size set in points.
 
@@ -181,7 +187,7 @@ and font_t = object
   method get_coverage : Raw.Language.t -> Coverage.coverage_t
   (** Computes the coverage map for a given font and language tag. *)
 
-  method get_face : unit -> Font_face_and__font_family.font_face_t option
+  method get_face : unit -> Font_face.font_face_t option
   (** Gets the [PangoFontFace] to which [font] belongs.
 
       Note that this function can return [NULL] in cases where the font outlives
@@ -224,10 +230,15 @@ and font_t = object
       To recreate a font from its serialized form, use [Pango.Font.deserialize].
   *)
 
+  (** {2:conversions Conversions} *)
+
   method as_font : Raw.Font.t
 end
 
 (** {b The methods, signals and properties of a [FontMap].}
+
+    Implements:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
 
     A [PangoFontMap] represents the set of fonts available for a particular
     rendering system.
@@ -236,6 +247,8 @@ end
     rendering systems. *)
 and font_map_t = object
   inherit Ocgio.List_model.list_model_t
+
+  (** {2:methods Methods} *)
 
   method add_font_file : string -> (bool, GError.t) result
   (** Loads a font file with one or more fonts into the [PangoFontMap].
@@ -262,7 +275,7 @@ and font_map_t = object
       toolkit has, among others, gtk_widget_get_pango_context(). Use those
       instead. *)
 
-  method get_family : string -> Font_face_and__font_family.font_family_t option
+  method get_family : string -> Font_family.font_family_t option
   (** Gets a font family by name. *)
 
   method get_serial : unit -> int
@@ -296,11 +309,15 @@ and font_map_t = object
       used to render a font on a hi-dpi display without changing its optical
       size. *)
 
+  (** {2:properties Properties} *)
+
   method item_type : Gobject.Type.t
   (** The type of items contained in this list. *)
 
   method n_items : int
   (** The number of items contained in this list. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_font_map : Raw.Font_map.t
 end
@@ -314,12 +331,16 @@ end
     font for a particular Unicode character, and for finding a composite set of
     metrics for the entire fontset. *)
 and fontset_t = object
+  (** {2:methods Methods} *)
+
   method get_font : int -> font_t
   (** Returns the font in the fontset that contains the best glyph for a Unicode
       character. *)
 
   method get_metrics : unit -> Raw.Font_metrics.t
   (** Get overall metric information for the fonts in the fontset. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_fontset : Raw.Fontset.t
 end

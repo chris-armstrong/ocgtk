@@ -2,6 +2,8 @@
 (* Combined classes for cyclic dependencies *)
 
 class type layout_t = object
+  (** {2:methods Methods} *)
+
   method context_changed : unit -> unit
   (** Forces recomputation of any state in the [PangoLayout] that might depend
       on the layout's context.
@@ -34,8 +36,7 @@ class type layout_t = object
   method get_character_count : unit -> int
   (** Returns the number of Unicode characters in the the text of [layout]. *)
 
-  method get_context :
-    unit -> Context_and__font_and__font_map_and__fontset.context_t
+  method get_context : unit -> Context.context_t
   (** Retrieves the [PangoContext] used for this layout. *)
 
   method get_direction : int -> Enums.direction
@@ -405,10 +406,14 @@ class type layout_t = object
       It is mostly intended for use inside a debugger to quickly dump a layout
       to a file for later inspection. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_layout : Raw.Layout.t
 end
 
 and layout_iter_t = object
+  (** {2:methods Methods} *)
+
   method at_last_line : unit -> bool
   (** Determines whether [iter] is on the last line of the layout. *)
 
@@ -470,6 +475,8 @@ and layout_iter_t = object
 
       If [iter] was already at the end of the layout, returns [FALSE]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_layout_iter : Raw.Layout_iter.t
 end
 
@@ -492,11 +499,8 @@ class layout (obj : Raw.Layout.t) : layout_t =
     method get_character_count : unit -> int =
       fun () -> Raw.Layout.get_character_count obj
 
-    method get_context :
-        unit -> Context_and__font_and__font_map_and__fontset.context_t =
-      fun () ->
-        new Context_and__font_and__font_map_and__fontset.context
-          (Raw.Layout.get_context obj)
+    method get_context : unit -> Context.context_t =
+      fun () -> new Context.context (Raw.Layout.get_context obj)
 
     method get_direction : int -> Enums.direction =
       fun index -> Raw.Layout.get_direction obj index
@@ -649,8 +653,7 @@ and layout_iter (obj : Raw.Layout_iter.t) : layout_iter_t =
     method as_layout_iter = obj
   end
 
-let new_ (context : Context_and__font_and__font_map_and__fontset.context_t) :
-    layout_t =
+let new_ (context : Context.context_t) : layout_t =
   let context = context#as_context in
   let obj_ = Raw.Layout.new_ context in
   new layout obj_

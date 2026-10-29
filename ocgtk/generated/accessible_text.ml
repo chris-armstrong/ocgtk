@@ -1,4 +1,6 @@
 class type accessible_text_t = object
+  (** {2:methods Methods} *)
+
   method update_caret_position : unit -> unit
   (** Updates the position of the caret.
 
@@ -24,6 +26,8 @@ class type accessible_text_t = object
       Implementations of the [GtkAccessibleText] interface should call this
       function every time the selection has moved, in order to notify assistive
       technologies. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_accessible_text : Raw.Accessible_text.t
 end

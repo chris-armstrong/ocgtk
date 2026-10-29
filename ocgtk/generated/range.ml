@@ -1,10 +1,9 @@
 class type range_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Accessible_range.accessible_range_t
   inherit Orientable.orientable_t
+
+  (** {2:signals Signals} *)
 
   method on_adjust_bounds :
     ?after:bool ->
@@ -44,6 +43,8 @@ class type range_t = object
   method on_value_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the range value changes. *)
+
+  (** {2:methods Methods} *)
 
   method get_adjustment : unit -> Adjustment.adjustment_t
   (** Get the adjustment which is the “model” object for [GtkRange]. *)
@@ -168,16 +169,15 @@ class type range_t = object
       clamped to fit inside them. The range emits the [Gtk.Range::value-changed]
       signal if the value changes. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_range : Raw.Range.t
 end
 
 (* High-level class for Range *)
 class range (obj : Raw.Range.t) : range_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     inherit
       Accessible_range.accessible_range (Raw.Accessible_range.from_gobject obj)

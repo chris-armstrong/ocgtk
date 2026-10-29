@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [BinLayout].}
 
+    Inherits from:
+    {{!Ocgtk.Layout_manager.class-type-layout_manager_t}Ocgtk.Layout_manager}
+
     A layout manager for widgets with a single child.
 
     [GtkBinLayout] will stack each child of a widget on top of each other, using
@@ -16,9 +19,9 @@
     [Gtk.Widget:valign] properties of each child to determine where they should
     be positioned. *)
 class type bin_layout_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .layout_manager_t
+  inherit Layout_manager.layout_manager_t
+
+  (** {2:conversions Conversions} *)
 
   method as_bin_layout : Raw.Bin_layout.t
 end

@@ -10,21 +10,27 @@
 
 (** {b The methods, signals and properties of a [FontsetSimple].}
 
+    Inherits from: {{!Ocpango.Fontset.class-type-fontset_t}Ocpango.Fontset}
+
     [PangoFontsetSimple] is a implementation of the abstract [PangoFontset] base
     class as an array of fonts.
 
     When creating a [PangoFontsetSimple], you have to provide the array of fonts
     that make up the fontset. *)
 class type fontset_simple_t = object
-  inherit Context_and__font_and__font_map_and__fontset.fontset_t
+  inherit Fontset.fontset_t
 
-  method append : Context_and__font_and__font_map_and__fontset.font_t -> unit
+  (** {2:methods Methods} *)
+
+  method append : Font.font_t -> unit
   (** Adds a font to the fontset.
 
       The fontset takes ownership of [font]. *)
 
   method size : unit -> int
   (** Returns the number of fonts in the fontset. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_fontset_simple : Raw.Fontset_simple.t
 end

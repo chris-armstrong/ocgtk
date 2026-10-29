@@ -10,6 +10,8 @@
 class type list_view_t = object
   inherit List_base.list_base_t
 
+  (** {2:signals Signals} *)
+
   method on_activate :
     ?after:bool ->
     callback:(position:int -> unit) ->
@@ -22,6 +24,8 @@ class type list_view_t = object
 
       This allows for a convenient way to handle activation in a listview. See
       [Gtk.ListItem.set_activatable] for details on how to use this signal. *)
+
+  (** {2:methods Methods} *)
 
   method get_enable_rubberband : unit -> bool
   (** Returns whether rows can be selected by dragging with the mouse. *)
@@ -86,10 +90,20 @@ class type list_view_t = object
       This influences how the <kbd>Tab</kbd> and <kbd>Shift</kbd>+<kbd>Tab</kbd>
       keys move the focus in the listview. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_list_view : Raw.List_view.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [ListView].}\n\n\
+     Inherits from: {{!Ocgtk.List_base.class-type-list_base_t}Ocgtk.List_base}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\
+     - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}\n\
+     - {{!Ocgtk.Scrollable.class-type-scrollable_t}Ocgtk.Scrollable}\n\n\
      Presents a large dynamic list of items.\n\n\
      [GtkListView] uses its factory to generate one row widget for each visible\n\
      item and shows them in a linear display, either vertically or \

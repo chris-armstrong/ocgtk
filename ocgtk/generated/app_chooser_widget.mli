@@ -9,6 +9,14 @@
 
 (** {b The methods, signals and properties of a [AppChooserWidget].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.App_chooser.class-type-app_chooser_t}Ocgtk.App_chooser}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     [GtkAppChooserWidget] is a widget for selecting applications.
 
     It is the main building block for [Gtk.AppChooserDialog]. Most applications
@@ -30,11 +38,10 @@
 
     [GtkAppChooserWidget] has a single CSS node with name appchooser. *)
 class type app_chooser_widget_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit App_chooser.app_chooser_t
+
+  (** {2:signals Signals} *)
 
   method on_application_activated :
     ?after:bool ->
@@ -53,6 +60,8 @@ class type app_chooser_widget_t = object
     unit ->
     Gobject.Signal.handler_id
   (** Emitted when an application item is selected from the widget's list. *)
+
+  (** {2:methods Methods} *)
 
   method get_default_text : unit -> string option
   (** Returns the text that is shown if there are not applications that can
@@ -101,6 +110,8 @@ class type app_chooser_widget_t = object
   method set_show_recommended : bool -> unit
   (** Sets whether the app chooser should show recommended applications for the
       content type in a separate section. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_app_chooser_widget : Raw.App_chooser_widget.t
 end

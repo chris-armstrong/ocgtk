@@ -9,6 +9,14 @@
 
 (** {b The methods, signals and properties of a [FlowBox].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}
+
     Puts child widgets in a reflowing grid.
 
     An example GtkFlowBox
@@ -65,11 +73,10 @@
     [GtkFlowBox] uses the [Gtk.AccessibleRole.grid] role, and [GtkFlowBoxChild]
     uses the [Gtk.AccessibleRole.grid_cell] role. *)
 class type flow_box_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Orientable.orientable_t
+
+  (** {2:signals Signals} *)
 
   method on_activate_cursor_child :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -145,10 +152,9 @@ class type flow_box_t = object
       The default bindings for this signal is
       <kbd>Ctrl</kbd>-<kbd>Shift</kbd>-<kbd>a</kbd>. *)
 
-  method append :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  (** {2:methods Methods} *)
+
+  method append : Widget.widget_t -> unit
   (** Adds [child] to the end of [self].
 
       If a sort function is set, the widget will actually be inserted at the
@@ -188,11 +194,7 @@ class type flow_box_t = object
   method get_selection_mode : unit -> Enums.selectionmode
   (** Gets the selection mode of [box]. *)
 
-  method insert :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int ->
-    unit
+  method insert : Widget.widget_t -> int -> unit
   (** Inserts the [widget] into [box] at [position].
 
       If a sort function is set, the widget will actually be inserted at the
@@ -215,10 +217,7 @@ class type flow_box_t = object
       Call this when the result of the sort function on [box] is changed due to
       an external factor. *)
 
-  method prepend :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method prepend : Widget.widget_t -> unit
   (** Adds [child] to the start of [self].
 
       If a sort function is set, the widget will actually be inserted at the
@@ -226,10 +225,7 @@ class type flow_box_t = object
 
       See also: [Gtk.FlowBox.insert]. *)
 
-  method remove :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method remove : Widget.widget_t -> unit
   (** Removes a child from [box]. *)
 
   method remove_all : unit -> unit
@@ -300,11 +296,15 @@ class type flow_box_t = object
   method unselect_child : Flow_box_child.flow_box_child_t -> unit
   (** Unselects a single child of [box], if the selection mode allows it. *)
 
+  (** {2:properties Properties} *)
+
   method accept_unpaired_release : bool
   (** Whether to accept unpaired release events. *)
 
   method set_accept_unpaired_release : bool -> unit
   (** Whether to accept unpaired release events. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_flow_box : Raw.Flow_box.t
 end

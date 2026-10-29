@@ -9,12 +9,16 @@
 
 (** {b The methods, signals and properties of a [GestureRotate].}
 
+    Inherits from: {{!Ocgtk.Gesture.class-type-gesture_t}Ocgtk.Gesture}
+
     Recognizes 2-finger rotation gestures.
 
     Whenever the angle between both handled sequences changes, the
     [Gtk.GestureRotate::angle-changed] signal is emitted. *)
 class type gesture_rotate_t = object
   inherit Gesture.gesture_t
+
+  (** {2:signals Signals} *)
 
   method on_angle_changed :
     ?after:bool ->
@@ -23,12 +27,16 @@ class type gesture_rotate_t = object
     Gobject.Signal.handler_id
   (** Emitted when the angle between both tracked points changes. *)
 
+  (** {2:methods Methods} *)
+
   method get_angle_delta : unit -> float
   (** Gets the angle delta in radians.
 
       If [gesture] is active, this function returns the angle difference in
       radians since the gesture was first recognized. If [gesture] is not
       active, 0 is returned. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_gesture_rotate : Raw.Gesture_rotate.t
 end

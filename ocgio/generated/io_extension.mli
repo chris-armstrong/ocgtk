@@ -1,8 +1,9 @@
 (** [GIOExtension] is an opaque data structure and can only be accessed using
     the following functions.
 
-    Its methods, signals and properties are on {!class-type-io_extension_t}. The
-    functions it is built on are in {!Ocgio.Raw.Io_extension}. *)
+    Its methods, signals and properties are on {!class-type-io_extension_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgio.Raw.Io_extension}. *)
 
 (** {1:class Class} *)
 
@@ -11,6 +12,8 @@
     [GIOExtension] is an opaque data structure and can only be accessed using
     the following functions. *)
 class type io_extension_t = object
+  (** {2:methods Methods} *)
+
   method get_name : unit -> string
   (** Gets the name under which [extension] was registered.
 
@@ -23,8 +26,15 @@ class type io_extension_t = object
   method get_type : unit -> Gobject.Type.t
   (** Gets the type associated with [extension]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_io_extension : Raw.Io_extension.t
 end
 
 class io_extension : Raw.Io_extension.t -> io_extension_t
 (** Wraps a raw handle of {!Ocgio.Raw.Io_extension.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

@@ -1,12 +1,16 @@
 (** An interface for accessible objects containing formatted text.
 
     Its methods, signals and properties are on {!class-type-accessible_text_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Accessible_text}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Accessible_text}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [AccessibleText].}
+
+    Requires:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
 
     An interface for accessible objects containing formatted text.
 
@@ -18,6 +22,8 @@
     [Gtk.AccessibleProperty.DESCRIPTION] properties for accessible objects
     containing simple, unformatted text. *)
 class type accessible_text_t = object
+  (** {2:methods Methods} *)
+
   method update_caret_position : unit -> unit
   (** Updates the position of the caret.
 
@@ -44,6 +50,8 @@ class type accessible_text_t = object
       function every time the selection has moved, in order to notify assistive
       technologies. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_accessible_text : Raw.Accessible_text.t
 end
 
@@ -61,3 +69,8 @@ class accessible_text : Raw.Accessible_text.t -> accessible_text_t
     You should use the [Gtk.AccessibleProperty.LABEL] or the
     [Gtk.AccessibleProperty.DESCRIPTION] properties for accessible objects
     containing simple, unformatted text. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

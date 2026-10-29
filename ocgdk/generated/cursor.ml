@@ -1,4 +1,6 @@
 class type cursor_t = object
+  (** {2:methods Methods} *)
+
   method get_fallback : unit -> cursor_t option
   (** Returns the fallback for this [cursor].
 
@@ -35,6 +37,8 @@ class type cursor_t = object
   (** Returns the texture for the cursor.
 
       If the cursor is a named cursor, [NULL] will be returned. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_cursor : Raw.Cursor.t
 end

@@ -1,6 +1,8 @@
 class type d_bus_object_manager_server_t = object
   inherit D_bus_object_manager.d_bus_object_manager_t
 
+  (** {2:methods Methods} *)
+
   method export : D_bus_object_skeleton.d_bus_object_skeleton_t -> unit
   (** Exports [object] on [manager].
 
@@ -36,8 +38,12 @@ class type d_bus_object_manager_server_t = object
       Note that [object_path] must be in the hierarchy rooted by the object path
       for [manager]. *)
 
+  (** {2:properties Properties} *)
+
   method object_path : string
   (** The object path to register the manager object at. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_d_bus_object_manager_server : Raw.D_bus_object_manager_server.t
 end

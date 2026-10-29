@@ -1,4 +1,6 @@
 class type editable_t = object
+  (** {2:signals Signals} *)
+
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted at the end of a single user-visible operation on the contents.
@@ -22,6 +24,8 @@ class type editable_t = object
 
       The [start_pos] and [end_pos] parameters are interpreted as for
       [Gtk.Editable.delete_text]. *)
+
+  (** {2:methods Methods} *)
 
   method delegate_get_accessible_platform_state :
     Enums.accessibleplatformstate -> bool
@@ -182,9 +186,13 @@ class type editable_t = object
       how you pack the widget into containers. If [n_chars] is -1, the size
       reverts to the default size. *)
 
+  (** {2:properties Properties} *)
+
   method selection_bound : int
   (** The position of the opposite end of the selection from the cursor in
       chars. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_editable : Raw.Editable.t
 end

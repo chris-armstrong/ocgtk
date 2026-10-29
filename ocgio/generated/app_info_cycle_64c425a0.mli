@@ -5,6 +5,8 @@
     re-exports it; use that module rather than this one. *)
 
 class type app_info_t = object
+  (** {2:methods Methods} *)
+
   method add_supports_type : string -> (bool, GError.t) result
   (** Adds a content type to the application information to indicate the
       application is capable of opening files with the given content type. *)
@@ -151,6 +153,8 @@ class type app_info_t = object
   (** Checks if the application supports reading files and directories from
       URIs. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_app_info : Raw.App_info.t
 end
   [@@ocaml.doc
@@ -207,6 +211,8 @@ end
     handle for instance startup notification and launching the new application
     on the same screen as the launching window. *)
 and app_launch_context_t = object
+  (** {2:signals Signals} *)
+
   method on_launch_failed :
     ?after:bool ->
     callback:(startup_notify_id:string -> unit) ->
@@ -272,6 +278,8 @@ and app_launch_context_t = object
       [GLib.Pid] after the signal has been emitted, then you can duplicate [pid]
       using [DuplicateHandle()]. *)
 
+  (** {2:methods Methods} *)
+
   method get_display : app_info_t -> file_t list -> string option
   (** Gets the display string for the [context]. This is used to ensure new
       applications are started on the same display as the launching application,
@@ -317,6 +325,8 @@ and app_launch_context_t = object
   (** Arranges for [variable] to be unset in the child’s environment when
       [context] is used to launch an application. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_app_launch_context : Raw.App_launch_context.t
 end
 
@@ -349,6 +359,8 @@ end
     For porting from GnomeVFS note that there is no equivalent of [GDrive] in
     that API. *)
 and drive_t = object
+  (** {2:signals Signals} *)
+
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the drive's state has changed. *)
@@ -368,6 +380,8 @@ and drive_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the physical stop button (if any) of a drive has been
       pressed. *)
+
+  (** {2:methods Methods} *)
 
   method can_eject : unit -> bool
   (** Checks if a drive can be ejected. *)
@@ -448,6 +462,8 @@ and drive_t = object
 
   method stop_finish : Async_result.async_result_t -> (bool, GError.t) result
   (** Finishes stopping a drive. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_drive : Raw.Drive.t
 end
@@ -540,6 +556,8 @@ end
     from the version on the file system. See the HTTP 1.1 specification for HTTP
     [ETag] headers, which are a very similar concept. *)
 and file_t = object
+  (** {2:methods Methods} *)
+
   method append_to :
     Enums.filecreateflags ->
     Cancellable.cancellable_t option ->
@@ -1484,6 +1502,8 @@ and file_t = object
       Finish an asynchronous unmount operation that was started with
       g_file_unmount_mountable_with_operation(). *)
 
+  (** {2:conversions Conversions} *)
+
   method as_file : Raw.File.t
 end
 
@@ -1514,6 +1534,8 @@ end
     [GFileEnumerator] is closed, no further actions may be performed on it, and
     it should be freed with [GObject.Object.unref]. *)
 and file_enumerator_t = object
+  (** {2:methods Methods} *)
+
   method close : Cancellable.cancellable_t option -> (bool, GError.t) result
   (** Releases all resources used by this enumerator, making the enumerator
       return [G_IO_ERROR_CLOSED] on all calls.
@@ -1583,6 +1605,8 @@ and file_enumerator_t = object
   method set_pending : bool -> unit
   (** Sets the file enumerator as having pending operations. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_file_enumerator : Raw.File_enumerator.t
 end
 
@@ -1601,6 +1625,8 @@ end
     cause notifications to be blocked even if the thread-default context is
     still running). *)
 and file_monitor_t = object
+  (** {2:signals Signals} *)
+
   method on_changed :
     ?after:bool ->
     callback:
@@ -1638,6 +1664,8 @@ and file_monitor_t = object
      path.\n\n\
      In all the other cases, [other_file] will be set to [NULL]."]
 
+  (** {2:methods Methods} *)
+
   method cancel : unit -> bool
   (** Cancels a file monitor. *)
 
@@ -1655,6 +1683,8 @@ and file_monitor_t = object
   method set_rate_limit : int -> unit
   (** Sets the rate limit to which the [monitor] will report consecutive change
       events to the same file. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_file_monitor : Raw.File_monitor.t
 end
@@ -1686,6 +1716,8 @@ end
     Note, when porting from GnomeVFS, [GMount] is the moral equivalent of
     [GnomeVFSVolume]. *)
 and mount_t = object
+  (** {2:signals Signals} *)
+
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the mount has been changed. *)
@@ -1702,6 +1734,8 @@ and mount_t = object
   (** This signal is emitted when the [GMount] have been unmounted. If the
       recipient is holding references to the object they should release them so
       the object can be finalized. *)
+
+  (** {2:methods Methods} *)
 
   method can_eject : unit -> bool
   (** Checks if [mount] can be ejected. *)
@@ -1819,6 +1853,8 @@ and mount_t = object
       g_mount_is_shadowed() for more information. The caller will need to emit
       the [GMount::changed] signal on [mount] manually. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_mount : Raw.Mount.t
 end
 
@@ -1869,6 +1905,8 @@ end
     can be used to obtain a hal device by means of
     [libhal_manager_find_device_string_match()]. *)
 and volume_t = object
+  (** {2:signals Signals} *)
+
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the volume has been changed. *)
@@ -1878,6 +1916,8 @@ and volume_t = object
   (** This signal is emitted when the [GVolume] have been removed. If the
       recipient is holding references to the object they should release them so
       the object can be finalized. *)
+
+  (** {2:methods Methods} *)
 
   method can_eject : unit -> bool
   (** Checks if a volume can be ejected. *)
@@ -1965,6 +2005,8 @@ and volume_t = object
 
   method should_automount : unit -> bool
   (** Returns whether the volume should be automatically mounted. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_volume : Raw.Volume.t
 end

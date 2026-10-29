@@ -9,6 +9,13 @@
 
 (** {b The methods, signals and properties of a [Spinner].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     Displays an icon-size spinning animation.
 
     It is often used as an alternative to a [Gtk.ProgressBar] for displaying
@@ -28,9 +35,9 @@
 
     [GtkSpinner] uses the [Gtk.AccessibleRole.progress_bar] role. *)
 class type spinner_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:methods Methods} *)
 
   method get_spinning : unit -> bool
   (** Returns whether the spinner is spinning. *)
@@ -43,6 +50,8 @@ class type spinner_t = object
 
   method stop : unit -> unit
   (** Stops the animation of the spinner. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_spinner : Raw.Spinner.t
 end

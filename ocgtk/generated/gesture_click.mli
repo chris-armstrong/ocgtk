@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [GestureClick].}
 
+    Inherits from:
+    {{!Ocgtk.Gesture_single.class-type-gesture_single_t}Ocgtk.Gesture_single}
+
     Recognizes click gestures.
 
     It is able to recognize multiple clicks on a nearby zone, which can be
@@ -17,6 +20,8 @@
     [Gtk.GestureClick::stopped] is emitted, and the click counter is reset. *)
 class type gesture_click_t = object
   inherit Gesture_single.gesture_single_t
+
+  (** {2:signals Signals} *)
 
   method on_pressed :
     ?after:bool ->
@@ -40,6 +45,8 @@ class type gesture_click_t = object
   method on_stopped :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted whenever any time/distance threshold has been exceeded. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_gesture_click : Raw.Gesture_click.t
 end

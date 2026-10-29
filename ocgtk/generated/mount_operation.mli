@@ -10,6 +10,9 @@
 
 (** {b The methods, signals and properties of a [MountOperation].}
 
+    Inherits from:
+    {{!Ocgio.Mount_operation.class-type-mount_operation_t}Ocgio.Mount_operation}
+
     Asks the user for passwords and other information required to mount a
     volume.
 
@@ -24,12 +27,13 @@
 class type mount_operation_t = object
   inherit Ocgio.Mount_operation.mount_operation_t
 
+  (** {2:methods Methods} *)
+
   method get_display : unit -> Ocgdk.Display.display_t
   (** Gets the display on which windows of the [GtkMountOperation] will be
       shown. *)
 
-  method get_parent :
-    unit -> Application_and__window_and__window_group.window_t option
+  method get_parent : unit -> Window.window_t option
   (** Gets the transient parent used by the [GtkMountOperation]. *)
 
   method is_showing : unit -> bool
@@ -39,8 +43,7 @@ class type mount_operation_t = object
   method set_display : Ocgdk.Display.display_t -> unit
   (** Sets the display to show windows of the [GtkMountOperation] on. *)
 
-  method set_parent :
-    Application_and__window_and__window_group.window_t option -> unit
+  method set_parent : Window.window_t option -> unit
   (** Sets the transient parent for windows shown by the [GtkMountOperation]. *)
 end
 
@@ -63,6 +66,5 @@ class mount_operation : Raw.Mount_operation.t -> mount_operation_t
 
 (** {1:constructors Constructors} *)
 
-val new_ :
-  Application_and__window_and__window_group.window_t option -> mount_operation_t
+val new_ : Window.window_t option -> mount_operation_t
 (** Creates a new [GtkMountOperation]. *)

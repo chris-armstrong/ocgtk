@@ -9,6 +9,15 @@
 
 (** {b The methods, signals and properties of a [Scale].}
 
+    Inherits from: {{!Ocgtk.Range.class-type-range_t}Ocgtk.Range}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Accessible_range.class-type-accessible_range_t}Ocgtk.Accessible_range}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}
+
     Allows to select a numeric value with a slider control.
 
     An example GtkScale
@@ -100,6 +109,8 @@
 class type scale_t = object
   inherit Range.range_t
 
+  (** {2:methods Methods} *)
+
   method add_mark : float -> Enums.positiontype -> string option -> unit
   (** Adds a mark at [value].
 
@@ -160,6 +171,8 @@ class type scale_t = object
 
   method set_value_pos : Enums.positiontype -> unit
   (** Sets the position in which the current value is displayed. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_scale : Raw.Scale.t
 end

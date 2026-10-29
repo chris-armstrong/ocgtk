@@ -1,6 +1,8 @@
 class type media_file_t = object
   inherit Media_stream.media_stream_t
 
+  (** {2:methods Methods} *)
+
   method clear : unit -> unit
   (** Resets the media file to be empty. *)
 
@@ -40,6 +42,8 @@ class type media_file_t = object
 
       This is a utility function that converts the given [resource_path] to a
       [GFile] and calls [Gtk.MediaFile.set_file]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_media_file : Raw.Media_file.t
 end

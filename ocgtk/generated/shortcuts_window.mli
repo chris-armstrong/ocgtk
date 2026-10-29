@@ -2,12 +2,23 @@
     gestures of an application.
 
     Its methods, signals and properties are on {!class-type-shortcuts_window_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Shortcuts_window}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Shortcuts_window}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [ShortcutsWindow].}
+
+    Inherits from: {{!Ocgtk.Window.class-type-window_t}Ocgtk.Window}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Native.class-type-native_t}Ocgtk.Native}
+    - {{!Ocgtk.Root.class-type-root_t}Ocgtk.Root}
+    - {{!Ocgtk.Shortcut_manager.class-type-shortcut_manager_t}Ocgtk.Shortcut_manager}
 
     A [GtkShortcutsWindow] shows information about the keyboard shortcuts and
     gestures of an application.
@@ -71,7 +82,9 @@
     [GtkShortcutsWindow] has a single CSS node with the name [window] and style
     class [.shortcuts]. *)
 class type shortcuts_window_t = object
-  inherit Application_and__window_and__window_group.window_t
+  inherit Window.window_t
+
+  (** {2:signals Signals} *)
 
   method on_close :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -89,6 +102,8 @@ class type shortcuts_window_t = object
 
       The default binding for this signal is <kbd>Control</kbd>+<kbd>F</kbd>. *)
 
+  (** {2:methods Methods} *)
+
   method add_section : Shortcuts_section.shortcuts_section_t -> unit
   (** Adds a section to the shortcuts window.
 
@@ -97,6 +112,8 @@ class type shortcuts_window_t = object
 
       Using [Gtk.Window.set_child] is not appropriate as the shortcuts window
       manages its children internally. *)
+
+  (** {2:properties Properties} *)
 
   method section_name : string
   (** The name of the section to show.
@@ -125,6 +142,8 @@ class type shortcuts_window_t = object
       of the [Gtk.ShortcutsGroup] objects that are inside this shortcuts window.
 
       Set this to [NULL] to show all groups. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_shortcuts_window : Raw.Shortcuts_window.t
 end
@@ -195,3 +214,8 @@ class shortcuts_window : Raw.Shortcuts_window.t -> shortcuts_window_t
 
     [GtkShortcutsWindow] has a single CSS node with the name [window] and style
     class [.shortcuts]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

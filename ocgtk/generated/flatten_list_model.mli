@@ -9,6 +9,10 @@
 
 (** {b The methods, signals and properties of a [FlattenListModel].}
 
+    Implements:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
+    - {{!Ocgtk.Section_model.class-type-section_model_t}Ocgtk.Section_model}
+
     A list model that concatenates other list models.
 
     [GtkFlattenListModel] takes a list model containing list models, and
@@ -17,6 +21,8 @@
 class type flatten_list_model_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Section_model.section_model_t
+
+  (** {2:methods Methods} *)
 
   method get_model : unit -> Ocgio.List_model.list_model_t option
   (** Gets the model set via gtk_flatten_list_model_set_model(). *)
@@ -27,11 +33,15 @@ class type flatten_list_model_t = object
   method set_model : Ocgio.List_model.list_model_t option -> unit
   (** Sets a new model to be flattened. *)
 
+  (** {2:properties Properties} *)
+
   method item_type : Gobject.Type.t
   (** The type of items. See [Gio.ListModel.get_item_type]. *)
 
   method n_items : int
   (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_flatten_list_model : Raw.Flatten_list_model.t
 end

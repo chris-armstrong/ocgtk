@@ -3,12 +3,16 @@
     the kernel's netlink interface and on NetworkManager.
 
     Its methods, signals and properties are on {!class-type-network_monitor_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgio.Raw.Network_monitor}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Network_monitor}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [NetworkMonitor].}
+
+    Requires:
+    - {{!Ocgio.Initable.class-type-initable_t}Ocgio.Initable}
 
     [GNetworkMonitor] provides an easy-to-use cross-platform API for monitoring
     network connectivity. On Linux, the available implementations are based on
@@ -16,6 +20,8 @@
 
     There is also an implementation for use inside Flatpak sandboxes. *)
 class type network_monitor_t = object
+  (** {2:signals Signals} *)
+
   method on_network_changed :
     ?after:bool ->
     callback:(network_available:bool -> unit) ->
@@ -23,9 +29,10 @@ class type network_monitor_t = object
     Gobject.Signal.handler_id
   (** Emitted when the network configuration changes. *)
 
+  (** {2:methods Methods} *)
+
   method can_reach :
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_connectable_t ->
+    Socket_connectable.socket_connectable_t ->
     Cancellable.cancellable_t option ->
     (bool, GError.t) result
   (** Attempts to determine whether or not the host pointed to by [connectable]
@@ -79,6 +86,8 @@ class type network_monitor_t = object
   (** Checks if the network is metered. See [GNetworkMonitor:network]-metered
       for more details. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_network_monitor : Raw.Network_monitor.t
 end
 
@@ -92,3 +101,8 @@ class network_monitor : Raw.Network_monitor.t -> network_monitor_t
     the kernel's netlink interface and on NetworkManager.
 
     There is also an implementation for use inside Flatpak sandboxes. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

@@ -2,12 +2,16 @@
     and debug output.
 
     Its methods, signals and properties are on {!class-type-debug_controller_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgio.Raw.Debug_controller}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Debug_controller}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [DebugController].}
+
+    Requires:
+    - {{!Ocgio.Initable.class-type-initable_t}Ocgio.Initable}
 
     [GDebugController] is an interface to expose control of debugging features
     and debug output.
@@ -27,11 +31,15 @@
     should be all that’s needed to dynamically enable or disable debug output.
 *)
 class type debug_controller_t = object
+  (** {2:methods Methods} *)
+
   method get_debug_enabled : unit -> bool
   (** Get the value of [GDebugController:debug]-enabled. *)
 
   method set_debug_enabled : bool -> unit
   (** Set the value of [GDebugController:debug]-enabled. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_debug_controller : Raw.Debug_controller.t
 end
@@ -58,3 +66,8 @@ class debug_controller : Raw.Debug_controller.t -> debug_controller_t
     function, creating one of the built-in implementations of [GDebugController]
     should be all that’s needed to dynamically enable or disable debug output.
 *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

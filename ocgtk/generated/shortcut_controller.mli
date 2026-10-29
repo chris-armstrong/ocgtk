@@ -9,6 +9,13 @@
 
 (** {b The methods, signals and properties of a [ShortcutController].}
 
+    Inherits from:
+    {{!Ocgtk.Event_controller.class-type-event_controller_t}Ocgtk.Event_controller}
+
+    Implements:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+
     Manages keyboard shortcuts and their activation.
 
     Most common shortcuts are using this controller implicitly, e.g. by adding a
@@ -51,12 +58,11 @@
     [Gtk.ShortcutTrigger.parse_string] to learn more about the syntax for
     triggers. *)
 class type shortcut_controller_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .event_controller_t
-
+  inherit Event_controller.event_controller_t
   inherit Ocgio.List_model.list_model_t
   inherit Buildable.buildable_t
+
+  (** {2:methods Methods} *)
 
   method add_shortcut : Shortcut.shortcut_t -> unit
   (** Adds [shortcut] to the list of shortcuts handled by [self].
@@ -104,11 +110,15 @@ class type shortcut_controller_t = object
       With [GTK_SHORTCUT_SCOPE_LOCAL], shortcuts will only be activated when the
       widget has focus. *)
 
+  (** {2:properties Properties} *)
+
   method item_type : Gobject.Type.t
   (** The type of items. See [Gio.ListModel.get_item_type]. *)
 
   method n_items : int
   (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_shortcut_controller : Raw.Shortcut_controller.t
 end

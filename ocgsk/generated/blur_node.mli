@@ -8,15 +8,22 @@
 
 (** {b The methods, signals and properties of a [BlurNode].}
 
+    Inherits from:
+    {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
+
     A render node applying a blur effect to its single child. *)
 class type blur_node_t = object
   inherit Render_node.render_node_t
+
+  (** {2:methods Methods} *)
 
   method get_child : unit -> Render_node.render_node_t
   (** Retrieves the child [GskRenderNode] of the blur [node]. *)
 
   method get_radius : unit -> float
   (** Retrieves the blur radius of the [node]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_blur_node : Raw.Blur_node.t
 end

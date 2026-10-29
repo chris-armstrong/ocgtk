@@ -10,6 +10,13 @@
 
 (** {b The methods, signals and properties of a [GraphicsOffload].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     Bypasses gsk rendering by passing the content of its child directly to the
     compositor.
 
@@ -50,20 +57,16 @@
 
     The GTK inspector provides a visual debugging tool for graphics offload. *)
 class type graphics_offload_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:methods Methods} *)
 
   method get_black_background : unit -> bool
   (** Returns whether the widget draws a black background.
 
       See [Gtk.GraphicsOffload.set_black_background]. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child of [self]. *)
 
   method get_enabled : unit -> Enums.graphicsoffloadenabled
@@ -84,16 +87,14 @@ class type graphics_offload_t = object
       {{:https://wayland.app/protocols/single-pixel-buffer-v1}single-pixel
        buffer} protocol. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child of [self]. *)
 
   method set_enabled : Enums.graphicsoffloadenabled -> unit
   (** Sets whether this GtkGraphicsOffload widget will attempt to offload the
       content of its child widget. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_graphics_offload : Raw.Graphics_offload.t
 end
@@ -145,9 +146,5 @@ class graphics_offload : Raw.Graphics_offload.t -> graphics_offload_t
 
 (** {1:constructors Constructors} *)
 
-val new_ :
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-  .widget_t
-  option ->
-  graphics_offload_t
+val new_ : Widget.widget_t option -> graphics_offload_t
 (** Creates a new GtkGraphicsOffload widget. *)

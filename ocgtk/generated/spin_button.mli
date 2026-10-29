@@ -9,6 +9,17 @@
 
 (** {b The methods, signals and properties of a [SpinButton].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Accessible_range.class-type-accessible_range_t}Ocgtk.Accessible_range}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Cell_editable.class-type-cell_editable_t}Ocgtk.Cell_editable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Editable.class-type-editable_t}Ocgtk.Editable}
+    - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}
+
     Allows to enter or change numeric values.
 
     An example GtkSpinButton
@@ -126,14 +137,13 @@
 
     [GtkSpinButton] uses the [Gtk.AccessibleRole.spin_button] role. *)
 class type spin_button_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Accessible_range.accessible_range_t
   inherit Cell_editable.cell_editable_t
   inherit Editable.editable_t
   inherit Orientable.orientable_t
+
+  (** {2:signals Signals} *)
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -190,6 +200,8 @@ class type spin_button_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted right after the spinbutton wraps from its maximum to its minimum
       value or vice-versa. *)
+
+  (** {2:methods Methods} *)
 
   method configure : Adjustment.adjustment_t option -> float -> int -> unit
   (** Changes the properties of an existing spin button.
@@ -288,6 +300,8 @@ class type spin_button_t = object
 
   method update : unit -> unit
   (** Manually force an update of the spin button. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_spin_button : Raw.Spin_button.t
 end

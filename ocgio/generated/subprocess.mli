@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [Subprocess].}
 
+    Implements:
+    - {{!Ocgio.Initable.class-type-initable_t}Ocgio.Initable}
+
     [GSubprocess] allows the creation of and interaction with child processes.
 
     Processes can be communicated with using standard GIO-style APIs (ie:
@@ -69,6 +72,8 @@
     tries to write to [stdout] after it has been closed. *)
 class type subprocess_t = object
   inherit Initable.initable_t
+
+  (** {2:methods Methods} *)
 
   method force_exit : unit -> unit
   (** Use an operating-system specific method to attempt an immediate, forceful
@@ -195,6 +200,8 @@ class type subprocess_t = object
 
   method wait_finish : Async_result.async_result_t -> (bool, GError.t) result
   (** Collects the result of a previous call to g_subprocess_wait_async(). *)
+
+  (** {2:conversions Conversions} *)
 
   method as_subprocess : Raw.Subprocess.t
 end

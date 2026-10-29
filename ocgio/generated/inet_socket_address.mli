@@ -10,15 +10,21 @@
 
 (** {b The methods, signals and properties of a [InetSocketAddress].}
 
+    Inherits from:
+    {{!Ocgio.Socket_address.class-type-socket_address_t}Ocgio.Socket_address}
+
+    Implements:
+    - {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}Ocgio.Socket_connectable}
+
     An IPv4 or IPv6 socket address. That is, the combination of a
     [Gio.InetAddress] and a port number.
 
     In UNIX terms, [GInetSocketAddress] corresponds to a [struct sockaddr_in6]
     or [struct sockaddr_in]). *)
 class type inet_socket_address_t = object
-  inherit
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_address_t
+  inherit Socket_address.socket_address_t
+
+  (** {2:methods Methods} *)
 
   method get_address : unit -> Inet_address.inet_address_t
   (** Gets [address]'s [GInetAddress]. *)
@@ -39,6 +45,8 @@ class type inet_socket_address_t = object
 
       If not overridden this value will be inherited from
       [Gio.InetSocketAddress:address]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_inet_socket_address : Raw.Inet_socket_address.t
 end

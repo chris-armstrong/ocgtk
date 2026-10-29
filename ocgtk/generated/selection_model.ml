@@ -1,4 +1,6 @@
 class type selection_model_t = object
+  (** {2:signals Signals} *)
+
   method on_selection_changed :
     ?after:bool ->
     callback:(position:int -> n_items:int -> unit) ->
@@ -10,6 +12,8 @@ class type selection_model_t = object
       items, they need to be queried manually. It is also not necessary for a
       model to change the selection state of any of the items in the selection
       model, though it would be rather useless to emit such a signal. *)
+
+  (** {2:methods Methods} *)
 
   method get_selection : unit -> Raw.Bitset.t
   (** Gets the set containing all currently selected items in the model.
@@ -87,6 +91,8 @@ class type selection_model_t = object
 
   method unselect_range : int -> int -> bool
   (** Requests to unselect a range of items in the model. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_selection_model : Raw.Selection_model.t
 end

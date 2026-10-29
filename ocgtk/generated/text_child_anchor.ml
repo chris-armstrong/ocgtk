@@ -1,4 +1,6 @@
 class type text_child_anchor_t = object
+  (** {2:methods Methods} *)
+
   method get_deleted : unit -> bool
   (** Determines whether a child anchor has been deleted from the buffer.
 
@@ -6,6 +8,8 @@ class type text_child_anchor_t = object
       the buffer, so you need to hold your own reference (with g_object_ref())
       if you plan to use this function — otherwise all deleted child anchors
       will also be finalized. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_text_child_anchor : Raw.Text_child_anchor.t
 end

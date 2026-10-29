@@ -8,9 +8,14 @@
 
 (** {b The methods, signals and properties of a [MaskNode].}
 
+    Inherits from:
+    {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
+
     A render node masking one child node with another. *)
 class type mask_node_t = object
   inherit Render_node.render_node_t
+
+  (** {2:methods Methods} *)
 
   method get_mask : unit -> Render_node.render_node_t
   (** Retrieves the mask [GskRenderNode] child of the [node]. *)
@@ -20,6 +25,8 @@ class type mask_node_t = object
 
   method get_source : unit -> Render_node.render_node_t
   (** Retrieves the source [GskRenderNode] child of the [node]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_mask_node : Raw.Mask_node.t
 end

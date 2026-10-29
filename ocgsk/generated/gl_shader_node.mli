@@ -8,9 +8,14 @@
 
 (** {b The methods, signals and properties of a [GLShaderNode].}
 
+    Inherits from:
+    {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
+
     A render node using a GL shader when drawing its children nodes. *)
 class type gl_shader_node_t = object
   inherit Render_node.render_node_t
+
+  (** {2:methods Methods} *)
 
   method get_args : unit -> Glib_bytes.t
   (** Gets args for the node. *)
@@ -23,6 +28,8 @@ class type gl_shader_node_t = object
 
   method get_shader : unit -> Gl_shader.gl_shader_t
   (** Gets shader code for the node. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_gl_shader_node : Raw.Gl_shader_node.t
 end

@@ -8,9 +8,9 @@
 (** {1:class Class} *)
 
 class type header_bar_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:methods Methods} *)
 
   method get_decoration_layout : unit -> string option
   (** Gets the decoration layout of the header bar. *)
@@ -19,11 +19,7 @@ class type header_bar_t = object
   (** Returns whether this header bar shows the standard window title buttons.
   *)
 
-  method get_title_widget :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_title_widget : unit -> Widget.widget_t option
   (** Retrieves the title widget of the header bar.
 
       See [Gtk.HeaderBar.set_title_widget]. *)
@@ -31,22 +27,13 @@ class type header_bar_t = object
   method get_use_native_controls : unit -> bool
   (** Returns whether this header bar shows platform native window controls. *)
 
-  method pack_end :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method pack_end : Widget.widget_t -> unit
   (** Adds a child to the header bar, packed with reference to the end. *)
 
-  method pack_start :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method pack_start : Widget.widget_t -> unit
   (** Adds a child to the header bar, packed with reference to the start. *)
 
-  method remove :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method remove : Widget.widget_t -> unit
   (** Removes a child from the header bar.
 
       The child must have been added with [Gtk.HeaderBar.pack_start],
@@ -73,11 +60,7 @@ class type header_bar_t = object
   method set_show_title_buttons : bool -> unit
   (** Sets whether this header bar shows the standard window title buttons. *)
 
-  method set_title_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_title_widget : Widget.widget_t option -> unit
   (** Sets the title for the header bar.
 
       When set to [NULL], the headerbar will display the title of the window it
@@ -96,10 +79,18 @@ class type header_bar_t = object
      For Linux, this option has no effect.\n\n\
      See also Using GTK on Apple macOS."]
 
+  (** {2:conversions Conversions} *)
+
   method as_header_bar : Raw.Header_bar.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [HeaderBar].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      Creates a custom titlebar for a window.\n\n\
      An example GtkHeaderBar\n\n\
      [GtkHeaderBar] is similar to a horizontal [GtkCenterBox]. It allows\n\

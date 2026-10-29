@@ -18,6 +18,8 @@
     character. The [PangoCoverage] is a data structure that is used to represent
     that information. It is an opaque structure with no public fields. *)
 class type coverage_t = object
+  (** {2:methods Methods} *)
+
   method copy : unit -> coverage_t
   (** Copy an existing [PangoCoverage]. *)
 
@@ -39,6 +41,8 @@ class type coverage_t = object
   (** Decrease the reference count on the [PangoCoverage] by one.
 
       If the result is zero, free the coverage and all associated memory. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_coverage : Raw.Coverage.t
 end

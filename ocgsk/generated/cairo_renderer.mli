@@ -9,11 +9,16 @@
 
 (** {b The methods, signals and properties of a [CairoRenderer].}
 
+    Inherits from: {{!Ocgsk.Renderer.class-type-renderer_t}Ocgsk.Renderer}
+
     Renders a GSK rendernode tree with cairo.
 
     Since it is using cairo, this renderer cannot support 3D transformations. *)
 class type cairo_renderer_t = object
   inherit Renderer.renderer_t
+
+  (** {2:conversions Conversions} *)
+
   method as_cairo_renderer : Raw.Cairo_renderer.t
 end
 

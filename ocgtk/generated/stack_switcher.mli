@@ -9,6 +9,14 @@
 
 (** {b The methods, signals and properties of a [StackSwitcher].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}
+
     Shows a row of buttons to switch between [GtkStack] pages.
 
     An example GtkStackSwitcher
@@ -41,17 +49,18 @@
     stack switcher to be made vertical with [gtk_orientable_set_orientation()].
 *)
 class type stack_switcher_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Orientable.orientable_t
+
+  (** {2:methods Methods} *)
 
   method get_stack : unit -> Stack.stack_t option
   (** Retrieves the stack. *)
 
   method set_stack : Stack.stack_t option -> unit
   (** Sets the stack to control. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_stack_switcher : Raw.Stack_switcher.t
 end

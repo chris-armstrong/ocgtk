@@ -1,12 +1,15 @@
 (** Represents the source of an ongoing DND operation.
 
     Its methods, signals and properties are on {!class-type-drag_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgdk.Raw.Drag}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Drag}. *)
 
 (** {1:class Class} *)
 
 class type drag_t = object
+  (** {2:signals Signals} *)
+
   method on_cancel :
     ?after:bool ->
     callback:(reason:Enums.dragcancelreason -> unit) ->
@@ -23,6 +26,8 @@ class type drag_t = object
   method on_drop_performed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the drop operation is performed on an accepting client. *)
+
+  (** {2:methods Methods} *)
 
   method drop_done : bool -> unit
   (** Informs GDK that the drop ended.
@@ -42,14 +47,13 @@ class type drag_t = object
   method get_content : unit -> Content_provider.content_provider_t
   (** Returns the [GdkContentProvider] associated to the [GdkDrag] object. *)
 
-  method get_device : unit -> App_launch_context_cycle_de440b34.device_t
+  method get_device : unit -> Device.device_t
   (** Returns the [GdkDevice] associated to the [GdkDrag] object. *)
 
-  method get_display : unit -> App_launch_context_cycle_de440b34.display_t
+  method get_display : unit -> Display.display_t
   (** Gets the [GdkDisplay] that the drag object was created for. *)
 
-  method get_drag_surface :
-    unit -> App_launch_context_cycle_de440b34.surface_t option
+  method get_drag_surface : unit -> Surface.surface_t option
   (** Returns the surface on which the drag icon should be rendered during the
       drag operation.
 
@@ -64,7 +68,7 @@ class type drag_t = object
   method get_selected_action : unit -> Enums.dragaction
   (** Determines the action chosen by the drag destination. *)
 
-  method get_surface : unit -> App_launch_context_cycle_de440b34.surface_t
+  method get_surface : unit -> Surface.surface_t
   (** Returns the [GdkSurface] where the drag originates. *)
 
   method set_hotspot : int -> int -> unit
@@ -72,6 +76,8 @@ class type drag_t = object
       hotspot.
 
       Initially, the hotspot is at the top left corner of the drag surface. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_drag : Raw.Drag.t
 end
@@ -100,3 +106,8 @@ class drag : Raw.Drag.t -> drag_t
  GTK provides a higher level abstraction based on top of these functions,\n\
  and so they are not normally needed in GTK applications. See the\n\
  \"Drag and Drop\" section of the GTK documentation for more information."]
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

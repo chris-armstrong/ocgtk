@@ -1,12 +1,15 @@
 (** The tree interface used by GtkTreeView
 
     Its methods, signals and properties are on {!class-type-tree_model_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.Tree_model}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Tree_model}. *)
 
 (** {1:class Class} *)
 
 class type tree_model_t = object
+  (** {2:methods Methods} *)
+
   method filter_new : Raw.Tree_path.t option -> tree_model_t
   (** Creates a new [GtkTreeModel], with [child_model] as the child_model and
       [root] as the virtual root. *)
@@ -120,6 +123,8 @@ class type tree_model_t = object
       gtk_tree_model_ref_node().
 
       Please note that nodes that are deleted are not unreffed. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tree_model : Raw.Tree_model.t
 end
@@ -463,3 +468,8 @@ class tree_model : Raw.Tree_model.t -> tree_model_t
  required for levels in which nodes are referenced. For the root level\n\
  however, signals must be emitted at all times (however the root level\n\
  is always referenced when any view is attached)."]
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

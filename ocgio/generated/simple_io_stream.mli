@@ -11,6 +11,8 @@
 
 (** {b The methods, signals and properties of a [SimpleIOStream].}
 
+    Inherits from: {{!Ocgio.Io_stream.class-type-io_stream_t}Ocgio.Io_stream}
+
     [GSimpleIOStream] creates a [Gio.IOStream] from an arbitrary
     [Gio.InputStream] and [Gio.OutputStream]. This allows any pair of input and
     output streams to be used with [Gio.IOStream] methods.
@@ -22,6 +24,9 @@
     [Gio.IOStream]. *)
 class type simple_io_stream_t = object
   inherit Io_stream.io_stream_t
+
+  (** {2:conversions Conversions} *)
+
   method as_simple_io_stream : Raw.Simple_io_stream.t
 end
 

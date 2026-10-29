@@ -9,6 +9,12 @@
 
 (** {b The methods, signals and properties of a [MediaFile].}
 
+    Inherits from:
+    {{!Ocgtk.Media_stream.class-type-media_stream_t}Ocgtk.Media_stream}
+
+    Implements:
+    - {{!Ocgdk.Paintable.class-type-paintable_t}Ocgdk.Paintable}
+
     Implements the [GtkMediaStream] interface for files.
 
     This provides a simple way to play back video files with GTK.
@@ -19,6 +25,8 @@
     GTK itself includes an implementation using GStreamer. *)
 class type media_file_t = object
   inherit Media_stream.media_stream_t
+
+  (** {2:methods Methods} *)
 
   method clear : unit -> unit
   (** Resets the media file to be empty. *)
@@ -59,6 +67,8 @@ class type media_file_t = object
 
       This is a utility function that converts the given [resource_path] to a
       [GFile] and calls [Gtk.MediaFile.set_file]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_media_file : Raw.Media_file.t
 end

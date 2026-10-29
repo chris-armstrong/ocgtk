@@ -227,8 +227,8 @@ let make_gir_constant ?(constant_name = "TestConstant")
 
 let make_gir_class ?(class_name = "TestClass") ?(c_type = "TestClass") ?parent
     ?(glib_get_type = None) ?(implements = []) ?(introspectable = true)
-    ?(constructors = []) ?(methods = []) ?(properties = []) ?(signals = [])
-    ?class_doc ?version () =
+    ?(abstract = false) ?(constructors = []) ?(methods = []) ?(properties = [])
+    ?(signals = []) ?class_doc ?version () =
   {
     class_name;
     c_type;
@@ -236,6 +236,7 @@ let make_gir_class ?(class_name = "TestClass") ?(c_type = "TestClass") ?parent
     parent;
     implements;
     introspectable;
+    abstract;
     constructors;
     methods;
     properties;

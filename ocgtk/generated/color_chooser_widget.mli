@@ -9,6 +9,14 @@
 
 (** {b The methods, signals and properties of a [ColorChooserWidget].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Color_chooser.class-type-color_chooser_t}Ocgtk.Color_chooser}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     The [GtkColorChooserWidget] widget lets the user select a color.
 
     By default, the chooser presents a predefined palette of colors, plus a
@@ -41,11 +49,10 @@
 
     [GtkColorChooserWidget] has a single CSS node with name colorchooser. *)
 class type color_chooser_widget_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Color_chooser.color_chooser_t
+
+  (** {2:properties Properties} *)
 
   method show_editor : bool
   (** [TRUE] when the color chooser is showing the single-color editor.
@@ -58,6 +65,8 @@ class type color_chooser_widget_t = object
 
       It can be set to switch the color chooser into single-color editing mode.
   *)
+
+  (** {2:conversions Conversions} *)
 
   method as_color_chooser_widget : Raw.Color_chooser_widget.t
 end

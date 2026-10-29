@@ -5,8 +5,9 @@
     service side (see [Gio.DBusObjectSkeleton]) and the client side (see
     [Gio.DBusObjectProxy]). It is essentially just a container of interfaces.
 
-    Its methods, signals and properties are on {!class-type-d_bus_object_t}. The
-    functions it is built on are in {!Ocgio.Raw.D_bus_object}. *)
+    Its methods, signals and properties are on {!class-type-d_bus_object_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgio.Raw.D_bus_object}. *)
 
 (** {1:class Class} *)
 
@@ -19,3 +20,8 @@ class type d_bus_object_t = D_bus_interface_and__d_bus_object.d_bus_object_t
 
 class d_bus_object : Raw.D_bus_object.t -> d_bus_object_t
 (** Wraps a raw handle of {!Ocgio.Raw.D_bus_object.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

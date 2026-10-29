@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [Adjustment].}
 
+    Inherits from: [GObject.InitiallyUnowned]
+
     A model for a numeric value.
 
     The [GtkAdjustment] has an associated lower and upper bound. It also
@@ -20,6 +22,8 @@
     The [GtkAdjustment] object does not update the value itself. Instead it is
     left up to the owner of the [GtkAdjustment] to control the value. *)
 class type adjustment_t = object
+  (** {2:signals Signals} *)
+
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when one or more of the [GtkAdjustment] properties have been
@@ -31,6 +35,8 @@ class type adjustment_t = object
   method on_value_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the value has been changed. *)
+
+  (** {2:methods Methods} *)
 
   method clamp_page : float -> float -> unit
   (** Updates the value of the adjustment to ensure that the given range is
@@ -126,6 +132,8 @@ class type adjustment_t = object
       Note that for adjustments which are used in a [GtkScrollbar], the
       effective range of allowed values goes from [Gtk.Adjustment:lower] to
       [Gtk.Adjustment:upper] - [Gtk.Adjustment:page-size]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_adjustment : Raw.Adjustment.t
 end

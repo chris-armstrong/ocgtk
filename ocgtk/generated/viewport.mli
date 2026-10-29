@@ -10,6 +10,14 @@
 
 (** {b The methods, signals and properties of a [Viewport].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Scrollable.class-type-scrollable_t}Ocgtk.Scrollable}
+
     Implements scrollability for widgets that don't support scrolling on their
     own.
 
@@ -30,43 +38,32 @@
     Starting from GTK 4.12, [GtkViewport] uses the [Gtk.AccessibleRole.generic]
     role. *)
 class type viewport_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Scrollable.scrollable_t
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  (** {2:methods Methods} *)
+
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [viewport]. *)
 
   method get_scroll_to_focus : unit -> bool
   (** Gets whether the viewport is scrolling to keep the focused child in view.
   *)
 
-  method scroll_to :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Raw.Scroll_info.t option ->
-    unit
+  method scroll_to : Widget.widget_t -> Raw.Scroll_info.t option -> unit
   (** Scrolls a descendant of the viewport into view.
 
       The viewport and the descendant must be visible and mapped for this
       function to work, otherwise no scrolling will be performed. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [viewport]. *)
 
   method set_scroll_to_focus : bool -> unit
   (** Sets whether the viewport should automatically scroll to keep the focused
       child in view. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_viewport : Raw.Viewport.t
 end

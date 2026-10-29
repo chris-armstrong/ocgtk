@@ -14,6 +14,8 @@
     The contents of the [graphene_frustum_t] are private, and should not be
     modified directly. *)
 class type frustum_t = object
+  (** {2:methods Methods} *)
+
   method contains_point : Raw.Point3_d.t -> bool
   (** Checks whether a point is inside the volume defined by the given
       #graphene_frustum_t. *)
@@ -46,6 +48,8 @@ class type frustum_t = object
   method intersects_sphere : Raw.Sphere.t -> bool
   (** Checks whether the given [sphere] intersects a plane of a
       #graphene_frustum_t. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_frustum : Raw.Frustum.t
 end

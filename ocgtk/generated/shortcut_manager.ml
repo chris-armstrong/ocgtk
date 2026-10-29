@@ -1,4 +1,6 @@
 class type shortcut_manager_t = object
+  (** {2:conversions Conversions} *)
+
   method as_shortcut_manager : Raw.Shortcut_manager.t
 end
 

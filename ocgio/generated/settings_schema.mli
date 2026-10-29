@@ -3,12 +3,15 @@
     for introspecting their content.
 
     Its methods, signals and properties are on {!class-type-settings_schema_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgio.Raw.Settings_schema}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Settings_schema}. *)
 
 (** {1:class Class} *)
 
 class type settings_schema_t = object
+  (** {2:methods Methods} *)
+
   method get_id : unit -> string
   (** Get the ID of [schema]. *)
 
@@ -47,6 +50,8 @@ class type settings_schema_t = object
 
   method ref : unit -> Raw.Settings_schema.t
   (** Increase the reference count of [schema], returning a new reference. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_settings_schema : Raw.Settings_schema.t
 end
@@ -198,3 +203,8 @@ class settings_schema : Raw.Settings_schema.t -> settings_schema_t
  files (ie: [.gschema.xml] files) instead of a [gschemas.compiled] file.\n\
  In that case, the plugin loading system must compile the schemas for\n\
  itself before attempting to create the settings source."]
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

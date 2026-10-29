@@ -1,11 +1,15 @@
 class type emblem_t = object
   inherit Icon.icon_t
 
+  (** {2:methods Methods} *)
+
   method get_icon : unit -> Icon.icon_t
   (** Gives back the icon from [emblem]. *)
 
   method get_origin : unit -> Enums.emblemorigin
   (** Gets the origin of the emblem. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_emblem : Raw.Emblem.t
 end

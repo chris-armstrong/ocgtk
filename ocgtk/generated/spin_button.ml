@@ -1,12 +1,11 @@
 class type spin_button_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Accessible_range.accessible_range_t
   inherit Cell_editable.cell_editable_t
   inherit Editable.editable_t
   inherit Orientable.orientable_t
+
+  (** {2:signals Signals} *)
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -63,6 +62,8 @@ class type spin_button_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted right after the spinbutton wraps from its maximum to its minimum
       value or vice-versa. *)
+
+  (** {2:methods Methods} *)
 
   method configure : Adjustment.adjustment_t option -> float -> int -> unit
   (** Changes the properties of an existing spin button.
@@ -162,16 +163,15 @@ class type spin_button_t = object
   method update : unit -> unit
   (** Manually force an update of the spin button. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_spin_button : Raw.Spin_button.t
 end
 
 (* High-level class for SpinButton *)
 class spin_button (obj : Raw.Spin_button.t) : spin_button_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     inherit
       Accessible_range.accessible_range (Raw.Accessible_range.from_gobject obj)

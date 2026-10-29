@@ -1,10 +1,9 @@
 class type message_dialog_t = object
   inherit Dialog.dialog_t
 
-  method get_message_area :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  (** {2:methods Methods} *)
+
+  method get_message_area : unit -> Widget.widget_t
   (** Returns the message area of the dialog.
 
       This is the box where the dialog’s primary and secondary labels are
@@ -14,6 +13,8 @@ class type message_dialog_t = object
 
   method set_markup : string -> unit
   (** Sets the text of the message dialog. *)
+
+  (** {2:properties Properties} *)
 
   method message_type : Enums.messagetype
   (** The type of the message. *)
@@ -57,6 +58,8 @@ class type message_dialog_t = object
 
       See [Pango.parse_markup]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_message_dialog : Raw.Message_dialog.t
 end
 
@@ -65,15 +68,8 @@ class message_dialog (obj : Raw.Message_dialog.t) : message_dialog_t =
   object (self)
     inherit Dialog.dialog (obj :> Raw.Dialog.t)
 
-    method get_message_area :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t =
-      fun () ->
-        new
-          Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-          .widget
-          (Raw.Message_dialog.get_message_area obj)
+    method get_message_area : unit -> Widget.widget_t =
+      fun () -> new Widget.widget (Raw.Message_dialog.get_message_area obj)
 
     method set_markup : string -> unit =
       fun str -> Raw.Message_dialog.set_markup obj str

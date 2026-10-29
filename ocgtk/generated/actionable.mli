@@ -1,12 +1,16 @@
 (** Provides a way to associate widgets with actions.
 
     Its methods, signals and properties are on {!class-type-actionable_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.Actionable}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Actionable}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [Actionable].}
+
+    Requires:
+    - {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
 
     Provides a way to associate widgets with actions.
 
@@ -20,6 +24,8 @@
     [GtkApplication], but other action groups that are added with
     [Gtk.Widget.insert_action_group] will be consulted as well. *)
 class type actionable_t = object
+  (** {2:methods Methods} *)
+
   method get_action_name : unit -> string option
   (** Gets the action name for [actionable]. *)
 
@@ -67,6 +73,8 @@ class type actionable_t = object
       [detailed_action_name] is a string in the format accepted by
       [Gio.Action.parse_detailed_name]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_actionable : Raw.Actionable.t
 end
 
@@ -86,3 +94,8 @@ class actionable : Raw.Actionable.t -> actionable_t
     or “app.” prefix that are associated with the [GtkApplicationWindow] or
     [GtkApplication], but other action groups that are added with
     [Gtk.Widget.insert_action_group] will be consulted as well. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

@@ -1,4 +1,6 @@
 class type keymap_key_t = object
+  (** {2:conversions Conversions} *)
+
   method as_keymap_key : Raw.Keymap_key.t
 end
 

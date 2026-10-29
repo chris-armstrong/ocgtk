@@ -1,6 +1,10 @@
 class type accessible_list_t = object
-  method get_objects : unit -> At_context_and__accessible.accessible_t list
+  (** {2:methods Methods} *)
+
+  method get_objects : unit -> Accessible.accessible_t list
   (** Gets the list of objects this boxed type holds. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_accessible_list : Raw.Accessible_list.t
 end
@@ -8,9 +12,9 @@ end
 (* High-level class for AccessibleList *)
 class accessible_list (obj : Raw.Accessible_list.t) : accessible_list_t =
   object (self)
-    method get_objects : unit -> At_context_and__accessible.accessible_t list =
+    method get_objects : unit -> Accessible.accessible_t list =
       fun () ->
-        (List.map (fun ret -> new At_context_and__accessible.accessible ret))
+        (List.map (fun ret -> new Accessible.accessible ret))
           (Raw.Accessible_list.get_objects obj)
 
     method as_accessible_list = obj

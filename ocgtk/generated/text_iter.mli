@@ -4,8 +4,9 @@
 (** Iterates over the contents of a [GtkTextBuffer].
 
     Its methods, signals and properties are on {!class-type-text_iter_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.Text_iter}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Text_iter}. *)
 
 (** {1:class Class} *)
 
@@ -28,3 +29,8 @@ class text_iter : Raw.Text_iter.t -> text_iter_t
     You may wish to begin by reading the text widget conceptual overview, which
     gives an overview of all the objects and data types related to the text
     widget and how they work together. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

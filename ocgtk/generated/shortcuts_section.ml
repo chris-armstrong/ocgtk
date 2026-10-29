@@ -1,6 +1,8 @@
 class type shortcuts_section_t = object
   inherit Box.box_t
 
+  (** {2:signals Signals} *)
+
   method on_change_current_page :
     ?after:bool ->
     callback:(offset:int -> bool) ->
@@ -11,6 +13,8 @@ class type shortcuts_section_t = object
       The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>PgUp</kbd>,
       <kbd>PgUp</kbd>, <kbd>Ctrl</kbd>+<kbd>PgDn</kbd>, <kbd>PgDn</kbd>. *)
 
+  (** {2:methods Methods} *)
+
   method add_group : Shortcuts_group.shortcuts_group_t -> unit
   (** Adds a group to the shortcuts section.
 
@@ -19,6 +23,8 @@ class type shortcuts_section_t = object
 
       Adding children with the [GtkBox] API is not appropriate, as
       [GtkShortcutsSection] manages its children internally. *)
+
+  (** {2:properties Properties} *)
 
   method max_height : int
   (** The maximum number of lines to allow per column.
@@ -77,6 +83,8 @@ class type shortcuts_section_t = object
 
       Applications are expected to use the [Gtk.ShortcutsWindow:view-name]
       property for this purpose. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_shortcuts_section : Raw.Shortcuts_section.t
 end

@@ -1,5 +1,7 @@
 class type unix_connection_t = object
-  inherit Socket_and__socket_connection.socket_connection_t
+  inherit Socket_connection.socket_connection_t
+
+  (** {2:methods Methods} *)
 
   method receive_credentials :
     Cancellable.cancellable_t option ->
@@ -71,15 +73,15 @@ class type unix_connection_t = object
       As well as sending the fd this also writes a single byte to the stream, as
       this is required for fd passing to work on some implementations. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_unix_connection : Raw.Unix_connection.t
 end
 
 (* High-level class for UnixConnection *)
 class unix_connection (obj : Raw.Unix_connection.t) : unix_connection_t =
   object (self)
-    inherit
-      Socket_and__socket_connection.socket_connection
-        (obj :> Raw.Socket_connection.t)
+    inherit Socket_connection.socket_connection (obj :> Raw.Socket_connection.t)
 
     method receive_credentials :
         Cancellable.cancellable_t option ->

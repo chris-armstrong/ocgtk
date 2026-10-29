@@ -2,12 +2,15 @@
     printing.
 
     Its methods, signals and properties are on {!class-type-print_context_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Print_context}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Print_context}. *)
 
 (** {1:class Class} *)
 
 class type print_context_t = object
+  (** {2:methods Methods} *)
+
   method create_pango_context : unit -> Ocpango.Context.context_t
   (** Creates a new [PangoContext] that can be used with the [GtkPrintContext].
   *)
@@ -48,6 +51,8 @@ class type print_context_t = object
       This function is intended to be used when implementing an internal print
       preview, it is not needed for printing, since GTK itself creates a
       suitable cairo context in that case. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_print_context : Raw.Print_context.t
 end
@@ -167,3 +172,8 @@ class print_context : Raw.Print_context.t -> print_context_t
 \  g_object_unref (layout);\n\
  }\n\
  ]}"]
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

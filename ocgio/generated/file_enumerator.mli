@@ -7,8 +7,9 @@
     the children within a directory).
 
     Its methods, signals and properties are on {!class-type-file_enumerator_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgio.Raw.File_enumerator}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.File_enumerator}. *)
 
 (** {1:class Class} *)
 
@@ -69,3 +70,8 @@ class file_enumerator : Raw.File_enumerator.t -> file_enumerator_t
     asynchronous version, [Gio.FileEnumerator.close_async]. Once a
     [GFileEnumerator] is closed, no further actions may be performed on it, and
     it should be freed with [GObject.Object.unref]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

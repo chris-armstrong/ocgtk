@@ -9,16 +9,23 @@
 
 (** {b The methods, signals and properties of a [ListBoxRow].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Actionable.class-type-actionable_t}Ocgtk.Actionable}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     The kind of widget that can be added to a [GtkListBox].
 
     [Gtk.ListBox] will automatically wrap its children in a [GtkListboxRow] when
     necessary. *)
 class type list_box_row_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Actionable.actionable_t
+
+  (** {2:signals Signals} *)
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -27,6 +34,8 @@ class type list_box_row_t = object
       If you want to be notified when the user activates a row (by key or not),
       use the [Gtk.ListBox::row-activated] signal on the row’s parent
       [GtkListBox]. *)
+
+  (** {2:methods Methods} *)
 
   method changed : unit -> unit
   (** Marks [row] as changed, causing any state that depends on this to be
@@ -50,18 +59,10 @@ class type list_box_row_t = object
   method get_activatable : unit -> bool
   (** Gets whether the row is activatable. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [row]. *)
 
-  method get_header :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_header : unit -> Widget.widget_t option
   (** Returns the current header of the [row].
 
       This can be used in a [Gtk.ListBoxUpdateHeaderFunc] to see if there is a
@@ -80,18 +81,10 @@ class type list_box_row_t = object
   method set_activatable : bool -> unit
   (** Set whether the row is activatable. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [self]. *)
 
-  method set_header :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_header : Widget.widget_t option -> unit
   (** Sets the current header of the [row].
 
       This is only allowed to be called from a [Gtk.ListBoxUpdateHeaderFunc]. It
@@ -100,6 +93,8 @@ class type list_box_row_t = object
 
   method set_selectable : bool -> unit
   (** Set whether the row can be selected. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_list_box_row : Raw.List_box_row.t
 end

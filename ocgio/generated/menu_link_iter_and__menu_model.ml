@@ -2,6 +2,8 @@
 (* Combined classes for cyclic dependencies *)
 
 class type menu_link_iter_t = object
+  (** {2:methods Methods} *)
+
   method get_name : unit -> string
   (** Gets the name of the link at the current iterator position.
 
@@ -20,10 +22,14 @@ class type menu_link_iter_t = object
       You must call this function when you first acquire the iterator to advance
       it to the first link (and determine if the first link exists at all). *)
 
+  (** {2:conversions Conversions} *)
+
   method as_menu_link_iter : Raw.Menu_link_iter.t
 end
 
 and menu_model_t = object
+  (** {2:signals Signals} *)
+
   method on_items_changed :
     ?after:bool ->
     callback:(position:int -> removed:int -> added:int -> unit) ->
@@ -48,6 +54,8 @@ and menu_model_t = object
       Signal handlers may query the model (particularly the added items) and
       expect to see the results of the modification that is being reported. The
       signal is emitted after the modification. *)
+
+  (** {2:methods Methods} *)
 
   method get_item_attribute_value :
     int -> string -> Gvariant_type.t option -> Gvariant.t option
@@ -108,6 +116,8 @@ and menu_model_t = object
       position [item_index] in [model].
 
       You must free the iterator with g_object_unref() when you are done. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_menu_model : Raw.Menu_model.t
 end

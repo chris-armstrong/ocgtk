@@ -1,7 +1,7 @@
 class type font_dialog_button_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:signals Signals} *)
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -9,6 +9,8 @@ class type font_dialog_button_t = object
 
       The [::activate] signal on [GtkFontDialogButton] is an action signal and
       emitting it causes the button to pop up its dialog. *)
+
+  (** {2:methods Methods} *)
 
   method get_dialog : unit -> Font_dialog.font_dialog_t option
   (** Returns the [GtkFontDialog] of [self]. *)
@@ -69,6 +71,8 @@ class type font_dialog_button_t = object
   (** If [use_size] is [TRUE], the font name will be written using the selected
       font size. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_font_dialog_button : Raw.Font_dialog_button.t
 end
 
@@ -76,10 +80,7 @@ end
 class font_dialog_button (obj : Raw.Font_dialog_button.t) : font_dialog_button_t
   =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     method on_activate ?(after = false) ~callback () =
       Raw.Font_dialog_button.on_activate ~after self#as_font_dialog_button

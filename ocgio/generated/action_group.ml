@@ -1,4 +1,6 @@
 class type action_group_t = object
+  (** {2:signals Signals} *)
+
   method on_action_added :
     ?after:bool ->
     callback:(action_name:string -> unit) ->
@@ -32,6 +34,8 @@ class type action_group_t = object
     unit ->
     Gobject.Signal.handler_id
   (** Signals that the state of the named action has changed. *)
+
+  (** {2:methods Methods} *)
 
   method action_added : string -> unit
   (** Emits the [Gio.ActionGroup::action-added] signal on [action_group].
@@ -177,6 +181,8 @@ class type action_group_t = object
 
       The caller is responsible for freeing the list with [GLib.strfreev] when
       it is no longer required. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_action_group : Raw.Action_group.t
 end

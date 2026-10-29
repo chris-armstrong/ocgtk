@@ -10,6 +10,12 @@
 
 (** {b The methods, signals and properties of a [UnixSocketAddress].}
 
+    Inherits from:
+    {{!Ocgio.Socket_address.class-type-socket_address_t}Ocgio.Socket_address}
+
+    Implements:
+    - {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}Ocgio.Socket_connectable}
+
     Support for UNIX-domain (also known as local) sockets, corresponding to
     [struct sockaddr_un].
 
@@ -30,9 +36,9 @@
     GIO interfaces, thus you had to use the [gio-unix-2.0.pc] pkg-config file
     when using it. This is no longer necessary since GLib 2.72. *)
 class type unix_socket_address_t = object
-  inherit
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_address_t
+  inherit Socket_address.socket_address_t
+
+  (** {2:methods Methods} *)
 
   method get_address_type : unit -> Enums.unixsocketaddresstype
   (** Gets [address]'s type. *)
@@ -53,8 +59,12 @@ class type unix_socket_address_t = object
 
       For details, see g_unix_socket_address_get_path(). *)
 
+  (** {2:properties Properties} *)
+
   method abstract : bool
   (** Whether or not this is an abstract address *)
+
+  (** {2:conversions Conversions} *)
 
   method as_unix_socket_address : Raw.Unix_socket_address.t
 end

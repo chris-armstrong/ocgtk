@@ -1,6 +1,8 @@
 class type cell_renderer_combo_t = object
   inherit Cell_renderer_text.cell_renderer_text_t
 
+  (** {2:properties Properties} *)
+
   method has_entry : bool
   (** If [TRUE], the cell renderer will include an entry and allow to enter
       values other than the ones in the popup list. *)
@@ -36,6 +38,8 @@ class type cell_renderer_combo_t = object
 
       [GtkCellRendererCombo] automatically adds a text cell renderer for this
       column to its combo box. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_cell_renderer_combo : Raw.Cell_renderer_combo.t
 end

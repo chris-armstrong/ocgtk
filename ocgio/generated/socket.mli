@@ -15,6 +15,10 @@
 class type socket_t = Socket_and__socket_connection.socket_t
 (** {b The methods, signals and properties of a [Socket].}
 
+    Implements:
+    - {{!Ocgio.Datagram_based.class-type-datagram_based_t}Ocgio.Datagram_based}
+    - {{!Ocgio.Initable.class-type-initable_t}Ocgio.Initable}
+
     A [GSocket] is a low-level networking primitive. It is a more or less direct
     mapping of the BSD socket API in a portable GObject based API. It supports
     both the UNIX socket implementations and winsock2 on Windows.

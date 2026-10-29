@@ -3,6 +3,8 @@ class type memory_output_stream_t = object
   inherit Pollable_output_stream.pollable_output_stream_t
   inherit Seekable.seekable_t
 
+  (** {2:methods Methods} *)
+
   method get_data_size : unit -> Gsize.t
   (** Returns the number of bytes from the start up to including the last byte
       written in the stream that has not been truncated away. *)
@@ -26,6 +28,8 @@ class type memory_output_stream_t = object
   method steal_as_bytes : unit -> Glib_bytes.t
   (** Returns data from the [ostream] as a [GBytes]. [ostream] must be closed
       before calling this function. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_memory_output_stream : Raw.Memory_output_stream.t
 end

@@ -8,9 +8,9 @@
 (** {1:class Class} *)
 
 class type drop_down_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:signals Signals} *)
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -18,6 +18,8 @@ class type drop_down_t = object
 
       The [::activate] signal on [GtkDropDown] is an action signal and emitting
       it causes the drop down to pop up its dropdown. *)
+
+  (** {2:methods Methods} *)
 
   method get_enable_search : unit -> bool
   (** Returns whether search is enabled. *)
@@ -94,10 +96,18 @@ class type drop_down_t = object
   method set_show_arrow : bool -> unit
   (** Sets whether an arrow will be displayed within the widget. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_drop_down : Raw.Drop_down.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [DropDown].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      Allows the user to choose an item from a list of options.\n\n\
      An example GtkDropDown\n\n\
      The [GtkDropDown] displays the \\[selected\\][Gtk.DropDown:selected]\n\

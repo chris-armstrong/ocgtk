@@ -1,4 +1,6 @@
 class type attr_float_t = object
+  (** {2:conversions Conversions} *)
+
   method as_attr_float : Raw.Attr_float.t
 end
 

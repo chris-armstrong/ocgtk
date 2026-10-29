@@ -19,11 +19,12 @@
     Toplevel surfaces are sovereign windows that can be presented to the user in
     various states (maximized, on all workspaces, etc). *)
 class type toplevel_layout_t = object
+  (** {2:methods Methods} *)
+
   method equal : Raw.Toplevel_layout.t -> bool
   (** Check whether [layout] and [other] has identical layout properties. *)
 
-  method get_fullscreen_monitor :
-    unit -> App_launch_context_cycle_de440b34.monitor_t option
+  method get_fullscreen_monitor : unit -> Monitor.monitor_t option
   (** Returns the monitor that the layout is fullscreening the surface on. *)
 
   method get_resizable : unit -> bool
@@ -32,8 +33,7 @@ class type toplevel_layout_t = object
   method ref : unit -> Raw.Toplevel_layout.t
   (** Increases the reference count of [layout]. *)
 
-  method set_fullscreen :
-    bool -> App_launch_context_cycle_de440b34.monitor_t option -> unit
+  method set_fullscreen : bool -> Monitor.monitor_t option -> unit
   (** Sets whether the layout should cause the surface to be fullscreen when
       presented. *)
 
@@ -44,6 +44,8 @@ class type toplevel_layout_t = object
   method set_resizable : bool -> unit
   (** Sets whether the layout should allow the user to resize the surface after
       it has been presented. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_toplevel_layout : Raw.Toplevel_layout.t
 end

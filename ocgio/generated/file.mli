@@ -9,8 +9,9 @@
     [Gio.OutputStream]).
 
     Its methods, signals and properties are on {!class-type-file_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgio.Raw.File}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.File}. *)
 
 (** {1:class Class} *)
 
@@ -193,3 +194,8 @@ class file : Raw.File.t -> file_t
     mtime, and can be used to quickly determine if the file has been modified
     from the version on the file system. See the HTTP 1.1 specification for HTTP
     [ETag] headers, which are a very similar concept. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

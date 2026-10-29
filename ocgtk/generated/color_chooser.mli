@@ -2,8 +2,9 @@
     choosing colors.
 
     Its methods, signals and properties are on {!class-type-color_chooser_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Color_chooser}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Color_chooser}. *)
 
 (** {1:class Class} *)
 
@@ -18,6 +19,8 @@
     In GTK, the main widgets that implement this interface are
     [Gtk.ColorChooserWidget], [Gtk.ColorChooserDialog] and [Gtk.ColorButton]. *)
 class type color_chooser_t = object
+  (** {2:methods Methods} *)
+
   method add_palette :
     Enums.orientation -> int -> int -> Ocgdk.Raw.Rgb_a.t array option -> unit
   (** Adds a palette to the color chooser.
@@ -46,6 +49,8 @@ class type color_chooser_t = object
   method set_use_alpha : bool -> unit
   (** Sets whether or not the color chooser should use the alpha channel. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_color_chooser : Raw.Color_chooser.t
 end
 
@@ -62,3 +67,8 @@ class color_chooser : Raw.Color_chooser.t -> color_chooser_t
 
     In GTK, the main widgets that implement this interface are
     [Gtk.ColorChooserWidget], [Gtk.ColorChooserDialog] and [Gtk.ColorButton]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

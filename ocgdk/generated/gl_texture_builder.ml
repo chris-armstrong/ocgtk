@@ -1,10 +1,11 @@
 class type gl_texture_builder_t = object
+  (** {2:methods Methods} *)
+
   method get_color_state : unit -> Raw.Color_state.t
   (** Gets the color state previously set via
       gdk_gl_texture_builder_set_color_state(). *)
 
-  method get_context :
-    unit -> App_launch_context_cycle_de440b34.gl_context_t option
+  method get_context : unit -> Gl_context.gl_context_t option
   (** Gets the context previously set via gdk_gl_texture_builder_set_context()
       or [NULL] if none was set. *)
 
@@ -40,8 +41,7 @@ class type gl_texture_builder_t = object
       By default, the sRGB colorstate is used. If you don't know what
       colorstates are, this is probably the right thing. *)
 
-  method set_context :
-    App_launch_context_cycle_de440b34.gl_context_t option -> unit
+  method set_context : Gl_context.gl_context_t option -> unit
   (** Sets the context to be used for the texture. This is the context that owns
       the texture.
 
@@ -109,6 +109,8 @@ class type gl_texture_builder_t = object
 
       The width must be set before calling [Gdk.GLTextureBuilder.build]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_gl_texture_builder : Raw.Gl_texture_builder.t
 end
 
@@ -119,11 +121,10 @@ class gl_texture_builder (obj : Raw.Gl_texture_builder.t) : gl_texture_builder_t
     method get_color_state : unit -> Raw.Color_state.t =
       fun () -> Raw.Gl_texture_builder.get_color_state obj
 
-    method get_context :
-        unit -> App_launch_context_cycle_de440b34.gl_context_t option =
+    method get_context : unit -> Gl_context.gl_context_t option =
       fun () ->
         Option.map
-          (fun ret -> new App_launch_context_cycle_de440b34.gl_context ret)
+          (fun ret -> new Gl_context.gl_context ret)
           (Raw.Gl_texture_builder.get_context obj)
 
     method get_format : unit -> Enums.memoryformat =
@@ -155,8 +156,7 @@ class gl_texture_builder (obj : Raw.Gl_texture_builder.t) : gl_texture_builder_t
     method set_color_state : Raw.Color_state.t -> unit =
       fun color_state -> Raw.Gl_texture_builder.set_color_state obj color_state
 
-    method set_context :
-        App_launch_context_cycle_de440b34.gl_context_t option -> unit =
+    method set_context : Gl_context.gl_context_t option -> unit =
       fun context ->
         let context = Option.map (fun c -> c#as_gl_context) context in
         Raw.Gl_texture_builder.set_context obj context

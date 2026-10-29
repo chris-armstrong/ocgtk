@@ -1,4 +1,6 @@
 class type list_item_t = object
+  (** {2:methods Methods} *)
+
   method get_accessible_description : unit -> string
   (** Gets the accessible description of [self]. *)
 
@@ -9,11 +11,7 @@ class type list_item_t = object
   (** Checks if a listitem has been set to be activatable via
       [Gtk.ListItem.set_activatable]. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child previously set via [Gtk.ListItem.set_child] or [NULL] if
       none was set. *)
 
@@ -63,11 +61,7 @@ class type list_item_t = object
 
       By default, listitems are activatable. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child to be used for this listitem.
 
       This function is typically called by applications when setting up a
@@ -99,6 +93,8 @@ class type list_item_t = object
       By default, listitems are selectable. When rebinding them to a new item,
       they will also be reset to be selectable by GTK. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_list_item : Raw.List_item.t
 end
 
@@ -114,18 +110,10 @@ class list_item (obj : Raw.List_item.t) : list_item_t =
     method get_activatable : unit -> bool =
       fun () -> Raw.List_item.get_activatable obj
 
-    method get_child :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_child : unit -> Widget.widget_t option =
       fun () ->
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.List_item.get_child obj)
 
     method get_focusable : unit -> bool =
@@ -152,11 +140,7 @@ class list_item (obj : Raw.List_item.t) : list_item_t =
     method set_activatable : bool -> unit =
       fun activatable -> Raw.List_item.set_activatable obj activatable
 
-    method set_child :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        unit =
+    method set_child : Widget.widget_t option -> unit =
       fun child ->
         let child = Option.map (fun c -> c#as_widget) child in
         Raw.List_item.set_child obj child

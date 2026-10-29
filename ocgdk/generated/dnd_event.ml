@@ -1,8 +1,12 @@
 class type dnd_event_t = object
-  inherit App_launch_context_cycle_de440b34.event_t
+  inherit Event.event_t
+
+  (** {2:methods Methods} *)
 
   method get_drop : unit -> Drop.drop_t option
   (** Gets the [GdkDrop] object from a DND event. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_dnd_event : Raw.Dnd_event.t
 end
@@ -10,7 +14,7 @@ end
 (* High-level class for DNDEvent *)
 class dnd_event (obj : Raw.Dnd_event.t) : dnd_event_t =
   object (self)
-    inherit App_launch_context_cycle_de440b34.event (obj :> Raw.Event.t)
+    inherit Event.event (obj :> Raw.Event.t)
 
     method get_drop : unit -> Drop.drop_t option =
       fun () ->

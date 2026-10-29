@@ -4,8 +4,9 @@
 (** An abstract class for laying out [GtkCellRenderer]s
 
     Its methods, signals and properties are on {!class-type-cell_area_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.Cell_area}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Cell_area}. *)
 
 (** {1:class Class} *)
 
@@ -13,6 +14,10 @@ class type cell_area_t =
   Cell_area_and__cell_area_context_and__cell_layout.cell_area_t
   [@@ocaml.doc
     "{b The methods, signals and properties of a [CellArea].}\n\n\
+     Inherits from: [GObject.InitiallyUnowned]\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - {{!Ocgtk.Cell_layout.class-type-cell_layout_t}Ocgtk.Cell_layout}\n\n\
      An abstract class for laying out [GtkCellRenderer]s\n\n\
      The [GtkCellArea] is an abstract class for [Gtk.CellLayout]\n\
      widgets (also referred to as \"layouting widgets\") to interface with\n\
@@ -553,3 +558,8 @@ class cell_area : Raw.Cell_area.t -> cell_area_t
  [Gtk.CellArea.cell_set] or [Gtk.CellArea.cell_set_valist]. To obtain\n\
  the value of a cell property, use [Gtk.CellArea.cell_get_property]\n\
  [Gtk.CellArea.cell_get] or [Gtk.CellArea.cell_get_valist]."]
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

@@ -1,4 +1,6 @@
 class type tls_client_connection_t = object
+  (** {2:methods Methods} *)
+
   method copy_session_state : tls_client_connection_t -> unit
   (** Possibly copies session state from one connection to another, for use in
       TLS session resumption. This is not normally needed, but may be used when
@@ -28,10 +30,7 @@ class type tls_client_connection_t = object
       copied without regard for privacy considerations. *)
 
   method get_server_identity :
-    unit ->
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_connectable_t
-    option
+    unit -> Socket_connectable.socket_connectable_t option
   (** Gets [conn]'s expected server identity *)
 
   method get_use_ssl3 : unit -> bool
@@ -45,10 +44,7 @@ class type tls_client_connection_t = object
       use correctly. See [GTlsClientConnection:validation]-flags for more
       information. *)
 
-  method set_server_identity :
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_connectable_t ->
-    unit
+  method set_server_identity : Socket_connectable.socket_connectable_t -> unit
   (** Sets [conn]'s expected server identity, which is used both to tell servers
       on virtual hosts which certificate to present, and also to let [conn] know
       what name to look for in the certificate when performing
@@ -74,6 +70,8 @@ class type tls_client_connection_t = object
       use correctly. See [GTlsClientConnection:validation]-flags for more
       information. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_tls_client_connection : Raw.Tls_client_connection.t
 end
 
@@ -87,17 +85,10 @@ class tls_client_connection (obj : Raw.Tls_client_connection.t) :
         Raw.Tls_client_connection.copy_session_state obj source
 
     method get_server_identity :
-        unit ->
-        Socket_address_and__socket_address_enumerator_and__socket_connectable
-        .socket_connectable_t
-        option =
+        unit -> Socket_connectable.socket_connectable_t option =
       fun () ->
         Option.map
-          (fun ret ->
-            new
-              Socket_address_and__socket_address_enumerator_and__socket_connectable
-              .socket_connectable
-              ret)
+          (fun ret -> new Socket_connectable.socket_connectable ret)
           (Raw.Tls_client_connection.get_server_identity obj)
 
     method get_use_ssl3 : unit -> bool =
@@ -106,10 +97,8 @@ class tls_client_connection (obj : Raw.Tls_client_connection.t) :
     method get_validation_flags : unit -> Enums.tlscertificateflags =
       fun () -> Raw.Tls_client_connection.get_validation_flags obj
 
-    method set_server_identity :
-        Socket_address_and__socket_address_enumerator_and__socket_connectable
-        .socket_connectable_t ->
-        unit =
+    method set_server_identity : Socket_connectable.socket_connectable_t -> unit
+        =
       fun identity ->
         let identity = identity#as_socket_connectable in
         Raw.Tls_client_connection.set_server_identity obj identity

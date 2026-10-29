@@ -1,8 +1,9 @@
 (** An interface for content that can be painted.
 
     Its methods, signals and properties are on {!class-type-paintable_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgdk.Raw.Paintable}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Paintable}. *)
 
 (** {1:class Class} *)
 
@@ -52,6 +53,8 @@
     [Gdk.Paintable.invalidate_contents], [Gdk.Paintable.invalidate_size],
     [Gdk.Paintable.new_empty]. *)
 class type paintable_t = object
+  (** {2:signals Signals} *)
+
   method on_invalidate_contents :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the contents of the [paintable] change.
@@ -69,6 +72,8 @@ class type paintable_t = object
 
       Examples for such an event would be a paintable displaying the contents of
       a toplevel surface being resized. *)
+
+  (** {2:methods Methods} *)
 
   method get_current_image : unit -> paintable_t
   (** Gets an immutable paintable for the current contents displayed by
@@ -159,6 +164,8 @@ class type paintable_t = object
       [width] and [height] are not larger than zero, this function will do
       nothing. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_paintable : Raw.Paintable.t
 end
 
@@ -210,3 +217,8 @@ class paintable : Raw.Paintable.t -> paintable_t
     for implementing subclasses and should not be used by applications:
     [Gdk.Paintable.invalidate_contents], [Gdk.Paintable.invalidate_size],
     [Gdk.Paintable.new_empty]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

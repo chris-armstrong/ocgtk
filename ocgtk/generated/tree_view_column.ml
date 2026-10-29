@@ -1,10 +1,14 @@
 class type tree_view_column_t = object
   inherit Buildable.buildable_t
-  inherit Cell_area_and__cell_area_context_and__cell_layout.cell_layout_t
+  inherit Cell_layout.cell_layout_t
+
+  (** {2:signals Signals} *)
 
   method on_clicked :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the column's header has been clicked. *)
+
+  (** {2:methods Methods} *)
 
   method cell_is_visible : unit -> bool
   (** Returns [TRUE] if any of the cells packed into the [tree_column] are
@@ -30,10 +34,7 @@ class type tree_view_column_t = object
   (** Returns the current x alignment of [tree_column]. This value can range
       between 0.0 and 1.0. *)
 
-  method get_button :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  method get_button : unit -> Widget.widget_t
   (** Returns the button used in the treeview column header *)
 
   method get_clickable : unit -> bool
@@ -81,11 +82,7 @@ class type tree_view_column_t = object
   method get_title : unit -> string
   (** Returns the title of the widget. *)
 
-  method get_tree_view :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_tree_view : unit -> Widget.widget_t option
   (** Returns the [GtkTreeView] wherein [tree_column] has been inserted. If
       [column] is currently not inserted in any tree view, [NULL] is returned.
   *)
@@ -93,11 +90,7 @@ class type tree_view_column_t = object
   method get_visible : unit -> bool
   (** Returns [TRUE] if [tree_column] is visible. *)
 
-  method get_widget :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_widget : unit -> Widget.widget_t option
   (** Returns the [GtkWidget] in the button on the column header.
 
       If a custom widget has not been set then [NULL] is returned. *)
@@ -204,22 +197,21 @@ class type tree_view_column_t = object
   method set_visible : bool -> unit
   (** Sets the visibility of [tree_column]. *)
 
-  method set_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_widget : Widget.widget_t option -> unit
   (** Sets the widget in the header to be [widget]. If widget is [NULL], then
       the header button is set with a [GtkLabel] set to the title of
       [tree_column]. *)
 
-  method cell_area :
-    Cell_area_and__cell_area_context_and__cell_layout.cell_area_t
+  (** {2:properties Properties} *)
+
+  method cell_area : Cell_area.cell_area_t
   (** The [GtkCellArea] used to layout cell renderers for this column.
 
       If no area is specified when creating the tree view column with
       gtk_tree_view_column_new_with_area() a horizontally oriented
       [GtkCellAreaBox] will be used. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tree_view_column : Raw.Tree_view_column.t
 end
@@ -228,10 +220,7 @@ end
 class tree_view_column (obj : Raw.Tree_view_column.t) : tree_view_column_t =
   object (self)
     inherit Buildable.buildable (Raw.Buildable.from_gobject obj)
-
-    inherit
-      Cell_area_and__cell_area_context_and__cell_layout.cell_layout
-        (Raw.Cell_layout.from_gobject obj)
+    inherit Cell_layout.cell_layout (Raw.Cell_layout.from_gobject obj)
 
     method on_clicked ?(after = false) ~callback () =
       Raw.Tree_view_column.on_clicked ~after self#as_tree_view_column ~callback
@@ -256,15 +245,8 @@ class tree_view_column (obj : Raw.Tree_view_column.t) : tree_view_column_t =
     method get_alignment : unit -> float =
       fun () -> Raw.Tree_view_column.get_alignment obj
 
-    method get_button :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t =
-      fun () ->
-        new
-          Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-          .widget
-          (Raw.Tree_view_column.get_button obj)
+    method get_button : unit -> Widget.widget_t =
+      fun () -> new Widget.widget (Raw.Tree_view_column.get_button obj)
 
     method get_clickable : unit -> bool =
       fun () -> Raw.Tree_view_column.get_clickable obj
@@ -305,35 +287,19 @@ class tree_view_column (obj : Raw.Tree_view_column.t) : tree_view_column_t =
     method get_title : unit -> string =
       fun () -> Raw.Tree_view_column.get_title obj
 
-    method get_tree_view :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_tree_view : unit -> Widget.widget_t option =
       fun () ->
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.Tree_view_column.get_tree_view obj)
 
     method get_visible : unit -> bool =
       fun () -> Raw.Tree_view_column.get_visible obj
 
-    method get_widget :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_widget : unit -> Widget.widget_t option =
       fun () ->
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.Tree_view_column.get_widget obj)
 
     method get_width : unit -> int =
@@ -391,18 +357,13 @@ class tree_view_column (obj : Raw.Tree_view_column.t) : tree_view_column_t =
     method set_visible : bool -> unit =
       fun visible -> Raw.Tree_view_column.set_visible obj visible
 
-    method set_widget :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        unit =
+    method set_widget : Widget.widget_t option -> unit =
       fun widget ->
         let widget = Option.map (fun c -> c#as_widget) widget in
         Raw.Tree_view_column.set_widget obj widget
 
     method cell_area =
-      new Cell_area_and__cell_area_context_and__cell_layout.cell_area
-        (Raw.Tree_view_column.get_cell_area obj)
+      new Cell_area.cell_area (Raw.Tree_view_column.get_cell_area obj)
 
     method as_tree_view_column = obj
   end
@@ -410,9 +371,7 @@ class tree_view_column (obj : Raw.Tree_view_column.t) : tree_view_column_t =
 let new_ () : tree_view_column_t =
   new tree_view_column (Raw.Tree_view_column.new_ ())
 
-let new_with_area
-    (area : Cell_area_and__cell_area_context_and__cell_layout.cell_area_t) :
-    tree_view_column_t =
+let new_with_area (area : Cell_area.cell_area_t) : tree_view_column_t =
   let area = area#as_cell_area in
   let obj_ = Raw.Tree_view_column.new_with_area area in
   new tree_view_column obj_

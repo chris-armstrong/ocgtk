@@ -9,9 +9,14 @@
 
 (** {b The methods, signals and properties of a [RoundedClipNode].}
 
+    Inherits from:
+    {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
+
     A render node applying a rounded rectangle clip to its single child. *)
 class type rounded_clip_node_t = object
   inherit Render_node.render_node_t
+
+  (** {2:methods Methods} *)
 
   method get_child : unit -> Render_node.render_node_t
   (** Gets the child node that is getting clipped by the given [node]. *)
@@ -19,6 +24,8 @@ class type rounded_clip_node_t = object
   method get_clip : unit -> Raw.Rounded_rect.t
   (** Retrieves the rounded rectangle used to clip the contents of the [node].
   *)
+
+  (** {2:conversions Conversions} *)
 
   method as_rounded_clip_node : Raw.Rounded_clip_node.t
 end

@@ -10,6 +10,13 @@
 
 (** {b The methods, signals and properties of a [Statusbar].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     A [GtkStatusbar] widget is usually placed along the bottom of an
     application's main [Gtk.Window].
 
@@ -47,9 +54,9 @@
 
     [GtkStatusbar] has a single CSS node with name [statusbar]. *)
 class type statusbar_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:signals Signals} *)
 
   method on_text_popped :
     ?after:bool ->
@@ -64,6 +71,8 @@ class type statusbar_t = object
     unit ->
     Gobject.Signal.handler_id
   (** Emitted whenever a new message gets pushed onto a statusbar's stack. *)
+
+  (** {2:methods Methods} *)
 
   method get_context_id : string -> int
   (** Returns a new context identifier, given a description of the actual
@@ -88,6 +97,8 @@ class type statusbar_t = object
   method remove_all : int -> unit
   (** Forces the removal of all messages from a statusbar's stack with the exact
       [context_id]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_statusbar : Raw.Statusbar.t
 end

@@ -3,12 +3,14 @@
 
     Its methods, signals and properties are on
     {!class-type-d_bus_interface_v_table_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgio.Raw.D_bus_interface_v_table}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.D_bus_interface_v_table}. *)
 
 (** {1:class Class} *)
 
 class type d_bus_interface_v_table_t = object
+  (** {2:conversions Conversions} *)
+
   method as_d_bus_interface_v_table : Raw.D_bus_interface_v_table.t
 end
   [@@ocaml.doc
@@ -93,3 +95,8 @@ class d_bus_interface_v_table :
  you must ensure that you either provide a non-[NULL] [set_property]()\n\
  function or provide an implementation of the [Set] call. If implementing\n\
  the call, you must return the value of type [G_VARIANT_TYPE_UNIT]."]
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

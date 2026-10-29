@@ -3,19 +3,30 @@
     [Gio.DBusConnection.export_menu_model].
 
     Its methods, signals and properties are on {!class-type-d_bus_menu_model_t}.
-    The functions it is built on are in {!Ocgio.Raw.D_bus_menu_model}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgio.Raw.D_bus_menu_model}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [DBusMenuModel].}
 
+    Inherits from: {{!Ocgio.Menu_model.class-type-menu_model_t}Ocgio.Menu_model}
+
     [GDBusMenuModel] is an implementation of [Gio.MenuModel] that can be used as
     a proxy for a menu model that is exported over D-Bus with
     [Gio.DBusConnection.export_menu_model]. *)
 class type d_bus_menu_model_t = object
-  inherit Menu_link_iter_and__menu_model.menu_model_t
+  inherit Menu_model.menu_model_t
+
+  (** {2:conversions Conversions} *)
+
   method as_d_bus_menu_model : Raw.D_bus_menu_model.t
 end
 
 class d_bus_menu_model : Raw.D_bus_menu_model.t -> d_bus_menu_model_t
 (** Wraps a raw handle of {!Ocgio.Raw.D_bus_menu_model.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

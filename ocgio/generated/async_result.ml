@@ -1,4 +1,6 @@
 class type async_result_t = object
+  (** {2:methods Methods} *)
+
   method get_source_object : unit -> [ `object_ ] Gobject.obj option
   (** Gets the source object from a [Gio.AsyncResult]. *)
 
@@ -12,6 +14,8 @@ class type async_result_t = object
       used in new code; [Gio.AsyncResult] errors that are set by virtual methods
       should also be extracted by virtual methods, to enable subclasses to chain
       up correctly. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_async_result : Raw.Async_result.t
 end

@@ -1,4 +1,6 @@
 class type pollable_input_stream_t = object
+  (** {2:methods Methods} *)
+
   method can_poll : unit -> bool
   (** Checks if [stream] is actually pollable. Some classes may implement
       [GPollableInputStream] but have only certain instances of that class be
@@ -19,6 +21,8 @@ class type pollable_input_stream_t = object
 
       The behaviour of this method is undefined if
       g_pollable_input_stream_can_poll() returns [FALSE] for [stream]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_pollable_input_stream : Raw.Pollable_input_stream.t
 end

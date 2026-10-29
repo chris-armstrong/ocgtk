@@ -19,6 +19,8 @@
     This means code can safely expose them as properties of objects without
     having to worry about others changing them. *)
 class type transform_t = object
+  (** {2:methods Methods} *)
+
   method equal : Raw.Transform.t option -> bool
   (** Checks two transforms for equality. *)
 
@@ -126,6 +128,8 @@ class type transform_t = object
 
       This function consumes [next]. Use [Gsk.Transform.ref] first if you want
       to keep it around. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_transform : Raw.Transform.t
 end

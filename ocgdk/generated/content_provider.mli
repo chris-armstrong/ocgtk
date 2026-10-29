@@ -20,9 +20,13 @@
     [Gdk.ContentSerializer] and [Gdk.ContentDeserializer] if you want to add
     support for application-specific data formats. *)
 class type content_provider_t = object
+  (** {2:signals Signals} *)
+
   method on_content_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted whenever the content provided by this provider has changed. *)
+
+  (** {2:methods Methods} *)
 
   method content_changed : unit -> unit
   (** Emits the ::content-changed signal. *)
@@ -44,6 +48,8 @@ class type content_provider_t = object
   (** Finishes an asynchronous write operation.
 
       See [Gdk.ContentProvider.write_mime_type_async]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_content_provider : Raw.Content_provider.t
 end

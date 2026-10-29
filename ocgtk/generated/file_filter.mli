@@ -11,6 +11,8 @@ class type file_filter_t = object
   inherit Filter.filter_t
   inherit Buildable.buildable_t
 
+  (** {2:methods Methods} *)
+
   method add_mime_type : string -> unit
   (** Adds a rule allowing a given mime type. *)
 
@@ -59,10 +61,15 @@ class type file_filter_t = object
   method to_gvariant : unit -> Gvariant.t
   (** Serialize a file filter to an [a{sv}] variant. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_file_filter : Raw.File_filter.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [FileFilter].}\n\n\
+     Inherits from: {{!Ocgtk.Filter.class-type-filter_t}Ocgtk.Filter}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\n\
      Filters files by name or mime type.\n\n\
      [GtkFileFilter] can be used to restrict the files being shown in a\n\
      file chooser. Files can be filtered based on their name (with\n\

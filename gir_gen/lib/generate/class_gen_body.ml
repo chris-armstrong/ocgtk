@@ -216,7 +216,19 @@ let generate_class_module_body ~(ctx : Types.generation_context)
   if not parent_provides_accessor then
     Class_gen_converter.generate_class_converter_method_impl ~class_name buf
 
+(* A section of a class type body: a floating heading, then its members. A
+   section that declares no method (all filtered, or only conflict comments)
+   is left out. The blank lines keep the heading floating. *)
+
 (** Generate the body of a class signature *)
+let add_class_type_section buf ~label ~title body =
+  let declares_a_method =
+    String.split_on_char ~sep:'\n' body
+    |> List.exists ~f:(String.starts_with ~prefix:"    method ")
+  in
+  if declares_a_method then
+    bprintf buf "\n    (** {2:%s %s} *)\n\n%s" label title body
+
 let generate_class_signature_body ~(ctx : Types.generation_context)
     ~(buf : Buffer.t) ~layer1_module_name:(_ : string)
     ~(current_layer2_module : string) ~(class_name : string)
@@ -305,12 +317,15 @@ let generate_class_signature_body ~(ctx : Types.generation_context)
 
   (* L2 signal method type signatures — one per supported signal.
      Error branch silently skips: already logged at L1 emission. *)
+  let section = Buffer.create 1024 in
   List.iter signals ~f:(fun signal ->
       match Signal_gen.classify ~ctx signal with
       | Error _ -> ()
       | Ok emission ->
-          Buffer.add_string buf
+          Buffer.add_string section
             (Signal_gen.emit_l2_method_sig ~current_layer2_module emission));
+  add_class_type_section buf ~label:"signals" ~title:"Signals"
+    (Buffer.contents section);
 
   (* Pre-populate seen with inherited method names to suppress conflicts *)
   let inherited_names =
@@ -332,8 +347,14 @@ let generate_class_signature_body ~(ctx : Types.generation_context)
         in
         (chunk, seen)
     in
-    generate_section ~buf ~items_seen:seen ~items:methods ~generator_fn:generate
-      ~add_newline:false
+    let section = Buffer.create 4096 in
+    let seen =
+      generate_section ~buf:section ~items_seen:seen ~items:methods
+        ~generator_fn:generate ~add_newline:false
+    in
+    add_class_type_section buf ~label:"methods" ~title:"Methods"
+      (Buffer.contents section);
+    seen
   in
 
   (* Properties *)
@@ -347,8 +368,14 @@ let generate_class_signature_body ~(ctx : Types.generation_context)
         (chunk, seen)
       else ("", seen)
     in
-    generate_section ~buf ~items_seen:seen ~items:properties
-      ~generator_fn:generate ~add_newline:false
+    let section = Buffer.create 1024 in
+    let seen =
+      generate_section ~buf:section ~items_seen:seen ~items:properties
+        ~generator_fn:generate ~add_newline:false
+    in
+    add_class_type_section buf ~label:"properties" ~title:"Properties"
+      (Buffer.contents section);
+    seen
   in
 
   (* Converter methods — skip if parent already provides the same accessor *)
@@ -360,5 +387,10 @@ let generate_class_signature_body ~(ctx : Types.generation_context)
           (Utils.ocaml_class_name (Utils.normalize_class_name p))
     | None -> false
   in
-  if not parent_provides_accessor then
-    Class_gen_converter.generate_class_converter_method_sig ~ctx ~class_name buf
+  if not parent_provides_accessor then begin
+    let section = Buffer.create 128 in
+    Class_gen_converter.generate_class_converter_method_sig ~ctx ~class_name
+      section;
+    add_class_type_section buf ~label:"conversions" ~title:"Conversions"
+      (Buffer.contents section)
+  end

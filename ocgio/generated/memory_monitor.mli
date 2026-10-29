@@ -7,12 +7,15 @@
       documentation}).
 
     Its methods, signals and properties are on {!class-type-memory_monitor_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgio.Raw.Memory_monitor}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Memory_monitor}. *)
 
 (** {1:class Class} *)
 
 class type memory_monitor_t = object
+  (** {2:signals Signals} *)
+
   method on_low_memory_warning :
     ?after:bool ->
     callback:(level:Enums.memorymonitorwarninglevel -> unit) ->
@@ -27,10 +30,14 @@ class type memory_monitor_t = object
       Since the [Gio.MemoryMonitor] is a singleton, this signal will be emitted
       in the [GLib.MainContext.default]\[global-default main context\]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_memory_monitor : Raw.Memory_monitor.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [MemoryMonitor].}\n\n\
+     Requires:\n\
+     - {{!Ocgio.Initable.class-type-initable_t}Ocgio.Initable}\n\n\
      [GMemoryMonitor] will monitor system memory and suggest to the application\n\
      when to free memory so as to leave more room for other applications.\n\
      It is implemented on Linux using the\n\
@@ -124,3 +131,8 @@ class memory_monitor : Raw.Memory_monitor.t -> memory_monitor_t
  ]}\n\n\
  Don’t forget to disconnect the [Gio.MemoryMonitor::low-memory-warning]\n\
  signal, and unref the [GMemoryMonitor] itself when exiting."]
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

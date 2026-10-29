@@ -9,6 +9,10 @@
 
 (** {b The methods, signals and properties of a [SliceListModel].}
 
+    Implements:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
+    - {{!Ocgtk.Section_model.class-type-section_model_t}Ocgtk.Section_model}
+
     A list model that presents a slice of another model.
 
     This is useful when implementing paging by setting the size to the number of
@@ -19,6 +23,8 @@
 class type slice_list_model_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Section_model.section_model_t
+
+  (** {2:methods Methods} *)
 
   method get_model : unit -> Ocgio.List_model.list_model_t option
   (** Gets the model that is currently being used or [NULL] if none. *)
@@ -46,11 +52,15 @@ class type slice_list_model_t = object
       It can however have fewer items if the offset is too large or the model
       sliced from doesn't have enough items. *)
 
+  (** {2:properties Properties} *)
+
   method item_type : Gobject.Type.t
   (** The type of items. See [Gio.ListModel.get_item_type]. *)
 
   method n_items : int
   (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_slice_list_model : Raw.Slice_list_model.t
 end

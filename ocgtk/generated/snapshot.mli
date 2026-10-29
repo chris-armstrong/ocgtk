@@ -9,6 +9,8 @@
 
 (** {b The methods, signals and properties of a [Snapshot].}
 
+    Inherits from: {{!Ocgdk.Snapshot.class-type-snapshot_t}Ocgdk.Snapshot}
+
     Assists in creating [Gsk.RenderNode]s for widgets.
 
     It functions in a similar way to a cairo context, and maintains a stack of
@@ -23,6 +25,8 @@
     use [Gtk.Snapshot.new]. *)
 class type snapshot_t = object
   inherit Ocgdk.Snapshot.snapshot_t
+
+  (** {2:methods Methods} *)
 
   method append_border :
     Ocgsk.Rounded_rect.rounded_rect_t ->

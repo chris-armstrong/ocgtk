@@ -1,7 +1,7 @@
 class type drop_down_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:signals Signals} *)
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -9,6 +9,8 @@ class type drop_down_t = object
 
       The [::activate] signal on [GtkDropDown] is an action signal and emitting
       it causes the drop down to pop up its dropdown. *)
+
+  (** {2:methods Methods} *)
 
   method get_enable_search : unit -> bool
   (** Returns whether search is enabled. *)
@@ -85,16 +87,15 @@ class type drop_down_t = object
   method set_show_arrow : bool -> unit
   (** Sets whether an arrow will be displayed within the widget. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_drop_down : Raw.Drop_down.t
 end
 
 (* High-level class for DropDown *)
 class drop_down (obj : Raw.Drop_down.t) : drop_down_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     method on_activate ?(after = false) ~callback () =
       Raw.Drop_down.on_activate ~after self#as_drop_down ~callback

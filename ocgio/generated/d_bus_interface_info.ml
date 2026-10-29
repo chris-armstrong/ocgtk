@@ -1,4 +1,6 @@
 class type d_bus_interface_info_t = object
+  (** {2:methods Methods} *)
+
   method cache_build : unit -> unit
   (** Builds a lookup-cache to speed up g_dbus_interface_info_lookup_method(),
       g_dbus_interface_info_lookup_signal() and
@@ -36,6 +38,8 @@ class type d_bus_interface_info_t = object
   method ref : unit -> Raw.D_bus_interface_info.t
   (** If [info] is statically allocated does nothing. Otherwise increases the
       reference count. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_d_bus_interface_info : Raw.D_bus_interface_info.t
 end

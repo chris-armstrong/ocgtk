@@ -8,9 +8,9 @@
 (** {1:class Class} *)
 
 class type notebook_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:signals Signals} *)
 
   method on_change_current_page :
     ?after:bool ->
@@ -26,11 +26,7 @@ class type notebook_t = object
 
   method on_create_window :
     ?after:bool ->
-    callback:
-      (page:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .widget_t ->
-      notebook_t option) ->
+    callback:(page:Widget.widget_t -> notebook_t option) ->
     unit ->
     Gobject.Signal.handler_id
   (** The ::create-window signal is emitted when a detachable tab is dropped on
@@ -62,12 +58,7 @@ class type notebook_t = object
 
   method on_page_added :
     ?after:bool ->
-    callback:
-      (child:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .widget_t ->
-      page_num:int ->
-      unit) ->
+    callback:(child:Widget.widget_t -> page_num:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
   (** the ::page-added signal is emitted in the notebook right after a page is
@@ -75,12 +66,7 @@ class type notebook_t = object
 
   method on_page_removed :
     ?after:bool ->
-    callback:
-      (child:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .widget_t ->
-      page_num:int ->
-      unit) ->
+    callback:(child:Widget.widget_t -> page_num:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
   (** the ::page-removed signal is emitted in the notebook right after a page is
@@ -88,12 +74,7 @@ class type notebook_t = object
 
   method on_page_reordered :
     ?after:bool ->
-    callback:
-      (child:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .widget_t ->
-      page_num:int ->
-      unit) ->
+    callback:(child:Widget.widget_t -> page_num:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
   (** the ::page-reordered signal is emitted in the notebook right after a page
@@ -123,53 +104,29 @@ class type notebook_t = object
 
   method on_switch_page :
     ?after:bool ->
-    callback:
-      (page:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .widget_t ->
-      page_num:int ->
-      unit) ->
+    callback:(page:Widget.widget_t -> page_num:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
   (** Emitted when the user or a function changes the current page. *)
 
-  method append_page :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    int
+  (** {2:methods Methods} *)
+
+  method append_page : Widget.widget_t -> Widget.widget_t option -> int
   (** Appends a page to [notebook]. *)
 
   method append_page_menu :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    int
+    Widget.widget_t -> Widget.widget_t option -> Widget.widget_t option -> int
   (** Appends a page to [notebook], specifying the widget to use as the label in
       the popup menu. *)
 
-  method detach_tab :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method detach_tab : Widget.widget_t -> unit
   (** Removes the child from the notebook.
 
       This function is very similar to [Gtk.Notebook.remove_page], but
       additionally informs the notebook that the removal is happening as part of
       a tab DND operation, which should not be cancelled. *)
 
-  method get_action_widget :
-    Enums.packtype ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_action_widget : Enums.packtype -> Widget.widget_t option
   (** Gets one of the action widgets.
 
       See [Gtk.Notebook.set_action_widget]. *)
@@ -180,34 +137,19 @@ class type notebook_t = object
   method get_group_name : unit -> string option
   (** Gets the current group name for [notebook]. *)
 
-  method get_menu_label :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_menu_label : Widget.widget_t -> Widget.widget_t option
   (** Retrieves the menu label widget of the page containing [child]. *)
 
-  method get_menu_label_text :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    string option
+  method get_menu_label_text : Widget.widget_t -> string option
   (** Retrieves the text of the menu label for the page containing [child]. *)
 
   method get_n_pages : unit -> int
   (** Gets the number of pages in a notebook. *)
 
-  method get_nth_page :
-    int ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_nth_page : int -> Widget.widget_t option
   (** Returns the child widget contained in page number [page_num]. *)
 
-  method get_page :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Notebook_page.notebook_page_t
+  method get_page : Widget.widget_t -> Notebook_page.notebook_page_t
   (** Returns the [GtkNotebookPage] for [child]. *)
 
   method get_pages : unit -> Ocgio.List_model.list_model_t
@@ -226,57 +168,31 @@ class type notebook_t = object
   method get_show_tabs : unit -> bool
   (** Returns whether the tabs of the notebook are shown. *)
 
-  method get_tab_detachable :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    bool
+  method get_tab_detachable : Widget.widget_t -> bool
   (** Returns whether the tab contents can be detached from [notebook]. *)
 
-  method get_tab_label :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_tab_label : Widget.widget_t -> Widget.widget_t option
   (** Returns the tab label widget for the page [child].
 
       [NULL] is returned if [child] is not in [notebook] or if no tab label has
       specifically been set for [child]. *)
 
-  method get_tab_label_text :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    string option
+  method get_tab_label_text : Widget.widget_t -> string option
   (** Retrieves the text of the tab label for the page containing [child]. *)
 
   method get_tab_pos : unit -> Enums.positiontype
   (** Gets the edge at which the tabs are drawn. *)
 
-  method get_tab_reorderable :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    bool
+  method get_tab_reorderable : Widget.widget_t -> bool
   (** Gets whether the tab can be reordered via drag and drop or not. *)
 
-  method insert_page :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    int ->
-    int
+  method insert_page : Widget.widget_t -> Widget.widget_t option -> int -> int
   (** Insert a page into [notebook] at the given position. *)
 
   method insert_page_menu :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
+    Widget.widget_t ->
+    Widget.widget_t option ->
+    Widget.widget_t option ->
     int ->
     int
   (** Insert a page into [notebook] at the given position, specifying the widget
@@ -287,10 +203,7 @@ class type notebook_t = object
 
       Nothing happens if the current page is the last page. *)
 
-  method page_num :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int
+  method page_num : Widget.widget_t -> int
   (** Finds the index of the page which contains the given child widget. *)
 
   method popup_disable : unit -> unit
@@ -302,25 +215,11 @@ class type notebook_t = object
       If the user clicks with the right mouse button on the tab labels, a menu
       with all the pages will be popped up. *)
 
-  method prepend_page :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    int
+  method prepend_page : Widget.widget_t -> Widget.widget_t option -> int
   (** Prepends a page to [notebook]. *)
 
   method prepend_page_menu :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    int
+    Widget.widget_t -> Widget.widget_t option -> Widget.widget_t option -> int
   (** Prepends a page to [notebook], specifying the widget to use as the label
       in the popup menu. *)
 
@@ -332,22 +231,14 @@ class type notebook_t = object
   method remove_page : int -> unit
   (** Removes a page from the notebook given its index in the notebook. *)
 
-  method reorder_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int ->
-    unit
+  method reorder_child : Widget.widget_t -> int -> unit
   (** Reorders the page containing [child], so that it appears in position
       [position].
 
       If [position] is greater than or equal to the number of children in the
       list or negative, [child] will be moved to the end of the list. *)
 
-  method set_action_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Enums.packtype ->
-    unit
+  method set_action_widget : Widget.widget_t -> Enums.packtype -> unit
   (** Sets [widget] as one of the action widgets.
 
       Depending on the pack type the widget will be placed before or after the
@@ -368,20 +259,10 @@ class type notebook_t = object
       drop. A notebook with a [NULL] group name will not be able to exchange
       tabs with any other notebook. *)
 
-  method set_menu_label :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_menu_label : Widget.widget_t -> Widget.widget_t option -> unit
   (** Changes the menu label for the page containing [child]. *)
 
-  method set_menu_label_text :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    string ->
-    unit
+  method set_menu_label_text : Widget.widget_t -> string -> unit
   (** Creates a new label and sets it as the menu label of [child]. *)
 
   method set_scrollable : bool -> unit
@@ -396,11 +277,7 @@ class type notebook_t = object
   method set_show_tabs : bool -> unit
   (** Sets whether to show the tabs for the notebook or not. *)
 
-  method set_tab_detachable :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    bool ->
-    unit
+  method set_tab_detachable : Widget.widget_t -> bool -> unit
   [@@ocaml.doc
     "Sets whether the tab can be detached from [notebook] to another\n\
      notebook or widget.\n\n\
@@ -442,36 +319,24 @@ class type notebook_t = object
      If you want a notebook to accept drags from other widgets,\n\
      you will have to set your own DnD code to do it."]
 
-  method set_tab_label :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_tab_label : Widget.widget_t -> Widget.widget_t option -> unit
   (** Changes the tab label for [child].
 
       If [NULL] is specified for [tab_label], then the page will have the label
       “page N”. *)
 
-  method set_tab_label_text :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    string ->
-    unit
+  method set_tab_label_text : Widget.widget_t -> string -> unit
   (** Creates a new label and sets it as the tab label for the page containing
       [child]. *)
 
   method set_tab_pos : Enums.positiontype -> unit
   (** Sets the edge at which the tabs are drawn. *)
 
-  method set_tab_reorderable :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    bool ->
-    unit
+  method set_tab_reorderable : Widget.widget_t -> bool -> unit
   (** Sets whether the notebook tab can be reordered via drag and drop or not.
   *)
+
+  (** {2:properties Properties} *)
 
   method enable_popup : bool
   (** If [TRUE], pressing the right mouse button on the notebook shows a page
@@ -481,10 +346,18 @@ class type notebook_t = object
   (** If [TRUE], pressing the right mouse button on the notebook shows a page
       switching menu. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_notebook : Raw.Notebook.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Notebook].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      Switches between children using tabs.\n\n\
      An example GtkNotebook\n\n\
      There are many configuration options for [GtkNotebook]. Among\n\

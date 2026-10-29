@@ -8,12 +8,11 @@
 (** {1:class Class} *)
 
 class type popover_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Native.native_t
   inherit Shortcut_manager.shortcut_manager_t
+
+  (** {2:signals Signals} *)
 
   method on_activate_default :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -27,6 +26,8 @@ class type popover_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the popover is closed. *)
 
+  (** {2:methods Methods} *)
+
   method get_autohide : unit -> bool
   (** Returns whether the popover is modal.
 
@@ -35,11 +36,7 @@ class type popover_t = object
   method get_cascade_popdown : unit -> bool
   (** Returns whether the popover will close after a modal child is closed. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [popover]. *)
 
   method get_has_arrow : unit -> bool
@@ -86,18 +83,10 @@ class type popover_t = object
 
       If [FALSE], [popover] will stay visible. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [popover]. *)
 
-  method set_default_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_default_widget : Widget.widget_t option -> unit
   (** Sets the default widget of a [GtkPopover].
 
       The default widget is the widget that’s activated when the user presses
@@ -131,10 +120,21 @@ class type popover_t = object
       space (eg. if close to the window edges), the [GtkPopover] may choose to
       appear on the opposite side. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_popover : Raw.Popover.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Popover].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\
+     - {{!Ocgtk.Native.class-type-native_t}Ocgtk.Native}\n\
+     - \
+     {{!Ocgtk.Shortcut_manager.class-type-shortcut_manager_t}Ocgtk.Shortcut_manager}\n\n\
      Presents a bubble-like popup.\n\n\
      An example GtkPopover\n\n\
      It is primarily meant to provide context-dependent information\n\

@@ -4,8 +4,9 @@
 (** The base class for all widgets.
 
     Its methods, signals and properties are on {!class-type-widget_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgtk.Raw.Widget}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Widget}. *)
 
 (** {1:class Class} *)
 
@@ -14,6 +15,12 @@ class type widget_t =
   .widget_t
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Widget].}\n\n\
+     Inherits from: [GObject.InitiallyUnowned]\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      The base class for all widgets.\n\n\
      It manages the widget lifecycle, layout, states and style.\n\n\
      {b Height-for-width Geometry Management}\n\n\
@@ -710,3 +717,8 @@ class widget : Raw.Widget.t -> widget_t
  hello_button_clicked);\n\
  }\n\
  ]}"]
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

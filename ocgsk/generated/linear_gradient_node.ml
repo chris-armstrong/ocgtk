@@ -1,6 +1,8 @@
 class type linear_gradient_node_t = object
   inherit Render_node.render_node_t
 
+  (** {2:methods Methods} *)
+
   method get_end : unit -> Ocgraphene.Point.point_t
   (** Retrieves the final point of the linear gradient. *)
 
@@ -9,6 +11,8 @@ class type linear_gradient_node_t = object
 
   method get_start : unit -> Ocgraphene.Point.point_t
   (** Retrieves the initial point of the linear gradient. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_linear_gradient_node : Raw.Linear_gradient_node.t
 end

@@ -9,6 +9,14 @@
 
 (** {b The methods, signals and properties of a [Button].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Actionable.class-type-actionable_t}Ocgtk.Actionable}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     Calls a callback function when the button is clicked.
 
     An example GtkButton
@@ -44,11 +52,10 @@
 
     [GtkButton] uses the [Gtk.AccessibleRole.button] role. *)
 class type button_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Actionable.actionable_t
+
+  (** {2:signals Signals} *)
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -64,15 +71,13 @@ class type button_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the button has been activated (pressed and released). *)
 
+  (** {2:methods Methods} *)
+
   method get_can_shrink : unit -> bool
   (** Retrieves whether the button can be smaller than the natural size of its
       contents. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [button]. *)
 
   method get_has_frame : unit -> bool
@@ -105,11 +110,7 @@ class type button_t = object
 
       For icons and custom children, this function has no effect. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [button].
 
       Note that by using this API, you take full responsibility for setting up
@@ -139,6 +140,8 @@ class type button_t = object
 
       If true, an underline in the text of the button label indicates the next
       character should be used for the mnemonic accelerator key. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_button : Raw.Button.t
 end

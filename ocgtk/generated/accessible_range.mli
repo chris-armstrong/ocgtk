@@ -1,12 +1,16 @@
 (** An interface for accessible objects containing a numeric value.
 
     Its methods, signals and properties are on {!class-type-accessible_range_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Accessible_range}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Accessible_range}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [AccessibleRange].}
+
+    Requires:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
 
     An interface for accessible objects containing a numeric value.
 
@@ -34,6 +38,8 @@
     - [GTK_ACCESSIBLE_PROPERTY_VALUE_NOW]
     - [GTK_ACCESSIBLE_PROPERTY_VALUE_TEXT] *)
 class type accessible_range_t = object
+  (** {2:conversions Conversions} *)
+
   method as_accessible_range : Raw.Accessible_range.t
 end
 
@@ -67,3 +73,8 @@ class accessible_range : Raw.Accessible_range.t -> accessible_range_t
     - [GTK_ACCESSIBLE_PROPERTY_VALUE_MIN]
     - [GTK_ACCESSIBLE_PROPERTY_VALUE_NOW]
     - [GTK_ACCESSIBLE_PROPERTY_VALUE_TEXT] *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

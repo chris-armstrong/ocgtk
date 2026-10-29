@@ -3,12 +3,18 @@
 
     Its methods, signals and properties are on
     {!class-type-file_output_stream_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgio.Raw.File_output_stream}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.File_output_stream}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [FileOutputStream].}
+
+    Inherits from:
+    {{!Ocgio.Output_stream.class-type-output_stream_t}Ocgio.Output_stream}
+
+    Implements:
+    - {{!Ocgio.Seekable.class-type-seekable_t}Ocgio.Seekable}
 
     [GFileOutputStream] provides output streams that write their content to a
     file.
@@ -26,6 +32,8 @@
 class type file_output_stream_t = object
   inherit Output_stream.output_stream_t
   inherit Seekable.seekable_t
+
+  (** {2:methods Methods} *)
 
   method get_etag : unit -> string option
   (** Gets the entity tag for the file when it has been written. This must be
@@ -59,6 +67,8 @@ class type file_output_stream_t = object
   (** Finalizes the asynchronous query started by
       g_file_output_stream_query_info_async(). *)
 
+  (** {2:conversions Conversions} *)
+
   method as_file_output_stream : Raw.File_output_stream.t
 end
 
@@ -80,3 +90,8 @@ class file_output_stream : Raw.File_output_stream.t -> file_output_stream_t
     [Gio.Seekable.seek]. To find out if a file output stream supports
     truncating, use [Gio.Seekable.can_truncate]. To truncate a file output
     stream, use [Gio.Seekable.truncate]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

@@ -1,8 +1,12 @@
 class type touch_event_t = object
-  inherit App_launch_context_cycle_de440b34.event_t
+  inherit Event.event_t
+
+  (** {2:methods Methods} *)
 
   method get_emulating_pointer : unit -> bool
   (** Extracts whether a touch event is emulating a pointer event. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_touch_event : Raw.Touch_event.t
 end
@@ -10,7 +14,7 @@ end
 (* High-level class for TouchEvent *)
 class touch_event (obj : Raw.Touch_event.t) : touch_event_t =
   object (self)
-    inherit App_launch_context_cycle_de440b34.event (obj :> Raw.Event.t)
+    inherit Event.event (obj :> Raw.Event.t)
 
     method get_emulating_pointer : unit -> bool =
       fun () -> Raw.Touch_event.get_emulating_pointer obj

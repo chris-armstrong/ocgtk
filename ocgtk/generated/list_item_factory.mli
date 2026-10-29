@@ -2,8 +2,8 @@
 
     Its methods, signals and properties are on
     {!class-type-list_item_factory_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgtk.Raw.List_item_factory}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.List_item_factory}. *)
 
 (** {1:class Class} *)
 
@@ -57,6 +57,8 @@
     view widget you want to use it with, such as via [Gtk.ListView.set_factory].
     Reusing factories across different views is allowed, but very uncommon. *)
 class type list_item_factory_t = object
+  (** {2:conversions Conversions} *)
+
   method as_list_item_factory : Raw.List_item_factory.t
 end
 
@@ -112,3 +114,8 @@ class list_item_factory : Raw.List_item_factory.t -> list_item_factory_t
     Once you have chosen your factory and created it, you need to set it on the
     view widget you want to use it with, such as via [Gtk.ListView.set_factory].
     Reusing factories across different views is allowed, but very uncommon. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

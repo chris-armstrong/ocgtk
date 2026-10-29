@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [EventControllerScroll].}
 
+    Inherits from:
+    {{!Ocgtk.Event_controller.class-type-event_controller_t}Ocgtk.Event_controller}
+
     Handles scroll events.
 
     It is capable of handling both discrete and continuous scroll events from
@@ -44,9 +47,9 @@
     scrolling with two X/Y velocity arguments that are consistent with the
     motion that was received. *)
 class type event_controller_scroll_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .event_controller_t
+  inherit Event_controller.event_controller_t
+
+  (** {2:signals Signals} *)
 
   method on_decelerate :
     ?after:bool ->
@@ -82,6 +85,8 @@ class type event_controller_scroll_t = object
 
       It will only be emitted on devices capable of it. *)
 
+  (** {2:methods Methods} *)
+
   method get_flags : unit -> Enums.eventcontrollerscrollflags
   (** Gets the flags conditioning the scroll controller behavior. *)
 
@@ -94,6 +99,8 @@ class type event_controller_scroll_t = object
 
   method set_flags : Enums.eventcontrollerscrollflags -> unit
   (** Sets the flags conditioning scroll controller behavior. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_event_controller_scroll : Raw.Event_controller_scroll.t
 end

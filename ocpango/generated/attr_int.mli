@@ -1,8 +1,9 @@
 (** The [PangoAttrInt] structure is used to represent attributes with an integer
     or enumeration value.
 
-    Its methods, signals and properties are on {!class-type-attr_int_t}. The
-    functions it is built on are in {!Ocpango.Raw.Attr_int}. *)
+    Its methods, signals and properties are on {!class-type-attr_int_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocpango.Raw.Attr_int}. *)
 
 (** {1:class Class} *)
 
@@ -11,8 +12,15 @@
     The [PangoAttrInt] structure is used to represent attributes with an integer
     or enumeration value. *)
 class type attr_int_t = object
+  (** {2:conversions Conversions} *)
+
   method as_attr_int : Raw.Attr_int.t
 end
 
 class attr_int : Raw.Attr_int.t -> attr_int_t
 (** Wraps a raw handle of {!Ocpango.Raw.Attr_int.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

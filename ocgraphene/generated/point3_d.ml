@@ -1,4 +1,6 @@
 class type point3_d_t = object
+  (** {2:methods Methods} *)
+
   method dot : Raw.Point3_d.t -> float
   (** Computes the dot product of the two given #graphene_point3d_t. *)
 
@@ -23,6 +25,8 @@ class type point3_d_t = object
   method near : Raw.Point3_d.t -> float -> bool
   (** Checks whether the two points are near each other, within an [epsilon]
       factor. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_point3_d : Raw.Point3_d.t
 end

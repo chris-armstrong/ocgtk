@@ -1,4 +1,6 @@
 class type filter_t = object
+  (** {2:signals Signals} *)
+
   method on_changed :
     ?after:bool ->
     callback:(change:Enums.filterchange -> unit) ->
@@ -12,6 +14,8 @@ class type filter_t = object
 
       Depending on the [change] parameter, not all items need to be checked, but
       only some. Refer to the [Gtk.FilterChange] documentation for details. *)
+
+  (** {2:methods Methods} *)
 
   method changed : Enums.filterchange -> unit
   (** Notifies all users of the filter that it has changed.
@@ -37,6 +41,8 @@ class type filter_t = object
 
   method match_ : [ `object_ ] Gobject.obj -> bool
   (** Checks if the given [item] is matched by the filter or not. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_filter : Raw.Filter.t
 end

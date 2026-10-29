@@ -2,6 +2,8 @@ class type d_bus_connection_t = object
   inherit Async_initable.async_initable_t
   inherit Initable.initable_t
 
+  (** {2:methods Methods} *)
+
   method call_finish :
     Async_result.async_result_t -> (Gvariant.t, GError.t) result
   (** Finishes an operation started with g_dbus_connection_call(). *)
@@ -99,9 +101,7 @@ class type d_bus_connection_t = object
       exported from only one main context. *)
 
   method export_menu_model :
-    string ->
-    Menu_link_iter_and__menu_model.menu_model_t ->
-    (int, GError.t) result
+    string -> Menu_model.menu_model_t -> (int, GError.t) result
   (** Exports [menu] on [connection] at [object_path].
 
       The implemented D-Bus API should be considered private. It is subject to
@@ -251,6 +251,8 @@ class type d_bus_connection_t = object
   method unregister_subtree : int -> bool
   (** Unregisters a subtree. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_d_bus_connection : Raw.D_bus_connection.t
 end
 
@@ -314,9 +316,7 @@ class d_bus_connection (obj : Raw.D_bus_connection.t) : d_bus_connection_t =
         Raw.D_bus_connection.export_action_group obj object_path action_group
 
     method export_menu_model :
-        string ->
-        Menu_link_iter_and__menu_model.menu_model_t ->
-        (int, GError.t) result =
+        string -> Menu_model.menu_model_t -> (int, GError.t) result =
       fun object_path menu ->
         let menu = menu#as_menu_model in
         Raw.D_bus_connection.export_menu_model obj object_path menu

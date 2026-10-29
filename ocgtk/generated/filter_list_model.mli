@@ -9,6 +9,10 @@
 
 (** {b The methods, signals and properties of a [FilterListModel].}
 
+    Implements:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
+    - {{!Ocgtk.Section_model.class-type-section_model_t}Ocgtk.Section_model}
+
     A list model that filters the elements of another model.
 
     It hides some elements from the underlying model according to criteria given
@@ -22,6 +26,8 @@
 class type filter_list_model_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Section_model.section_model_t
+
+  (** {2:methods Methods} *)
 
   method get_filter : unit -> Filter.filter_t option
   (** Gets the [GtkFilter] currently set on [self]. *)
@@ -93,11 +99,15 @@ class type filter_list_model_t = object
 
       By default, watching items is disabled. *)
 
+  (** {2:properties Properties} *)
+
   method item_type : Gobject.Type.t
   (** The type of items. See [Gio.ListModel.get_item_type]. *)
 
   method n_items : int
   (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_filter_list_model : Raw.Filter_list_model.t
 end

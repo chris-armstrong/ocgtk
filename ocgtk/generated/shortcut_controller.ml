@@ -1,10 +1,9 @@
 class type shortcut_controller_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .event_controller_t
-
+  inherit Event_controller.event_controller_t
   inherit Ocgio.List_model.list_model_t
   inherit Buildable.buildable_t
+
+  (** {2:methods Methods} *)
 
   method add_shortcut : Shortcut.shortcut_t -> unit
   (** Adds [shortcut] to the list of shortcuts handled by [self].
@@ -52,11 +51,15 @@ class type shortcut_controller_t = object
       With [GTK_SHORTCUT_SCOPE_LOCAL], shortcuts will only be activated when the
       widget has focus. *)
 
+  (** {2:properties Properties} *)
+
   method item_type : Gobject.Type.t
   (** The type of items. See [Gio.ListModel.get_item_type]. *)
 
   method n_items : int
   (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_shortcut_controller : Raw.Shortcut_controller.t
 end
@@ -65,11 +68,7 @@ end
 class shortcut_controller (obj : Raw.Shortcut_controller.t) :
   shortcut_controller_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .event_controller
-        (obj :> Raw.Event_controller.t)
-
+    inherit Event_controller.event_controller (obj :> Raw.Event_controller.t)
     inherit Ocgio.List_model.list_model (Ocgio.Raw.List_model.from_gobject obj)
     inherit Buildable.buildable (Raw.Buildable.from_gobject obj)
 

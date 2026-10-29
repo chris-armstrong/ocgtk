@@ -2,6 +2,8 @@ class type buffered_input_stream_t = object
   inherit Filter_input_stream.filter_input_stream_t
   inherit Seekable.seekable_t
 
+  (** {2:methods Methods} *)
+
   method fill :
     int -> Cancellable.cancellable_t option -> (int, GError.t) result
   (** Tries to read [count] bytes from the stream into the buffer. Will block
@@ -58,6 +60,8 @@ class type buffered_input_stream_t = object
   (** Sets the size of the internal buffer of [stream] to [size], or to the size
       of the contents of the buffer. The buffer can never be resized smaller
       than its current contents. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_buffered_input_stream : Raw.Buffered_input_stream.t
 end

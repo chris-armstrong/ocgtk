@@ -9,6 +9,13 @@
 
 (** {b The methods, signals and properties of a [ColorDialogButton].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     Opens a color chooser dialog to select a color.
 
     An example GtkColorDialogButton
@@ -27,9 +34,9 @@
     contains a button node. To differentiate it from a plain [GtkButton], it
     gets the .color style class. *)
 class type color_dialog_button_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:signals Signals} *)
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -37,6 +44,8 @@ class type color_dialog_button_t = object
 
       The [::activate] signal on [GtkColorDialogButton] is an action signal and
       emitting it causes the button to pop up its dialog. *)
+
+  (** {2:methods Methods} *)
 
   method get_dialog : unit -> Color_dialog.color_dialog_t option
   (** Returns the [GtkColorDialog] of [self]. *)
@@ -54,6 +63,8 @@ class type color_dialog_button_t = object
 
   method set_rgba : Ocgdk.Rgb_a.rgb_a_t -> unit
   (** Sets the color of the button. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_color_dialog_button : Raw.Color_dialog_button.t
 end

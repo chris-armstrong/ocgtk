@@ -9,9 +9,14 @@
 
 (** {b The methods, signals and properties of a [RadialGradientNode].}
 
+    Inherits from:
+    {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
+
     A render node for a radial gradient. *)
 class type radial_gradient_node_t = object
   inherit Render_node.render_node_t
+
+  (** {2:methods Methods} *)
 
   method get_center : unit -> Ocgraphene.Point.point_t
   (** Retrieves the center pointer for the gradient. *)
@@ -30,6 +35,8 @@ class type radial_gradient_node_t = object
 
   method get_vradius : unit -> float
   (** Retrieves the vertical radius for the gradient. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_radial_gradient_node : Raw.Radial_gradient_node.t
 end

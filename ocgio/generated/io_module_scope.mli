@@ -2,8 +2,9 @@
     duplicate modules, or blocking a module you don't want to load.
 
     Its methods, signals and properties are on {!class-type-io_module_scope_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgio.Raw.Io_module_scope}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Io_module_scope}. *)
 
 (** {1:class Class} *)
 
@@ -15,10 +16,14 @@
     The scope can be used with g_io_modules_load_all_in_directory_with_scope()
     or g_io_modules_scan_all_in_directory_with_scope(). *)
 class type io_module_scope_t = object
+  (** {2:methods Methods} *)
+
   method block : string -> unit
   (** Block modules with the given [basename] from being loaded when this scope
       is used with g_io_modules_scan_all_in_directory_with_scope() or
       g_io_modules_load_all_in_directory_with_scope(). *)
+
+  (** {2:conversions Conversions} *)
 
   method as_io_module_scope : Raw.Io_module_scope.t
 end
@@ -33,3 +38,8 @@ class io_module_scope : Raw.Io_module_scope.t -> io_module_scope_t
 
     The scope can be used with g_io_modules_load_all_in_directory_with_scope()
     or g_io_modules_scan_all_in_directory_with_scope(). *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

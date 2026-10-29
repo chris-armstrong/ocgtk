@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [CenterLayout].}
 
+    Inherits from:
+    {{!Ocgtk.Layout_manager.class-type-layout_manager_t}Ocgtk.Layout_manager}
+
     Manages up to three children.
 
     The start widget is allocated at the start of the layout (left in
@@ -17,25 +20,17 @@
 
     The center widget is centered regarding the full width of the layout's. *)
 class type center_layout_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .layout_manager_t
+  inherit Layout_manager.layout_manager_t
+
+  (** {2:methods Methods} *)
 
   method get_baseline_position : unit -> Enums.baselineposition
   (** Returns the baseline position of the layout. *)
 
-  method get_center_widget :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_center_widget : unit -> Widget.widget_t option
   (** Returns the center widget of the layout. *)
 
-  method get_end_widget :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_end_widget : unit -> Widget.widget_t option
   (** Returns the end widget of the layout. *)
 
   method get_orientation : unit -> Enums.orientation
@@ -44,30 +39,18 @@ class type center_layout_t = object
   method get_shrink_center_last : unit -> bool
   (** Gets whether [self] shrinks the center widget after other children. *)
 
-  method get_start_widget :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_start_widget : unit -> Widget.widget_t option
   (** Returns the start widget of the layout. *)
 
   method set_baseline_position : Enums.baselineposition -> unit
   (** Sets the new baseline position of [self] *)
 
-  method set_center_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_center_widget : Widget.widget_t option -> unit
   (** Sets the new center widget of [self].
 
       To remove the existing center widget, pass [NULL]. *)
 
-  method set_end_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_end_widget : Widget.widget_t option -> unit
   (** Sets the new end widget of [self].
 
       To remove the existing center widget, pass [NULL]. *)
@@ -85,14 +68,12 @@ class type center_layout_t = object
       If set to [FALSE], start and end widgets keep natural width and the center
       widget starts shrinking instead. *)
 
-  method set_start_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_start_widget : Widget.widget_t option -> unit
   (** Sets the new start widget of [self].
 
       To remove the existing start widget, pass [NULL]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_center_layout : Raw.Center_layout.t
 end

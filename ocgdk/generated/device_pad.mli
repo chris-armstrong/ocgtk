@@ -1,12 +1,16 @@
 (** An interface for tablet pad devices.
 
     Its methods, signals and properties are on {!class-type-device_pad_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgdk.Raw.Device_pad}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Device_pad}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [DevicePad].}
+
+    Requires:
+    - {{!Ocgdk.Device.class-type-device_t}Ocgdk.Device}
 
     An interface for tablet pad devices.
 
@@ -25,6 +29,8 @@
     [Gdk.DevicePad.get_group_n_modes], and the current mode for a given group
     will be notified through events of type [GDK_PAD_GROUP_MODE]. *)
 class type device_pad_t = object
+  (** {2:methods Methods} *)
+
   method get_feature_group : Enums.devicepadfeature -> int -> int
   (** Returns the group the given [feature] and [idx] belong to.
 
@@ -42,6 +48,8 @@ class type device_pad_t = object
       Pads have at least one group. A pad group is a subcollection of
       buttons/strip/rings that is affected collectively by a same current mode.
   *)
+
+  (** {2:conversions Conversions} *)
 
   method as_device_pad : Raw.Device_pad.t
 end
@@ -67,3 +75,8 @@ class device_pad : Raw.Device_pad.t -> device_pad_t
     modes. The number of available modes in a group can be found out through
     [Gdk.DevicePad.get_group_n_modes], and the current mode for a given group
     will be notified through events of type [GDK_PAD_GROUP_MODE]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

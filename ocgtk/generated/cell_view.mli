@@ -9,6 +9,15 @@
 
 (** {b The methods, signals and properties of a [CellView].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Cell_layout.class-type-cell_layout_t}Ocgtk.Cell_layout}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}
+
     A widget displaying a single row of a GtkTreeModel
 
     A [GtkCellView] displays a single row of a [GtkTreeModel] using a
@@ -30,12 +39,11 @@
 
     GtkCellView has a single CSS node with name cellview. *)
 class type cell_view_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
-  inherit Cell_area_and__cell_area_context_and__cell_layout.cell_layout_t
+  inherit Widget.widget_t
+  inherit Cell_layout.cell_layout_t
   inherit Orientable.orientable_t
+
+  (** {2:methods Methods} *)
 
   method get_displayed_row : unit -> Raw.Tree_path.t option
   (** Returns a [GtkTreePath] referring to the currently displayed row. If no
@@ -79,8 +87,9 @@ class type cell_view_t = object
       will remove it before setting the new model. If [model] is [NULL], then it
       will unset the old model. *)
 
-  method cell_area :
-    Cell_area_and__cell_area_context_and__cell_layout.cell_area_t
+  (** {2:properties Properties} *)
+
+  method cell_area : Cell_area.cell_area_t
   (** The [GtkCellArea] rendering cells
 
       If no area is specified when creating the cell view with
@@ -89,8 +98,7 @@ class type cell_view_t = object
 
       since 3.0 *)
 
-  method cell_area_context :
-    Cell_area_and__cell_area_context_and__cell_layout.cell_area_context_t
+  method cell_area_context : Cell_area_context.cell_area_context_t
   (** The [GtkCellAreaContext] used to compute the geometry of the cell view.
 
       A group of cell views can be assigned the same context in order to ensure
@@ -103,6 +111,8 @@ class type cell_view_t = object
       menus).
 
       since 3.0 *)
+
+  (** {2:conversions Conversions} *)
 
   method as_cell_view : Raw.Cell_view.t
 end
@@ -139,9 +149,7 @@ val new_ : unit -> cell_view_t
 (** Creates a new [GtkCellView] widget. *)
 
 val new_with_context :
-  Cell_area_and__cell_area_context_and__cell_layout.cell_area_t ->
-  Cell_area_and__cell_area_context_and__cell_layout.cell_area_context_t ->
-  cell_view_t
+  Cell_area.cell_area_t -> Cell_area_context.cell_area_context_t -> cell_view_t
 (** Creates a new [GtkCellView] widget with a specific [GtkCellArea] to layout
     cells and a specific [GtkCellAreaContext].
 

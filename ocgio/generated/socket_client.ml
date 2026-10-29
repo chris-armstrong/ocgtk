@@ -1,11 +1,11 @@
 class type socket_client_t = object
+  (** {2:signals Signals} *)
+
   method on_event :
     ?after:bool ->
     callback:
       (event:Enums.socketclientevent ->
-      connectable:
-        Socket_address_and__socket_address_enumerator_and__socket_connectable
-        .socket_connectable_t ->
+      connectable:Socket_connectable.socket_connectable_t ->
       connection:Io_stream.io_stream_t option ->
       unit) ->
     unit ->
@@ -60,6 +60,8 @@ class type socket_client_t = object
       Note that there may be additional [GSocketClientEvent] values in the
       future; unrecognized [event] values should be ignored. *)
 
+  (** {2:methods Methods} *)
+
   method add_application_proxy : string -> unit
   (** Enable proxy protocols to be handled by the application. When the
       indicated proxy protocol is returned by the [GProxyResolver],
@@ -81,10 +83,9 @@ class type socket_client_t = object
       specific handshake. *)
 
   method connect :
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_connectable_t ->
+    Socket_connectable.socket_connectable_t ->
     Cancellable.cancellable_t option ->
-    (Socket_and__socket_connection.socket_connection_t, GError.t) result
+    (Socket_connection.socket_connection_t, GError.t) result
   (** Tries to resolve the [connectable] and make a network connection to it.
 
       Upon a successful connection, a new [GSocketConnection] is constructed and
@@ -107,7 +108,7 @@ class type socket_client_t = object
 
   method connect_finish :
     Async_result.async_result_t ->
-    (Socket_and__socket_connection.socket_connection_t, GError.t) result
+    (Socket_connection.socket_connection_t, GError.t) result
   (** Finishes an async connect operation. See g_socket_client_connect_async()
   *)
 
@@ -115,7 +116,7 @@ class type socket_client_t = object
     string ->
     UInt16.t ->
     Cancellable.cancellable_t option ->
-    (Socket_and__socket_connection.socket_connection_t, GError.t) result
+    (Socket_connection.socket_connection_t, GError.t) result
   (** This is a helper function for g_socket_client_connect().
 
       Attempts to create a TCP connection to the named host.
@@ -149,7 +150,7 @@ class type socket_client_t = object
 
   method connect_to_host_finish :
     Async_result.async_result_t ->
-    (Socket_and__socket_connection.socket_connection_t, GError.t) result
+    (Socket_connection.socket_connection_t, GError.t) result
   (** Finishes an async connect operation. See
       g_socket_client_connect_to_host_async() *)
 
@@ -157,7 +158,7 @@ class type socket_client_t = object
     string ->
     string ->
     Cancellable.cancellable_t option ->
-    (Socket_and__socket_connection.socket_connection_t, GError.t) result
+    (Socket_connection.socket_connection_t, GError.t) result
   [@@ocaml.doc
     "Attempts to create a TCP connection to a service.\n\n\
      This call looks up the SRV record for [service] at [domain] for the\n\
@@ -173,7 +174,7 @@ class type socket_client_t = object
 
   method connect_to_service_finish :
     Async_result.async_result_t ->
-    (Socket_and__socket_connection.socket_connection_t, GError.t) result
+    (Socket_connection.socket_connection_t, GError.t) result
   (** Finishes an async connect operation. See
       g_socket_client_connect_to_service_async() *)
 
@@ -181,7 +182,7 @@ class type socket_client_t = object
     string ->
     UInt16.t ->
     Cancellable.cancellable_t option ->
-    (Socket_and__socket_connection.socket_connection_t, GError.t) result
+    (Socket_connection.socket_connection_t, GError.t) result
   [@@ocaml.doc
     "This is a helper function for g_socket_client_connect().\n\n\
      Attempts to create a TCP connection with a network URI.\n\n\
@@ -202,7 +203,7 @@ class type socket_client_t = object
 
   method connect_to_uri_finish :
     Async_result.async_result_t ->
-    (Socket_and__socket_connection.socket_connection_t, GError.t) result
+    (Socket_connection.socket_connection_t, GError.t) result
   (** Finishes an async connect operation. See
       g_socket_client_connect_to_uri_async() *)
 
@@ -214,11 +215,7 @@ class type socket_client_t = object
 
       See g_socket_client_set_family() for details. *)
 
-  method get_local_address :
-    unit ->
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_address_t
-    option
+  method get_local_address : unit -> Socket_address.socket_address_t option
   (** Gets the local address of the socket client.
 
       See g_socket_client_set_local_address() for details. *)
@@ -271,11 +268,7 @@ class type socket_client_t = object
       connection to be an ipv4 socket, even though the address might be an ipv6
       mapped to ipv4 address. *)
 
-  method set_local_address :
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_address_t
-    option ->
-    unit
+  method set_local_address : Socket_address.socket_address_t option -> unit
   (** Sets the local address of the socket client. The sockets created by this
       object will bound to the specified address (if not [NULL]) before
       connecting.
@@ -340,11 +333,15 @@ class type socket_client_t = object
       use correctly. See [GSocketClient:tls]-validation-flags for more
       information. *)
 
+  (** {2:properties Properties} *)
+
   method type_ : Enums.sockettype
   (** The type to use for socket construction. *)
 
   method set_type : Enums.sockettype -> unit
   (** The type to use for socket construction. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_socket_client : Raw.Socket_client.t
 end
@@ -356,11 +353,7 @@ class socket_client (obj : Raw.Socket_client.t) : socket_client_t =
       Raw.Socket_client.on_event ~after self#as_socket_client
         ~callback:(fun ~event ~connectable ~connection ->
           callback ~event
-            ~connectable:
-              (new
-                 Socket_address_and__socket_address_enumerator_and__socket_connectable
-                 .socket_connectable
-                 connectable)
+            ~connectable:(new Socket_connectable.socket_connectable connectable)
             ~connection:
               (Option.map (fun w -> new Io_stream.io_stream w) connection))
 
@@ -368,85 +361,84 @@ class socket_client (obj : Raw.Socket_client.t) : socket_client_t =
       fun protocol -> Raw.Socket_client.add_application_proxy obj protocol
 
     method connect :
-        Socket_address_and__socket_address_enumerator_and__socket_connectable
-        .socket_connectable_t ->
+        Socket_connectable.socket_connectable_t ->
         Cancellable.cancellable_t option ->
-        (Socket_and__socket_connection.socket_connection_t, GError.t) result =
+        (Socket_connection.socket_connection_t, GError.t) result =
       fun connectable cancellable ->
         let connectable = connectable#as_socket_connectable in
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
         Result.map
-          (fun ret -> new Socket_and__socket_connection.socket_connection ret)
+          (fun ret -> new Socket_connection.socket_connection ret)
           (Raw.Socket_client.connect obj connectable cancellable)
 
     method connect_finish :
         Async_result.async_result_t ->
-        (Socket_and__socket_connection.socket_connection_t, GError.t) result =
+        (Socket_connection.socket_connection_t, GError.t) result =
       fun result ->
         let result = result#as_async_result in
         Result.map
-          (fun ret -> new Socket_and__socket_connection.socket_connection ret)
+          (fun ret -> new Socket_connection.socket_connection ret)
           (Raw.Socket_client.connect_finish obj result)
 
     method connect_to_host :
         string ->
         UInt16.t ->
         Cancellable.cancellable_t option ->
-        (Socket_and__socket_connection.socket_connection_t, GError.t) result =
+        (Socket_connection.socket_connection_t, GError.t) result =
       fun host_and_port default_port cancellable ->
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
         Result.map
-          (fun ret -> new Socket_and__socket_connection.socket_connection ret)
+          (fun ret -> new Socket_connection.socket_connection ret)
           (Raw.Socket_client.connect_to_host obj host_and_port default_port
              cancellable)
 
     method connect_to_host_finish :
         Async_result.async_result_t ->
-        (Socket_and__socket_connection.socket_connection_t, GError.t) result =
+        (Socket_connection.socket_connection_t, GError.t) result =
       fun result ->
         let result = result#as_async_result in
         Result.map
-          (fun ret -> new Socket_and__socket_connection.socket_connection ret)
+          (fun ret -> new Socket_connection.socket_connection ret)
           (Raw.Socket_client.connect_to_host_finish obj result)
 
     method connect_to_service :
         string ->
         string ->
         Cancellable.cancellable_t option ->
-        (Socket_and__socket_connection.socket_connection_t, GError.t) result =
+        (Socket_connection.socket_connection_t, GError.t) result =
       fun domain service cancellable ->
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
         Result.map
-          (fun ret -> new Socket_and__socket_connection.socket_connection ret)
+          (fun ret -> new Socket_connection.socket_connection ret)
           (Raw.Socket_client.connect_to_service obj domain service cancellable)
 
     method connect_to_service_finish :
         Async_result.async_result_t ->
-        (Socket_and__socket_connection.socket_connection_t, GError.t) result =
+        (Socket_connection.socket_connection_t, GError.t) result =
       fun result ->
         let result = result#as_async_result in
         Result.map
-          (fun ret -> new Socket_and__socket_connection.socket_connection ret)
+          (fun ret -> new Socket_connection.socket_connection ret)
           (Raw.Socket_client.connect_to_service_finish obj result)
 
     method connect_to_uri :
         string ->
         UInt16.t ->
         Cancellable.cancellable_t option ->
-        (Socket_and__socket_connection.socket_connection_t, GError.t) result =
+        (Socket_connection.socket_connection_t, GError.t) result =
       fun uri default_port cancellable ->
         let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
         Result.map
-          (fun ret -> new Socket_and__socket_connection.socket_connection ret)
+          (fun ret -> new Socket_connection.socket_connection ret)
           (Raw.Socket_client.connect_to_uri obj uri default_port cancellable)
 
     method connect_to_uri_finish :
         Async_result.async_result_t ->
-        (Socket_and__socket_connection.socket_connection_t, GError.t) result =
+        (Socket_connection.socket_connection_t, GError.t) result =
       fun result ->
         let result = result#as_async_result in
         Result.map
-          (fun ret -> new Socket_and__socket_connection.socket_connection ret)
+          (fun ret -> new Socket_connection.socket_connection ret)
           (Raw.Socket_client.connect_to_uri_finish obj result)
 
     method get_enable_proxy : unit -> bool =
@@ -455,18 +447,10 @@ class socket_client (obj : Raw.Socket_client.t) : socket_client_t =
     method get_family : unit -> Enums.socketfamily =
       fun () -> Raw.Socket_client.get_family obj
 
-    method get_local_address :
-        unit ->
-        Socket_address_and__socket_address_enumerator_and__socket_connectable
-        .socket_address_t
-        option =
+    method get_local_address : unit -> Socket_address.socket_address_t option =
       fun () ->
         Option.map
-          (fun ret ->
-            new
-              Socket_address_and__socket_address_enumerator_and__socket_connectable
-              .socket_address
-              ret)
+          (fun ret -> new Socket_address.socket_address ret)
           (Raw.Socket_client.get_local_address obj)
 
     method get_protocol : unit -> Enums.socketprotocol =
@@ -494,11 +478,7 @@ class socket_client (obj : Raw.Socket_client.t) : socket_client_t =
     method set_family : Enums.socketfamily -> unit =
       fun family -> Raw.Socket_client.set_family obj family
 
-    method set_local_address :
-        Socket_address_and__socket_address_enumerator_and__socket_connectable
-        .socket_address_t
-        option ->
-        unit =
+    method set_local_address : Socket_address.socket_address_t option -> unit =
       fun address ->
         let address = Option.map (fun c -> c#as_socket_address) address in
         Raw.Socket_client.set_local_address obj address

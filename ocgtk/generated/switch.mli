@@ -8,11 +8,10 @@
 (** {1:class Class} *)
 
 class type switch_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Actionable.actionable_t
+
+  (** {2:signals Signals} *)
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -38,6 +37,8 @@ class type switch_t = object
       signal handler should return [TRUE] to prevent the default handler from
       running. *)
 
+  (** {2:methods Methods} *)
+
   method get_active : unit -> bool
   (** Gets whether the [GtkSwitch] is in its “on” or “off” state. *)
 
@@ -55,10 +56,19 @@ class type switch_t = object
 
       See [Gtk.Switch::state-set] for details. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_switch : Raw.Switch.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Switch].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Actionable.class-type-actionable_t}Ocgtk.Actionable}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      Shows a \"light switch\" that has two states: on or off.\n\n\
      An example GtkSwitch\n\n\
      The user can control which state should be active by clicking the\n\

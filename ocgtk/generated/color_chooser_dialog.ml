@@ -2,6 +2,8 @@ class type color_chooser_dialog_t = object
   inherit Dialog.dialog_t
   inherit Color_chooser.color_chooser_t
 
+  (** {2:properties Properties} *)
+
   method show_editor : bool
   (** Whether the color chooser dialog is showing the single-color editor.
 
@@ -13,6 +15,8 @@ class type color_chooser_dialog_t = object
 
       It can be set to switch the color chooser into single-color editing mode.
   *)
+
+  (** {2:conversions Conversions} *)
 
   method as_color_chooser_dialog : Raw.Color_chooser_dialog.t
 end
@@ -28,8 +32,7 @@ class color_chooser_dialog (obj : Raw.Color_chooser_dialog.t) :
     method as_color_chooser_dialog = obj
   end
 
-let new_ (title : string option)
-    (parent : Application_and__window_and__window_group.window_t option) :
+let new_ (title : string option) (parent : Window.window_t option) :
     color_chooser_dialog_t =
   let parent = Option.map (fun c -> c#as_window) parent in
   let obj_ = Raw.Color_chooser_dialog.new_ title parent in

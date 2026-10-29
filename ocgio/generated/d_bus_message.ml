@@ -1,4 +1,6 @@
 class type d_bus_message_t = object
+  (** {2:methods Methods} *)
+
   method copy : unit -> (d_bus_message_t, GError.t) result
   (** Copies [message]. The copy is a deep copy and the returned [GDBusMessage]
       is completely identical except that it is guaranteed to not be locked.
@@ -222,6 +224,8 @@ class type d_bus_message_t = object
       g_dbus_error_set_dbus_error() using the information in the
       [G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME] header field of [message] as well
       as the first string item in [message]'s body. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_d_bus_message : Raw.D_bus_message.t
 end

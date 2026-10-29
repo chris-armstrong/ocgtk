@@ -1,4 +1,6 @@
 class type column_view_row_t = object
+  (** {2:methods Methods} *)
+
   method get_accessible_description : unit -> string
   (** Gets the accessible description of [self]. *)
 
@@ -75,6 +77,8 @@ class type column_view_row_t = object
       the selected state at all. A non-selectable row may still be selected.
 
       By default, rows are selectable. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_column_view_row : Raw.Column_view_row.t
 end

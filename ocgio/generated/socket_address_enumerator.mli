@@ -9,8 +9,9 @@
 
     Its methods, signals and properties are on
     {!class-type-socket_address_enumerator_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgio.Raw.Socket_address_enumerator}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.Socket_address_enumerator}.
+*)
 
 (** {1:class Class} *)
 
@@ -55,3 +56,8 @@ class socket_address_enumerator :
     [Gio.SocketAddressEnumerator.next] has returned [NULL], further enumeration
     with that [GSocketAddressEnumerator] is not possible, and it can be
     unreffed. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

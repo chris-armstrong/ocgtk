@@ -2,12 +2,15 @@
     results.
 
     Its methods, signals and properties are on {!class-type-async_result_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgio.Raw.Async_result}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Async_result}. *)
 
 (** {1:class Class} *)
 
 class type async_result_t = object
+  (** {2:methods Methods} *)
+
   method get_source_object : unit -> [ `object_ ] Gobject.obj option
   (** Gets the source object from a [Gio.AsyncResult]. *)
 
@@ -21,6 +24,8 @@ class type async_result_t = object
       used in new code; [Gio.AsyncResult] errors that are set by virtual methods
       should also be extracted by virtual methods, to enable subclasses to chain
       up correctly. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_async_result : Raw.Async_result.t
 end
@@ -172,3 +177,8 @@ class async_result : Raw.Async_result.t -> async_result_t
  higher priority. It is recommended to choose priorities between\n\
  [G_PRIORITY_LOW] and [G_PRIORITY_HIGH], with [G_PRIORITY_DEFAULT]\n\
  as a default."]
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

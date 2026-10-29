@@ -1,10 +1,9 @@
 class type progress_bar_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Accessible_range.accessible_range_t
   inherit Orientable.orientable_t
+
+  (** {2:methods Methods} *)
 
   method get_ellipsize : unit -> Ocpango.Enums.ellipsizemode
   (** Returns the ellipsizing position of the progress bar.
@@ -86,16 +85,15 @@ class type progress_bar_t = object
       styled and sized suitably for containing text, as long as
       [Gtk.ProgressBar:show-text] is [TRUE]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_progress_bar : Raw.Progress_bar.t
 end
 
 (* High-level class for ProgressBar *)
 class progress_bar (obj : Raw.Progress_bar.t) : progress_bar_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     inherit
       Accessible_range.accessible_range (Raw.Accessible_range.from_gobject obj)

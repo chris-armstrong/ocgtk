@@ -9,6 +9,12 @@
 
 (** {b The methods, signals and properties of a [BoxLayout].}
 
+    Inherits from:
+    {{!Ocgtk.Layout_manager.class-type-layout_manager_t}Ocgtk.Layout_manager}
+
+    Implements:
+    - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}
+
     Arranges children in a single row or column.
 
     Whether it is a row or column depends on the value of its
@@ -22,11 +28,10 @@
     If you want to specify the amount of space placed between each child, you
     can use the [Gtk.BoxLayout:spacing] property. *)
 class type box_layout_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .layout_manager_t
-
+  inherit Layout_manager.layout_manager_t
   inherit Orientable.orientable_t
+
+  (** {2:methods Methods} *)
 
   method get_baseline_child : unit -> int
   (** Gets the value set by gtk_box_layout_set_baseline_child(). *)
@@ -59,6 +64,8 @@ class type box_layout_t = object
 
   method set_spacing : int -> unit
   (** Sets how much spacing to put between children. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_box_layout : Raw.Box_layout.t
 end

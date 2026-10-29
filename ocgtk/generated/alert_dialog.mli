@@ -1,8 +1,9 @@
 (** Collects the arguments that are needed to present a message to the user.
 
     Its methods, signals and properties are on {!class-type-alert_dialog_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.Alert_dialog}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Alert_dialog}. *)
 
 (** {1:class Class} *)
 
@@ -15,6 +16,8 @@
     If you don't need to wait for a button to be clicked, you can use
     [Gtk.AlertDialog.show]. *)
 class type alert_dialog_t = object
+  (** {2:methods Methods} *)
+
   method choose_finish :
     Ocgio.Async_result.async_result_t -> (int, GError.t) result
   (** Finishes the [Gtk.AlertDialog.choose] call. *)
@@ -63,8 +66,7 @@ class type alert_dialog_t = object
   (** Sets whether the alert blocks interaction with the parent window while it
       is presented. *)
 
-  method show :
-    Application_and__window_and__window_group.window_t option -> unit
+  method show : Window.window_t option -> unit
   (** Shows the alert to the user.
 
       This function is a simpler version of [Gtk.AlertDialog.choose] intended
@@ -73,6 +75,8 @@ class type alert_dialog_t = object
       If you want to cancel the dialog or if the alert has more than one button,
       you should use that function instead and provide it with a
       [Gio.Cancellable] and callback respectively. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_alert_dialog : Raw.Alert_dialog.t
 end
@@ -88,3 +92,8 @@ class alert_dialog : Raw.Alert_dialog.t -> alert_dialog_t
 
     If you don't need to wait for a button to be clicked, you can use
     [Gtk.AlertDialog.show]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

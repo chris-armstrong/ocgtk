@@ -9,6 +9,13 @@
 
 (** {b The methods, signals and properties of a [Video].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     Shows a [GtkMediaStream] with media controls.
 
     An example GtkVideo
@@ -23,9 +30,9 @@
     input. If you are writing a full-fledged video player, you may want to use
     the [Gdk.Paintable] API and a media framework such as Gstreamer directly. *)
 class type video_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:methods Methods} *)
 
   method get_autoplay : unit -> bool
   (** Returns [TRUE] if videos have been set to loop. *)
@@ -78,6 +85,8 @@ class type video_t = object
   (** Makes [self] play the resource at the given [resource_path].
 
       This is a utility function that calls [Gtk.Video.set_file]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_video : Raw.Video.t
 end

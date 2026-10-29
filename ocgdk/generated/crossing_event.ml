@@ -1,5 +1,7 @@
 class type crossing_event_t = object
-  inherit App_launch_context_cycle_de440b34.event_t
+  inherit Event.event_t
+
+  (** {2:methods Methods} *)
 
   method get_detail : unit -> Enums.notifytype
   (** Extracts the notify detail from a crossing event. *)
@@ -10,13 +12,15 @@ class type crossing_event_t = object
   method get_mode : unit -> Enums.crossingmode
   (** Extracts the crossing mode from a crossing event. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_crossing_event : Raw.Crossing_event.t
 end
 
 (* High-level class for CrossingEvent *)
 class crossing_event (obj : Raw.Crossing_event.t) : crossing_event_t =
   object (self)
-    inherit App_launch_context_cycle_de440b34.event (obj :> Raw.Event.t)
+    inherit Event.event (obj :> Raw.Event.t)
 
     method get_detail : unit -> Enums.notifytype =
       fun () -> Raw.Crossing_event.get_detail obj

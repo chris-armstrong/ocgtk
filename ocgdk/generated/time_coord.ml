@@ -1,4 +1,6 @@
 class type time_coord_t = object
+  (** {2:conversions Conversions} *)
+
   method as_time_coord : Raw.Time_coord.t
 end
 

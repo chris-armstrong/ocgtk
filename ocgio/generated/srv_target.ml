@@ -1,4 +1,6 @@
 class type srv_target_t = object
+  (** {2:methods Methods} *)
+
   method get_hostname : unit -> string
   (** Gets [target]'s hostname (in ASCII form; if you are going to present this
       to the user, you should use g_hostname_is_ascii_encoded() to check if it
@@ -15,6 +17,8 @@ class type srv_target_t = object
   method get_weight : unit -> UInt16.t
   (** Gets [target]'s weight. You should not need to look at this; [GResolver]
       already sorts the targets according to the algorithm in RFC 2782. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_srv_target : Raw.Srv_target.t
 end

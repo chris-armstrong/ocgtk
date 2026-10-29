@@ -19,6 +19,8 @@
     Note that the transfer function is applied to un-premultiplied values, and
     all results are clamped to the \[0, 1\] range. *)
 class type component_transfer_t = object
+  (** {2:conversions Conversions} *)
+
   method as_component_transfer : Raw.Component_transfer.t
 end
 

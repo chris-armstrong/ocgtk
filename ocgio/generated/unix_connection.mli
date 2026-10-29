@@ -2,12 +2,16 @@
     domain sockets.
 
     Its methods, signals and properties are on {!class-type-unix_connection_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgio.Raw.Unix_connection}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Unix_connection}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [UnixConnection].}
+
+    Inherits from:
+    {{!Ocgio.Socket_connection.class-type-socket_connection_t}Ocgio.Socket_connection}
 
     This is the subclass of [Gio.SocketConnection] that is created for UNIX
     domain sockets.
@@ -23,7 +27,9 @@
     GIO interfaces, thus you had to use the [gio-unix-2.0.pc] pkg-config file
     when using it. This is no longer necessary since GLib 2.72. *)
 class type unix_connection_t = object
-  inherit Socket_and__socket_connection.socket_connection_t
+  inherit Socket_connection.socket_connection_t
+
+  (** {2:methods Methods} *)
 
   method receive_credentials :
     Cancellable.cancellable_t option ->
@@ -95,6 +101,8 @@ class type unix_connection_t = object
       As well as sending the fd this also writes a single byte to the stream, as
       this is required for fd passing to work on some implementations. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_unix_connection : Raw.Unix_connection.t
 end
 
@@ -116,3 +124,8 @@ class unix_connection : Raw.Unix_connection.t -> unix_connection_t
     Before GLib 2.72, [<gio/gunixconnection.h>] belonged to the UNIX-specific
     GIO interfaces, thus you had to use the [gio-unix-2.0.pc] pkg-config file
     when using it. This is no longer necessary since GLib 2.72. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

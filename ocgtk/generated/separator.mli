@@ -9,6 +9,14 @@
 
 (** {b The methods, signals and properties of a [Separator].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}
+
     Draws a horizontal or vertical line to separate other widgets.
 
     An example GtkSeparator
@@ -25,11 +33,11 @@
 
     [GtkSeparator] uses the [Gtk.AccessibleRole.separator] role. *)
 class type separator_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Orientable.orientable_t
+
+  (** {2:conversions Conversions} *)
+
   method as_separator : Raw.Separator.t
 end
 

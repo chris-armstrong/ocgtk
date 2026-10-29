@@ -77,20 +77,23 @@ let doc_of_attributes (attributes : attributes) : string option =
       | _ -> None)
     attributes
 
-let module_preamble (ast : signature) : string option =
-  List.find_map
+let floating_text (attr : attribute) =
+  match attr.attr_name.txt with
+  | "ocaml.text" ->
+      doc_of_attributes
+        [ { attr with attr_name = { attr.attr_name with txt = "ocaml.doc" } } ]
+  | _ -> None
+
+let floating_docs (ast : signature) : string list =
+  List.filter_map
     (fun item ->
       match item.psig_desc with
-      | Psig_attribute ({ attr_name = { txt = "ocaml.text"; _ }; _ } as attr) ->
-          doc_of_attributes
-            [
-              {
-                attr with
-                attr_name = { attr.attr_name with txt = "ocaml.doc" };
-              };
-            ]
+      | Psig_attribute attr -> floating_text attr
       | _ -> None)
     ast
+
+let module_preamble (ast : signature) : string option =
+  match floating_docs ast with first :: _ -> Some first | [] -> None
 
 let type_declaration_doc (td : type_declaration) : string option =
   doc_of_attributes td.ptype_attributes
@@ -488,6 +491,18 @@ let rec find_method_in_class_type (class_type : class_type)
       (* Recursively search in the rest of the arrow type *)
       find_method_in_class_type rest method_name
   | _ -> None
+
+(* The floating docs in a class type body, in order *)
+let class_type_floating_docs (class_type : class_type) : string list =
+  match class_type.pcty_desc with
+  | Pcty_signature { pcsig_fields; _ } ->
+      List.filter_map
+        (fun ctf ->
+          match ctf.pctf_desc with
+          | Pctf_attribute attr -> floating_text attr
+          | _ -> None)
+        pcsig_fields
+  | _ -> []
 
 (* Get the type annotation of a method from a class type field (signature) *)
 let get_method_type_from_class_type_field (class_type_field : class_type_field)

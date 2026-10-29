@@ -2,12 +2,16 @@
     an application.
 
     Its methods, signals and properties are on {!class-type-app_chooser_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.App_chooser}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.App_chooser}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [AppChooser].}
+
+    Requires:
+    - {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
 
     [GtkAppChooser] is an interface for widgets which allow the user to choose
     an application.
@@ -27,6 +31,8 @@
     To obtain the application that has been selected in a [GtkAppChooser], use
     [Gtk.AppChooser.get_app_info]. *)
 class type app_chooser_t = object
+  (** {2:methods Methods} *)
+
   method get_app_info : unit -> Ocgio.App_info.app_info_t option
   (** Returns the currently selected application. *)
 
@@ -36,6 +42,8 @@ class type app_chooser_t = object
 
   method refresh : unit -> unit
   (** Reloads the list of applications. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_app_chooser : Raw.App_chooser.t
 end
@@ -62,3 +70,8 @@ class app_chooser : Raw.App_chooser.t -> app_chooser_t
 
     To obtain the application that has been selected in a [GtkAppChooser], use
     [Gtk.AppChooser.get_app_info]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

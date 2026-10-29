@@ -9,6 +9,13 @@
 
 (** {b The methods, signals and properties of a [StackSidebar].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     Uses a sidebar to switch between [GtkStack] pages.
 
     An example GtkStackSidebar
@@ -26,9 +33,9 @@
     When circumstances require it, [GtkStackSidebar] adds the .needs-attention
     style class to the widgets representing the stack pages. *)
 class type stack_sidebar_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:methods Methods} *)
 
   method get_stack : unit -> Stack.stack_t option
   (** Retrieves the stack. *)
@@ -38,6 +45,8 @@ class type stack_sidebar_t = object
 
       The sidebar widget will automatically update according to the order and
       items within the given [GtkStack]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_stack_sidebar : Raw.Stack_sidebar.t
 end

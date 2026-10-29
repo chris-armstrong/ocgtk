@@ -1,9 +1,8 @@
 class type editable_label_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Editable.editable_t
+
+  (** {2:methods Methods} *)
 
   method get_editing : unit -> bool
   (** Returns whether the label is currently in “editing mode”. *)
@@ -19,17 +18,15 @@ class type editable_label_t = object
       discarded and the label will keep its previous [Gtk.Editable:text]
       property value. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_editable_label : Raw.Editable_label.t
 end
 
 (* High-level class for EditableLabel *)
 class editable_label (obj : Raw.Editable_label.t) : editable_label_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
-
+    inherit Widget.widget (obj :> Raw.Widget.t)
     inherit Editable.editable (Raw.Editable.from_gobject obj)
 
     method get_editing : unit -> bool =

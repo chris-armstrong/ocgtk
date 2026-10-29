@@ -3,18 +3,32 @@
 
     Its methods, signals and properties are on
     {!class-type-file_chooser_dialog_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgtk.Raw.File_chooser_dialog}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.File_chooser_dialog}. *)
 
 (** {1:class Class} *)
 
 class type file_chooser_dialog_t = object
   inherit Dialog.dialog_t
   inherit File_chooser.file_chooser_t
+
+  (** {2:conversions Conversions} *)
+
   method as_file_chooser_dialog : Raw.File_chooser_dialog.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [FileChooserDialog].}\n\n\
+     Inherits from: {{!Ocgtk.Dialog.class-type-dialog_t}Ocgtk.Dialog}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\
+     - {{!Ocgtk.File_chooser.class-type-file_chooser_t}Ocgtk.File_chooser}\n\
+     - {{!Ocgtk.Native.class-type-native_t}Ocgtk.Native}\n\
+     - {{!Ocgtk.Root.class-type-root_t}Ocgtk.Root}\n\
+     - \
+     {{!Ocgtk.Shortcut_manager.class-type-shortcut_manager_t}Ocgtk.Shortcut_manager}\n\n\
      [GtkFileChooserDialog] is a dialog suitable for use with\n\
      “File Open” or “File Save” commands.\n\n\
      An example GtkFileChooserDialog\n\n\
@@ -289,3 +303,8 @@ class file_chooser_dialog : Raw.File_chooser_dialog.t -> file_chooser_dialog_t
  {b CSS nodes}\n\n\
  [GtkFileChooserDialog] has a single CSS node with the name [window] and style\n\
  class [.filechooser]."]
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

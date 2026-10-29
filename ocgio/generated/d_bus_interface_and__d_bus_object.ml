@@ -2,6 +2,8 @@
 (* Combined classes for cyclic dependencies *)
 
 class type d_bus_interface_t = object
+  (** {2:methods Methods} *)
+
   method dup_object : unit -> d_bus_object_t option
   (** Gets the [GDBusObject] that [interface_] belongs to, if any. *)
 
@@ -14,10 +16,14 @@ class type d_bus_interface_t = object
 
       Note that [interface_] will hold a weak reference to [object]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_d_bus_interface : Raw.D_bus_interface.t
 end
 
 and d_bus_object_t = object
+  (** {2:signals Signals} *)
+
   method on_interface_added :
     ?after:bool ->
     callback:(interface:d_bus_interface_t -> unit) ->
@@ -32,6 +38,8 @@ and d_bus_object_t = object
     Gobject.Signal.handler_id
   (** Emitted when [interface] is removed from [object]. *)
 
+  (** {2:methods Methods} *)
+
   method get_interface : string -> d_bus_interface_t option
   (** Gets the D-Bus interface with name [interface_name] associated with
       [object], if any. *)
@@ -41,6 +49,8 @@ and d_bus_object_t = object
 
   method get_object_path : unit -> string
   (** Gets the object path for [object]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_d_bus_object : Raw.D_bus_object.t
 end

@@ -1,7 +1,7 @@
 class type network_service_t = object
-  inherit
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_connectable_t
+  inherit Socket_connectable.socket_connectable_t
+
+  (** {2:methods Methods} *)
 
   method get_domain : unit -> string
   (** Gets the domain that [srv] serves. This might be either UTF-8 or
@@ -21,6 +21,8 @@ class type network_service_t = object
   (** Set's the URI scheme used to resolve proxies. By default, the service name
       is used as scheme. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_network_service : Raw.Network_service.t
 end
 
@@ -28,8 +30,7 @@ end
 class network_service (obj : Raw.Network_service.t) : network_service_t =
   object (self)
     inherit
-      Socket_address_and__socket_address_enumerator_and__socket_connectable
-      .socket_connectable
+      Socket_connectable.socket_connectable
         (Raw.Socket_connectable.from_gobject obj)
 
     method get_domain : unit -> string =

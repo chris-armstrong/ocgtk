@@ -5,6 +5,17 @@ open Types
 
 let or_else f opt = match opt with Some _ -> opt | None -> f ()
 
+(* A cyclic group member's layer 2 module is the group's combined module only
+   while the group itself is generated (its combined module and member
+   modules, where the member module would be a dependency cycle). Elsewhere it
+   is the member module, the public path. *)
+let layer2_class_module ~ctx name =
+  match Hashtbl.find_opt ctx.module_groups name with
+  | Some combined_module_name when List.mem name ~set:ctx.current_cycle_classes
+    ->
+      combined_module_name
+  | Some _ | None -> Utils.module_name_of_class name
+
 let calculate_layer2_class ~class_module ~class_name =
   {
     class_module;
@@ -561,11 +572,7 @@ let find_class_mapping ~ctx ~lookup_str =
   in
   let ocaml_type = module_name ^ ".t" in
   let ocaml_class_name = Utils.ocaml_class_name cls.class_name in
-  let ocaml_class_module =
-    match Hashtbl.find_opt ctx.module_groups cls.class_name with
-    | Some combined_module_name -> combined_module_name
-    | None -> Utils.module_name_of_class cls.class_name
-  in
+  let ocaml_class_module = layer2_class_module ~ctx cls.class_name in
   Some
     {
       ocaml_type;
@@ -593,11 +600,7 @@ let find_interface_mapping ~ctx ~lookup_str =
     (* Look up the module name from module_groups table *)
     module_name ^ ".t"
   in
-  let ocaml_class_module =
-    match Hashtbl.find_opt ctx.module_groups iface.interface_name with
-    | Some combined_module_name -> combined_module_name
-    | None -> Utils.module_name_of_class iface.interface_name
-  in
+  let ocaml_class_module = layer2_class_module ~ctx iface.interface_name in
 
   let ocaml_class_name = Utils.ocaml_class_name iface.interface_name in
   Some

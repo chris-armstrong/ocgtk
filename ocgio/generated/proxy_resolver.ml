@@ -1,4 +1,6 @@
 class type proxy_resolver_t = object
+  (** {2:methods Methods} *)
+
   method is_supported : unit -> bool
   (** Checks if [resolver] can be used on this system. (This is used internally;
       g_proxy_resolver_get_default() will only return a proxy resolver that
@@ -26,6 +28,8 @@ class type proxy_resolver_t = object
   (** Call this function to obtain the array of proxy URIs when
       g_proxy_resolver_lookup_async() is complete. See g_proxy_resolver_lookup()
       for more details. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_proxy_resolver : Raw.Proxy_resolver.t
 end

@@ -9,6 +9,14 @@
 
 (** {b The methods, signals and properties of a [Inscription].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Accessible_text.class-type-accessible_text_t}Ocgtk.Accessible_text}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     Shows text in a predefined area.
 
     You likely want to use [GtkLabel] instead as this widget is intended only
@@ -26,11 +34,10 @@
 
     [GtkInscription] has a single CSS node with the name label. *)
 class type inscription_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Accessible_text.accessible_text_t
+
+  (** {2:methods Methods} *)
 
   method get_attributes : unit -> Ocpango.Attr_list.attr_list_t option
   (** Gets the inscription's attribute list. *)
@@ -124,6 +131,8 @@ class type inscription_t = object
   (** Sets the [yalign] of the inscription.
 
       See the [Gtk.Inscription:yalign] property. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_inscription : Raw.Inscription.t
 end

@@ -4,8 +4,9 @@
 (** The base class for event controllers.
 
     Its methods, signals and properties are on {!class-type-event_controller_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Event_controller}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Event_controller}. *)
 
 (** {1:class Class} *)
 
@@ -42,3 +43,8 @@ class event_controller : Raw.Event_controller.t -> event_controller_t
 
     See the chapter on input handling for an overview of the basic concepts,
     such as the capture and bubble phases of event propagation. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

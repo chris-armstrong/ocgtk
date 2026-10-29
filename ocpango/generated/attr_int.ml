@@ -1,4 +1,6 @@
 class type attr_int_t = object
+  (** {2:conversions Conversions} *)
+
   method as_attr_int : Raw.Attr_int.t
 end
 

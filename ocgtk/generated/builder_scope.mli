@@ -1,8 +1,9 @@
 (** Provides language binding support to [GtkBuilder].
 
     Its methods, signals and properties are on {!class-type-builder_scope_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Builder_scope}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Builder_scope}. *)
 
 (** {1:class Class} *)
 
@@ -26,6 +27,8 @@
     (partially) derive from or fall back to a [Gtk.BuilderCScope], as that class
     implements support for automatic lookups from C symbols. *)
 class type builder_scope_t = object
+  (** {2:conversions Conversions} *)
+
   method as_builder_scope : Raw.Builder_scope.t
 end
 
@@ -51,3 +54,8 @@ class builder_scope : Raw.Builder_scope.t -> builder_scope_t
     If you implement [GtkBuilderScope] for a language binding, you may want to
     (partially) derive from or fall back to a [Gtk.BuilderCScope], as that class
     implements support for automatic lookups from C symbols. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

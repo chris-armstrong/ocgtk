@@ -1,6 +1,10 @@
 class type drag_surface_size_t = object
+  (** {2:methods Methods} *)
+
   method set_size : int -> int -> unit
   (** Sets the size the drag surface prefers to be resized to. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_drag_surface_size : Raw.Drag_surface_size.t
 end

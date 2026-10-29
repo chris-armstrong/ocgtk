@@ -8,9 +8,11 @@
 (** {1:class Class} *)
 
 class type application_window_t = object
-  inherit Application_and__window_and__window_group.window_t
+  inherit Window.window_t
   inherit Ocgio.Action_group.action_group_t
   inherit Ocgio.Action_map.action_map_t
+
+  (** {2:methods Methods} *)
 
   method get_help_overlay : unit -> Shortcuts_window.shortcuts_window_t option
   (** Gets the [GtkShortcutsWindow] that is associated with [window].
@@ -39,10 +41,24 @@ class type application_window_t = object
   (** Sets whether the window will display a menubar for the app menu and
       menubar as needed. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_application_window : Raw.Application_window.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [ApplicationWindow].}\n\n\
+     Inherits from: {{!Ocgtk.Window.class-type-window_t}Ocgtk.Window}\n\n\
+     Implements:\n\
+     - {{!Ocgio.Action_group.class-type-action_group_t}Ocgio.Action_group}\n\
+     - {{!Ocgio.Action_map.class-type-action_map_t}Ocgio.Action_map}\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\
+     - {{!Ocgtk.Native.class-type-native_t}Ocgtk.Native}\n\
+     - {{!Ocgtk.Root.class-type-root_t}Ocgtk.Root}\n\
+     - \
+     {{!Ocgtk.Shortcut_manager.class-type-shortcut_manager_t}Ocgtk.Shortcut_manager}\n\n\
      A [GtkWindow] subclass that integrates with [GtkApplication].\n\n\
      Notably, [GtkApplicationWindow] can handle an application menubar.\n\n\
      This class implements the [Gio.ActionGroup] and [Gio.ActionMap]\n\
@@ -166,7 +182,5 @@ class application_window : Raw.Application_window.t -> application_window_t
 
 (** {1:constructors Constructors} *)
 
-val new_ :
-  Application_and__window_and__window_group.application_t ->
-  application_window_t
+val new_ : Application.application_t -> application_window_t
 (** Creates a new [GtkApplicationWindow]. *)

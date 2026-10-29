@@ -1,5 +1,7 @@
 class type shortcuts_window_t = object
-  inherit Application_and__window_and__window_group.window_t
+  inherit Window.window_t
+
+  (** {2:signals Signals} *)
 
   method on_close :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -17,6 +19,8 @@ class type shortcuts_window_t = object
 
       The default binding for this signal is <kbd>Control</kbd>+<kbd>F</kbd>. *)
 
+  (** {2:methods Methods} *)
+
   method add_section : Shortcuts_section.shortcuts_section_t -> unit
   (** Adds a section to the shortcuts window.
 
@@ -25,6 +29,8 @@ class type shortcuts_window_t = object
 
       Using [Gtk.Window.set_child] is not appropriate as the shortcuts window
       manages its children internally. *)
+
+  (** {2:properties Properties} *)
 
   method section_name : string
   (** The name of the section to show.
@@ -54,14 +60,15 @@ class type shortcuts_window_t = object
 
       Set this to [NULL] to show all groups. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_shortcuts_window : Raw.Shortcuts_window.t
 end
 
 (* High-level class for ShortcutsWindow *)
 class shortcuts_window (obj : Raw.Shortcuts_window.t) : shortcuts_window_t =
   object (self)
-    inherit
-      Application_and__window_and__window_group.window (obj :> Raw.Window.t)
+    inherit Window.window (obj :> Raw.Window.t)
 
     method on_close ?(after = false) ~callback () =
       Raw.Shortcuts_window.on_close ~after self#as_shortcuts_window ~callback

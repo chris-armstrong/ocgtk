@@ -1,16 +1,22 @@
 (** Abstract base class for D-Bus interfaces on the service side.
 
     Its methods, signals and properties are on
-    {!class-type-d_bus_interface_skeleton_t}. The functions it is built on are
-    in {!Ocgio.Raw.D_bus_interface_skeleton}. *)
+    {!class-type-d_bus_interface_skeleton_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.D_bus_interface_skeleton}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [DBusInterfaceSkeleton].}
 
+    Implements:
+    - {{!Ocgio.D_bus_interface.class-type-d_bus_interface_t}Ocgio.D_bus_interface}
+
     Abstract base class for D-Bus interfaces on the service side. *)
 class type d_bus_interface_skeleton_t = object
-  inherit D_bus_interface_and__d_bus_object.d_bus_interface_t
+  inherit D_bus_interface.d_bus_interface_t
+
+  (** {2:signals Signals} *)
 
   method on_g_authorize_method :
     ?after:bool ->
@@ -47,6 +53,8 @@ class type d_bus_interface_skeleton_t = object
       flags set, no dedicated thread is ever used and the call will be handled
       in the same thread as the object that [interface] belongs to was exported
       in. *)
+
+  (** {2:methods Methods} *)
 
   method export :
     D_bus_connection.d_bus_connection_t -> string -> (bool, GError.t) result
@@ -106,11 +114,15 @@ class type d_bus_interface_skeleton_t = object
       To stop exporting on all connections the interface is exported on, use
       g_dbus_interface_skeleton_unexport(). *)
 
+  (** {2:properties Properties} *)
+
   method g_flags : Enums.dbusinterfaceskeletonflags
   (** Flags from the [GDBusInterfaceSkeletonFlags] enumeration. *)
 
   method set_g_flags : Enums.dbusinterfaceskeletonflags -> unit
   (** Flags from the [GDBusInterfaceSkeletonFlags] enumeration. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_d_bus_interface_skeleton : Raw.D_bus_interface_skeleton.t
 end
@@ -119,3 +131,8 @@ class d_bus_interface_skeleton :
   Raw.D_bus_interface_skeleton.t ->
   d_bus_interface_skeleton_t
 (** Wraps a raw handle of {!Ocgio.Raw.D_bus_interface_skeleton.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

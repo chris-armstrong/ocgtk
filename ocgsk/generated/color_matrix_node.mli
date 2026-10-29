@@ -9,9 +9,14 @@
 
 (** {b The methods, signals and properties of a [ColorMatrixNode].}
 
+    Inherits from:
+    {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
+
     A render node controlling the color matrix of its single child node. *)
 class type color_matrix_node_t = object
   inherit Render_node.render_node_t
+
+  (** {2:methods Methods} *)
 
   method get_child : unit -> Render_node.render_node_t
   (** Gets the child node that is getting its colors modified by the given
@@ -22,6 +27,8 @@ class type color_matrix_node_t = object
 
   method get_color_offset : unit -> Ocgraphene.Vec4.vec4_t
   (** Retrieves the color offset used by the [node]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_color_matrix_node : Raw.Color_matrix_node.t
 end

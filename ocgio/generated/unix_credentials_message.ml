@@ -1,8 +1,12 @@
 class type unix_credentials_message_t = object
   inherit Socket_control_message.socket_control_message_t
 
+  (** {2:methods Methods} *)
+
   method get_credentials : unit -> Credentials.credentials_t
   (** Gets the credentials stored in [message]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_unix_credentials_message : Raw.Unix_credentials_message.t
 end

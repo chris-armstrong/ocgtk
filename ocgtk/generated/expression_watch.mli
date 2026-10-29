@@ -1,8 +1,9 @@
 (** An opaque structure representing a watched [GtkExpression].
 
     Its methods, signals and properties are on {!class-type-expression_watch_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Expression_watch}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Expression_watch}. *)
 
 (** {1:class Class} *)
 
@@ -13,6 +14,8 @@
     The contents of [GtkExpressionWatch] should only be accessed through the
     provided API. *)
 class type expression_watch_t = object
+  (** {2:methods Methods} *)
+
   method evaluate : Gobject.Value.t -> bool
   (** Evaluates the watched expression and on success stores the result in
       [value].
@@ -28,6 +31,8 @@ class type expression_watch_t = object
 
       See [Gtk.Expression.watch] for how the watch was established. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_expression_watch : Raw.Expression_watch.t
 end
 
@@ -40,3 +45,8 @@ class expression_watch : Raw.Expression_watch.t -> expression_watch_t
 
     The contents of [GtkExpressionWatch] should only be accessed through the
     provided API. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

@@ -1,7 +1,7 @@
 class type media_controls_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:methods Methods} *)
 
   method get_media_stream : unit -> Media_stream.media_stream_t option
   (** Gets the media stream managed by [controls] or [NULL] if none. *)
@@ -9,16 +9,15 @@ class type media_controls_t = object
   method set_media_stream : Media_stream.media_stream_t option -> unit
   (** Sets the stream that is controlled by [controls]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_media_controls : Raw.Media_controls.t
 end
 
 (* High-level class for MediaControls *)
 class media_controls (obj : Raw.Media_controls.t) : media_controls_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     method get_media_stream : unit -> Media_stream.media_stream_t option =
       fun () ->

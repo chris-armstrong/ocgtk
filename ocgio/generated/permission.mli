@@ -2,8 +2,9 @@
     a certain action.
 
     Its methods, signals and properties are on {!class-type-permission_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgio.Raw.Permission}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Permission}. *)
 
 (** {1:class Class} *)
 
@@ -24,6 +25,8 @@
     in a dialog and to provide the mechanism to invoke when that button is
     clicked. *)
 class type permission_t = object
+  (** {2:methods Methods} *)
+
   method acquire : Cancellable.cancellable_t option -> (bool, GError.t) result
   (** Attempts to acquire the permission represented by [permission].
 
@@ -94,6 +97,8 @@ class type permission_t = object
       This is the second half of the asynchronous version of
       g_permission_release(). *)
 
+  (** {2:conversions Conversions} *)
+
   method as_permission : Raw.Permission.t
 end
 
@@ -116,3 +121,8 @@ class permission : Raw.Permission.t -> permission_t
     used to decide if it is appropriate to show a “Click here to unlock” button
     in a dialog and to provide the mechanism to invoke when that button is
     clicked. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

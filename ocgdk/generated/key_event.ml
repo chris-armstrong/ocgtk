@@ -1,5 +1,7 @@
 class type key_event_t = object
-  inherit App_launch_context_cycle_de440b34.event_t
+  inherit Event.event_t
+
+  (** {2:methods Methods} *)
 
   method get_consumed_modifiers : unit -> Enums.modifiertype
   (** Extracts the consumed modifiers from a key event. *)
@@ -29,13 +31,15 @@ class type key_event_t = object
 
       Note that we ignore Caps Lock for matching. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_key_event : Raw.Key_event.t
 end
 
 (* High-level class for KeyEvent *)
 class key_event (obj : Raw.Key_event.t) : key_event_t =
   object (self)
-    inherit App_launch_context_cycle_de440b34.event (obj :> Raw.Event.t)
+    inherit Event.event (obj :> Raw.Event.t)
 
     method get_consumed_modifiers : unit -> Enums.modifiertype =
       fun () -> Raw.Key_event.get_consumed_modifiers obj

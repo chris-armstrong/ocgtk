@@ -9,6 +9,14 @@
 
 (** {b The methods, signals and properties of a [SearchEntry].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Editable.class-type-editable_t}Ocgtk.Editable}
+
     A single-line text entry widget for use as a search entry.
 
     The main API for interacting with a [GtkSearchEntry] as entry is the
@@ -60,11 +68,10 @@
 
     [GtkSearchEntry] uses the [Gtk.AccessibleRole.search_box] role. *)
 class type search_entry_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Editable.editable_t
+
+  (** {2:signals Signals} *)
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -116,17 +123,15 @@ class type search_entry_t = object
 
       The default bindings for this signal is <kbd>Escape</kbd>. *)
 
+  (** {2:methods Methods} *)
+
   method get_input_hints : unit -> Enums.inputhints
   (** Gets the input purpose for [entry]. *)
 
   method get_input_purpose : unit -> Enums.inputpurpose
   (** Gets the input purpose of [entry]. *)
 
-  method get_key_capture_widget :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_key_capture_widget : unit -> Widget.widget_t option
   (** Gets the widget that [entry] is capturing key events from. *)
 
   method get_placeholder_text : unit -> string option
@@ -142,11 +147,7 @@ class type search_entry_t = object
   method set_input_purpose : Enums.inputpurpose -> unit
   (** Sets the input purpose of [entry]. *)
 
-  method set_key_capture_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_key_capture_widget : Widget.widget_t option -> unit
   (** Sets [widget] as the widget that [entry] will capture key events from.
 
       Key events are consumed by the search entry to start or continue a search.
@@ -168,11 +169,15 @@ class type search_entry_t = object
   (** Set the delay to be used between the last keypress and the
       [Gtk.SearchEntry::search-changed] signal being emitted. *)
 
+  (** {2:properties Properties} *)
+
   method activates_default : bool
   (** Whether to activate the default widget when Enter is pressed. *)
 
   method set_activates_default : bool -> unit
   (** Whether to activate the default widget when Enter is pressed. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_search_entry : Raw.Search_entry.t
 end

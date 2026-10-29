@@ -9,6 +9,13 @@
 
 (** {b The methods, signals and properties of a [Fixed].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     Places its child widgets at fixed positions and with fixed sizes.
 
     [GtkFixed] performs no automatic layout management.
@@ -45,50 +52,34 @@
     prefer the simplicity of [GtkFixed], by all means use the widget. But you
     should be aware of the tradeoffs. *)
 class type fixed_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:methods Methods} *)
 
   method get_child_transform :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Ocgsk.Transform.transform_t option
+    Widget.widget_t -> Ocgsk.Transform.transform_t option
   (** Retrieves the transformation for [widget] set using
       gtk_fixed_set_child_transform(). *)
 
-  method move :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    float ->
-    float ->
-    unit
+  method move : Widget.widget_t -> float -> float -> unit
   (** Sets a translation transformation to the given [x] and [y] coordinates to
       the child [widget] of the [GtkFixed]. *)
 
-  method put :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    float ->
-    float ->
-    unit
+  method put : Widget.widget_t -> float -> float -> unit
   (** Adds a widget to a [GtkFixed] at the given position. *)
 
-  method remove :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method remove : Widget.widget_t -> unit
   (** Removes a child from [fixed]. *)
 
   method set_child_transform :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Ocgsk.Transform.transform_t option ->
-    unit
+    Widget.widget_t -> Ocgsk.Transform.transform_t option -> unit
   (** Sets the transformation for [widget].
 
       This is a convenience function that retrieves the [Gtk.FixedLayoutChild]
       instance associated to [widget] and calls
       [Gtk.FixedLayoutChild.set_transform]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_fixed : Raw.Fixed.t
 end

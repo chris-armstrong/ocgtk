@@ -4,12 +4,16 @@
     implement client-side and server-side DTLS, respectively.
 
     Its methods, signals and properties are on {!class-type-dtls_connection_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgio.Raw.Dtls_connection}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Dtls_connection}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [DtlsConnection].}
+
+    Requires:
+    - {{!Ocgio.Datagram_based.class-type-datagram_based_t}Ocgio.Datagram_based}
 
     [GDtlsConnection] is the base DTLS connection class type, which wraps a
     [Gio.DatagramBased] and provides DTLS encryption on top of it. Its
@@ -31,6 +35,8 @@
     [Gio.Socket.close] is called on the base socket, the [GDtlsConnection] will
     not raise a [G_IO_ERROR_NOT_CONNECTED] error on further I/O. *)
 class type dtls_connection_t = object
+  (** {2:signals Signals} *)
+
   method on_accept_certificate :
     ?after:bool ->
     callback:
@@ -78,6 +84,8 @@ class type dtls_connection_t = object
       this, and can simply block in the signal handler until the UI thread
       returns an answer. *)
 
+  (** {2:methods Methods} *)
+
   method close : Cancellable.cancellable_t option -> (bool, GError.t) result
   (** Close the DTLS connection. This is equivalent to calling
       g_dtls_connection_shutdown() to shut down both sides of the connection.
@@ -124,16 +132,11 @@ class type dtls_connection_t = object
       displayed to the user for informative purposes only, and parsing it is not
       recommended. *)
 
-  method get_database :
-    unit ->
-    Tls_connection_and__tls_database_and__tls_interaction.tls_database_t option
+  method get_database : unit -> Tls_database.tls_database_t option
   (** Gets the certificate database that [conn] uses to verify peer
       certificates. See g_dtls_connection_set_database(). *)
 
-  method get_interaction :
-    unit ->
-    Tls_connection_and__tls_database_and__tls_interaction.tls_interaction_t
-    option
+  method get_interaction : unit -> Tls_interaction.tls_interaction_t option
   (** Get the object that will be used to interact with the user. It will be
       used for things like prompting the user for passwords. If [NULL] is
       returned, then no user interaction will occur for this connection. *)
@@ -234,9 +237,7 @@ class type dtls_connection_t = object
       you can tell that the server requested one by the fact that
       g_dtls_client_connection_get_accepted_cas() will return non-[NULL].) *)
 
-  method set_database :
-    Tls_connection_and__tls_database_and__tls_interaction.tls_database_t option ->
-    unit
+  method set_database : Tls_database.tls_database_t option -> unit
   (** Sets the certificate database that is used to verify peer certificates.
       This is set to the default database by default. See
       g_tls_backend_get_default_database(). If set to [NULL], then peer
@@ -248,10 +249,7 @@ class type dtls_connection_t = object
       There are nonintuitive security implications when using a non-default
       database. See [GDtlsConnection:database] for details. *)
 
-  method set_interaction :
-    Tls_connection_and__tls_database_and__tls_interaction.tls_interaction_t
-    option ->
-    unit
+  method set_interaction : Tls_interaction.tls_interaction_t option -> unit
   (** Set the object that will be used to interact with the user. It will be
       used for things like prompting the user for passwords.
 
@@ -316,9 +314,13 @@ class type dtls_connection_t = object
   (** Finish an asynchronous TLS shutdown operation. See
       g_dtls_connection_shutdown() for more information. *)
 
+  (** {2:properties Properties} *)
+
   method base_socket : Datagram_based.datagram_based_t
   (** The [GDatagramBased] that the connection wraps. Note that this may be any
       implementation of [GDatagramBased], not just a [GSocket]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_dtls_connection : Raw.Dtls_connection.t
 end
@@ -347,3 +349,8 @@ class dtls_connection : Raw.Dtls_connection.t -> dtls_connection_t
     is up to the caller to do that if they wish. If they do not, and
     [Gio.Socket.close] is called on the base socket, the [GDtlsConnection] will
     not raise a [G_IO_ERROR_NOT_CONNECTED] error on further I/O. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

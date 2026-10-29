@@ -4,8 +4,9 @@
 (** Represents a widget tooltip.
 
     Its methods, signals and properties are on {!class-type-tooltip_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgtk.Raw.Tooltip}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Tooltip}. *)
 
 (** {1:class Class} *)
 
@@ -66,3 +67,8 @@ class tooltip : Raw.Tooltip.t -> tooltip_t
 
     - Return [TRUE] from your ::query-tooltip handler. This causes the tooltip
       to be show. If you return [FALSE], it will not be shown. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

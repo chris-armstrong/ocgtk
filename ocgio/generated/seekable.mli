@@ -2,8 +2,9 @@
     or [Gio.OutputStream]) that support seeking.
 
     Its methods, signals and properties are on {!class-type-seekable_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgio.Raw.Seekable}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Seekable}. *)
 
 (** {1:class Class} *)
 
@@ -22,6 +23,8 @@
     [lseek()]) on a normal file. Seeking past the end and writing data will
     usually cause the stream to resize by introducing zero bytes. *)
 class type seekable_t = object
+  (** {2:methods Methods} *)
+
   method can_seek : unit -> bool
   (** Tests if the stream supports the [GSeekableIface]. *)
 
@@ -44,6 +47,8 @@ class type seekable_t = object
       operation was partially finished when the operation was cancelled the
       partial result will be returned, without an error. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_seekable : Raw.Seekable.t
 end
 
@@ -64,3 +69,8 @@ class seekable : Raw.Seekable.t -> seekable_t
     [GSeekable] on resizable streams is approximately the same as POSIX
     [lseek()]) on a normal file. Seeking past the end and writing data will
     usually cause the stream to resize by introducing zero bytes. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

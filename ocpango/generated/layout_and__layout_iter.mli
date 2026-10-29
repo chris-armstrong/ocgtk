@@ -31,6 +31,8 @@
     It is possible, as well, to ignore the 2-D setup, and simply treat the
     results of a [PangoLayout] as a list of lines. *)
 class type layout_t = object
+  (** {2:methods Methods} *)
+
   method context_changed : unit -> unit
   (** Forces recomputation of any state in the [PangoLayout] that might depend
       on the layout's context.
@@ -63,8 +65,7 @@ class type layout_t = object
   method get_character_count : unit -> int
   (** Returns the number of Unicode characters in the the text of [layout]. *)
 
-  method get_context :
-    unit -> Context_and__font_and__font_map_and__fontset.context_t
+  method get_context : unit -> Context.context_t
   (** Retrieves the [PangoContext] used for this layout. *)
 
   method get_direction : int -> Enums.direction
@@ -434,6 +435,8 @@ class type layout_t = object
       It is mostly intended for use inside a debugger to quickly dump a layout
       to a file for later inspection. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_layout : Raw.Layout.t
 end
 
@@ -447,6 +450,8 @@ end
     The [PangoLayoutIter] structure is opaque, and has no user-visible fields.
 *)
 and layout_iter_t = object
+  (** {2:methods Methods} *)
+
   method at_last_line : unit -> bool
   (** Determines whether [iter] is on the last line of the layout. *)
 
@@ -508,6 +513,8 @@ and layout_iter_t = object
 
       If [iter] was already at the end of the layout, returns [FALSE]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_layout_iter : Raw.Layout_iter.t
 end
 
@@ -517,6 +524,6 @@ class layout : Raw.Layout.t -> layout_t
 
 and layout_iter : Raw.Layout_iter.t -> layout_iter_t
 
-val new_ : Context_and__font_and__font_map_and__fontset.context_t -> layout_t
+val new_ : Context.context_t -> layout_t
 (** Create a new [PangoLayout] object with attributes initialized to default
     values for a particular [PangoContext]. *)

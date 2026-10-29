@@ -8,15 +8,11 @@
 (** {1:class Class} *)
 
 class type tree_expander_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  (** {2:methods Methods} *)
+
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget displayed by [self]. *)
 
   method get_hide_expander : unit -> bool
@@ -41,11 +37,7 @@ class type tree_expander_t = object
   method get_list_row : unit -> Tree_list_row.tree_list_row_t option
   (** Gets the list row managed by [self]. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the content widget to display. *)
 
   method set_hide_expander : bool -> unit
@@ -62,10 +54,18 @@ class type tree_expander_t = object
   method set_list_row : Tree_list_row.tree_list_row_t option -> unit
   (** Sets the tree list row that this expander should manage. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_tree_expander : Raw.Tree_expander.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [TreeExpander].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      Provides an expander for a tree-like list.\n\n\
      It is typically placed as a bottommost child into a [GtkListView]\n\
      to allow users to expand and collapse children in a list with a\n\

@@ -1,8 +1,9 @@
 (** Stores a single event in a motion history.
 
     Its methods, signals and properties are on {!class-type-time_coord_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgdk.Raw.Time_coord}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Time_coord}. *)
 
 (** {1:class Class} *)
 
@@ -15,6 +16,8 @@
     individual axis values, use the values of the values of the [Gdk.AxisUse]
     enumerations as indices. *)
 class type time_coord_t = object
+  (** {2:conversions Conversions} *)
+
   method as_time_coord : Raw.Time_coord.t
 end
 
@@ -29,3 +32,8 @@ class time_coord : Raw.Time_coord.t -> time_coord_t
     from the [Gdk.AxisFlags] enumeration is set in the [flags] To access
     individual axis values, use the values of the values of the [Gdk.AxisUse]
     enumerations as indices. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

@@ -4,13 +4,17 @@
 (** Represents the platform-specific draw context.
 
     Its methods, signals and properties are on {!class-type-cairo_context_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgdk.Raw.Cairo_context}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Cairo_context}. *)
 
 (** {1:class Class} *)
 
 class type cairo_context_t = App_launch_context_cycle_de440b34.cairo_context_t
 (** {b The methods, signals and properties of a [CairoContext].}
+
+    Inherits from:
+    {{!Ocgdk.Draw_context.class-type-draw_context_t}Ocgdk.Draw_context}
 
     Represents the platform-specific draw context.
 
@@ -28,3 +32,8 @@ class cairo_context : Raw.Cairo_context.t -> cairo_context_t
     [GdkCairoContext]s are created for a surface using
     [Gdk.Surface.create_cairo_context], and the context can then be used to draw
     on that surface. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

@@ -2,12 +2,18 @@
     file handle.
 
     Its methods, signals and properties are on {!class-type-file_io_stream_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgio.Raw.File_io_stream}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.File_io_stream}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [FileIOStream].}
+
+    Inherits from: {{!Ocgio.Io_stream.class-type-io_stream_t}Ocgio.Io_stream}
+
+    Implements:
+    - {{!Ocgio.Seekable.class-type-seekable_t}Ocgio.Seekable}
 
     [GFileIOStream] provides I/O streams that both read and write to the same
     file handle.
@@ -30,6 +36,8 @@
 class type file_io_stream_t = object
   inherit Io_stream.io_stream_t
   inherit Seekable.seekable_t
+
+  (** {2:methods Methods} *)
 
   method get_etag : unit -> string option
   (** Gets the entity tag for the file when it has been written. This must be
@@ -63,6 +71,8 @@ class type file_io_stream_t = object
   (** Finalizes the asynchronous query started by
       g_file_io_stream_query_info_async(). *)
 
+  (** {2:conversions Conversions} *)
+
   method as_file_io_stream : Raw.File_io_stream.t
 end
 
@@ -89,3 +99,8 @@ class file_io_stream : Raw.File_io_stream.t -> file_io_stream_t
     The default implementation of all the [GFileIOStream] operations and the
     implementation of [Gio.Seekable] just call into the same operations on the
     output stream. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

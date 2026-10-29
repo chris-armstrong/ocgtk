@@ -9,6 +9,13 @@
 
 (** {b The methods, signals and properties of a [ActionBar].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     Presents contextual actions.
 
     An example GtkActionBar
@@ -48,45 +55,28 @@
 
     Each of the boxes contains children packed for that side. *)
 class type action_bar_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
-  method get_center_widget :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  (** {2:methods Methods} *)
+
+  method get_center_widget : unit -> Widget.widget_t option
   (** Retrieves the center bar widget of the bar. *)
 
   method get_revealed : unit -> bool
   (** Gets whether the contents of the action bar are revealed. *)
 
-  method pack_end :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method pack_end : Widget.widget_t -> unit
   (** Adds a child to the action bar, packed with reference to the end of the
       action bar. *)
 
-  method pack_start :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method pack_start : Widget.widget_t -> unit
   (** Adds a child to the action, packed with reference to the start of the
       action bar. *)
 
-  method remove :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method remove : Widget.widget_t -> unit
   (** Removes a child from the action bar. *)
 
-  method set_center_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_center_widget : Widget.widget_t option -> unit
   (** Sets the center widget for the action bar. *)
 
   method set_revealed : bool -> unit
@@ -95,6 +85,8 @@ class type action_bar_t = object
       Note: this does not show or hide the action bar in the
       [Gtk.Widget:visible] sense, so revealing has no effect if the action bar
       is hidden. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_action_bar : Raw.Action_bar.t
 end

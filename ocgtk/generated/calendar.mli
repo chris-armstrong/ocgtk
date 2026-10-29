@@ -9,6 +9,13 @@
 
 (** {b The methods, signals and properties of a [Calendar].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     Displays a Gregorian calendar, one month at a time.
 
     An example GtkCalendar
@@ -60,9 +67,9 @@
 
     Marked day labels get the :selected state assigned. *)
 class type calendar_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:signals Signals} *)
 
   method on_day_selected :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -83,6 +90,8 @@ class type calendar_t = object
   method on_prev_year :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when user switches to the previous year. *)
+
+  (** {2:methods Methods} *)
 
   method clear_marks : unit -> unit
   (** Remove all visual markers. *)
@@ -149,6 +158,8 @@ class type calendar_t = object
 
   method unmark_day : int -> unit
   (** Removes the visual marker from a particular day. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_calendar : Raw.Calendar.t
 end

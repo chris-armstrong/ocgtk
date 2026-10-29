@@ -1,12 +1,15 @@
 (** The interface for GTK input methods.
 
     Its methods, signals and properties are on {!class-type-im_context_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.Im_context}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Im_context}. *)
 
 (** {1:class Class} *)
 
 class type im_context_t = object
+  (** {2:signals Signals} *)
+
   method on_commit :
     ?after:bool ->
     callback:(str:string -> unit) ->
@@ -54,6 +57,8 @@ class type im_context_t = object
 
       The callback should set the input method surrounding context by calling
       the [Gtk.IMContext.set_surrounding] method. *)
+
+  (** {2:methods Methods} *)
 
   method activate_osk : Ocgdk.Event.event_t option -> bool
   (** Requests the platform to show an on-screen keyboard for user input.
@@ -118,11 +123,7 @@ class type im_context_t = object
 
       This will typically cause the input method to clear the preedit state. *)
 
-  method set_client_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_client_widget : Widget.widget_t option -> unit
   (** Set the client widget for the input context.
 
       This is the [GtkWidget] holding the input focus. This widget is used in
@@ -155,6 +156,8 @@ class type im_context_t = object
       use some other method to display feedback, such as displaying it in a
       child of the root window. *)
 
+  (** {2:properties Properties} *)
+
   method input_hints : Enums.inputhints
   (** Additional hints that allow input methods to fine-tune their behaviour. *)
 
@@ -172,6 +175,8 @@ class type im_context_t = object
 
       This property can be used by on-screen keyboards and other input methods
       to adjust their behaviour. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_im_context : Raw.Im_context.t
 end
@@ -229,3 +234,8 @@ class im_context : Raw.Im_context.t -> im_context_t
  provides a [GIOExtension] for the extension point named \"gtk-im-module\".\n\n\
  To connect a widget to the users preferred input method, you should use\n\
  [Gtk.IMMulticontext]."]
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

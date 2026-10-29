@@ -2,8 +2,9 @@
     internal type used to coordinate the different classes implemented by a TLS
     backend.
 
-    Its methods, signals and properties are on {!class-type-tls_backend_t}. The
-    functions it is built on are in {!Ocgio.Raw.Tls_backend}. *)
+    Its methods, signals and properties are on {!class-type-tls_backend_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgio.Raw.Tls_backend}. *)
 
 (** {1:class Class} *)
 
@@ -13,14 +14,15 @@
     internal type used to coordinate the different classes implemented by a TLS
     backend. *)
 class type tls_backend_t = object
+  (** {2:methods Methods} *)
+
   method get_certificate_type : unit -> Gobject.Type.t
   (** Gets the [GType] of [backend]'s [GTlsCertificate] implementation. *)
 
   method get_client_connection_type : unit -> Gobject.Type.t
   (** Gets the [GType] of [backend]'s [GTlsClientConnection] implementation. *)
 
-  method get_default_database :
-    unit -> Tls_connection_and__tls_database_and__tls_interaction.tls_database_t
+  method get_default_database : unit -> Tls_database.tls_database_t
   (** Gets the default [GTlsDatabase] used to verify TLS connections. *)
 
   method get_dtls_client_connection_type : unit -> Gobject.Type.t
@@ -35,9 +37,7 @@ class type tls_backend_t = object
   method get_server_connection_type : unit -> Gobject.Type.t
   (** Gets the [GType] of [backend]'s [GTlsServerConnection] implementation. *)
 
-  method set_default_database :
-    Tls_connection_and__tls_database_and__tls_interaction.tls_database_t option ->
-    unit
+  method set_default_database : Tls_database.tls_database_t option -> unit
   (** Set the default [GTlsDatabase] used to verify TLS connections
 
       Any subsequent call to g_tls_backend_get_default_database() will return
@@ -57,8 +57,15 @@ class type tls_backend_t = object
     "Checks if TLS is supported; if this returns [FALSE] for the default\n\
      [GTlsBackend], it means no \"real\" TLS backend is available."]
 
+  (** {2:conversions Conversions} *)
+
   method as_tls_backend : Raw.Tls_backend.t
 end
 
 class tls_backend : Raw.Tls_backend.t -> tls_backend_t
 (** Wraps a raw handle of {!Ocgio.Raw.Tls_backend.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

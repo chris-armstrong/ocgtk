@@ -1,9 +1,13 @@
 class type toggle_button_t = object
   inherit Button.button_t
 
+  (** {2:signals Signals} *)
+
   method on_toggled :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted whenever the [GtkToggleButton]'s state is changed. *)
+
+  (** {2:methods Methods} *)
 
   method get_active : unit -> bool
   (** Queries a [GtkToggleButton] and returns its current state.
@@ -34,6 +38,8 @@ class type toggle_button_t = object
 
   method toggled : unit -> unit
   (** Emits the ::toggled signal on the [GtkToggleButton]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_toggle_button : Raw.Toggle_button.t
 end

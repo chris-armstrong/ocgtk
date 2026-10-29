@@ -9,6 +9,17 @@
 
 (** {b The methods, signals and properties of a [FontChooserDialog].}
 
+    Inherits from: {{!Ocgtk.Dialog.class-type-dialog_t}Ocgtk.Dialog}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Font_chooser.class-type-font_chooser_t}Ocgtk.Font_chooser}
+    - {{!Ocgtk.Native.class-type-native_t}Ocgtk.Native}
+    - {{!Ocgtk.Root.class-type-root_t}Ocgtk.Root}
+    - {{!Ocgtk.Shortcut_manager.class-type-shortcut_manager_t}Ocgtk.Shortcut_manager}
+
     The [GtkFontChooserDialog] widget is a dialog for selecting a font.
 
     An example GtkFontChooserDialog
@@ -30,6 +41,9 @@
 class type font_chooser_dialog_t = object
   inherit Dialog.dialog_t
   inherit Font_chooser.font_chooser_t
+
+  (** {2:conversions Conversions} *)
+
   method as_font_chooser_dialog : Raw.Font_chooser_dialog.t
 end
 
@@ -59,8 +73,5 @@ class font_chooser_dialog : Raw.Font_chooser_dialog.t -> font_chooser_dialog_t
 
 (** {1:constructors Constructors} *)
 
-val new_ :
-  string option ->
-  Application_and__window_and__window_group.window_t option ->
-  font_chooser_dialog_t
+val new_ : string option -> Window.window_t option -> font_chooser_dialog_t
 (** Creates a new [GtkFontChooserDialog]. *)

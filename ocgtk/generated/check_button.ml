@@ -1,9 +1,8 @@
 class type check_button_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Actionable.actionable_t
+
+  (** {2:signals Signals} *)
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -22,14 +21,12 @@ class type check_button_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the buttons's [Gtk.CheckButton:active] property changes. *)
 
+  (** {2:methods Methods} *)
+
   method get_active : unit -> bool
   (** Returns whether the check button is active. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [button] or [NULL] if [CheckButton:label] is set.
   *)
 
@@ -46,11 +43,7 @@ class type check_button_t = object
   method set_active : bool -> unit
   (** Changes the check buttons active state. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [button].
 
       Note that by using this API, you take full responsibility for setting up
@@ -95,17 +88,15 @@ class type check_button_t = object
       indicates a mnemonic accelerator key. This behavior is similar to
       [Gtk.Label:use-underline]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_check_button : Raw.Check_button.t
 end
 
 (* High-level class for CheckButton *)
 class check_button (obj : Raw.Check_button.t) : check_button_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
-
+    inherit Widget.widget (obj :> Raw.Widget.t)
     inherit Actionable.actionable (Raw.Actionable.from_gobject obj)
 
     method on_activate ?(after = false) ~callback () =
@@ -116,18 +107,10 @@ class check_button (obj : Raw.Check_button.t) : check_button_t =
 
     method get_active : unit -> bool = fun () -> Raw.Check_button.get_active obj
 
-    method get_child :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_child : unit -> Widget.widget_t option =
       fun () ->
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.Check_button.get_child obj)
 
     method get_inconsistent : unit -> bool =
@@ -142,11 +125,7 @@ class check_button (obj : Raw.Check_button.t) : check_button_t =
     method set_active : bool -> unit =
       fun setting -> Raw.Check_button.set_active obj setting
 
-    method set_child :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        unit =
+    method set_child : Widget.widget_t option -> unit =
       fun child ->
         let child = Option.map (fun c -> c#as_widget) child in
         Raw.Check_button.set_child obj child

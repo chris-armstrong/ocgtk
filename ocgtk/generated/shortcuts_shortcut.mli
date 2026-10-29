@@ -3,21 +3,28 @@
 
     Its methods, signals and properties are on
     {!class-type-shortcuts_shortcut_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgtk.Raw.Shortcuts_shortcut}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.Shortcuts_shortcut}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [ShortcutsShortcut].}
+
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
 
     A [GtkShortcutsShortcut] represents a single keyboard shortcut or gesture
     with a short text.
 
     This widget is only meant to be used with [GtkShortcutsWindow]. *)
 class type shortcuts_shortcut_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:properties Properties} *)
 
   method set_accel_size_group : Size_group.size_group_t -> unit
   (** The size group for the accelerator portion of this shortcut.
@@ -163,6 +170,8 @@ class type shortcuts_shortcut_t = object
       This is used internally by GTK, and must not be modified by applications.
   *)
 
+  (** {2:conversions Conversions} *)
+
   method as_shortcuts_shortcut : Raw.Shortcuts_shortcut.t
 end
 
@@ -175,3 +184,8 @@ class shortcuts_shortcut : Raw.Shortcuts_shortcut.t -> shortcuts_shortcut_t
     with a short text.
 
     This widget is only meant to be used with [GtkShortcutsWindow]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

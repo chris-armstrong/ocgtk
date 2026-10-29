@@ -14,6 +14,8 @@ class type list_store_t = object
   inherit Tree_model.tree_model_t
   inherit Tree_sortable.tree_sortable_t
 
+  (** {2:methods Methods} *)
+
   method clear : unit -> unit
   (** Removes all rows from the list store. *)
 
@@ -62,10 +64,19 @@ class type list_store_t = object
   (** Swaps [a] and [b] in [store]. Note that this function only works with
       unsorted stores. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_list_store : Raw.List_store.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [ListStore].}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - {{!Ocgtk.Tree_drag_dest.class-type-tree_drag_dest_t}Ocgtk.Tree_drag_dest}\n\
+     - \
+     {{!Ocgtk.Tree_drag_source.class-type-tree_drag_source_t}Ocgtk.Tree_drag_source}\n\
+     - {{!Ocgtk.Tree_model.class-type-tree_model_t}Ocgtk.Tree_model}\n\
+     - {{!Ocgtk.Tree_sortable.class-type-tree_sortable_t}Ocgtk.Tree_sortable}\n\n\
      A list-like data structure that can be used with the [Gtk.TreeView].\n\n\
      The [GtkListStore] object is a list model for use with a [GtkTreeView]\n\
      widget.  It implements the [GtkTreeModel] interface, and consequentialy,\n\

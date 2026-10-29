@@ -9,6 +9,14 @@
 
 (** {b The methods, signals and properties of a [EditableLabel].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Editable.class-type-editable_t}Ocgtk.Editable}
+
     Allows users to edit the displayed text by switching to an “edit mode”.
 
     An example GtkEditableLabel
@@ -49,11 +57,10 @@
     For all the subnodes added to the text node in various situations, see
     [Gtk.Text]. *)
 class type editable_label_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Editable.editable_t
+
+  (** {2:methods Methods} *)
 
   method get_editing : unit -> bool
   (** Returns whether the label is currently in “editing mode”. *)
@@ -68,6 +75,8 @@ class type editable_label_t = object
       [Gtk.Editable:text] property value, otherwise the resulting text is
       discarded and the label will keep its previous [Gtk.Editable:text]
       property value. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_editable_label : Raw.Editable_label.t
 end

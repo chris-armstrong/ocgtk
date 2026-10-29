@@ -8,9 +8,9 @@
 (** {1:class Class} *)
 
 class type drop_target_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .event_controller_t
+  inherit Event_controller.event_controller_t
+
+  (** {2:signals Signals} *)
 
   method on_accept :
     ?after:bool ->
@@ -69,6 +69,8 @@ class type drop_target_t = object
     Gobject.Signal.handler_id
   (** Emitted while the pointer is moving over the drop target. *)
 
+  (** {2:methods Methods} *)
+
   method get_actions : unit -> Ocgdk.Enums.dragaction
   (** Gets the actions that this drop target supports. *)
 
@@ -111,10 +113,14 @@ class type drop_target_t = object
   method set_preload : bool -> unit
   (** Sets whether data should be preloaded on hover. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_drop_target : Raw.Drop_target.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [DropTarget].}\n\n\
+     Inherits from: \
+     {{!Ocgtk.Event_controller.class-type-event_controller_t}Ocgtk.Event_controller}\n\n\
      An event controller to receive Drag-and-Drop operations.\n\n\
      The most basic way to use a [GtkDropTarget] to receive drops on a\n\
      widget is to create it via [Gtk.DropTarget.new], passing in the\n\

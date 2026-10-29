@@ -4,6 +4,8 @@
 class type app_launch_context_t = object
   inherit Ocgio.App_launch_context.app_launch_context_t
 
+  (** {2:methods Methods} *)
+
   method set_desktop : int -> unit
   (** Sets the workspace on which applications will be launched.
 
@@ -47,11 +49,15 @@ class type app_launch_context_t = object
       newly launched application when the user is busy typing in another window.
       This is also known as 'focus stealing prevention'. *)
 
+  (** {2:properties Properties} *)
+
   method display : display_t
   (** The display that the [GdkAppLaunchContext] is on. *)
 end
 
 and cairo_context_t = object
+  (** {2:methods Methods} *)
+
   method cairo_create : unit -> Occairo.Context.context_t option
   (** Retrieves a Cairo context to be used to draw on the [GdkSurface] of
       [context].
@@ -62,13 +68,19 @@ and cairo_context_t = object
       The returned context is guaranteed to be valid until
       [Gdk.DrawContext.end_frame] is called. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_cairo_context : Raw.Cairo_context.t
 end
 
 and clipboard_t = object
+  (** {2:signals Signals} *)
+
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the clipboard changes ownership. *)
+
+  (** {2:methods Methods} *)
 
   method get_content : unit -> Content_provider.content_provider_t option
   (** Returns the [GdkContentProvider] currently set on [clipboard].
@@ -134,10 +146,14 @@ and clipboard_t = object
 
       See [Gdk.Clipboard.store_async]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_clipboard : Raw.Clipboard.t
 end
 
 and device_t = object
+  (** {2:signals Signals} *)
+
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted either when the number of either axes or keys changes.
@@ -153,6 +169,8 @@ and device_t = object
     unit ->
     Gobject.Signal.handler_id
   (** Emitted on pen/eraser devices whenever tools enter or leave proximity. *)
+
+  (** {2:methods Methods} *)
 
   method get_active_layout_index : unit -> int
   (** Retrieves the index of the active layout of the keyboard.
@@ -264,13 +282,19 @@ and device_t = object
 
       This is only relevant for keyboard devices. *)
 
+  (** {2:properties Properties} *)
+
   method n_axes : int
   (** Number of axes in the device. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_device : Raw.Device.t
 end
 
 and display_t = object
+  (** {2:signals Signals} *)
+
   method on_closed :
     ?after:bool ->
     callback:(is_error:bool -> unit) ->
@@ -304,6 +328,8 @@ and display_t = object
     unit ->
     Gobject.Signal.handler_id
   (** Emitted whenever a setting changes its value. *)
+
+  (** {2:methods Methods} *)
 
   method beep : unit -> unit
   (** Emits a short beep on [display] *)
@@ -480,10 +506,14 @@ and display_t = object
       This is most useful for X11. On windowing systems where requests are
       handled synchronously, this function will do nothing. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_display : Raw.Display.t
 end
 
 and draw_context_t = object
+  (** {2:methods Methods} *)
+
   method begin_frame : Occairo.Region.region_t -> unit
   (** Indicates that you are beginning the process of redrawing [region] on the
       [context]'s surface.
@@ -542,10 +572,14 @@ and draw_context_t = object
       [Gdk.DrawContext.end_frame]. In this situation, drawing commands may be
       effecting the contents of the [context]'s surface. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_draw_context : Raw.Draw_context.t
 end
 
 and event_t = object
+  (** {2:methods Methods} *)
+
   method get_device : unit -> device_t option
   (** Returns the device of an event. *)
 
@@ -612,10 +646,14 @@ and event_t = object
 
       If the last reference is dropped, the structure is freed. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_event : Raw.Event.t
 end
 
 and gl_context_t = object
+  (** {2:methods Methods} *)
+
   method get_allowed_apis : unit -> Enums.glapi
   (** Gets the allowed APIs set via gdk_gl_context_set_allowed_apis(). *)
 
@@ -741,13 +779,19 @@ and gl_context_t = object
       calling [Gdk.GLContext.realize] to decide whether to use the OpenGL or
       OpenGL ES API, extensions, or shaders. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_gl_context : Raw.Gl_context.t
 end
 
 and monitor_t = object
+  (** {2:signals Signals} *)
+
   method on_invalidate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the output represented by [monitor] gets disconnected. *)
+
+  (** {2:methods Methods} *)
 
   method get_connector : unit -> string option
   [@@ocaml.doc
@@ -816,10 +860,14 @@ and monitor_t = object
       The [monitor] becomes invalid when the physical monitor is unplugged or
       removed. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_monitor : Raw.Monitor.t
 end
 
 and seat_t = object
+  (** {2:signals Signals} *)
+
   method on_device_added :
     ?after:bool ->
     callback:(device:device_t -> unit) ->
@@ -854,6 +902,8 @@ and seat_t = object
     Gobject.Signal.handler_id
   (** Emitted whenever a tool is no longer known to this [seat]. *)
 
+  (** {2:methods Methods} *)
+
   method get_capabilities : unit -> Enums.seatcapabilities
   (** Returns the capabilities this [GdkSeat] currently has. *)
 
@@ -872,10 +922,14 @@ and seat_t = object
   method get_tools : unit -> Device_tool.device_tool_t list
   (** Returns all [GdkDeviceTools] that are known to the application. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_seat : Raw.Seat.t
 end
 
 and surface_t = object
+  (** {2:signals Signals} *)
+
   method on_enter_monitor :
     ?after:bool ->
     callback:(monitor:monitor_t -> unit) ->
@@ -907,6 +961,8 @@ and surface_t = object
     unit ->
     Gobject.Signal.handler_id
   (** Emitted when [surface] stops being present on the monitor. *)
+
+  (** {2:methods Methods} *)
 
   method beep : unit -> unit
   (** Emits a short beep associated to [surface].
@@ -1099,16 +1155,22 @@ and surface_t = object
       background is not opaque, please update this property in your
       GtkWidgetClass.css_changed handler. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_surface : Raw.Surface.t
 end
 
 and vulkan_context_t = object
+  (** {2:signals Signals} *)
+
   method on_images_updated :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the images managed by this context have changed.
 
       Usually this means that the swapchain had to be recreated, for example in
       response to a change of the surface size. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_vulkan_context : Raw.Vulkan_context.t
 end

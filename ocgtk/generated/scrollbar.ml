@@ -1,10 +1,9 @@
 class type scrollbar_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Accessible_range.accessible_range_t
   inherit Orientable.orientable_t
+
+  (** {2:methods Methods} *)
 
   method get_adjustment : unit -> Adjustment.adjustment_t
   (** Returns the scrollbar's adjustment. *)
@@ -12,16 +11,15 @@ class type scrollbar_t = object
   method set_adjustment : Adjustment.adjustment_t option -> unit
   (** Makes the scrollbar use the given adjustment. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_scrollbar : Raw.Scrollbar.t
 end
 
 (* High-level class for Scrollbar *)
 class scrollbar (obj : Raw.Scrollbar.t) : scrollbar_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     inherit
       Accessible_range.accessible_range (Raw.Accessible_range.from_gobject obj)

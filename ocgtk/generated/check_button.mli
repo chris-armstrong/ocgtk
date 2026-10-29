@@ -8,11 +8,10 @@
 (** {1:class Class} *)
 
 class type check_button_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Actionable.actionable_t
+
+  (** {2:signals Signals} *)
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -31,14 +30,12 @@ class type check_button_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the buttons's [Gtk.CheckButton:active] property changes. *)
 
+  (** {2:methods Methods} *)
+
   method get_active : unit -> bool
   (** Returns whether the check button is active. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [button] or [NULL] if [CheckButton:label] is set.
   *)
 
@@ -55,11 +52,7 @@ class type check_button_t = object
   method set_active : bool -> unit
   (** Changes the check buttons active state. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [button].
 
       Note that by using this API, you take full responsibility for setting up
@@ -104,10 +97,19 @@ class type check_button_t = object
       indicates a mnemonic accelerator key. This behavior is similar to
       [Gtk.Label:use-underline]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_check_button : Raw.Check_button.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [CheckButton].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Actionable.class-type-actionable_t}Ocgtk.Actionable}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      Places a label next to an indicator.\n\n\
      Example GtkCheckButtons\n\n\
      A [GtkCheckButton] is created by calling either [Gtk.CheckButton.new]\n\

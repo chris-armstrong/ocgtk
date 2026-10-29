@@ -2,8 +2,9 @@
     get the default resolver.
 
     Its methods, signals and properties are on {!class-type-resolver_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgio.Raw.Resolver}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Resolver}. *)
 
 (** {1:class Class} *)
 
@@ -28,10 +29,14 @@
     This is an abstract type; subclasses of it implement different resolvers for
     different platforms and situations. *)
 class type resolver_t = object
+  (** {2:signals Signals} *)
+
   method on_reload :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the resolver notices that the system resolver configuration
       has changed. *)
+
+  (** {2:methods Methods} *)
 
   method get_timeout : unit -> int
   (** Get the timeout applied to all resolver lookups. See [GResolver:timeout].
@@ -192,6 +197,8 @@ class type resolver_t = object
   (** Set the timeout applied to all resolver lookups. See [GResolver:timeout].
   *)
 
+  (** {2:conversions Conversions} *)
+
   method as_resolver : Raw.Resolver.t
 end
 
@@ -218,3 +225,8 @@ class resolver : Raw.Resolver.t -> resolver_t
 
     This is an abstract type; subclasses of it implement different resolvers for
     different platforms and situations. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

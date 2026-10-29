@@ -9,14 +9,21 @@
 
 (** {b The methods, signals and properties of a [ShortcutLabel].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     [GtkShortcutLabel] displays a single keyboard shortcut or gesture.
 
     The main use case for [GtkShortcutLabel] is inside a [Gtk.ShortcutsWindow].
 *)
 class type shortcut_label_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:methods Methods} *)
 
   method get_accelerator : unit -> string option
   (** Retrieves the current accelerator of [self]. *)
@@ -29,6 +36,8 @@ class type shortcut_label_t = object
 
   method set_disabled_text : string -> unit
   (** Sets the text to be displayed by [self] when no accelerator is set. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_shortcut_label : Raw.Shortcut_label.t
 end

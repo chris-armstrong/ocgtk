@@ -10,6 +10,14 @@
 
 (** {b The methods, signals and properties of a [ColorButton].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Color_chooser.class-type-color_chooser_t}Ocgtk.Color_chooser}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     The [GtkColorButton] allows to open a color chooser dialog to change the
     color.
 
@@ -29,11 +37,10 @@
     a button node. To differentiate it from a plain [GtkButton], it gets the
     .color style class. *)
 class type color_button_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Color_chooser.color_chooser_t
+
+  (** {2:signals Signals} *)
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -53,6 +60,8 @@ class type color_button_t = object
       you need to react to programmatic color changes as well, use the
       notify::rgba signal. *)
 
+  (** {2:methods Methods} *)
+
   method get_modal : unit -> bool
   (** Gets whether the dialog is modal. *)
 
@@ -64,6 +73,8 @@ class type color_button_t = object
 
   method set_title : string -> unit
   (** Sets the title for the color chooser dialog. *)
+
+  (** {2:properties Properties} *)
 
   method show_editor : bool
   (** Whether the color chooser should open in editor mode.
@@ -78,6 +89,8 @@ class type color_button_t = object
       This property should be used in cases where the palette in the editor
       would be redundant, such as when the color button is already part of a
       palette. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_color_button : Raw.Color_button.t
 end

@@ -1,7 +1,7 @@
 class type event_controller_focus_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .event_controller_t
+  inherit Event_controller.event_controller_t
+
+  (** {2:signals Signals} *)
 
   method on_enter :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -25,11 +25,15 @@ class type event_controller_focus_t = object
       cases, you can monitor the [Gtk.EventControllerFocus:is-focus] property
       for changes. *)
 
+  (** {2:methods Methods} *)
+
   method contains_focus : unit -> bool
   (** Returns [TRUE] if focus is within [self] or one of its children. *)
 
   method is_focus : unit -> bool
   (** Returns [TRUE] if focus is within [self], but not one of its children. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_event_controller_focus : Raw.Event_controller_focus.t
 end
@@ -38,10 +42,7 @@ end
 class event_controller_focus (obj : Raw.Event_controller_focus.t) :
   event_controller_focus_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .event_controller
-        (obj :> Raw.Event_controller.t)
+    inherit Event_controller.event_controller (obj :> Raw.Event_controller.t)
 
     method on_enter ?(after = false) ~callback () =
       Raw.Event_controller_focus.on_enter ~after self#as_event_controller_focus

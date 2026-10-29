@@ -1,6 +1,8 @@
 class type cell_renderer_spin_t = object
   inherit Cell_renderer_text.cell_renderer_text_t
 
+  (** {2:properties Properties} *)
+
   method adjustment : Adjustment.adjustment_t
   (** The adjustment that holds the value of the spinbutton. This must be
       non-[NULL] for the cell renderer to be editable. *)
@@ -20,6 +22,8 @@ class type cell_renderer_spin_t = object
 
   method set_digits : int -> unit
   (** The number of decimal places to display. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_cell_renderer_spin : Raw.Cell_renderer_spin.t
 end

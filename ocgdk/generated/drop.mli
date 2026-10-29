@@ -1,12 +1,15 @@
 (** Represents the target of an ongoing DND operation.
 
     Its methods, signals and properties are on {!class-type-drop_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgdk.Raw.Drop}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Drop}. *)
 
 (** {1:class Class} *)
 
 class type drop_t = object
+  (** {2:methods Methods} *)
+
   method finish : Enums.dragaction -> unit
   (** Ends the drag operation after a drop.
 
@@ -28,10 +31,10 @@ class type drop_t = object
       or [Gdk.Drop.finish]. The source side will not change this value anymore
       once a drop has started. *)
 
-  method get_device : unit -> App_launch_context_cycle_de440b34.device_t
+  method get_device : unit -> Device.device_t
   (** Returns the [GdkDevice] performing the drop. *)
 
-  method get_display : unit -> App_launch_context_cycle_de440b34.display_t
+  method get_display : unit -> Display.display_t
   (** Gets the [GdkDisplay] that [self] was created for. *)
 
   method get_drag : unit -> Drag.drag_t option
@@ -44,7 +47,7 @@ class type drop_t = object
   (** Returns the [GdkContentFormats] that the drop offers the data to be read
       in. *)
 
-  method get_surface : unit -> App_launch_context_cycle_de440b34.surface_t
+  method get_surface : unit -> Surface.surface_t
   (** Returns the [GdkSurface] performing the drop. *)
 
   method read_value_finish :
@@ -67,6 +70,8 @@ class type drop_t = object
       [GDK_DRAG_ENTER] or [GDK_DRAG_MOTION] events. If the destination does not
       yet know the exact actions it supports, it should set any possible actions
       first and then later call this function again. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_drop : Raw.Drop.t
 end
@@ -101,3 +106,8 @@ class drop : Raw.Drop.t -> drop_t
  GTK provides a higher level abstraction based on top of these functions,\n\
  and so they are not normally needed in GTK applications. See the\n\
  \"Drag and Drop\" section of the GTK documentation for more information."]
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

@@ -5,8 +5,9 @@
     file system.
 
     Its methods, signals and properties are on {!class-type-mount_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgio.Raw.Mount}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Mount}. *)
 
 (** {1:class Class} *)
 
@@ -67,3 +68,8 @@ class mount : Raw.Mount.t -> mount_t
 
     Note, when porting from GnomeVFS, [GMount] is the moral equivalent of
     [GnomeVFSVolume]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

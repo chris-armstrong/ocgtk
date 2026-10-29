@@ -75,11 +75,13 @@
       {{:https://gitlab.freedesktop.org/mesa/drm/-/blob/main/include/drm/drm_fourcc.h}drm_fourcc.h}
 *)
 class type dmabuf_texture_builder_t = object
+  (** {2:methods Methods} *)
+
   method get_color_state : unit -> Raw.Color_state.t option
   (** Gets the color state previously set via
       gdk_dmabuf_texture_builder_set_color_state(). *)
 
-  method get_display : unit -> App_launch_context_cycle_de440b34.display_t
+  method get_display : unit -> Display.display_t
   (** Returns the display that this texture builder is associated with. *)
 
   method get_fd : int -> int
@@ -131,7 +133,7 @@ class type dmabuf_texture_builder_t = object
       correct colorstate based on the format. If you don't know what colorstates
       are, this is probably the right thing. *)
 
-  method set_display : App_launch_context_cycle_de440b34.display_t -> unit
+  method set_display : Display.display_t -> unit
   (** Sets the display that this texture builder is associated with.
 
       The display is used to determine the supported dma-buf formats. *)
@@ -193,6 +195,8 @@ class type dmabuf_texture_builder_t = object
   (** Sets the width of the texture.
 
       The width must be set before calling [Gdk.DmabufTextureBuilder.build]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_dmabuf_texture_builder : Raw.Dmabuf_texture_builder.t
 end

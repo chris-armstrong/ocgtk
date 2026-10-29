@@ -1,4 +1,6 @@
 class type popup_layout_t = object
+  (** {2:methods Methods} *)
+
   method equal : Raw.Popup_layout.t -> bool
   (** Check whether [layout] and [other] has identical layout properties. *)
 
@@ -44,6 +46,8 @@ class type popup_layout_t = object
 
   method set_surface_anchor : Enums.gravity -> unit
   (** Set the anchor on the popup surface. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_popup_layout : Raw.Popup_layout.t
 end

@@ -10,6 +10,14 @@
 
 (** {b The methods, signals and properties of a [LockButton].}
 
+    Inherits from: {{!Ocgtk.Button.class-type-button_t}Ocgtk.Button}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Actionable.class-type-actionable_t}Ocgtk.Actionable}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     [GtkLockButton] is a widget to obtain and revoke authorizations needed to
     operate the controls.
 
@@ -48,11 +56,15 @@
 class type lock_button_t = object
   inherit Button.button_t
 
+  (** {2:methods Methods} *)
+
   method get_permission : unit -> Ocgio.Permission.permission_t option
   (** Obtains the [GPermission] object that controls [button]. *)
 
   method set_permission : Ocgio.Permission.permission_t option -> unit
   (** Sets the [GPermission] object that controls [button]. *)
+
+  (** {2:properties Properties} *)
 
   method text_lock : string
   (** The text to display when prompting the user to lock. *)
@@ -83,6 +95,8 @@ class type lock_button_t = object
 
   method set_tooltip_unlock : string -> unit
   (** The tooltip to display when prompting the user to unlock. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_lock_button : Raw.Lock_button.t
 end

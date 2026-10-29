@@ -149,19 +149,33 @@ let has_constructors ~ctx constructors =
   List.exists constructors
     ~f:(Layer1.Layer1_constructor.should_generate_constructor ~ctx)
 
+let instantiation ~ctx ~(entity_kind : Filtering.entity_kind) class_name =
+  match entity_kind with
+  | Interface -> Entity_doc.Interface
+  | Record -> Entity_doc.Returned_only
+  | Class ->
+      let is_abstract =
+        List.exists ctx.classes ~f:(fun (cls : gir_class) ->
+            String.equal cls.class_name class_name && cls.abstract)
+      in
+      if is_abstract then Entity_doc.Abstract_class
+      else Entity_doc.Returned_only
+
+let floating_doc buf doc =
+  Option.iter (fun doc -> bprintf buf "%s\n\n" (Doc_emit.floating doc)) doc
+
 (* The heading the layer 2 module doc links to, floating between the class and
-   the constructors. *)
-let constructors_heading buf ~has_constructors =
-  if has_constructors then
-    bprintf buf "\n%s\n\n" Entity_doc.constructors_heading
+   the constructors; a class without any says why instead. *)
+let constructors_heading buf ~ctx ~entity_kind ~class_name constructors =
+  bprintf buf "\n%s\n\n" Entity_doc.constructors_heading;
+  if not (has_constructors ~ctx constructors) then
+    floating_doc buf
+      (Entity_doc.no_constructors (instantiation ~ctx ~entity_kind class_name))
 
 (* A doc written before an item, or as an attribute after the text the
    caller gives as the item's end. *)
 let doc_around doc ~item =
   Doc_emit.before_item doc ^ item ^ Doc_emit.after_item doc
-
-let floating_doc buf doc =
-  Option.iter (fun doc -> bprintf buf "%s\n\n" (Doc_emit.floating doc)) doc
 
 let class_heading buf = bprintf buf "%s\n\n" Entity_doc.class_heading
 
@@ -170,6 +184,19 @@ let description buf ~class_name ~class_doc =
   Option.iter
     (fun doc -> bprintf buf "\n%s\n" (Doc_emit.floating doc))
     (Entity_doc.description ~class_name ~class_doc)
+
+(* The context for generating a cyclic group's combined module or one of its
+   member modules: the group's members refer to each other through the
+   combined module (see [Type_mappings]). *)
+let in_cyclic_group ~ctx ~combined_module_name =
+  let members =
+    Hashtbl.fold
+      (fun name group members ->
+        if String.equal group combined_module_name then name :: members
+        else members)
+      ctx.module_groups []
+  in
+  { (Module_paths.main_library_ctx ctx) with current_cycle_classes = members }
 
 (** Generate a class module (implementation) *)
 let generate_class_module ~ctx ~class_name ~c_type ~parent_chain ~methods
@@ -223,11 +250,14 @@ let generate_class_signature ~ctx ~class_name ~class_doc ~c_type ~parent_chain
   let class_snake = sanitize_name class_name in
   let class_type_name = Utils.class_type_name class_name in
   let parent_name = match parent_chain with p :: _ -> Some p | [] -> None in
-  let class_type_doc = Entity_doc.class_type ~class_name ~class_doc in
+  let class_type_doc =
+    Entity_doc.class_type ~class_name
+      ~inheritance:
+        (Class_gen_inheritance.of_entity ~ctx ~entity_kind class_name)
+      ~class_doc
+  in
 
-  let has_constructors = has_constructors ~ctx constructors in
-  floating_doc buf
-    (Entity_doc.l2_module ~namespace ~class_name ~has_constructors ~class_doc);
+  floating_doc buf (Entity_doc.l2_module ~namespace ~class_name ~class_doc);
   class_heading buf;
 
   (* Class type definition *)
@@ -253,7 +283,7 @@ let generate_class_signature ~ctx ~class_name ~class_doc ~c_type ~parent_chain
   description buf ~class_name ~class_doc;
 
   (* Constructor wrappers *)
-  constructors_heading buf ~has_constructors;
+  constructors_heading buf ~ctx ~entity_kind ~class_name constructors;
   List.iter constructors
     ~f:
       (generate_constructor_sig ~ctx ~buf ~class_name ~class_type_name
@@ -295,7 +325,7 @@ let generate_combined_entities ~ctx ~combined_module_name ~entities
 (** Generate combined class modules for cyclic dependencies *)
 let generate_combined_class_module ~ctx ~combined_module_name ~entities
     ~parent_chain_for_entity =
-  let ctx = Module_paths.main_library_ctx ctx in
+  let ctx = in_cyclic_group ~ctx ~combined_module_name in
   let buf = Buffer.create 4096 in
   bprintf buf
     "(* GENERATED CODE - DO NOT EDIT *)\n\
@@ -370,7 +400,7 @@ let generate_combined_class_module ~ctx ~combined_module_name ~entities
 (** Generate combined class signatures for cyclic dependencies *)
 let generate_combined_class_signature ~ctx ~combined_module_name ~entities
     ~parent_chain_for_entity =
-  let ctx = Module_paths.main_library_ctx ctx in
+  let ctx = in_cyclic_group ~ctx ~combined_module_name in
   let namespace = ctx.namespace.namespace_name in
   let buf = Buffer.create 4096 in
 
@@ -387,7 +417,12 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities
       List.find_map entities ~f:(fun (e : entity) ->
           if String.equal e.name class_name then e.doc else None)
     in
-    let doc = Entity_doc.class_type ~class_name ~class_doc in
+    let doc =
+      Entity_doc.class_type ~class_name
+        ~inheritance:
+          (Class_gen_inheritance.of_entity ~ctx ~entity_kind class_name)
+        ~class_doc
+    in
     if i = 0 then
       bprintf buf "%sclass type %s = object\n" (Doc_emit.before_item doc)
         class_type_name
@@ -446,7 +481,7 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities
 
 (** Generate cyclic shim module (implementation) *)
 let generate_cyclic_shim_module ~ctx ~entity ~combined_module_name =
-  let ctx = Module_paths.main_library_ctx ctx in
+  let ctx = in_cyclic_group ~ctx ~combined_module_name in
   let buf = Buffer.create 512 in
   let layer1_module_name =
     Class_utils.get_qualified_module_name ~ctx entity.name
@@ -480,7 +515,7 @@ let generate_cyclic_shim_module ~ctx ~entity ~combined_module_name =
 
 (** Generate cyclic shim signature *)
 let generate_cyclic_shim_signature ~ctx ~entity ~combined_module_name =
-  let ctx = Module_paths.main_library_ctx ctx in
+  let ctx = in_cyclic_group ~ctx ~combined_module_name in
   let buf = Buffer.create 512 in
   let layer1_module_name =
     Class_utils.get_qualified_module_name ~ctx entity.name
@@ -497,14 +532,17 @@ let generate_cyclic_shim_signature ~ctx ~entity ~combined_module_name =
   bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
   bprintf buf "(* Shim module for %s from cyclic group %s *)\n\n" entity.name
     combined_module_name;
-  let has_constructors = has_constructors ~ctx entity.constructors in
+  let entity_kind = Filtering.entity_kind_of_entity entity in
   floating_doc buf
-    (Entity_doc.l2_module ~namespace ~class_name:entity.name ~has_constructors
+    (Entity_doc.l2_module ~namespace ~class_name:entity.name
        ~class_doc:entity.doc);
   class_heading buf;
   bprintf buf "%s\n"
     (doc_around
-       (Entity_doc.class_type ~class_name:entity.name ~class_doc:entity.doc)
+       (Entity_doc.class_type ~class_name:entity.name
+          ~inheritance:
+            (Class_gen_inheritance.of_entity ~ctx ~entity_kind entity.name)
+          ~class_doc:entity.doc)
        ~item:
          (Fmt.str "class type %s = %s.%s\n" entity_type_name
             combined_module_name entity_type_name));
@@ -517,7 +555,8 @@ let generate_cyclic_shim_signature ~ctx ~entity ~combined_module_name =
   description buf ~class_name:entity.name ~class_doc:entity.doc;
 
   (* Constructor wrapper signatures *)
-  constructors_heading buf ~has_constructors;
+  constructors_heading buf ~ctx ~entity_kind ~class_name:entity.name
+    entity.constructors;
   List.iter entity.constructors
     ~f:
       (generate_constructor_sig ~ctx ~buf ~class_name:entity.name

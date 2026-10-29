@@ -15,6 +15,7 @@ let create_test_class_with_parent ~name ~c_type ?parent:(parent_val = None) () =
     parent = parent_val;
     implements = [];
     introspectable = true;
+    abstract = false;
     constructors = [];
     methods = [];
     properties = [];
@@ -42,6 +43,7 @@ let create_test_class_with_methods ~name ~c_type ~methods () =
     parent = None;
     implements = [];
     introspectable = true;
+    abstract = false;
     constructors = [];
     methods;
     properties = [];
@@ -462,6 +464,7 @@ let create_test_class_with_signals ~name ~c_type ~signals () =
     parent = None;
     implements = [];
     introspectable = true;
+    abstract = false;
     constructors = [];
     methods = [];
     properties = [];

@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [GestureDrag].}
 
+    Inherits from:
+    {{!Ocgtk.Gesture_single.class-type-gesture_single_t}Ocgtk.Gesture_single}
+
     Recognizes drag gestures.
 
     The drag operation itself can be tracked throughout the
@@ -18,6 +21,8 @@
     [Gtk.GestureDrag.get_start_point]. *)
 class type gesture_drag_t = object
   inherit Gesture_single.gesture_single_t
+
+  (** {2:signals Signals} *)
 
   method on_drag_begin :
     ?after:bool ->
@@ -39,6 +44,8 @@ class type gesture_drag_t = object
     unit ->
     Gobject.Signal.handler_id
   (** Emitted whenever the dragging point moves. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_gesture_drag : Raw.Gesture_drag.t
 end

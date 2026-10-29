@@ -1,9 +1,8 @@
 class type app_chooser_button_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit App_chooser.app_chooser_t
+
+  (** {2:signals Signals} *)
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -24,6 +23,8 @@ class type app_chooser_button_t = object
   (** Emitted when a custom item is activated.
 
       Use [Gtk.AppChooserButton.append_custom_item], to add custom items. *)
+
+  (** {2:methods Methods} *)
 
   method append_custom_item : string -> string -> Ocgio.Icon.icon_t -> unit
   (** Appends a custom item to the list of applications that is shown in the
@@ -78,6 +79,8 @@ class type app_chooser_button_t = object
   (** Sets whether the dropdown menu of this button should show an entry to
       trigger a [GtkAppChooserDialog]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_app_chooser_button : Raw.App_chooser_button.t
 end
 
@@ -85,11 +88,7 @@ end
 class app_chooser_button (obj : Raw.App_chooser_button.t) : app_chooser_button_t
   =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
-
+    inherit Widget.widget (obj :> Raw.Widget.t)
     inherit App_chooser.app_chooser (Raw.App_chooser.from_gobject obj)
 
     method on_activate ?(after = false) ~callback () =

@@ -2,8 +2,9 @@
     widgets.
 
     Its methods, signals and properties are on {!class-type-file_chooser_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.File_chooser}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.File_chooser}. *)
 
 (** {1:class Class} *)
 
@@ -49,6 +50,8 @@
     a check button with the given label; if a choice has options, it will be
     rendered as a combo box. *)
 class type file_chooser_t = object
+  (** {2:methods Methods} *)
+
   method add_choice :
     string -> string -> string array option -> string array option -> unit
   (** Adds a 'choice' to the file chooser.
@@ -233,6 +236,8 @@ class type file_chooser_t = object
       [GTK_FILE_CHOOSER_ACTION_OPEN] or [GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER].
   *)
 
+  (** {2:conversions Conversions} *)
+
   method as_file_chooser : Raw.File_chooser.t
 end
 
@@ -280,3 +285,8 @@ class file_chooser : Raw.File_chooser.t -> file_chooser_t
     can have multiple options. If a choice has no option, it will be rendered as
     a check button with the given label; if a choice has options, it will be
     rendered as a combo box. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

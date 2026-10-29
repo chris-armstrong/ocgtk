@@ -1,8 +1,9 @@
 (** Used by list widgets to represent items in a [Gio.ListModel].
 
     Its methods, signals and properties are on {!class-type-list_item_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.List_item}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.List_item}. *)
 
 (** {1:class Class} *)
 
@@ -23,6 +24,8 @@
     + The bound stage where the listitem references an item from the list. The
       [Gtk.ListItem:item] property is not [NULL]. *)
 class type list_item_t = object
+  (** {2:methods Methods} *)
+
   method get_accessible_description : unit -> string
   (** Gets the accessible description of [self]. *)
 
@@ -33,11 +36,7 @@ class type list_item_t = object
   (** Checks if a listitem has been set to be activatable via
       [Gtk.ListItem.set_activatable]. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child previously set via [Gtk.ListItem.set_child] or [NULL] if
       none was set. *)
 
@@ -87,11 +86,7 @@ class type list_item_t = object
 
       By default, listitems are activatable. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child to be used for this listitem.
 
       This function is typically called by applications when setting up a
@@ -123,6 +118,8 @@ class type list_item_t = object
       By default, listitems are selectable. When rebinding them to a new item,
       they will also be reset to be selectable by GTK. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_list_item : Raw.List_item.t
 end
 
@@ -145,3 +142,8 @@ class list_item : Raw.List_item.t -> list_item_t
 
     + The bound stage where the listitem references an item from the list. The
       [Gtk.ListItem:item] property is not [NULL]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

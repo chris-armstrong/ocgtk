@@ -1,12 +1,15 @@
 (** A [GtkGesture] subclass optimized for singe-touch and mouse gestures.
 
     Its methods, signals and properties are on {!class-type-gesture_single_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Gesture_single}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Gesture_single}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [GestureSingle].}
+
+    Inherits from: {{!Ocgtk.Gesture.class-type-gesture_t}Ocgtk.Gesture}
 
     A [GtkGesture] subclass optimized for singe-touch and mouse gestures.
 
@@ -22,6 +25,8 @@
     pressed can be known through [Gtk.GestureSingle.get_current_button]. *)
 class type gesture_single_t = object
   inherit Gesture.gesture_t
+
+  (** {2:methods Methods} *)
 
   method get_button : unit -> int
   (** Returns the button number [gesture] listens for.
@@ -66,6 +71,8 @@ class type gesture_single_t = object
       [GDK_TOUCH_BEGIN], [GDK_TOUCH_UPDATE] or [GDK_TOUCH_END]. If [FALSE],
       mouse events will be handled too. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_gesture_single : Raw.Gesture_single.t
 end
 
@@ -86,3 +93,8 @@ class gesture_single : Raw.Gesture_single.t -> gesture_single_t
     through [Gtk.GestureSingle.set_button], or react to any mouse button by
     setting it to 0. While the gesture is active, the button being currently
     pressed can be known through [Gtk.GestureSingle.get_current_button]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

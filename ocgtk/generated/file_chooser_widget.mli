@@ -9,6 +9,14 @@
 
 (** {b The methods, signals and properties of a [FileChooserWidget].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.File_chooser.class-type-file_chooser_t}Ocgtk.File_chooser}
+
     [GtkFileChooserWidget] is a widget for choosing files.
 
     It exposes the [Gtk.FileChooser] interface, and you should use the methods
@@ -39,11 +47,10 @@
 
     [GtkFileChooserWidget] has a single CSS node with name filechooser. *)
 class type file_chooser_widget_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit File_chooser.file_chooser_t
+
+  (** {2:signals Signals} *)
 
   method on_desktop_folder :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -187,6 +194,8 @@ class type file_chooser_widget_t = object
 
       The default binding for this signal is <kbd>Alt</kbd>-<kbd>Up</kbd>. *)
 
+  (** {2:properties Properties} *)
+
   method search_mode : bool
   (** Whether search mode is enabled. *)
 
@@ -198,6 +207,8 @@ class type file_chooser_widget_t = object
 
   method subtitle : string
   (** The subtitle of the file chooser widget. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_file_chooser_widget : Raw.File_chooser_widget.t
 end

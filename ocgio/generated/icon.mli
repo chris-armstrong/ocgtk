@@ -3,8 +3,9 @@
     to and from strings.
 
     Its methods, signals and properties are on {!class-type-icon_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgio.Raw.Icon}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Icon}. *)
 
 (** {1:class Class} *)
 
@@ -40,6 +41,8 @@
     [Gio.Icon.serialize] that gives a result that is understood by
     [Gio.Icon.deserialize], yielding one of the built-in icon types. *)
 class type icon_t = object
+  (** {2:methods Methods} *)
+
   method equal : icon_t option -> bool
   (** Checks if two icons are equal. *)
 
@@ -70,6 +73,8 @@ class type icon_t = object
 
       - If [icon] is a [GThemedIcon] with exactly one name and no fallbacks, the
         encoding is simply the name (such as [network-server]). *)
+
+  (** {2:conversions Conversions} *)
 
   method as_icon : Raw.Icon.t
 end
@@ -108,3 +113,8 @@ class icon : Raw.Icon.t -> icon_t
     [Gio.LoadableIcon]. Additionally, you must provide an implementation of
     [Gio.Icon.serialize] that gives a result that is understood by
     [Gio.Icon.deserialize], yielding one of the built-in icon types. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

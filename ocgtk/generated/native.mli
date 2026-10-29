@@ -1,12 +1,16 @@
 (** An interface for widgets that have their own [Gdk.Surface].
 
     Its methods, signals and properties are on {!class-type-native_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgtk.Raw.Native}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Native}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [Native].}
+
+    Requires:
+    - {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
 
     An interface for widgets that have their own [Gdk.Surface].
 
@@ -23,6 +27,8 @@
     for rendering on that surface. To get the renderer, use
     [Gtk.Native.get_renderer]. *)
 class type native_t = object
+  (** {2:methods Methods} *)
+
   method get_renderer : unit -> Ocgsk.Renderer.renderer_t option
   (** Returns the renderer that is used for this [GtkNative]. *)
 
@@ -38,6 +44,8 @@ class type native_t = object
   (** Unrealizes a [GtkNative].
 
       This should only be used by subclasses. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_native : Raw.Native.t
 end
@@ -61,3 +69,8 @@ class native : Raw.Native.t -> native_t
     In addition to a [Gdk.Surface], a [GtkNative] also provides a [Gsk.Renderer]
     for rendering on that surface. To get the renderer, use
     [Gtk.Native.get_renderer]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

@@ -10,12 +10,18 @@
 
 (** {b The methods, signals and properties of a [PasswordEntryBuffer].}
 
+    Inherits from:
+    {{!Ocgtk.Entry_buffer.class-type-entry_buffer_t}Ocgtk.Entry_buffer}
+
     A [GtkEntryBuffer] that locks the underlying memory to prevent it from being
     swapped to disk.
 
     [GtkPasswordEntry] uses a [GtkPasswordEntryBuffer]. *)
 class type password_entry_buffer_t = object
   inherit Entry_buffer.entry_buffer_t
+
+  (** {2:conversions Conversions} *)
+
   method as_password_entry_buffer : Raw.Password_entry_buffer.t
 end
 

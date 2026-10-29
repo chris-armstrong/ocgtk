@@ -1,7 +1,7 @@
 class type unix_socket_address_t = object
-  inherit
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_address_t
+  inherit Socket_address.socket_address_t
+
+  (** {2:methods Methods} *)
 
   method get_address_type : unit -> Enums.unixsocketaddresstype
   (** Gets [address]'s type. *)
@@ -22,8 +22,12 @@ class type unix_socket_address_t = object
 
       For details, see g_unix_socket_address_get_path(). *)
 
+  (** {2:properties Properties} *)
+
   method abstract : bool
   (** Whether or not this is an abstract address *)
+
+  (** {2:conversions Conversions} *)
 
   method as_unix_socket_address : Raw.Unix_socket_address.t
 end
@@ -32,10 +36,7 @@ end
 class unix_socket_address (obj : Raw.Unix_socket_address.t) :
   unix_socket_address_t =
   object (self)
-    inherit
-      Socket_address_and__socket_address_enumerator_and__socket_connectable
-      .socket_address
-        (obj :> Raw.Socket_address.t)
+    inherit Socket_address.socket_address (obj :> Raw.Socket_address.t)
 
     method get_address_type : unit -> Enums.unixsocketaddresstype =
       fun () -> Raw.Unix_socket_address.get_address_type obj

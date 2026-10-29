@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [ThemedIcon].}
 
+    Implements:
+    - {{!Ocgio.Icon.class-type-icon_t}Ocgio.Icon}
+
     [GThemedIcon] is an implementation of [Gio.Icon] that supports icon themes.
 
     [GThemedIcon] contains a list of all of the icons present in an icon theme,
@@ -18,6 +21,8 @@
     that fallback icons work nicely with themes that inherit other themes. *)
 class type themed_icon_t = object
   inherit Icon.icon_t
+
+  (** {2:methods Methods} *)
 
   method append_name : string -> unit
   (** Append a name to the list of icons from within [icon].
@@ -33,6 +38,8 @@ class type themed_icon_t = object
 
       Note that doing so invalidates the hash computed by prior calls to
       g_icon_hash(). *)
+
+  (** {2:properties Properties} *)
 
   method use_default_fallbacks : bool
   [@@ocaml.doc
@@ -50,6 +57,8 @@ class type themed_icon_t = object
     \  NULL\n\
      };\n\
      ]}"]
+
+  (** {2:conversions Conversions} *)
 
   method as_themed_icon : Raw.Themed_icon.t
 end

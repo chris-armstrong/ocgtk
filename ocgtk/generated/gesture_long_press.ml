@@ -1,6 +1,8 @@
 class type gesture_long_press_t = object
   inherit Gesture_single.gesture_single_t
 
+  (** {2:signals Signals} *)
+
   method on_cancelled :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted whenever a press moved too far, or was released before
@@ -14,6 +16,8 @@ class type gesture_long_press_t = object
   (** Emitted whenever a press goes unmoved/unreleased longer than what the GTK
       defaults tell. *)
 
+  (** {2:methods Methods} *)
+
   method get_delay_factor : unit -> float
   (** Returns the delay factor. *)
 
@@ -22,6 +26,8 @@ class type gesture_long_press_t = object
 
       The default long press time will be multiplied by this value. Valid values
       are in the range \[0.5..2.0\]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_gesture_long_press : Raw.Gesture_long_press.t
 end

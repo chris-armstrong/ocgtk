@@ -1,8 +1,9 @@
 (** Represents a rectangle.
 
     Its methods, signals and properties are on {!class-type-rectangle_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgdk.Raw.Rectangle}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Rectangle}. *)
 
 (** {1:class Class} *)
 
@@ -24,11 +25,15 @@
     The Graphene library has a number of other data types for regions and
     volumes in 2D and 3D. *)
 class type rectangle_t = object
+  (** {2:methods Methods} *)
+
   method contains_point : int -> int -> bool
   (** Returns [TRUE] if [rect] contains the point described by [x] and [y]. *)
 
   method equal : Raw.Rectangle.t -> bool
   (** Checks if the two given rectangles are equal. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_rectangle : Raw.Rectangle.t
 end
@@ -53,3 +58,8 @@ class rectangle : Raw.Rectangle.t -> rectangle_t
 
     The Graphene library has a number of other data types for regions and
     volumes in 2D and 3D. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

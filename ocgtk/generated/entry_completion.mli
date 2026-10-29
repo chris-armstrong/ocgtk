@@ -10,6 +10,10 @@
 
 (** {b The methods, signals and properties of a [EntryCompletion].}
 
+    Implements:
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Cell_layout.class-type-cell_layout_t}Ocgtk.Cell_layout}
+
     [GtkEntryCompletion] is an auxiliary object to provide completion
     functionality for [GtkEntry].
 
@@ -46,7 +50,9 @@
     obtain a matching iter. *)
 class type entry_completion_t = object
   inherit Buildable.buildable_t
-  inherit Cell_area_and__cell_area_context_and__cell_layout.cell_layout_t
+  inherit Cell_layout.cell_layout_t
+
+  (** {2:signals Signals} *)
 
   method on_insert_prefix :
     ?after:bool ->
@@ -70,6 +76,8 @@ class type entry_completion_t = object
 
       In other words when [GtkEntryCompletion] is out of suggestions. *)
 
+  (** {2:methods Methods} *)
+
   method complete : unit -> unit
   (** Requests a completion operation, or in other words a refiltering of the
       current list with completions, using the current key.
@@ -88,10 +96,7 @@ class type entry_completion_t = object
   (** Get the original text entered by the user that triggered the completion or
       [NULL] if there’s no completion ongoing. *)
 
-  method get_entry :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  method get_entry : unit -> Widget.widget_t
   (** Gets the entry [completion] has been attached to. *)
 
   method get_inline_completion : unit -> bool
@@ -175,13 +180,16 @@ class type entry_completion_t = object
       renderer, use g_object_set() to set the [Gtk.EntryCompletion:text-column]
       property directly. *)
 
-  method cell_area :
-    Cell_area_and__cell_area_context_and__cell_layout.cell_area_t
+  (** {2:properties Properties} *)
+
+  method cell_area : Cell_area.cell_area_t
   (** The [GtkCellArea] used to layout cell renderers in the treeview column.
 
       If no area is specified when creating the entry completion with
       [Gtk.EntryCompletion.new_with_area], a horizontally oriented
       [Gtk.CellAreaBox] will be used. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_entry_completion : Raw.Entry_completion.t
 end
@@ -231,9 +239,7 @@ class entry_completion : Raw.Entry_completion.t -> entry_completion_t
 val new_ : unit -> entry_completion_t
 (** Creates a new [GtkEntryCompletion] object. *)
 
-val new_with_area :
-  Cell_area_and__cell_area_context_and__cell_layout.cell_area_t ->
-  entry_completion_t
+val new_with_area : Cell_area.cell_area_t -> entry_completion_t
 (** Creates a new [GtkEntryCompletion] object using the specified [area].
 
     The [GtkCellArea] is used to layout cells in the underlying

@@ -8,12 +8,11 @@
 (** {1:class Class} *)
 
 class type level_bar_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Accessible_range.accessible_range_t
   inherit Orientable.orientable_t
+
+  (** {2:signals Signals} *)
 
   method on_offset_changed :
     ?after:bool ->
@@ -27,6 +26,8 @@ class type level_bar_t = object
      The signal supports detailed connections; you can connect to the\n\
      detailed signal \"changed::x\" in order to only receive callbacks when\n\
      the value of offset \"x\" changes."]
+
+  (** {2:methods Methods} *)
 
   method add_offset_value : string -> float -> unit
   (** Adds a new offset marker on [self] at the position specified by [value].
@@ -81,10 +82,21 @@ class type level_bar_t = object
   method set_value : float -> unit
   (** Sets the value of the [GtkLevelBar]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_level_bar : Raw.Level_bar.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [LevelBar].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - \
+     {{!Ocgtk.Accessible_range.class-type-accessible_range_t}Ocgtk.Accessible_range}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\
+     - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}\n\n\
      Shows a level indicator.\n\n\
      Typical use cases are displaying the strength of a password, or\n\
      showing the charge level of a battery.\n\n\

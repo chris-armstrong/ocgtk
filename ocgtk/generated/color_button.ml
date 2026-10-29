@@ -1,9 +1,8 @@
 class type color_button_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Color_chooser.color_chooser_t
+
+  (** {2:signals Signals} *)
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -23,6 +22,8 @@ class type color_button_t = object
       you need to react to programmatic color changes as well, use the
       notify::rgba signal. *)
 
+  (** {2:methods Methods} *)
+
   method get_modal : unit -> bool
   (** Gets whether the dialog is modal. *)
 
@@ -34,6 +35,8 @@ class type color_button_t = object
 
   method set_title : string -> unit
   (** Sets the title for the color chooser dialog. *)
+
+  (** {2:properties Properties} *)
 
   method show_editor : bool
   (** Whether the color chooser should open in editor mode.
@@ -49,17 +52,15 @@ class type color_button_t = object
       would be redundant, such as when the color button is already part of a
       palette. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_color_button : Raw.Color_button.t
 end
 
 (* High-level class for ColorButton *)
 class color_button (obj : Raw.Color_button.t) : color_button_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
-
+    inherit Widget.widget (obj :> Raw.Widget.t)
     inherit Color_chooser.color_chooser (Raw.Color_chooser.from_gobject obj)
 
     method on_activate ?(after = false) ~callback () =

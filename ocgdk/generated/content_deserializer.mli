@@ -2,12 +2,15 @@
 
     Its methods, signals and properties are on
     {!class-type-content_deserializer_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgdk.Raw.Content_deserializer}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgdk.Raw.Content_deserializer}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [ContentDeserializer].}
+
+    Implements:
+    - {{!Ocgio.Async_result.class-type-async_result_t}Ocgio.Async_result}
 
     Deserializes content received via inter-application data transfers.
 
@@ -21,6 +24,8 @@
     Also see [Gdk.ContentSerializer]. *)
 class type content_deserializer_t = object
   inherit Ocgio.Async_result.async_result_t
+
+  (** {2:methods Methods} *)
 
   method get_cancellable : unit -> Ocgio.Cancellable.cancellable_t option
   (** Gets the cancellable for the current operation.
@@ -56,6 +61,8 @@ class type content_deserializer_t = object
   method return_success : unit -> unit
   (** Indicate that the deserialization has been successfully completed. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_content_deserializer : Raw.Content_deserializer.t
 end
 
@@ -76,3 +83,8 @@ class content_deserializer :
     functions, use [content_register_deserializer].
 
     Also see [Gdk.ContentSerializer]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

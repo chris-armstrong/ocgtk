@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [ConstraintGuide].}
 
+    Implements:
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     An invisible layout element in a [GtkConstraintLayout].
 
     The [GtkConstraintLayout] treats guides like widgets. They can be used as
@@ -21,6 +24,8 @@
     Unlike a [GtkWidget], a [GtkConstraintGuide] will not be drawn. *)
 class type constraint_guide_t = object
   inherit Constraint_target.constraint_target_t
+
+  (** {2:methods Methods} *)
 
   method get_name : unit -> string option
   (** Retrieves the name set using gtk_constraint_guide_set_name(). *)
@@ -54,6 +59,8 @@ class type constraint_guide_t = object
   method set_strength : Enums.constraintstrength -> unit
   (** Sets the strength of the constraint on the natural size of the given
       [GtkConstraintGuide]. *)
+
+  (** {2:properties Properties} *)
 
   method max_height : int
   (** The maximum height of the guide. *)
@@ -90,6 +97,8 @@ class type constraint_guide_t = object
 
   method set_nat_width : int -> unit
   (** The preferred, or natural, width of the guide. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_constraint_guide : Raw.Constraint_guide.t
 end

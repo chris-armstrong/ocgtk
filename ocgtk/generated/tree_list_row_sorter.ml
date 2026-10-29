@@ -1,6 +1,8 @@
 class type tree_list_row_sorter_t = object
   inherit Sorter.sorter_t
 
+  (** {2:methods Methods} *)
+
   method get_sorter : unit -> Sorter.sorter_t option
   (** Returns the sorter used by [self]. *)
 
@@ -9,6 +11,8 @@ class type tree_list_row_sorter_t = object
 
       This sorter will be passed the [Gtk.TreeListRow:item] of the tree list
       rows passed to [self]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tree_list_row_sorter : Raw.Tree_list_row_sorter.t
 end

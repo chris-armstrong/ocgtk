@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [BuilderCScope].}
 
+    Implements:
+    - {{!Ocgtk.Builder_scope.class-type-builder_scope_t}Ocgtk.Builder_scope}
+
     A [GtkBuilderScope] implementation for the C language.
 
     [GtkBuilderCScope] instances use symbols explicitly added to [builder] with
@@ -25,6 +28,9 @@
     will require that [GModule] be supported on the platform. *)
 class type builder_c_scope_t = object
   inherit Builder_scope.builder_scope_t
+
+  (** {2:conversions Conversions} *)
+
   method as_builder_c_scope : Raw.Builder_c_scope.t
 end
 

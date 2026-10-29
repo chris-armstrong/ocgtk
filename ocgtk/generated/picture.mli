@@ -8,9 +8,9 @@
 (** {1:class Class} *)
 
 class type picture_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:methods Methods} *)
 
   method get_alternative_text : unit -> string option
   (** Gets the alternative textual description of the picture.
@@ -111,10 +111,18 @@ class type picture_t = object
 
       This is a utility function that calls [Gtk.Picture.set_file]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_picture : Raw.Picture.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Picture].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      Displays a [GdkPaintable].\n\n\
      An example GtkPicture\n\n\
      Many convenience functions are provided to make pictures simple to use.\n\

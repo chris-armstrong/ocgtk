@@ -9,6 +9,14 @@
 
 (** {b The methods, signals and properties of a [AppChooserButton].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.App_chooser.class-type-app_chooser_t}Ocgtk.App_chooser}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     The [GtkAppChooserButton] lets the user select an application.
 
     An example GtkAppChooserButton
@@ -37,11 +45,10 @@
     [GtkAppChooserButton] has a single CSS node with the name
     “appchooserbutton”. *)
 class type app_chooser_button_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit App_chooser.app_chooser_t
+
+  (** {2:signals Signals} *)
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -62,6 +69,8 @@ class type app_chooser_button_t = object
   (** Emitted when a custom item is activated.
 
       Use [Gtk.AppChooserButton.append_custom_item], to add custom items. *)
+
+  (** {2:methods Methods} *)
 
   method append_custom_item : string -> string -> Ocgio.Icon.icon_t -> unit
   (** Appends a custom item to the list of applications that is shown in the
@@ -115,6 +124,8 @@ class type app_chooser_button_t = object
   method set_show_dialog_item : bool -> unit
   (** Sets whether the dropdown menu of this button should show an entry to
       trigger a [GtkAppChooserDialog]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_app_chooser_button : Raw.App_chooser_button.t
 end

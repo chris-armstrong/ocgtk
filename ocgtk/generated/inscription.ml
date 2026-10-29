@@ -1,9 +1,8 @@
 class type inscription_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Accessible_text.accessible_text_t
+
+  (** {2:methods Methods} *)
 
   method get_attributes : unit -> Ocpango.Attr_list.attr_list_t option
   (** Gets the inscription's attribute list. *)
@@ -98,16 +97,15 @@ class type inscription_t = object
 
       See the [Gtk.Inscription:yalign] property. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_inscription : Raw.Inscription.t
 end
 
 (* High-level class for Inscription *)
 class inscription (obj : Raw.Inscription.t) : inscription_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     inherit
       Accessible_text.accessible_text (Raw.Accessible_text.from_gobject obj)

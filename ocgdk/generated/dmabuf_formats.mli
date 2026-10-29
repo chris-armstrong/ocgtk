@@ -1,8 +1,9 @@
 (** Provides information about supported DMA buffer formats.
 
     Its methods, signals and properties are on {!class-type-dmabuf_formats_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgdk.Raw.Dmabuf_formats}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Dmabuf_formats}. *)
 
 (** {1:class Class} *)
 
@@ -26,6 +27,8 @@
 
     Note that DMA buffers only exist on Linux. *)
 class type dmabuf_formats_t = object
+  (** {2:methods Methods} *)
+
   method contains : UInt32.t -> UInt64.t -> bool
   (** Returns whether a given format is contained in [formats]. *)
 
@@ -41,6 +44,8 @@ class type dmabuf_formats_t = object
 
   method ref : unit -> Raw.Dmabuf_formats.t
   (** Increases the reference count of [formats]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_dmabuf_formats : Raw.Dmabuf_formats.t
 end
@@ -67,3 +72,8 @@ class dmabuf_formats : Raw.Dmabuf_formats.t -> dmabuf_formats_t
     See [Gdk.DmabufTextureBuilder] for more information about DMA buffers.
 
     Note that DMA buffers only exist on Linux. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

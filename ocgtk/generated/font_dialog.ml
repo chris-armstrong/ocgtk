@@ -1,4 +1,6 @@
 class type font_dialog_t = object
+  (** {2:methods Methods} *)
+
   method choose_face_finish :
     Ocgio.Async_result.async_result_t ->
     (Ocpango.Font_face.font_face_t, GError.t) result
@@ -62,6 +64,8 @@ class type font_dialog_t = object
 
   method set_title : string -> unit
   (** Sets the title that will be shown on the font chooser dialog. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_font_dialog : Raw.Font_dialog.t
 end

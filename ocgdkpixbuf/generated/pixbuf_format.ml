@@ -1,4 +1,6 @@
 class type pixbuf_format_t = object
+  (** {2:methods Methods} *)
+
   method get_description : unit -> string option
   (** Returns a description of the format. *)
 
@@ -48,6 +50,8 @@ class type pixbuf_format_t = object
 
       Applications can use this to avoid using image loaders with an
       inappropriate license, see gdk_pixbuf_format_get_license(). *)
+
+  (** {2:conversions Conversions} *)
 
   method as_pixbuf_format : Raw.Pixbuf_format.t
 end

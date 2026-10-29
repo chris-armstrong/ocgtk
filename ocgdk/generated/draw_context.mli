@@ -4,8 +4,9 @@
 (** Base class for objects implementing different rendering methods.
 
     Its methods, signals and properties are on {!class-type-draw_context_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgdk.Raw.Draw_context}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Draw_context}. *)
 
 (** {1:class Class} *)
 
@@ -36,3 +37,8 @@ class draw_context : Raw.Draw_context.t -> draw_context_t
     You will always interact with one of those subclasses.
 
     A [GdkDrawContext] is always associated with a single toplevel surface. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

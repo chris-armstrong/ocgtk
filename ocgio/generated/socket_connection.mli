@@ -7,14 +7,16 @@
 
     Its methods, signals and properties are on
     {!class-type-socket_connection_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgio.Raw.Socket_connection}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.Socket_connection}. *)
 
 (** {1:class Class} *)
 
 class type socket_connection_t =
   Socket_and__socket_connection.socket_connection_t
 (** {b The methods, signals and properties of a [SocketConnection].}
+
+    Inherits from: {{!Ocgio.Io_stream.class-type-io_stream_t}Ocgio.Io_stream}
 
     [GSocketConnection] is a [Gio.IOStream] for a connected socket. They can be
     created either by [Gio.SocketClient] when connecting to a host, or by
@@ -54,3 +56,8 @@ class socket_connection : Raw.Socket_connection.t -> socket_connection_t
     To close a [GSocketConnection], use [Gio.IOStream.close]. Closing both
     substreams of the [Gio.IOStream] separately will not close the underlying
     [Gio.Socket]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

@@ -1,8 +1,9 @@
 (** The basic block in a scene graph to be rendered using [Gsk.Renderer].
 
     Its methods, signals and properties are on {!class-type-render_node_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgsk.Raw.Render_node}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgsk.Raw.Render_node}. *)
 
 (** {1:class Class} *)
 
@@ -21,6 +22,8 @@
     [Gsk.RenderNode]s are immutable, you can only specify their properties
     during construction. *)
 class type render_node_t = object
+  (** {2:methods Methods} *)
+
   method draw : Occairo.Context.context_t -> unit
   (** Draws the contents of a render node on a cairo context.
 
@@ -63,6 +66,8 @@ class type render_node_t = object
       It is mostly intended for use inside a debugger to quickly dump a render
       node to a file for later inspection. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_render_node : Raw.Render_node.t
 end
 
@@ -83,3 +88,8 @@ class render_node : Raw.Render_node.t -> render_node_t
     [Gsk.Renderer] it's safe to release any reference you have on them. All
     [Gsk.RenderNode]s are immutable, you can only specify their properties
     during construction. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

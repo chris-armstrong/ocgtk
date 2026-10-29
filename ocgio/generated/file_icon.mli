@@ -10,6 +10,10 @@
 
 (** {b The methods, signals and properties of a [FileIcon].}
 
+    Implements:
+    - {{!Ocgio.Icon.class-type-icon_t}Ocgio.Icon}
+    - {{!Ocgio.Loadable_icon.class-type-loadable_icon_t}Ocgio.Loadable_icon}
+
     [GFileIcon] specifies an icon by pointing to an image file to be used as
     icon.
 
@@ -18,8 +22,12 @@ class type file_icon_t = object
   inherit Icon.icon_t
   inherit Loadable_icon.loadable_icon_t
 
-  method get_file : unit -> App_info_cycle_64c425a0.file_t
+  (** {2:methods Methods} *)
+
+  method get_file : unit -> File.file_t
   (** Gets the [GFile] associated with the given [icon]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_file_icon : Raw.File_icon.t
 end
@@ -36,5 +44,5 @@ class file_icon : Raw.File_icon.t -> file_icon_t
 
 (** {1:constructors Constructors} *)
 
-val new_ : App_info_cycle_64c425a0.file_t -> file_icon_t
+val new_ : File.file_t -> file_icon_t
 (** Creates a new icon for a file. *)

@@ -1,8 +1,9 @@
 (** Base class for platform dialogs that don't use [GtkDialog].
 
     Its methods, signals and properties are on {!class-type-native_dialog_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Native_dialog}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Native_dialog}. *)
 
 (** {1:class Class} *)
 
@@ -24,6 +25,8 @@
     widgets, and GTK does not keep them alive. It is your responsibility to keep
     a reference until you are done with the object. *)
 class type native_dialog_t = object
+  (** {2:signals Signals} *)
+
   method on_response :
     ?after:bool ->
     callback:(response_id:int -> unit) ->
@@ -35,6 +38,8 @@ class type native_dialog_t = object
 
       If you call [Gtk.NativeDialog.hide] before the user responds to the dialog
       this signal will not be emitted. *)
+
+  (** {2:methods Methods} *)
 
   method destroy : unit -> unit
   (** Destroys a dialog.
@@ -55,8 +60,7 @@ class type native_dialog_t = object
   method get_title : unit -> string option
   (** Gets the title of the [GtkNativeDialog]. *)
 
-  method get_transient_for :
-    unit -> Application_and__window_and__window_group.window_t option
+  method get_transient_for : unit -> Window.window_t option
   (** Fetches the transient parent for this window. *)
 
   method get_visible : unit -> bool
@@ -82,8 +86,7 @@ class type native_dialog_t = object
   method set_title : string -> unit
   (** Sets the title of the [GtkNativeDialog.] *)
 
-  method set_transient_for :
-    Application_and__window_and__window_group.window_t option -> unit
+  method set_transient_for : Window.window_t option -> unit
   (** Dialog windows should be set transient for the main application window
       they were spawned from.
 
@@ -100,6 +103,8 @@ class type native_dialog_t = object
       emitted.
 
       Multiple calls while the dialog is visible will be ignored. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_native_dialog : Raw.Native_dialog.t
 end
@@ -124,3 +129,8 @@ class native_dialog : Raw.Native_dialog.t -> native_dialog_t
     Note that unlike [GtkDialog], [GtkNativeDialog] objects are not toplevel
     widgets, and GTK does not keep them alive. It is your responsibility to keep
     a reference until you are done with the object. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

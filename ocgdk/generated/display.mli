@@ -4,8 +4,9 @@
 (** A representation of a workstation.
 
     Its methods, signals and properties are on {!class-type-display_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgdk.Raw.Display}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Display}. *)
 
 (** {1:class Class} *)
 
@@ -48,3 +49,8 @@ class display : Raw.Display.t -> display_t
 
     Output devices are represented by [Gdk.Monitor] objects, which can be
     accessed with [Gdk.Display.get_monitor_at_surface] and similar APIs. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

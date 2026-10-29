@@ -1,7 +1,7 @@
 class type image_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:methods Methods} *)
 
   method clear : unit -> unit
   (** Resets the image to be empty. *)
@@ -87,6 +87,8 @@ class type image_t = object
       If the pixel size is set to a value != -1, it is used instead of the icon
       size set by [Gtk.Image.set_icon_size]. *)
 
+  (** {2:properties Properties} *)
+
   method use_fallback : bool
   (** Whether the icon displayed in the [GtkImage] will use standard icon names
       fallback.
@@ -101,17 +103,15 @@ class type image_t = object
       The value of this property is only relevant for images of type
       [GTK_IMAGE_ICON_NAME] and [GTK_IMAGE_GICON]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_image : Raw.Image.t
 end
 
 (* High-level class for Image *)
 class image (obj : Raw.Image.t) : image_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
-
+    inherit Widget.widget (obj :> Raw.Widget.t)
     method clear : unit -> unit = fun () -> Raw.Image.clear obj
 
     method get_gicon : unit -> Ocgio.Icon.icon_t option =

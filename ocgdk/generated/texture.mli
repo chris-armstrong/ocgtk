@@ -9,6 +9,11 @@
 
 (** {b The methods, signals and properties of a [Texture].}
 
+    Implements:
+    - {{!Ocgdk.Paintable.class-type-paintable_t}Ocgdk.Paintable}
+    - {{!Ocgio.Icon.class-type-icon_t}Ocgio.Icon}
+    - {{!Ocgio.Loadable_icon.class-type-loadable_icon_t}Ocgio.Loadable_icon}
+
     Refers to pixel data in various forms.
 
     It is primarily meant for pixel data that will not change over multiple
@@ -37,6 +42,8 @@ class type texture_t = object
   inherit Paintable.paintable_t
   inherit Ocgio.Icon.icon_t
   inherit Ocgio.Loadable_icon.loadable_icon_t
+
+  (** {2:methods Methods} *)
 
   method get_color_state : unit -> Raw.Color_state.t
   (** Returns the color state associated with the texture. *)
@@ -98,6 +105,8 @@ class type texture_t = object
       If that is not your concern and you are interested in a smaller size and a
       more portable format, you might want to use
       [Gdk.Texture.save_to_png_bytes]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_texture : Raw.Texture.t
 end

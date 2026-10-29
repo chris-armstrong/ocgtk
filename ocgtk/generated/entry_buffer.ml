@@ -1,4 +1,6 @@
 class type entry_buffer_t = object
+  (** {2:signals Signals} *)
+
   method on_deleted_text :
     ?after:bool ->
     callback:(position:int -> n_chars:int -> unit) ->
@@ -15,6 +17,8 @@ class type entry_buffer_t = object
     unit ->
     Gobject.Signal.handler_id
   (** This signal is emitted after text is inserted into the buffer. *)
+
+  (** {2:methods Methods} *)
 
   method delete_text : int -> int -> int
   (** Deletes a sequence of characters from the buffer.
@@ -74,6 +78,8 @@ class type entry_buffer_t = object
       [Gtk.EntryBuffer.insert_text].
 
       Note that [n_chars] is in characters, not in bytes. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_entry_buffer : Raw.Entry_buffer.t
 end

@@ -1,4 +1,6 @@
 class type recent_manager_t = object
+  (** {2:signals Signals} *)
+
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the current recently used resources manager changes its
@@ -6,6 +8,8 @@ class type recent_manager_t = object
 
       This can happen either by calling [Gtk.RecentManager.add_item] or by
       another application. *)
+
+  (** {2:methods Methods} *)
 
   method add_full : string -> Raw.Recent_data.t -> bool
   (** Adds a new resource, pointed by [uri], into the recently used resources
@@ -62,12 +66,16 @@ class type recent_manager_t = object
   (** Removes a resource pointed by [uri] from the recently used resources list
       handled by a recent manager. *)
 
+  (** {2:properties Properties} *)
+
   method filename : string
   (** The full path to the file to be used to store and read the recently used
       resources list *)
 
   method size : int
   (** The size of the recently used resources list. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_recent_manager : Raw.Recent_manager.t
 end

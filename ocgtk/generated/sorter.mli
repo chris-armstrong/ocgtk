@@ -1,8 +1,9 @@
 (** Describes sorting criteria for a [Gtk.SortListModel].
 
     Its methods, signals and properties are on {!class-type-sorter_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgtk.Raw.Sorter}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Sorter}. *)
 
 (** {1:class Class} *)
 
@@ -28,6 +29,8 @@
     Of course, in particular for large lists, it is also possible to subclass
     [GtkSorter] and provide one's own sorter. *)
 class type sorter_t = object
+  (** {2:signals Signals} *)
+
   method on_changed :
     ?after:bool ->
     callback:(change:Enums.sorterchange -> unit) ->
@@ -43,6 +46,8 @@ class type sorter_t = object
       Depending on the [change] parameter, it may be possible to update the sort
       order without a full resorting. Refer to the [Gtk.SorterChange]
       documentation for details. *)
+
+  (** {2:methods Methods} *)
 
   method changed : Enums.sorterchange -> unit
   (** Notifies all users of the sorter that it has changed.
@@ -78,6 +83,8 @@ class type sorter_t = object
 
       This function is intended to allow optimizations. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_sorter : Raw.Sorter.t
 end
 
@@ -105,3 +112,8 @@ class sorter : Raw.Sorter.t -> sorter_t
 
     Of course, in particular for large lists, it is also possible to subclass
     [GtkSorter] and provide one's own sorter. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

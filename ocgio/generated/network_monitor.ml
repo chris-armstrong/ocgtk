@@ -1,4 +1,6 @@
 class type network_monitor_t = object
+  (** {2:signals Signals} *)
+
   method on_network_changed :
     ?after:bool ->
     callback:(network_available:bool -> unit) ->
@@ -6,9 +8,10 @@ class type network_monitor_t = object
     Gobject.Signal.handler_id
   (** Emitted when the network configuration changes. *)
 
+  (** {2:methods Methods} *)
+
   method can_reach :
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_connectable_t ->
+    Socket_connectable.socket_connectable_t ->
     Cancellable.cancellable_t option ->
     (bool, GError.t) result
   (** Attempts to determine whether or not the host pointed to by [connectable]
@@ -62,6 +65,8 @@ class type network_monitor_t = object
   (** Checks if the network is metered. See [GNetworkMonitor:network]-metered
       for more details. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_network_monitor : Raw.Network_monitor.t
 end
 
@@ -73,8 +78,7 @@ class network_monitor (obj : Raw.Network_monitor.t) : network_monitor_t =
         ~callback
 
     method can_reach :
-        Socket_address_and__socket_address_enumerator_and__socket_connectable
-        .socket_connectable_t ->
+        Socket_connectable.socket_connectable_t ->
         Cancellable.cancellable_t option ->
         (bool, GError.t) result =
       fun connectable cancellable ->

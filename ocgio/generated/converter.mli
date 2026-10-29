@@ -1,8 +1,9 @@
 (** [GConverter] is an interface for streaming conversions.
 
     Its methods, signals and properties are on {!class-type-converter_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgio.Raw.Converter}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Converter}. *)
 
 (** {1:class Class} *)
 
@@ -16,6 +17,8 @@
     Some example conversions are: character set conversion, compression,
     decompression and regular expression replace. *)
 class type converter_t = object
+  (** {2:methods Methods} *)
+
   method convert_bytes : Glib_bytes.t -> (Glib_bytes.t, GError.t) result
   (** Applies [converter] to the data in [bytes]. *)
 
@@ -23,6 +26,8 @@ class type converter_t = object
   (** Resets all internal state in the converter, making it behave as if it was
       just created. If the converter has any internal state that would produce
       output then that output is lost. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_converter : Raw.Converter.t
 end
@@ -39,3 +44,8 @@ class converter : Raw.Converter.t -> converter_t
 
     Some example conversions are: character set conversion, compression,
     decompression and regular expression replace. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

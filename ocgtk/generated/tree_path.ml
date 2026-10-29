@@ -1,4 +1,6 @@
 class type tree_path_t = object
+  (** {2:methods Methods} *)
+
   method append_index : int -> unit
   (** Appends a new index to a path.
 
@@ -44,6 +46,8 @@ class type tree_path_t = object
 
   method up : unit -> bool
   (** Moves the [path] to point to its parent node, if it has a parent. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tree_path : Raw.Tree_path.t
 end

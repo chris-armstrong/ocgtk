@@ -1,8 +1,9 @@
 (** Describes the filtering to be performed by a [Gtk.FilterListModel].
 
     Its methods, signals and properties are on {!class-type-filter_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgtk.Raw.Filter}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Filter}. *)
 
 (** {1:class Class} *)
 
@@ -26,6 +27,8 @@
     However, in particular for large lists or complex search methods, it is also
     possible to subclass [GtkFilter] and provide one's own filter. *)
 class type filter_t = object
+  (** {2:signals Signals} *)
+
   method on_changed :
     ?after:bool ->
     callback:(change:Enums.filterchange -> unit) ->
@@ -39,6 +42,8 @@ class type filter_t = object
 
       Depending on the [change] parameter, not all items need to be checked, but
       only some. Refer to the [Gtk.FilterChange] documentation for details. *)
+
+  (** {2:methods Methods} *)
 
   method changed : Enums.filterchange -> unit
   (** Notifies all users of the filter that it has changed.
@@ -65,6 +70,8 @@ class type filter_t = object
   method match_ : [ `object_ ] Gobject.obj -> bool
   (** Checks if the given [item] is matched by the filter or not. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_filter : Raw.Filter.t
 end
 
@@ -90,3 +97,8 @@ class filter : Raw.Filter.t -> filter_t
 
     However, in particular for large lists or complex search methods, it is also
     possible to subclass [GtkFilter] and provide one's own filter. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

@@ -1,4 +1,6 @@
 class type constraint__t = object
+  (** {2:methods Methods} *)
+
   method get_constant : unit -> float
   (** Retrieves the constant factor added to the source attributes' value. *)
 
@@ -43,6 +45,8 @@ class type constraint__t = object
   method is_required : unit -> bool
   (** Checks whether the constraint is a required relation for solving the
       constraint layout. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_constraint_ : Raw.Constraint.t
 end

@@ -1,12 +1,15 @@
 (** Provides a way to describe references to values.
 
     Its methods, signals and properties are on {!class-type-expression_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.Expression}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Expression}. *)
 
 (** {1:class Class} *)
 
 class type expression_t = object
+  (** {2:methods Methods} *)
+
   method bind :
     [ `object_ ] Gobject.obj ->
     string ->
@@ -58,6 +61,8 @@ class type expression_t = object
 
       If the reference was the last, the resources associated to the [self] are
       freed. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_expression : Raw.Expression.t
 end
@@ -385,3 +390,8 @@ class expression : Raw.Expression.t -> expression_t
 \    </binding>\n\
 \  </object>\n\
  ]}"]
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

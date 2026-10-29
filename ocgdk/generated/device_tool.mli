@@ -1,7 +1,8 @@
 (** A physical tool associated to a [GdkDevice].
 
-    Its methods, signals and properties are on {!class-type-device_tool_t}. The
-    functions it is built on are in {!Ocgdk.Raw.Device_tool}. *)
+    Its methods, signals and properties are on {!class-type-device_tool_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgdk.Raw.Device_tool}. *)
 
 (** {1:class Class} *)
 
@@ -9,6 +10,8 @@
 
     A physical tool associated to a [GdkDevice]. *)
 class type device_tool_t = object
+  (** {2:methods Methods} *)
+
   method get_axes : unit -> Enums.axisflags
   (** Gets the axes of the tool. *)
 
@@ -33,8 +36,15 @@ class type device_tool_t = object
   method get_tool_type : unit -> Enums.devicetooltype
   (** Gets the [GdkDeviceToolType] of the tool. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_device_tool : Raw.Device_tool.t
 end
 
 class device_tool : Raw.Device_tool.t -> device_tool_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Device_tool.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

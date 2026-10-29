@@ -10,6 +10,13 @@
 
 (** {b The methods, signals and properties of a [MemoryOutputStream].}
 
+    Inherits from:
+    {{!Ocgio.Output_stream.class-type-output_stream_t}Ocgio.Output_stream}
+
+    Implements:
+    - {{!Ocgio.Pollable_output_stream.class-type-pollable_output_stream_t}Ocgio.Pollable_output_stream}
+    - {{!Ocgio.Seekable.class-type-seekable_t}Ocgio.Seekable}
+
     [GMemoryOutputStream] is a class for using arbitrary memory chunks as output
     for GIO streaming output operations.
 
@@ -19,6 +26,8 @@ class type memory_output_stream_t = object
   inherit Output_stream.output_stream_t
   inherit Pollable_output_stream.pollable_output_stream_t
   inherit Seekable.seekable_t
+
+  (** {2:methods Methods} *)
 
   method get_data_size : unit -> Gsize.t
   (** Returns the number of bytes from the start up to including the last byte
@@ -43,6 +52,8 @@ class type memory_output_stream_t = object
   method steal_as_bytes : unit -> Glib_bytes.t
   (** Returns data from the [ostream] as a [GBytes]. [ostream] must be closed
       before calling this function. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_memory_output_stream : Raw.Memory_output_stream.t
 end

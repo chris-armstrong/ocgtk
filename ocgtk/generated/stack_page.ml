@@ -1,10 +1,9 @@
 class type stack_page_t = object
-  inherit At_context_and__accessible.accessible_t
+  inherit Accessible.accessible_t
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  (** {2:methods Methods} *)
+
+  method get_child : unit -> Widget.widget_t
   (** Returns the stack child to which [self] belongs. *)
 
   method get_icon_name : unit -> string option
@@ -46,24 +45,18 @@ class type stack_page_t = object
   method set_visible : bool -> unit
   (** Sets whether [page] is visible in its [GtkStack]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_stack_page : Raw.Stack_page.t
 end
 
 (* High-level class for StackPage *)
 class stack_page (obj : Raw.Stack_page.t) : stack_page_t =
   object (self)
-    inherit
-      At_context_and__accessible.accessible (Raw.Accessible.from_gobject obj)
+    inherit Accessible.accessible (Raw.Accessible.from_gobject obj)
 
-    method get_child :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t =
-      fun () ->
-        new
-          Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-          .widget
-          (Raw.Stack_page.get_child obj)
+    method get_child : unit -> Widget.widget_t =
+      fun () -> new Widget.widget (Raw.Stack_page.get_child obj)
 
     method get_icon_name : unit -> string option =
       fun () -> Raw.Stack_page.get_icon_name obj

@@ -3,6 +3,8 @@ class type d_bus_object_manager_client_t = object
   inherit D_bus_object_manager.d_bus_object_manager_t
   inherit Initable.initable_t
 
+  (** {2:signals Signals} *)
+
   method on_interface_proxy_signal :
     ?after:bool ->
     callback:
@@ -23,6 +25,8 @@ class type d_bus_object_manager_client_t = object
       [GLib.MainContext.push_thread_default]) that [manager] was constructed in.
   *)
 
+  (** {2:methods Methods} *)
+
   method get_connection : unit -> D_bus_connection.d_bus_connection_t
   (** Gets the [GDBusConnection] used by [manager]. *)
 
@@ -39,8 +43,12 @@ class type d_bus_object_manager_client_t = object
       signal to track changes to the [GDBusObjectManagerClient:name]-owner
       property. *)
 
+  (** {2:properties Properties} *)
+
   method object_path : string
   (** The object path the manager is for. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_d_bus_object_manager_client : Raw.D_bus_object_manager_client.t
 end

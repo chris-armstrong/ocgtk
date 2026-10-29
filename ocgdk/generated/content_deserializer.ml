@@ -1,6 +1,8 @@
 class type content_deserializer_t = object
   inherit Ocgio.Async_result.async_result_t
 
+  (** {2:methods Methods} *)
+
   method get_cancellable : unit -> Ocgio.Cancellable.cancellable_t option
   (** Gets the cancellable for the current operation.
 
@@ -34,6 +36,8 @@ class type content_deserializer_t = object
 
   method return_success : unit -> unit
   (** Indicate that the deserialization has been successfully completed. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_content_deserializer : Raw.Content_deserializer.t
 end

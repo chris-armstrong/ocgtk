@@ -1,5 +1,7 @@
 class type assistant_t = object
-  inherit Application_and__window_and__window_group.window_t
+  inherit Window.window_t
+
+  (** {2:signals Signals} *)
 
   method on_apply :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -31,11 +33,7 @@ class type assistant_t = object
 
   method on_prepare :
     ?after:bool ->
-    callback:
-      (page:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .widget_t ->
-      unit) ->
+    callback:(page:Widget.widget_t -> unit) ->
     unit ->
     Gobject.Signal.handler_id
   (** Emitted when a new page is set as the assistant's current page, before
@@ -44,16 +42,12 @@ class type assistant_t = object
       A handler for this signal can do any preparations which are necessary
       before showing [page]. *)
 
-  method add_action_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  (** {2:methods Methods} *)
+
+  method add_action_widget : Widget.widget_t -> unit
   (** Adds a widget to the action area of a [GtkAssistant]. *)
 
-  method append_page :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int
+  method append_page : Widget.widget_t -> int
   (** Appends a page to the [assistant]. *)
 
   method commit : unit -> unit
@@ -73,45 +67,25 @@ class type assistant_t = object
   method get_n_pages : unit -> int
   (** Returns the number of pages in the [assistant] *)
 
-  method get_nth_page :
-    int ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_nth_page : int -> Widget.widget_t option
   (** Returns the child widget contained in page number [page_num]. *)
 
-  method get_page :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Assistant_page.assistant_page_t
+  method get_page : Widget.widget_t -> Assistant_page.assistant_page_t
   (** Returns the [GtkAssistantPage] object for [child]. *)
 
-  method get_page_complete :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    bool
+  method get_page_complete : Widget.widget_t -> bool
   (** Gets whether [page] is complete. *)
 
-  method get_page_title :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    string
+  method get_page_title : Widget.widget_t -> string
   (** Gets the title for [page]. *)
 
-  method get_page_type :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Enums.assistantpagetype
+  method get_page_type : Widget.widget_t -> Enums.assistantpagetype
   (** Gets the page type of [page]. *)
 
   method get_pages : unit -> Ocgio.List_model.list_model_t
   (** Gets a list model of the assistant pages. *)
 
-  method insert_page :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int ->
-    int
+  method insert_page : Widget.widget_t -> int -> int
   (** Inserts a page in the [assistant] at a given position. *)
 
   method next_page : unit -> unit
@@ -123,10 +97,7 @@ class type assistant_t = object
       This function is for use when creating pages of the
       [GTK_ASSISTANT_PAGE_CUSTOM] type. *)
 
-  method prepend_page :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int
+  method prepend_page : Widget.widget_t -> int
   (** Prepends a page to the [assistant]. *)
 
   method previous_page : unit -> unit
@@ -138,10 +109,7 @@ class type assistant_t = object
       This function is for use when creating pages of the
       [GTK_ASSISTANT_PAGE_CUSTOM] type. *)
 
-  method remove_action_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method remove_action_widget : Widget.widget_t -> unit
   (** Removes a widget from the action area of a [GtkAssistant]. *)
 
   method remove_page : int -> unit
@@ -153,31 +121,19 @@ class type assistant_t = object
       Note that this will only be necessary in custom buttons, as the
       [assistant] flow can be set with gtk_assistant_set_forward_page_func(). *)
 
-  method set_page_complete :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    bool ->
-    unit
+  method set_page_complete : Widget.widget_t -> bool -> unit
   (** Sets whether [page] contents are complete.
 
       This will make [assistant] update the buttons state to be able to continue
       the task. *)
 
-  method set_page_title :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    string ->
-    unit
+  method set_page_title : Widget.widget_t -> string -> unit
   (** Sets a title for [page].
 
       The title is displayed in the header area of the assistant when [page] is
       the current page. *)
 
-  method set_page_type :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Enums.assistantpagetype ->
-    unit
+  method set_page_type : Widget.widget_t -> Enums.assistantpagetype -> unit
   (** Sets the page type for [page].
 
       The page type determines the page behavior in the [assistant]. *)
@@ -193,6 +149,8 @@ class type assistant_t = object
       changing a value on the current page affects the future page flow of the
       assistant. *)
 
+  (** {2:properties Properties} *)
+
   method use_header_bar : int
   (** [TRUE] if the assistant uses a [GtkHeaderBar] for action buttons instead
       of the action-area.
@@ -200,14 +158,15 @@ class type assistant_t = object
       For technical reasons, this property is declared as an integer property,
       but you should only set it to [TRUE] or [FALSE]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_assistant : Raw.Assistant.t
 end
 
 (* High-level class for Assistant *)
 class assistant (obj : Raw.Assistant.t) : assistant_t =
   object (self)
-    inherit
-      Application_and__window_and__window_group.window (obj :> Raw.Window.t)
+    inherit Window.window (obj :> Raw.Window.t)
 
     method on_apply ?(after = false) ~callback () =
       Raw.Assistant.on_apply ~after self#as_assistant ~callback
@@ -223,25 +182,14 @@ class assistant (obj : Raw.Assistant.t) : assistant_t =
 
     method on_prepare ?(after = false) ~callback () =
       Raw.Assistant.on_prepare ~after self#as_assistant ~callback:(fun ~page ->
-          callback
-            ~page:
-              (new
-                 Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-                 .widget
-                 page))
+          callback ~page:(new Widget.widget page))
 
-    method add_action_widget :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        unit =
+    method add_action_widget : Widget.widget_t -> unit =
       fun child ->
         let child = child#as_widget in
         Raw.Assistant.add_action_widget obj child
 
-    method append_page :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        int =
+    method append_page : Widget.widget_t -> int =
       fun page ->
         let page = page#as_widget in
         Raw.Assistant.append_page obj page
@@ -253,48 +201,28 @@ class assistant (obj : Raw.Assistant.t) : assistant_t =
 
     method get_n_pages : unit -> int = fun () -> Raw.Assistant.get_n_pages obj
 
-    method get_nth_page :
-        int ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_nth_page : int -> Widget.widget_t option =
       fun page_num ->
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.Assistant.get_nth_page obj page_num)
 
-    method get_page :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        Assistant_page.assistant_page_t =
+    method get_page : Widget.widget_t -> Assistant_page.assistant_page_t =
       fun child ->
         let child = child#as_widget in
         new Assistant_page.assistant_page (Raw.Assistant.get_page obj child)
 
-    method get_page_complete :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        bool =
+    method get_page_complete : Widget.widget_t -> bool =
       fun page ->
         let page = page#as_widget in
         Raw.Assistant.get_page_complete obj page
 
-    method get_page_title :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        string =
+    method get_page_title : Widget.widget_t -> string =
       fun page ->
         let page = page#as_widget in
         Raw.Assistant.get_page_title obj page
 
-    method get_page_type :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        Enums.assistantpagetype =
+    method get_page_type : Widget.widget_t -> Enums.assistantpagetype =
       fun page ->
         let page = page#as_widget in
         Raw.Assistant.get_page_type obj page
@@ -302,21 +230,14 @@ class assistant (obj : Raw.Assistant.t) : assistant_t =
     method get_pages : unit -> Ocgio.List_model.list_model_t =
       fun () -> new Ocgio.List_model.list_model (Raw.Assistant.get_pages obj)
 
-    method insert_page :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        int ->
-        int =
+    method insert_page : Widget.widget_t -> int -> int =
       fun page position ->
         let page = page#as_widget in
         Raw.Assistant.insert_page obj page position
 
     method next_page : unit -> unit = fun () -> Raw.Assistant.next_page obj
 
-    method prepend_page :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        int =
+    method prepend_page : Widget.widget_t -> int =
       fun page ->
         let page = page#as_widget in
         Raw.Assistant.prepend_page obj page
@@ -324,10 +245,7 @@ class assistant (obj : Raw.Assistant.t) : assistant_t =
     method previous_page : unit -> unit =
       fun () -> Raw.Assistant.previous_page obj
 
-    method remove_action_widget :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        unit =
+    method remove_action_widget : Widget.widget_t -> unit =
       fun child ->
         let child = child#as_widget in
         Raw.Assistant.remove_action_widget obj child
@@ -338,29 +256,17 @@ class assistant (obj : Raw.Assistant.t) : assistant_t =
     method set_current_page : int -> unit =
       fun page_num -> Raw.Assistant.set_current_page obj page_num
 
-    method set_page_complete :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        bool ->
-        unit =
+    method set_page_complete : Widget.widget_t -> bool -> unit =
       fun page complete ->
         let page = page#as_widget in
         Raw.Assistant.set_page_complete obj page complete
 
-    method set_page_title :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        string ->
-        unit =
+    method set_page_title : Widget.widget_t -> string -> unit =
       fun page title ->
         let page = page#as_widget in
         Raw.Assistant.set_page_title obj page title
 
-    method set_page_type :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        Enums.assistantpagetype ->
-        unit =
+    method set_page_type : Widget.widget_t -> Enums.assistantpagetype -> unit =
       fun page type_ ->
         let page = page#as_widget in
         Raw.Assistant.set_page_type obj page type_

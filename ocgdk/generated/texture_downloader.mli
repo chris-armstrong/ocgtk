@@ -19,6 +19,8 @@
     formats. Create a [GdkTexture] for the existing format and then download it
     in a different format. *)
 class type texture_downloader_t = object
+  (** {2:methods Methods} *)
+
   method get_color_state : unit -> Raw.Color_state.t
   (** Gets the color state that the data will be downloaded in. *)
 
@@ -41,6 +43,8 @@ class type texture_downloader_t = object
 
   method set_texture : Texture.texture_t -> unit
   (** Changes the texture the downloader will download. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_texture_downloader : Raw.Texture_downloader.t
 end

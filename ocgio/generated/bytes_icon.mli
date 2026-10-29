@@ -9,14 +9,22 @@
 
 (** {b The methods, signals and properties of a [BytesIcon].}
 
+    Implements:
+    - {{!Ocgio.Icon.class-type-icon_t}Ocgio.Icon}
+    - {{!Ocgio.Loadable_icon.class-type-loadable_icon_t}Ocgio.Loadable_icon}
+
     [GBytesIcon] specifies an image held in memory in a common format (usually
     PNG) to be used as icon. *)
 class type bytes_icon_t = object
   inherit Icon.icon_t
   inherit Loadable_icon.loadable_icon_t
 
+  (** {2:methods Methods} *)
+
   method get_bytes : unit -> Glib_bytes.t
   (** Gets the [GBytes] associated with the given [icon]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_bytes_icon : Raw.Bytes_icon.t
 end

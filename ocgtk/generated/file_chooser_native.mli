@@ -12,6 +12,8 @@ class type file_chooser_native_t = object
   inherit Native_dialog.native_dialog_t
   inherit File_chooser.file_chooser_t
 
+  (** {2:methods Methods} *)
+
   method get_accept_label : unit -> string option
   (** Retrieves the custom label text for the accept button. *)
 
@@ -38,10 +40,16 @@ class type file_chooser_native_t = object
 
       Pressing Alt and that key should activate the button. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_file_chooser_native : Raw.File_chooser_native.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [FileChooserNative].}\n\n\
+     Inherits from: \
+     {{!Ocgtk.Native_dialog.class-type-native_dialog_t}Ocgtk.Native_dialog}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.File_chooser.class-type-file_chooser_t}Ocgtk.File_chooser}\n\n\
      [GtkFileChooserNative] is an abstraction of a dialog suitable\n\
      for use with “File Open” or “File Save as” commands.\n\n\
      By default, this just uses a [GtkFileChooserDialog] to implement\n\
@@ -274,7 +282,7 @@ class file_chooser_native : Raw.File_chooser_native.t -> file_chooser_native_t
 
 val new_ :
   string option ->
-  Application_and__window_and__window_group.window_t option ->
+  Window.window_t option ->
   Enums.filechooseraction ->
   string option ->
   string option ->

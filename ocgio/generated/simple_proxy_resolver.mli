@@ -4,12 +4,15 @@
 
     Its methods, signals and properties are on
     {!class-type-simple_proxy_resolver_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgio.Raw.Simple_proxy_resolver}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.Simple_proxy_resolver}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [SimpleProxyResolver].}
+
+    Implements:
+    - {{!Ocgio.Proxy_resolver.class-type-proxy_resolver_t}Ocgio.Proxy_resolver}
 
     [GSimpleProxyResolver] is a simple [Gio.ProxyResolver] implementation that
     handles a single default proxy, multiple URI-scheme-specific proxies, and a
@@ -21,6 +24,8 @@
     [Gio.SocketClient.set_proxy_resolver]. *)
 class type simple_proxy_resolver_t = object
   inherit Proxy_resolver.proxy_resolver_t
+
+  (** {2:methods Methods} *)
 
   method set_default_proxy : string option -> unit
   [@@ocaml.doc
@@ -47,6 +52,8 @@ class type simple_proxy_resolver_t = object
      as referring to all three of the socks5, socks4a, and socks4 proxy\n\
      types."]
 
+  (** {2:conversions Conversions} *)
+
   method as_simple_proxy_resolver : Raw.Simple_proxy_resolver.t
 end
 
@@ -65,3 +72,8 @@ class simple_proxy_resolver :
     used as the base class for another proxy resolver implementation, or it can
     be created and used manually, such as with
     [Gio.SocketClient.set_proxy_resolver]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

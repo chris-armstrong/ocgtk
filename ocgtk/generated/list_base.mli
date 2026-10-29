@@ -1,12 +1,22 @@
 (** The abstract base class for GTK's list widgets.
 
     Its methods, signals and properties are on {!class-type-list_base_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.List_base}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.List_base}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [ListBase].}
+
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}
+    - {{!Ocgtk.Scrollable.class-type-scrollable_t}Ocgtk.Scrollable}
 
     The abstract base class for GTK's list widgets.
 
@@ -53,15 +63,16 @@
     - [listitem.scroll-to] moves the visible area of the list to this item with
       the minimum amount of scrolling required. *)
 class type list_base_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Orientable.orientable_t
   inherit Scrollable.scrollable_t
 
+  (** {2:properties Properties} *)
+
   method orientation : Enums.orientation
   (** The orientation of the list. See GtkOrientable:orientation for details. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_list_base : Raw.List_base.t
 end
@@ -115,3 +126,8 @@ class list_base : Raw.List_base.t -> list_base_t
     - [listitem.select] changes selection if the item is selectable.
     - [listitem.scroll-to] moves the visible area of the list to this item with
       the minimum amount of scrolling required. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

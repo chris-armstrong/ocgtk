@@ -1,4 +1,6 @@
 class type drop_t = object
+  (** {2:methods Methods} *)
+
   method finish : Enums.dragaction -> unit
   (** Ends the drag operation after a drop.
 
@@ -20,10 +22,10 @@ class type drop_t = object
       or [Gdk.Drop.finish]. The source side will not change this value anymore
       once a drop has started. *)
 
-  method get_device : unit -> App_launch_context_cycle_de440b34.device_t
+  method get_device : unit -> Device.device_t
   (** Returns the [GdkDevice] performing the drop. *)
 
-  method get_display : unit -> App_launch_context_cycle_de440b34.display_t
+  method get_display : unit -> Display.display_t
   (** Gets the [GdkDisplay] that [self] was created for. *)
 
   method get_drag : unit -> Drag.drag_t option
@@ -36,7 +38,7 @@ class type drop_t = object
   (** Returns the [GdkContentFormats] that the drop offers the data to be read
       in. *)
 
-  method get_surface : unit -> App_launch_context_cycle_de440b34.surface_t
+  method get_surface : unit -> Surface.surface_t
   (** Returns the [GdkSurface] performing the drop. *)
 
   method read_value_finish :
@@ -60,6 +62,8 @@ class type drop_t = object
       yet know the exact actions it supports, it should set any possible actions
       first and then later call this function again. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_drop : Raw.Drop.t
 end
 
@@ -72,13 +76,11 @@ class drop (obj : Raw.Drop.t) : drop_t =
     method get_actions : unit -> Enums.dragaction =
       fun () -> Raw.Drop.get_actions obj
 
-    method get_device : unit -> App_launch_context_cycle_de440b34.device_t =
-      fun () ->
-        new App_launch_context_cycle_de440b34.device (Raw.Drop.get_device obj)
+    method get_device : unit -> Device.device_t =
+      fun () -> new Device.device (Raw.Drop.get_device obj)
 
-    method get_display : unit -> App_launch_context_cycle_de440b34.display_t =
-      fun () ->
-        new App_launch_context_cycle_de440b34.display (Raw.Drop.get_display obj)
+    method get_display : unit -> Display.display_t =
+      fun () -> new Display.display (Raw.Drop.get_display obj)
 
     method get_drag : unit -> Drag.drag_t option =
       fun () ->
@@ -87,9 +89,8 @@ class drop (obj : Raw.Drop.t) : drop_t =
     method get_formats : unit -> Raw.Content_formats.t =
       fun () -> Raw.Drop.get_formats obj
 
-    method get_surface : unit -> App_launch_context_cycle_de440b34.surface_t =
-      fun () ->
-        new App_launch_context_cycle_de440b34.surface (Raw.Drop.get_surface obj)
+    method get_surface : unit -> Surface.surface_t =
+      fun () -> new Surface.surface (Raw.Drop.get_surface obj)
 
     method read_value_finish :
         Ocgio.Async_result.async_result_t -> (Gobject.Value.t, GError.t) result

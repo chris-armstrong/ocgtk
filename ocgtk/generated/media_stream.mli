@@ -1,12 +1,16 @@
 (** The integration point for media playback inside GTK.
 
     Its methods, signals and properties are on {!class-type-media_stream_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.Media_stream}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Media_stream}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [MediaStream].}
+
+    Implements:
+    - {{!Ocgdk.Paintable.class-type-paintable_t}Ocgdk.Paintable}
 
     The integration point for media playback inside GTK.
 
@@ -22,6 +26,8 @@
     [Gtk.MediaStream.error], [Gtk.MediaStream.error_valist]. *)
 class type media_stream_t = object
   inherit Ocgdk.Paintable.paintable_t
+
+  (** {2:methods Methods} *)
 
   method gerror : GError.t -> unit
   (** Sets [self] into an error state.
@@ -234,6 +240,8 @@ class type media_stream_t = object
 
       The media stream must be prepared when this function is called. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_media_stream : Raw.Media_stream.t
 end
 
@@ -254,3 +262,8 @@ class media_stream : Raw.Media_stream.t -> media_stream_t
     [Gtk.MediaStream.ended], [Gtk.MediaStream.seek_success],
     [Gtk.MediaStream.seek_failed], [Gtk.MediaStream.gerror],
     [Gtk.MediaStream.error], [Gtk.MediaStream.error_valist]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

@@ -1,4 +1,6 @@
 class type text_tag_t = object
+  (** {2:methods Methods} *)
+
   method changed : bool -> unit
   (** Emits the [Gtk.TextTagTable::tag-changed] signal on the [GtkTextTagTable]
       where the tag is included.
@@ -23,6 +25,8 @@ class type text_tag_t = object
       the order in which they were added to the table, or created with
       [Gtk.TextBuffer.create_tag], which adds the tag to the buffer’s table
       automatically. *)
+
+  (** {2:properties Properties} *)
 
   method accumulative_margin : bool
   (** Whether the margins accumulate or override each other.
@@ -637,6 +641,8 @@ class type text_tag_t = object
 
   method set_wrap_mode_set : bool -> unit
   (** Whether the [wrap-mode] property is set. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_text_tag : Raw.Text_tag.t
 end

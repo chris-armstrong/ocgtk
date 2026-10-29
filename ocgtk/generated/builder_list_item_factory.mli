@@ -11,6 +11,8 @@
 class type builder_list_item_factory_t = object
   inherit List_item_factory.list_item_factory_t
 
+  (** {2:methods Methods} *)
+
   method get_bytes : unit -> Glib_bytes.t
   (** Gets the data used as the [GtkBuilder] UI template for constructing
       listitems. *)
@@ -21,10 +23,14 @@ class type builder_list_item_factory_t = object
   method get_scope : unit -> Builder_scope.builder_scope_t option
   (** Gets the scope used when constructing listitems. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_builder_list_item_factory : Raw.Builder_list_item_factory.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [BuilderListItemFactory].}\n\n\
+     Inherits from: \
+     {{!Ocgtk.List_item_factory.class-type-list_item_factory_t}Ocgtk.List_item_factory}\n\n\
      Creates widgets by instantiating [GtkBuilder] UI templates.\n\n\
      The templates must extend the class that the parent widget expects.\n\
      For example, a factory provided to [Gtk.ListView:factory] must have\n\

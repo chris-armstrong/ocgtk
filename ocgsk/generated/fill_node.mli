@@ -9,10 +9,15 @@
 
 (** {b The methods, signals and properties of a [FillNode].}
 
+    Inherits from:
+    {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
+
     A render node filling the area given by [Gsk.Path] and [Gsk.FillRule] with
     the child node. *)
 class type fill_node_t = object
   inherit Render_node.render_node_t
+
+  (** {2:methods Methods} *)
 
   method get_child : unit -> Render_node.render_node_t
   (** Gets the child node that is getting drawn by the given [node]. *)
@@ -23,6 +28,8 @@ class type fill_node_t = object
   method get_path : unit -> Raw.Path.t
   (** Retrieves the path used to describe the area filled with the contents of
       the [node]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_fill_node : Raw.Fill_node.t
 end

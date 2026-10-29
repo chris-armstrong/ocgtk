@@ -2,6 +2,8 @@ class type file_input_stream_t = object
   inherit Input_stream.input_stream_t
   inherit Seekable.seekable_t
 
+  (** {2:methods Methods} *)
+
   method query_info :
     string ->
     Cancellable.cancellable_t option ->
@@ -15,6 +17,8 @@ class type file_input_stream_t = object
   method query_info_finish :
     Async_result.async_result_t -> (File_info.file_info_t, GError.t) result
   (** Finishes an asynchronous info query operation. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_file_input_stream : Raw.File_input_stream.t
 end

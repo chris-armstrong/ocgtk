@@ -4,8 +4,9 @@
 (** An interface for describing UI elements for Assistive Technologies.
 
     Its methods, signals and properties are on {!class-type-accessible_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.Accessible}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Accessible}. *)
 
 (** {1:class Class} *)
 
@@ -78,3 +79,8 @@ class accessible : Raw.Accessible.t -> accessible_t
     to ensure the correct shape of the a11y tree by calling
     [Gtk.Accessible.set_accessible_parent] and updating the sibling by
     [Gtk.Accessible.update_next_accessible_sibling]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

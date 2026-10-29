@@ -5,8 +5,9 @@
     file arguments).
 
     Its methods, signals and properties are on {!class-type-app_info_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgio.Raw.App_info}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.App_info}. *)
 
 (** {1:class Class} *)
 
@@ -109,3 +110,8 @@ class app_info : Raw.App_info.t -> app_info_t
  for applications to rely on the format of a particular URIs.\n\
  Different launcher applications (e.g. file managers) may have\n\
  different ideas of what a given URI means."]
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

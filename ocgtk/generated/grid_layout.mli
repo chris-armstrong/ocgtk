@@ -8,9 +8,9 @@
 (** {1:class Class} *)
 
 class type grid_layout_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .layout_manager_t
+  inherit Layout_manager.layout_manager_t
+
+  (** {2:methods Methods} *)
 
   method get_baseline_row : unit -> int
   (** Retrieves the row set with gtk_grid_layout_set_baseline_row(). *)
@@ -56,10 +56,14 @@ class type grid_layout_t = object
   method set_row_spacing : int -> unit
   (** Sets the amount of space to insert between consecutive rows. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_grid_layout : Raw.Grid_layout.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [GridLayout].}\n\n\
+     Inherits from: \
+     {{!Ocgtk.Layout_manager.class-type-layout_manager_t}Ocgtk.Layout_manager}\n\n\
      Arranges child widgets in rows and columns.\n\n\
      Children have an \"attach point\" defined by the horizontal and vertical\n\
      index of the cell they occupy; children can span multiple rows or columns.\n\

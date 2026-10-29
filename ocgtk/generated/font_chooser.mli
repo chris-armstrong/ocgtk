@@ -2,8 +2,9 @@
     choosing fonts.
 
     Its methods, signals and properties are on {!class-type-font_chooser_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.Font_chooser}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Font_chooser}. *)
 
 (** {1:class Class} *)
 
@@ -15,6 +16,8 @@
     In GTK, the main objects that implement this interface are
     [Gtk.FontChooserWidget], [Gtk.FontChooserDialog] and [Gtk.FontButton]. *)
 class type font_chooser_t = object
+  (** {2:signals Signals} *)
+
   method on_font_activated :
     ?after:bool ->
     callback:(fontname:string -> unit) ->
@@ -25,6 +28,8 @@ class type font_chooser_t = object
       This usually happens when the user double clicks an item, or an item is
       selected and the user presses one of the keys Space, Shift+Space, Return
       or Enter. *)
+
+  (** {2:methods Methods} *)
 
   method get_font : unit -> string option
   (** Gets the currently-selected font name.
@@ -138,6 +143,8 @@ class type font_chooser_t = object
   method set_show_preview_entry : bool -> unit
   (** Shows or hides the editable preview entry. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_font_chooser : Raw.Font_chooser.t
 end
 
@@ -151,3 +158,8 @@ class font_chooser : Raw.Font_chooser.t -> font_chooser_t
 
     In GTK, the main objects that implement this interface are
     [Gtk.FontChooserWidget], [Gtk.FontChooserDialog] and [Gtk.FontButton]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

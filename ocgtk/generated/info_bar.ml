@@ -1,7 +1,7 @@
 class type info_bar_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:signals Signals} *)
 
   method on_close :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -22,11 +22,9 @@ class type info_bar_t = object
       [Gtk.InfoBar.response]. The [response_id] depends on which action widget
       was clicked. *)
 
-  method add_action_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int ->
-    unit
+  (** {2:methods Methods} *)
+
+  method add_action_widget : Widget.widget_t -> int -> unit
   (** Add an activatable widget to the action area of a [GtkInfoBar].
 
       This also connects a signal handler that will emit the
@@ -42,10 +40,7 @@ class type info_bar_t = object
       action area. The button widget is returned, but usually you don't need it.
   *)
 
-  method add_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method add_child : Widget.widget_t -> unit
   (** Adds a widget to the content area of the info bar. *)
 
   method get_message_type : unit -> Enums.messagetype
@@ -57,19 +52,13 @@ class type info_bar_t = object
   method get_show_close_button : unit -> bool
   (** Returns whether the widget will display a standard close button. *)
 
-  method remove_action_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method remove_action_widget : Widget.widget_t -> unit
   (** Removes a widget from the action area of [info_bar].
 
       The widget must have been put there by a call to
       [Gtk.InfoBar.add_action_widget] or [Gtk.InfoBar.add_button]. *)
 
-  method remove_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method remove_child : Widget.widget_t -> unit
   (** Removes a widget from the content area of the info bar. *)
 
   method response : int -> unit
@@ -110,16 +99,15 @@ class type info_bar_t = object
 
       When clicked it emits the response [GTK_RESPONSE_CLOSE]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_info_bar : Raw.Info_bar.t
 end
 
 (* High-level class for InfoBar *)
 class info_bar (obj : Raw.Info_bar.t) : info_bar_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     method on_close ?(after = false) ~callback () =
       Raw.Info_bar.on_close ~after self#as_info_bar ~callback
@@ -127,11 +115,7 @@ class info_bar (obj : Raw.Info_bar.t) : info_bar_t =
     method on_response ?(after = false) ~callback () =
       Raw.Info_bar.on_response ~after self#as_info_bar ~callback
 
-    method add_action_widget :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        int ->
-        unit =
+    method add_action_widget : Widget.widget_t -> int -> unit =
       fun child response_id ->
         let child = child#as_widget in
         Raw.Info_bar.add_action_widget obj child response_id
@@ -140,10 +124,7 @@ class info_bar (obj : Raw.Info_bar.t) : info_bar_t =
       fun button_text response_id ->
         new Button.button (Raw.Info_bar.add_button obj button_text response_id)
 
-    method add_child :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        unit =
+    method add_child : Widget.widget_t -> unit =
       fun widget ->
         let widget = widget#as_widget in
         Raw.Info_bar.add_child obj widget
@@ -156,18 +137,12 @@ class info_bar (obj : Raw.Info_bar.t) : info_bar_t =
     method get_show_close_button : unit -> bool =
       fun () -> Raw.Info_bar.get_show_close_button obj
 
-    method remove_action_widget :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        unit =
+    method remove_action_widget : Widget.widget_t -> unit =
       fun widget ->
         let widget = widget#as_widget in
         Raw.Info_bar.remove_action_widget obj widget
 
-    method remove_child :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        unit =
+    method remove_child : Widget.widget_t -> unit =
       fun widget ->
         let widget = widget#as_widget in
         Raw.Info_bar.remove_child obj widget

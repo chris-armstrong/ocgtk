@@ -2,8 +2,9 @@
     [Gio.ActionMap.add_action_entries].
 
     Its methods, signals and properties are on {!class-type-action_entry_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgio.Raw.Action_entry}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Action_entry}. *)
 
 (** {1:class Class} *)
 
@@ -19,6 +20,8 @@
 
     See [Gio.ActionMap.add_action_entries] for an example. *)
 class type action_entry_t = object
+  (** {2:conversions Conversions} *)
+
   method as_action_entry : Raw.Action_entry.t
 end
 
@@ -36,3 +39,8 @@ class action_entry : Raw.Action_entry.t -> action_entry_t
     Additional optional fields may be added in the future.
 
     See [Gio.ActionMap.add_action_entries] for an example. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

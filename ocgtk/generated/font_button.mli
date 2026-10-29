@@ -9,6 +9,14 @@
 
 (** {b The methods, signals and properties of a [FontButton].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Font_chooser.class-type-font_chooser_t}Ocgtk.Font_chooser}
+
     The [GtkFontButton] allows to open a font chooser dialog to change the font.
 
     An example GtkFontButton
@@ -26,11 +34,10 @@
     [GtkFontButton] has a single CSS node with name fontbutton which contains a
     button node with the .font style class. *)
 class type font_button_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Font_chooser.font_chooser_t
+
+  (** {2:signals Signals} *)
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -49,6 +56,8 @@ class type font_button_t = object
       Note that this signal is only emitted when the user changes the font. If
       you need to react to programmatic font changes as well, use the
       notify::font signal. *)
+
+  (** {2:methods Methods} *)
 
   method get_modal : unit -> bool
   (** Gets whether the dialog is modal. *)
@@ -75,6 +84,8 @@ class type font_button_t = object
   method set_use_size : bool -> unit
   (** If [use_size] is [TRUE], the font name will be written using the selected
       size. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_font_button : Raw.Font_button.t
 end

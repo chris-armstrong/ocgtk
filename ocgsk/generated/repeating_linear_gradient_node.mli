@@ -9,9 +9,14 @@
 
 (** {b The methods, signals and properties of a [RepeatingLinearGradientNode].}
 
+    Inherits from:
+    {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
+
     A render node for a repeating linear gradient. *)
 class type repeating_linear_gradient_node_t = object
   inherit Render_node.render_node_t
+
+  (** {2:conversions Conversions} *)
 
   method as_repeating_linear_gradient_node :
     Raw.Repeating_linear_gradient_node.t

@@ -10,8 +10,9 @@
     the item.
 
     Its methods, signals and properties are on {!class-type-menu_model_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgio.Raw.Menu_model}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Menu_model}. *)
 
 (** {1:class Class} *)
 
@@ -244,3 +245,8 @@ class menu_model : Raw.Menu_model.t -> menu_model_t
     action with the target value as the parameter. The menu item should be
     rendered as ‘selected’ when the state of the action is equal to the target
     value of the menu item. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

@@ -9,12 +9,17 @@
 
 (** {b The methods, signals and properties of a [GestureStylus].}
 
+    Inherits from:
+    {{!Ocgtk.Gesture_single.class-type-gesture_single_t}Ocgtk.Gesture_single}
+
     Recognizes tablet stylus input.
 
     The provided signals just relay the basic information of the stylus events.
 *)
 class type gesture_stylus_t = object
   inherit Gesture_single.gesture_single_t
+
+  (** {2:signals Signals} *)
 
   method on_down :
     ?after:bool ->
@@ -44,6 +49,8 @@ class type gesture_stylus_t = object
     Gobject.Signal.handler_id
   (** Emitted when the stylus no longer touches the device. *)
 
+  (** {2:methods Methods} *)
+
   method get_device_tool : unit -> Ocgdk.Device_tool.device_tool_t option
   (** Returns the [GdkDeviceTool] currently driving input through this gesture.
 
@@ -62,6 +69,8 @@ class type gesture_stylus_t = object
 
       If true, the gesture will exclusively handle events from stylus input
       devices, otherwise it'll handle events from any pointing device. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_gesture_stylus : Raw.Gesture_stylus.t
 end

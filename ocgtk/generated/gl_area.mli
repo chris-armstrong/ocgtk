@@ -8,9 +8,9 @@
 (** {1:class Class} *)
 
 class type gl_area_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:signals Signals} *)
 
   method on_create_context :
     ?after:bool ->
@@ -53,6 +53,8 @@ class type gl_area_t = object
       is emitted.
 
       The default handler sets up the GL viewport. *)
+
+  (** {2:methods Methods} *)
 
   method attach_buffers : unit -> unit
   (** Binds buffers to the framebuffer.
@@ -165,10 +167,18 @@ class type gl_area_t = object
       You should check the capabilities of the [GdkGLContext] before drawing
       with either API. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_gl_area : Raw.Gl_area.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [GLArea].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      Allows drawing with OpenGL.\n\n\
      An example GtkGLArea\n\n\
      [GtkGLArea] sets up its own [Gdk.GLContext], and creates a custom\n\

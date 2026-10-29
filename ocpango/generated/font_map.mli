@@ -5,13 +5,17 @@
     rendering system.
 
     Its methods, signals and properties are on {!class-type-font_map_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocpango.Raw.Font_map}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocpango.Raw.Font_map}. *)
 
 (** {1:class Class} *)
 
 class type font_map_t = Context_and__font_and__font_map_and__fontset.font_map_t
 (** {b The methods, signals and properties of a [FontMap].}
+
+    Implements:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
 
     A [PangoFontMap] represents the set of fonts available for a particular
     rendering system.
@@ -29,3 +33,8 @@ class font_map : Raw.Font_map.t -> font_map_t
 
     This is a virtual object with implementations being specific to particular
     rendering systems. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

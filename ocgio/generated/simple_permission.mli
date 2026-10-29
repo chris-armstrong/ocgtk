@@ -11,6 +11,8 @@
 
 (** {b The methods, signals and properties of a [SimplePermission].}
 
+    Inherits from: {{!Ocgio.Permission.class-type-permission_t}Ocgio.Permission}
+
     [GSimplePermission] is a trivial implementation of [Gio.Permission] that
     represents a permission that is either always or never allowed. The value is
     given at construction and doesn’t change.
@@ -19,6 +21,9 @@
     [GSimplePermission] will result in errors. *)
 class type simple_permission_t = object
   inherit Permission.permission_t
+
+  (** {2:conversions Conversions} *)
+
   method as_simple_permission : Raw.Simple_permission.t
 end
 

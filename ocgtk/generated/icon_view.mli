@@ -9,6 +9,15 @@
 
 (** {b The methods, signals and properties of a [IconView].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Cell_layout.class-type-cell_layout_t}Ocgtk.Cell_layout}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Scrollable.class-type-scrollable_t}Ocgtk.Scrollable}
+
     [GtkIconView] is a widget which displays data in a grid of icons.
 
     An example GtkIconView
@@ -34,12 +43,11 @@
     [GtkIconView] has a single CSS node with name iconview and style class
     .view. For rubberband selection, a subnode with name rubberband is used. *)
 class type icon_view_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
-  inherit Cell_area_and__cell_area_context_and__cell_layout.cell_layout_t
+  inherit Widget.widget_t
+  inherit Cell_layout.cell_layout_t
   inherit Scrollable.scrollable_t
+
+  (** {2:signals Signals} *)
 
   method on_activate_cursor_item :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
@@ -125,6 +133,8 @@ class type icon_view_t = object
       programmatically.
 
       The default binding for this signal is Ctrl-Shift-a. *)
+
+  (** {2:methods Methods} *)
 
   method create_drag_icon :
     Raw.Tree_path.t -> Ocgdk.Paintable.paintable_t option
@@ -336,8 +346,7 @@ class type icon_view_t = object
       must be of type [G_TYPE_STRING]. *)
 
   method set_tooltip_cell :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .tooltip_t ->
+    Tooltip.tooltip_t ->
     Raw.Tree_path.t ->
     Cell_renderer.cell_renderer_t option ->
     unit
@@ -358,11 +367,7 @@ class type icon_view_t = object
       Note that the signal handler sets the text with gtk_tooltip_set_markup(),
       so &, <, etc have to be escaped in the text. *)
 
-  method set_tooltip_item :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .tooltip_t ->
-    Raw.Tree_path.t ->
-    unit
+  method set_tooltip_item : Tooltip.tooltip_t -> Raw.Tree_path.t -> unit
   (** Sets the tip area of [tooltip] to be the area covered by the item at
       [path]. See also gtk_icon_view_set_tooltip_column() for a simpler
       alternative. See also gtk_tooltip_set_tip_area(). *)
@@ -381,12 +386,15 @@ class type icon_view_t = object
   (** Undoes the effect of gtk_icon_view_enable_model_drag_source(). Calling
       this method sets [GtkIconView]:reorderable to [FALSE]. *)
 
-  method cell_area :
-    Cell_area_and__cell_area_context_and__cell_layout.cell_area_t
+  (** {2:properties Properties} *)
+
+  method cell_area : Cell_area.cell_area_t
   (** The [GtkCellArea] used to layout cell renderers for this view.
 
       If no area is specified when creating the icon view with
       gtk_icon_view_new_with_area() a [GtkCellAreaBox] will be used. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_icon_view : Raw.Icon_view.t
 end
@@ -426,8 +434,7 @@ class icon_view : Raw.Icon_view.t -> icon_view_t
 val new_ : unit -> icon_view_t
 (** Creates a new [GtkIconView] widget *)
 
-val new_with_area :
-  Cell_area_and__cell_area_context_and__cell_layout.cell_area_t -> icon_view_t
+val new_with_area : Cell_area.cell_area_t -> icon_view_t
 (** Creates a new [GtkIconView] widget using the specified [area] to layout
     cells inside the icons. *)
 

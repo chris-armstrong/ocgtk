@@ -1,4 +1,6 @@
 class type glyph_geometry_t = object
+  (** {2:conversions Conversions} *)
+
   method as_glyph_geometry : Raw.Glyph_geometry.t
 end
 

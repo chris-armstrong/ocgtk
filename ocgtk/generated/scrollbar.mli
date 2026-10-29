@@ -9,6 +9,15 @@
 
 (** {b The methods, signals and properties of a [Scrollbar].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Accessible_range.class-type-accessible_range_t}Ocgtk.Accessible_range}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}
+
     Shows a horizontal or vertical scrollbar.
 
     An example GtkScrollbar
@@ -50,18 +59,19 @@
 
     [GtkScrollbar] uses the [Gtk.AccessibleRole.scrollbar] role. *)
 class type scrollbar_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Accessible_range.accessible_range_t
   inherit Orientable.orientable_t
+
+  (** {2:methods Methods} *)
 
   method get_adjustment : unit -> Adjustment.adjustment_t
   (** Returns the scrollbar's adjustment. *)
 
   method set_adjustment : Adjustment.adjustment_t option -> unit
   (** Makes the scrollbar use the given adjustment. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_scrollbar : Raw.Scrollbar.t
 end

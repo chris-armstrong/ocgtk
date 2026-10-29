@@ -20,6 +20,8 @@
     [Gtk.PrintDialog.print_file]. These APIs follows the GIO async pattern, and
     the results can be obtained by calling the corresponding finish methods. *)
 class type print_dialog_t = object
+  (** {2:methods Methods} *)
+
   method get_accept_label : unit -> string
   (** Returns the label that will be shown on the accept button of the print
       dialog. *)
@@ -87,6 +89,8 @@ class type print_dialog_t = object
 
       Note that this function returns a [Gtk.DialogError.DISMISSED] error if the
       user cancels the dialog. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_print_dialog : Raw.Print_dialog.t
 end

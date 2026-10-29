@@ -10,11 +10,9 @@
 class type popover_menu_t = object
   inherit Popover.popover_t
 
-  method add_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    string ->
-    bool
+  (** {2:methods Methods} *)
+
+  method add_child : Widget.widget_t -> string -> bool
   (** Adds a custom widget to a generated menu.
 
       For this to work, the menu model of [popover] must have an item with a
@@ -27,10 +25,7 @@ class type popover_menu_t = object
   method get_menu_model : unit -> Ocgio.Menu_model.menu_model_t option
   (** Returns the menu model used to populate the popover. *)
 
-  method remove_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    bool
+  method remove_child : Widget.widget_t -> bool
   (** Removes a widget that has previously been added with
       [Gtk.PopoverMenu.add_child] *)
 
@@ -48,16 +43,29 @@ class type popover_menu_t = object
       The existing contents of [popover] are removed, and the [popover] is
       populated with new contents according to [model]. *)
 
+  (** {2:properties Properties} *)
+
   method visible_submenu : string
   (** The name of the visible submenu. *)
 
   method set_visible_submenu : string -> unit
   (** The name of the visible submenu. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_popover_menu : Raw.Popover_menu.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [PopoverMenu].}\n\n\
+     Inherits from: {{!Ocgtk.Popover.class-type-popover_t}Ocgtk.Popover}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\
+     - {{!Ocgtk.Native.class-type-native_t}Ocgtk.Native}\n\
+     - \
+     {{!Ocgtk.Shortcut_manager.class-type-shortcut_manager_t}Ocgtk.Shortcut_manager}\n\n\
      A subclass of [GtkPopover] that implements menu behavior.\n\n\
      An example GtkPopoverMenu\n\n\
      [GtkPopoverMenu] treats its children like menus and allows switching\n\

@@ -8,15 +8,11 @@
 (** {1:class Class} *)
 
 class type frame_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  (** {2:methods Methods} *)
+
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [frame]. *)
 
   method get_label : unit -> string option
@@ -27,18 +23,10 @@ class type frame_t = object
   method get_label_align : unit -> float
   (** Retrieves the X alignment of the frame’s label. *)
 
-  method get_label_widget :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_label_widget : unit -> Widget.widget_t option
   (** Retrieves the label widget for the frame. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [frame]. *)
 
   method set_label : string option -> unit
@@ -50,20 +38,24 @@ class type frame_t = object
 
       The default value for a newly created frame is 0.0. *)
 
-  method set_label_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_label_widget : Widget.widget_t option -> unit
   (** Sets the label widget for the frame.
 
       This is the widget that will appear embedded in the top edge of the frame
       as a title. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_frame : Raw.Frame.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Frame].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      Surrounds its child with a decorative frame and an optional label.\n\n\
      An example GtkFrame\n\n\
      If present, the label is drawn inside the top edge of the frame.\n\

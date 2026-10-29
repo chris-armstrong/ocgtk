@@ -1,7 +1,7 @@
 class type custom_layout_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .layout_manager_t
+  inherit Layout_manager.layout_manager_t
+
+  (** {2:conversions Conversions} *)
 
   method as_custom_layout : Raw.Custom_layout.t
 end
@@ -9,10 +9,6 @@ end
 (* High-level class for CustomLayout *)
 class custom_layout (obj : Raw.Custom_layout.t) : custom_layout_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .layout_manager
-        (obj :> Raw.Layout_manager.t)
-
+    inherit Layout_manager.layout_manager (obj :> Raw.Layout_manager.t)
     method as_custom_layout = obj
   end

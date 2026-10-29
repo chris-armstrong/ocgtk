@@ -1,4 +1,6 @@
 class type builder_scope_t = object
+  (** {2:conversions Conversions} *)
+
   method as_builder_scope : Raw.Builder_scope.t
 end
 

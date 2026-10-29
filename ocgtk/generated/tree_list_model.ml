@@ -1,6 +1,8 @@
 class type tree_list_model_t = object
   inherit Ocgio.List_model.list_model_t
 
+  (** {2:methods Methods} *)
+
   method get_autoexpand : unit -> bool
   (** Gets whether the model is set to automatically expand new rows that get
       added.
@@ -56,11 +58,15 @@ class type tree_list_model_t = object
       added to the model. This can be either rows added by changes to the
       underlying models or via [Gtk.TreeListRow.set_expanded]. *)
 
+  (** {2:properties Properties} *)
+
   method item_type : Gobject.Type.t
   (** The type of items. See [Gio.ListModel.get_item_type]. *)
 
   method n_items : int
   (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tree_list_model : Raw.Tree_list_model.t
 end

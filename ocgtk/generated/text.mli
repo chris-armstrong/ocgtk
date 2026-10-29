@@ -9,6 +9,15 @@
 
 (** {b The methods, signals and properties of a [Text].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Accessible_text.class-type-accessible_text_t}Ocgtk.Accessible_text}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Editable.class-type-editable_t}Ocgtk.Editable}
+
     A single-line text entry.
 
     [GtkText] is the common implementation of single-line text editing that is
@@ -120,12 +129,11 @@
     as a delegate for a [GtkEditable] implementation that will be represented to
     accessibility. *)
 class type text_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Accessible_text.accessible_text_t
   inherit Editable.editable_t
+
+  (** {2:signals Signals} *)
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -250,6 +258,8 @@ class type text_t = object
       This is a keybinding signal.
 
       The default bindings for this signal is <kbd>Insert</kbd>. *)
+
+  (** {2:methods Methods} *)
 
   method get_activates_default : unit -> bool
   (** Returns whether pressing <kbd>Enter</kbd> will activate the default widget
@@ -419,6 +429,8 @@ class type text_t = object
 
       After calling this, the default invisible char is used again. *)
 
+  (** {2:properties Properties} *)
+
   method im_module : string
   (** Which input method module should be used.
 
@@ -443,6 +455,8 @@ class type text_t = object
 
   method scroll_offset : int
   (** Number of pixels scrolled of the screen to the left. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_text : Raw.Text.t
 end

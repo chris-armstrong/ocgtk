@@ -1,10 +1,9 @@
 class type text_view_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Accessible_text.accessible_text_t
   inherit Scrollable.scrollable_t
+
+  (** {2:signals Signals} *)
 
   method on_backspace :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -175,19 +174,13 @@ class type text_view_t = object
 
       The default binding for this signal is <kbd>Insert</kbd>. *)
 
+  (** {2:methods Methods} *)
+
   method add_child_at_anchor :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Text_child_anchor.text_child_anchor_t ->
-    unit
+    Widget.widget_t -> Text_child_anchor.text_child_anchor_t -> unit
   (** Adds a child widget in the text buffer, at the given [anchor]. *)
 
-  method add_overlay :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int ->
-    int ->
-    unit
+  method add_overlay : Widget.widget_t -> int -> int -> unit
   (** Adds [child] at a fixed coordinate in the [GtkTextView]'s text window.
 
       The [xpos] and [ypos] must be in buffer coordinates (see
@@ -250,8 +243,7 @@ class type text_view_t = object
   method get_bottom_margin : unit -> int
   (** Gets the bottom margin for text in the [text_view]. *)
 
-  method get_buffer :
-    unit -> Text_buffer_and__text_iter_and__text_mark.text_buffer_t
+  method get_buffer : unit -> Text_buffer.text_buffer_t
   (** Returns the [GtkTextBuffer] being displayed by this text view.
 
       The reference count on the buffer is not incremented; the caller of this
@@ -269,11 +261,7 @@ class type text_view_t = object
   (** Gets the menu model that gets added to the context menu or [NULL] if none
       has been set. *)
 
-  method get_gutter :
-    Enums.textwindowtype ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_gutter : Enums.textwindowtype -> Widget.widget_t option
   (** Gets a [GtkWidget] that has previously been set as gutter.
 
       See [Gtk.TextView.set_gutter].
@@ -388,17 +376,11 @@ class type text_view_t = object
       }
       ]} *)
 
-  method move_mark_onscreen :
-    Text_buffer_and__text_iter_and__text_mark.text_mark_t -> bool
+  method move_mark_onscreen : Text_mark.text_mark_t -> bool
   (** Moves a mark within the buffer so that it's located within the
       currently-visible text area. *)
 
-  method move_overlay :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int ->
-    int ->
-    unit
+  method move_overlay : Widget.widget_t -> int -> int -> unit
   (** Updates the position of a child.
 
       See [Gtk.TextView.add_overlay]. *)
@@ -419,10 +401,7 @@ class type text_view_t = object
   method place_cursor_onscreen : unit -> bool
   (** Moves the cursor to the currently visible region of the buffer. *)
 
-  method remove :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method remove : Widget.widget_t -> unit
   (** Removes a child widget from [text_view]. *)
 
   method reset_cursor_blink : unit -> unit
@@ -440,8 +419,7 @@ class type text_view_t = object
       This can be necessary in the case where modifying the buffer would confuse
       on-going input method behavior. *)
 
-  method scroll_mark_onscreen :
-    Text_buffer_and__text_iter_and__text_mark.text_mark_t -> unit
+  method scroll_mark_onscreen : Text_mark.text_mark_t -> unit
   (** Scrolls [text_view] the minimum distance such that [mark] is contained
       within the visible area of the widget. *)
 
@@ -464,12 +442,7 @@ class type text_view_t = object
       line validation. *)
 
   method scroll_to_mark :
-    Text_buffer_and__text_iter_and__text_mark.text_mark_t ->
-    float ->
-    bool ->
-    float ->
-    float ->
-    unit
+    Text_mark.text_mark_t -> float -> bool -> float -> float -> unit
   (** Scrolls [text_view] so that [mark] is on the screen in the position
       indicated by [xalign] and [yalign].
 
@@ -495,8 +468,7 @@ class type text_view_t = object
       Note that this function is confusingly named. In CSS terms, the value set
       here is padding. *)
 
-  method set_buffer :
-    Text_buffer_and__text_iter_and__text_mark.text_buffer_t option -> unit
+  method set_buffer : Text_buffer.text_buffer_t option -> unit
   (** Sets [buffer] as the buffer being displayed by [text_view].
 
       The previous buffer displayed by the text view is unreferenced, and a
@@ -525,12 +497,7 @@ class type text_view_t = object
 
       You can pass [NULL] to remove a previously set extra menu. *)
 
-  method set_gutter :
-    Enums.textwindowtype ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_gutter : Enums.textwindowtype -> Widget.widget_t option -> unit
   (** Places [widget] into the gutter specified by [win].
 
       [win] must be one of [GTK_TEXT_WINDOW_LEFT], [GTK_TEXT_WINDOW_RIGHT],
@@ -617,6 +584,8 @@ class type text_view_t = object
       See [Gtk.TextView.forward_display_line] for an explanation of display
       lines vs. paragraphs. *)
 
+  (** {2:properties Properties} *)
+
   method im_module : string
   (** Which IM (input method) module should be used for this text_view.
 
@@ -633,16 +602,15 @@ class type text_view_t = object
       Setting this to a non-[NULL] value overrides the system-wide IM module
       setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_text_view : Raw.Text_view.t
 end
 
 (* High-level class for TextView *)
 class text_view (obj : Raw.Text_view.t) : text_view_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     inherit
       Accessible_text.accessible_text (Raw.Accessible_text.from_gobject obj)
@@ -692,21 +660,13 @@ class text_view (obj : Raw.Text_view.t) : text_view_t =
       Raw.Text_view.on_toggle_overwrite ~after self#as_text_view ~callback
 
     method add_child_at_anchor :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        Text_child_anchor.text_child_anchor_t ->
-        unit =
+        Widget.widget_t -> Text_child_anchor.text_child_anchor_t -> unit =
       fun child anchor ->
         let child = child#as_widget in
         let anchor = anchor#as_text_child_anchor in
         Raw.Text_view.add_child_at_anchor obj child anchor
 
-    method add_overlay :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        int ->
-        int ->
-        unit =
+    method add_overlay : Widget.widget_t -> int -> int -> unit =
       fun child xpos ypos ->
         let child = child#as_widget in
         Raw.Text_view.add_overlay obj child xpos ypos
@@ -729,11 +689,8 @@ class text_view (obj : Raw.Text_view.t) : text_view_t =
     method get_bottom_margin : unit -> int =
       fun () -> Raw.Text_view.get_bottom_margin obj
 
-    method get_buffer :
-        unit -> Text_buffer_and__text_iter_and__text_mark.text_buffer_t =
-      fun () ->
-        new Text_buffer_and__text_iter_and__text_mark.text_buffer
-          (Raw.Text_view.get_buffer obj)
+    method get_buffer : unit -> Text_buffer.text_buffer_t =
+      fun () -> new Text_buffer.text_buffer (Raw.Text_view.get_buffer obj)
 
     method get_cursor_visible : unit -> bool =
       fun () -> Raw.Text_view.get_cursor_visible obj
@@ -745,18 +702,10 @@ class text_view (obj : Raw.Text_view.t) : text_view_t =
       fun () ->
         new Ocgio.Menu_model.menu_model (Raw.Text_view.get_extra_menu obj)
 
-    method get_gutter :
-        Enums.textwindowtype ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_gutter : Enums.textwindowtype -> Widget.widget_t option =
       fun win ->
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.Text_view.get_gutter obj win)
 
     method get_indent : unit -> int = fun () -> Raw.Text_view.get_indent obj
@@ -814,18 +763,12 @@ class text_view (obj : Raw.Text_view.t) : text_view_t =
         let event = event#as_event in
         Raw.Text_view.im_context_filter_keypress obj event
 
-    method move_mark_onscreen :
-        Text_buffer_and__text_iter_and__text_mark.text_mark_t -> bool =
+    method move_mark_onscreen : Text_mark.text_mark_t -> bool =
       fun mark ->
         let mark = mark#as_text_mark in
         Raw.Text_view.move_mark_onscreen obj mark
 
-    method move_overlay :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        int ->
-        int ->
-        unit =
+    method move_overlay : Widget.widget_t -> int -> int -> unit =
       fun child xpos ypos ->
         let child = child#as_widget in
         Raw.Text_view.move_overlay obj child xpos ypos
@@ -836,10 +779,7 @@ class text_view (obj : Raw.Text_view.t) : text_view_t =
     method place_cursor_onscreen : unit -> bool =
       fun () -> Raw.Text_view.place_cursor_onscreen obj
 
-    method remove :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        unit =
+    method remove : Widget.widget_t -> unit =
       fun child ->
         let child = child#as_widget in
         Raw.Text_view.remove obj child
@@ -850,8 +790,7 @@ class text_view (obj : Raw.Text_view.t) : text_view_t =
     method reset_im_context : unit -> unit =
       fun () -> Raw.Text_view.reset_im_context obj
 
-    method scroll_mark_onscreen :
-        Text_buffer_and__text_iter_and__text_mark.text_mark_t -> unit =
+    method scroll_mark_onscreen : Text_mark.text_mark_t -> unit =
       fun mark ->
         let mark = mark#as_text_mark in
         Raw.Text_view.scroll_mark_onscreen obj mark
@@ -863,12 +802,7 @@ class text_view (obj : Raw.Text_view.t) : text_view_t =
           yalign
 
     method scroll_to_mark :
-        Text_buffer_and__text_iter_and__text_mark.text_mark_t ->
-        float ->
-        bool ->
-        float ->
-        float ->
-        unit =
+        Text_mark.text_mark_t -> float -> bool -> float -> float -> unit =
       fun mark within_margin use_align xalign yalign ->
         let mark = mark#as_text_mark in
         Raw.Text_view.scroll_to_mark obj mark within_margin use_align xalign
@@ -880,8 +814,7 @@ class text_view (obj : Raw.Text_view.t) : text_view_t =
     method set_bottom_margin : int -> unit =
       fun bottom_margin -> Raw.Text_view.set_bottom_margin obj bottom_margin
 
-    method set_buffer :
-        Text_buffer_and__text_iter_and__text_mark.text_buffer_t option -> unit =
+    method set_buffer : Text_buffer.text_buffer_t option -> unit =
       fun buffer ->
         let buffer = Option.map (fun c -> c#as_text_buffer) buffer in
         Raw.Text_view.set_buffer obj buffer
@@ -897,12 +830,7 @@ class text_view (obj : Raw.Text_view.t) : text_view_t =
         let model = Option.map (fun c -> c#as_menu_model) model in
         Raw.Text_view.set_extra_menu obj model
 
-    method set_gutter :
-        Enums.textwindowtype ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        unit =
+    method set_gutter : Enums.textwindowtype -> Widget.widget_t option -> unit =
       fun win widget ->
         let widget = Option.map (fun c -> c#as_widget) widget in
         Raw.Text_view.set_gutter obj win widget
@@ -964,9 +892,7 @@ class text_view (obj : Raw.Text_view.t) : text_view_t =
 
 let new_ () : text_view_t = new text_view (Raw.Text_view.new_ ())
 
-let new_with_buffer
-    (buffer : Text_buffer_and__text_iter_and__text_mark.text_buffer_t) :
-    text_view_t =
+let new_with_buffer (buffer : Text_buffer.text_buffer_t) : text_view_t =
   let buffer = buffer#as_text_buffer in
   let obj_ = Raw.Text_view.new_with_buffer buffer in
   new text_view obj_

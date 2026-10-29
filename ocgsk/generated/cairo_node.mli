@@ -8,9 +8,14 @@
 
 (** {b The methods, signals and properties of a [CairoNode].}
 
+    Inherits from:
+    {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
+
     A render node for a Cairo surface. *)
 class type cairo_node_t = object
   inherit Render_node.render_node_t
+
+  (** {2:methods Methods} *)
 
   method get_draw_context : unit -> Occairo.Context.context_t
   (** Creates a Cairo context for drawing using the surface associated to the
@@ -21,6 +26,8 @@ class type cairo_node_t = object
 
   method get_surface : unit -> Occairo.Surface.surface_t
   (** Retrieves the Cairo surface used by the render node. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_cairo_node : Raw.Cairo_node.t
 end

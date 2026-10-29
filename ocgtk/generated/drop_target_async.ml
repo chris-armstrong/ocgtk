@@ -1,7 +1,7 @@
 class type drop_target_async_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .event_controller_t
+  inherit Event_controller.event_controller_t
+
+  (** {2:signals Signals} *)
 
   method on_accept :
     ?after:bool ->
@@ -72,6 +72,8 @@ class type drop_target_async_t = object
       To receive the data, use one of the read functions provided by [Gdk.Drop]
       such as [Gdk.Drop.read_async] or [Gdk.Drop.read_value_async]. *)
 
+  (** {2:methods Methods} *)
+
   method get_actions : unit -> Ocgdk.Enums.dragaction
   (** Gets the actions that this drop target supports. *)
 
@@ -92,16 +94,15 @@ class type drop_target_async_t = object
   method set_formats : Ocgdk.Content_formats.content_formats_t option -> unit
   (** Sets the data formats that this drop target will accept. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_drop_target_async : Raw.Drop_target_async.t
 end
 
 (* High-level class for DropTargetAsync *)
 class drop_target_async (obj : Raw.Drop_target_async.t) : drop_target_async_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .event_controller
-        (obj :> Raw.Event_controller.t)
+    inherit Event_controller.event_controller (obj :> Raw.Event_controller.t)
 
     method on_accept ?(after = false) ~callback () =
       Raw.Drop_target_async.on_accept ~after self#as_drop_target_async

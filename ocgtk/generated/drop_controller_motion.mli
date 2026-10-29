@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [DropControllerMotion].}
 
+    Inherits from:
+    {{!Ocgtk.Event_controller.class-type-event_controller_t}Ocgtk.Event_controller}
+
     An event controller tracking the pointer during Drag-and-Drop operations.
 
     It is modeled after [Gtk.EventControllerMotion] so if you have used that,
@@ -17,9 +20,9 @@
     This controller is not able to accept drops, use [Gtk.DropTarget] for that
     purpose. *)
 class type drop_controller_motion_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .event_controller_t
+  inherit Event_controller.event_controller_t
+
+  (** {2:signals Signals} *)
 
   method on_enter :
     ?after:bool ->
@@ -39,6 +42,8 @@ class type drop_controller_motion_t = object
     Gobject.Signal.handler_id
   (** Emitted when the pointer moves inside the widget. *)
 
+  (** {2:methods Methods} *)
+
   method contains_pointer : unit -> bool
   (** Returns if a Drag-and-Drop operation is within the widget [self] or one of
       its children. *)
@@ -50,6 +55,8 @@ class type drop_controller_motion_t = object
   method is_pointer : unit -> bool
   (** Returns if a Drag-and-Drop operation is within the widget [self], not one
       of its children. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_drop_controller_motion : Raw.Drop_controller_motion.t
 end

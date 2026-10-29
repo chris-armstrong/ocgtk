@@ -9,6 +9,13 @@
 
 (** {b The methods, signals and properties of a [Overlay].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     Places “overlay” widgets on top of a single main child.
 
     An example GtkOverlay
@@ -41,14 +48,11 @@
     classes “.left”, “.right”, “.top”, and/or “.bottom” according to their
     position. *)
 class type overlay_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
-  method add_overlay :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  (** {2:methods Methods} *)
+
+  method add_overlay : Widget.widget_t -> unit
   (** Adds [widget] to [overlay].
 
       The widget will be stacked on top of the main widget added with
@@ -57,56 +61,33 @@ class type overlay_t = object
       The position at which [widget] is placed is determined from its
       [Gtk.Widget:halign] and [Gtk.Widget:valign] properties. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [overlay]. *)
 
-  method get_clip_overlay :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    bool
+  method get_clip_overlay : Widget.widget_t -> bool
   (** Gets whether [widget] should be clipped within the parent. *)
 
-  method get_measure_overlay :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    bool
+  method get_measure_overlay : Widget.widget_t -> bool
   (** Gets whether [widget]'s size is included in the measurement of [overlay].
   *)
 
-  method remove_overlay :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method remove_overlay : Widget.widget_t -> unit
   (** Removes an overlay that was added with gtk_overlay_add_overlay(). *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [overlay]. *)
 
-  method set_clip_overlay :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    bool ->
-    unit
+  method set_clip_overlay : Widget.widget_t -> bool -> unit
   (** Sets whether [widget] should be clipped within the parent. *)
 
-  method set_measure_overlay :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    bool ->
-    unit
+  method set_measure_overlay : Widget.widget_t -> bool -> unit
   (** Sets whether [widget] is included in the measured size of [overlay].
 
       The overlay will request the size of the largest child that has this
       property set to [TRUE]. Children who are not included may be drawn outside
       of [overlay]'s allocation if they are too large. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_overlay : Raw.Overlay.t
 end

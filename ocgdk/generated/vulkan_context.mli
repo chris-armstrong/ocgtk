@@ -4,13 +4,17 @@
 (** Represents the platform-specific Vulkan draw context.
 
     Its methods, signals and properties are on {!class-type-vulkan_context_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgdk.Raw.Vulkan_context}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Vulkan_context}. *)
 
 (** {1:class Class} *)
 
 class type vulkan_context_t = App_launch_context_cycle_de440b34.vulkan_context_t
 (** {b The methods, signals and properties of a [VulkanContext].}
+
+    Inherits from:
+    {{!Ocgdk.Draw_context.class-type-draw_context_t}Ocgdk.Draw_context}
 
     Represents the platform-specific Vulkan draw context.
 
@@ -34,3 +38,8 @@ class vulkan_context : Raw.Vulkan_context.t -> vulkan_context_t
 
     Support for [GdkVulkanContext] is platform-specific and context creation can
     fail, returning [NULL] context. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

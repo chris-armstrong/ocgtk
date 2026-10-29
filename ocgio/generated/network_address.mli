@@ -11,6 +11,9 @@
 
 (** {b The methods, signals and properties of a [NetworkAddress].}
 
+    Implements:
+    - {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}Ocgio.Socket_connectable}
+
     [GNetworkAddress] provides an easy way to resolve a hostname and then
     attempt to connect to that host, handling the possibility of multiple IP
     addresses and multiple address families.
@@ -22,9 +25,9 @@
     See [Gio.SocketConnectable] for an example of using the connectable
     interface. *)
 class type network_address_t = object
-  inherit
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_connectable_t
+  inherit Socket_connectable.socket_connectable_t
+
+  (** {2:methods Methods} *)
 
   method get_hostname : unit -> string
   (** Gets [addr]'s hostname. This might be either UTF-8 or ASCII-encoded,
@@ -35,6 +38,8 @@ class type network_address_t = object
 
   method get_scheme : unit -> string option
   (** Gets [addr]'s scheme *)
+
+  (** {2:conversions Conversions} *)
 
   method as_network_address : Raw.Network_address.t
 end

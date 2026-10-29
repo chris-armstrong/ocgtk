@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [NamedAction].}
 
+    Inherits from:
+    {{!Ocgtk.Shortcut_action.class-type-shortcut_action_t}Ocgtk.Shortcut_action}
+
     Activates a named action.
 
     See [Gtk.WidgetClass.install_action] and [Gtk.Widget.insert_action_group]
@@ -16,8 +19,12 @@
 class type named_action_t = object
   inherit Shortcut_action.shortcut_action_t
 
+  (** {2:methods Methods} *)
+
   method get_action_name : unit -> string
   (** Returns the name of the action that will be activated. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_named_action : Raw.Named_action.t
 end

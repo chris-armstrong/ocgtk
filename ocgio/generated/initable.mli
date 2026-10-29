@@ -5,8 +5,9 @@
     implements [Gio.AsyncInitable]).
 
     Its methods, signals and properties are on {!class-type-initable_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgio.Raw.Initable}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Initable}. *)
 
 (** {1:class Class} *)
 
@@ -36,6 +37,8 @@
     construction and automatically initialize them, throwing an exception on
     failure. *)
 class type initable_t = object
+  (** {2:methods Methods} *)
+
   method init : Cancellable.cancellable_t option -> (bool, GError.t) result
   (** Initializes the object implementing the interface.
 
@@ -76,6 +79,8 @@ class type initable_t = object
       on the result of g_object_new(), regardless of whether it is in fact a new
       instance. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_initable : Raw.Initable.t
 end
 
@@ -107,3 +112,8 @@ class initable : Raw.Initable.t -> initable_t
     the binding could check for objects implementing [GInitable] during normal
     construction and automatically initialize them, throwing an exception on
     failure. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

@@ -9,6 +9,13 @@
 
 (** {b The methods, signals and properties of a [ScrolledWindow].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     Makes its child scrollable.
 
     An example GtkScrolledWindow
@@ -86,9 +93,9 @@
     Starting from GTK 4.12, [GtkScrolledWindow] uses the
     [Gtk.AccessibleRole.generic] role. *)
 class type scrolled_window_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:signals Signals} *)
 
   method on_edge_overshot :
     ?after:bool ->
@@ -144,11 +151,9 @@ class type scrolled_window_t = object
       The horizontal or vertical adjustment is updated which triggers a signal
       that the scrolled window’s child may listen to and scroll itself. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  (** {2:methods Methods} *)
+
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [scrolled_window].
 
       If the scrolled window automatically added a [Gtk.Viewport], this function
@@ -164,10 +169,7 @@ class type scrolled_window_t = object
   method get_has_frame : unit -> bool
   (** Gets whether the scrolled window draws a frame. *)
 
-  method get_hscrollbar :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  method get_hscrollbar : unit -> Widget.widget_t
   (** Returns the horizontal scrollbar of [scrolled_window]. *)
 
   method get_kinetic_scrolling : unit -> bool
@@ -205,17 +207,10 @@ class type scrolled_window_t = object
       This is the adjustment used to connect the vertical scrollbar to the child
       widget’s vertical scroll functionality. *)
 
-  method get_vscrollbar :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  method get_vscrollbar : unit -> Widget.widget_t
   (** Returns the vertical scrollbar of [scrolled_window]. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [scrolled_window].
 
       If [child] does not implement the [Gtk.Scrollable] interface, the scrolled
@@ -312,6 +307,8 @@ class type scrolled_window_t = object
       If no window placement is set for a scrolled window, it defaults to
       [GTK_CORNER_TOP_LEFT]. *)
 
+  (** {2:properties Properties} *)
+
   method hscrollbar_policy : Enums.policytype
   (** When the horizontal scrollbar is displayed.
 
@@ -331,6 +328,8 @@ class type scrolled_window_t = object
   (** When the vertical scrollbar is displayed.
 
       Use [Gtk.ScrolledWindow.set_policy] to set this property. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_scrolled_window : Raw.Scrolled_window.t
 end

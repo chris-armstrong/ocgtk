@@ -10,6 +10,12 @@
 
 (** {b The methods, signals and properties of a [ConverterOutputStream].}
 
+    Inherits from:
+    {{!Ocgio.Filter_output_stream.class-type-filter_output_stream_t}Ocgio.Filter_output_stream}
+
+    Implements:
+    - {{!Ocgio.Pollable_output_stream.class-type-pollable_output_stream_t}Ocgio.Pollable_output_stream}
+
     Converter output stream implements [Gio.OutputStream] and allows conversion
     of data of various types during reading.
 
@@ -19,8 +25,12 @@ class type converter_output_stream_t = object
   inherit Filter_output_stream.filter_output_stream_t
   inherit Pollable_output_stream.pollable_output_stream_t
 
+  (** {2:methods Methods} *)
+
   method get_converter : unit -> Converter.converter_t
   (** Gets the [GConverter] that is used by [converter_stream]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_converter_output_stream : Raw.Converter_output_stream.t
 end

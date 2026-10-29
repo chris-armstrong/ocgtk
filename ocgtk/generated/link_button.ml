@@ -1,6 +1,8 @@
 class type link_button_t = object
   inherit Button.button_t
 
+  (** {2:signals Signals} *)
+
   method on_activate_link :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
   (** Emitted each time the [GtkLinkButton] is clicked.
@@ -11,6 +13,8 @@ class type link_button_t = object
       To override the default behavior, you can connect to the ::activate-link
       signal and stop the propagation of the signal by returning [TRUE] from
       your handler. *)
+
+  (** {2:methods Methods} *)
 
   method get_uri : unit -> string
   (** Retrieves the URI of the [GtkLinkButton]. *)
@@ -32,6 +36,8 @@ class type link_button_t = object
   (** Sets the “visited” state of the [GtkLinkButton].
 
       See [Gtk.LinkButton.get_visited] for more details. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_link_button : Raw.Link_button.t
 end

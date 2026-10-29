@@ -1,9 +1,8 @@
 class type font_chooser_widget_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Font_chooser.font_chooser_t
+
+  (** {2:properties Properties} *)
 
   method tweak_action : Ocgio.Action.action_t
   (** A toggle action that can be used to switch to the tweak page of the font
@@ -13,6 +12,8 @@ class type font_chooser_widget_t = object
       The action will be enabled or disabled depending on whether the selected
       font has any features or axes. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_font_chooser_widget : Raw.Font_chooser_widget.t
 end
 
@@ -20,11 +21,7 @@ end
 class font_chooser_widget (obj : Raw.Font_chooser_widget.t) :
   font_chooser_widget_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
-
+    inherit Widget.widget (obj :> Raw.Widget.t)
     inherit Font_chooser.font_chooser (Raw.Font_chooser.from_gobject obj)
 
     method tweak_action =

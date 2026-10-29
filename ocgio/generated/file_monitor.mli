@@ -4,8 +4,9 @@
 (** Monitors a file or directory for changes.
 
     Its methods, signals and properties are on {!class-type-file_monitor_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgio.Raw.File_monitor}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.File_monitor}. *)
 
 (** {1:class Class} *)
 
@@ -42,3 +43,8 @@ class file_monitor : Raw.File_monitor.t -> file_monitor_t
     created in (though if the global default main context is blocked, this may
     cause notifications to be blocked even if the thread-default context is
     still running). *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

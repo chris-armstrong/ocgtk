@@ -1,12 +1,15 @@
 (** Interface for single-line text editing widgets.
 
     Its methods, signals and properties are on {!class-type-editable_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.Editable}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Editable}. *)
 
 (** {1:class Class} *)
 
 class type editable_t = object
+  (** {2:signals Signals} *)
+
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted at the end of a single user-visible operation on the contents.
@@ -30,6 +33,8 @@ class type editable_t = object
 
       The [start_pos] and [end_pos] parameters are interpreted as for
       [Gtk.Editable.delete_text]. *)
+
+  (** {2:methods Methods} *)
 
   method delegate_get_accessible_platform_state :
     Enums.accessibleplatformstate -> bool
@@ -190,14 +195,20 @@ class type editable_t = object
       how you pack the widget into containers. If [n_chars] is -1, the size
       reverts to the default size. *)
 
+  (** {2:properties Properties} *)
+
   method selection_bound : int
   (** The position of the opposite end of the selection from the cursor in
       chars. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_editable : Raw.Editable.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Editable].}\n\n\
+     Requires:\n\
+     - {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
      Interface for single-line text editing widgets.\n\n\
      Typical examples of editable widgets are [Gtk.Entry] and\n\
      [Gtk.SpinButton]. It contains functions for generically manipulating\n\
@@ -416,3 +427,8 @@ class editable : Raw.Editable.t -> editable_t
  recursion. If you wish to connect to the [Gtk.Editable::insert-text]\n\
  and [Gtk.Editable::delete-text] signals, you will need to connect\n\
  to them on the delegate obtained via [Gtk.Editable.get_delegate]."]
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

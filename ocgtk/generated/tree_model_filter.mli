@@ -2,12 +2,16 @@
 
     Its methods, signals and properties are on
     {!class-type-tree_model_filter_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgtk.Raw.Tree_model_filter}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.Tree_model_filter}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [TreeModelFilter].}
+
+    Implements:
+    - {{!Ocgtk.Tree_drag_source.class-type-tree_drag_source_t}Ocgtk.Tree_drag_source}
+    - {{!Ocgtk.Tree_model.class-type-tree_model_t}Ocgtk.Tree_model}
 
     A [GtkTreeModel] which hides parts of an underlying tree model
 
@@ -77,6 +81,8 @@ class type tree_model_filter_t = object
   inherit Tree_drag_source.tree_drag_source_t
   inherit Tree_model.tree_model_t
 
+  (** {2:methods Methods} *)
+
   method clear_cache : unit -> unit
   (** This function should almost never be called. It clears the [filter] of any
       cached iterators that haven’t been reffed with gtk_tree_model_ref_node().
@@ -116,11 +122,15 @@ class type tree_model_filter_t = object
       gtk_tree_model_filter_set_visible_column() can only be called once for a
       given filter model. *)
 
+  (** {2:properties Properties} *)
+
   method child_model : Tree_model.tree_model_t
   (** The child model of the tree model filter. *)
 
   method virtual_root : Raw.Tree_path.t
   (** The virtual root of the tree model filter. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tree_model_filter : Raw.Tree_model_filter.t
 end
@@ -194,3 +204,8 @@ class tree_model_filter : Raw.Tree_model_filter.t -> tree_model_filter_t
     case, either rely on [GtkTreeStore] to emit all signals because it does not
     implement reference counting, or for models that do implement reference
     counting, obtain references on these child levels yourself. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

@@ -1,4 +1,6 @@
 class type content_formats_t = object
+  (** {2:methods Methods} *)
+
   method contain_gtype : Gobject.Type.t -> bool
   (** Checks if a given [GType] is part of the given [formats]. *)
 
@@ -51,6 +53,8 @@ class type content_formats_t = object
   method union_serialize_mime_types : unit -> Raw.Content_formats.t
   (** Add mime types for GTypes in [formats] for which serializers are
       registered. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_content_formats : Raw.Content_formats.t
 end

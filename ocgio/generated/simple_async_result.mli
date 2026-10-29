@@ -3,13 +3,15 @@
 
     Its methods, signals and properties are on
     {!class-type-simple_async_result_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgio.Raw.Simple_async_result}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.Simple_async_result}. *)
 
 (** {1:class Class} *)
 
 class type simple_async_result_t = object
   inherit Async_result.async_result_t
+
+  (** {2:methods Methods} *)
 
   method complete : unit -> unit
   (** Completes an asynchronous I/O job immediately. Must be called in the
@@ -75,10 +77,14 @@ class type simple_async_result_t = object
   (** Sets the operation result within the asynchronous result to the given
       [op_res]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_simple_async_result : Raw.Simple_async_result.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [SimpleAsyncResult].}\n\n\
+     Implements:\n\
+     - {{!Ocgio.Async_result.class-type-async_result_t}Ocgio.Async_result}\n\n\
      As of GLib 2.46, [GSimpleAsyncResult] is deprecated in favor of\n\
      [Gio.Task], which provides a simpler API.\n\n\
      [GSimpleAsyncResult] implements [Gio.AsyncResult].\n\n\
@@ -372,3 +378,8 @@ class simple_async_result : Raw.Simple_async_result.t -> simple_async_result_t
 \  return g_object_ref (cake);\n\
  }\n\
  ]}"]
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

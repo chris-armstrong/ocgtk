@@ -1,8 +1,9 @@
 (** [GOutputStream] is a base class for implementing streaming output.
 
     Its methods, signals and properties are on {!class-type-output_stream_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgio.Raw.Output_stream}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Output_stream}. *)
 
 (** {1:class Class} *)
 
@@ -26,6 +27,8 @@
     writing, splicing, flushing and closing streams, but {i may} implement
     asynchronous versions. *)
 class type output_stream_t = object
+  (** {2:methods Methods} *)
+
   method clear_pending : unit -> unit
   (** Clears the pending flag on [stream]. *)
 
@@ -124,6 +127,8 @@ class type output_stream_t = object
   method write_finish : Async_result.async_result_t -> (int, GError.t) result
   (** Finishes a stream write operation. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_output_stream : Raw.Output_stream.t
 end
 
@@ -149,3 +154,8 @@ class output_stream : Raw.Output_stream.t -> output_stream_t
     All classes derived from [GOutputStream] {i should} implement synchronous
     writing, splicing, flushing and closing streams, but {i may} implement
     asynchronous versions. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

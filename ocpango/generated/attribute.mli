@@ -2,8 +2,9 @@
     attributes.
 
     Its methods, signals and properties are on {!class-type-attribute_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocpango.Raw.Attribute}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocpango.Raw.Attribute}. *)
 
 (** {1:class Class} *)
 
@@ -18,6 +19,8 @@
     initialized using [Pango.Attribute.init]. By default, an attribute will have
     an all-inclusive range of \[0,[G_MAXUINT]\]. *)
 class type attribute_t = object
+  (** {2:methods Methods} *)
+
   method as_color : unit -> Raw.Attr_color.t option
   (** Returns the attribute cast to [PangoAttrColor].
 
@@ -78,6 +81,8 @@ class type attribute_t = object
       [PANGO_ATTR_INDEX_TO_TEXT_END] such that the attribute applies to the
       entire text by default. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_attribute : Raw.Attribute.t
 end
 
@@ -94,3 +99,8 @@ class attribute : Raw.Attribute.t -> attribute_t
     value in the type-specific part of the attribute applies and should be
     initialized using [Pango.Attribute.init]. By default, an attribute will have
     an all-inclusive range of \[0,[G_MAXUINT]\]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

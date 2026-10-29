@@ -2,8 +2,9 @@
     shaping the items text.
 
     Its methods, signals and properties are on {!class-type-glyph_item_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocpango.Raw.Glyph_item}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocpango.Raw.Glyph_item}. *)
 
 (** {1:class Class} *)
 
@@ -16,6 +17,8 @@
     with [PangoLayout] is a list of [PangoLayoutLine], each of which contains a
     list of [PangoGlyphItem]. *)
 class type glyph_item_t = object
+  (** {2:methods Methods} *)
+
   method apply_attrs : string -> Raw.Attr_list.t -> Raw.Glyph_item.t list
   (** Splits a shaped item ([PangoGlyphItem]) into multiple items based on an
       attribute list.
@@ -48,6 +51,8 @@ class type glyph_item_t = object
       This function is similar in function to pango_item_split() (and uses it
       internally.) *)
 
+  (** {2:conversions Conversions} *)
+
   method as_glyph_item : Raw.Glyph_item.t
 end
 
@@ -62,3 +67,8 @@ class glyph_item : Raw.Glyph_item.t -> glyph_item_t
     As an example of the usage of [PangoGlyphItem], the results of shaping text
     with [PangoLayout] is a list of [PangoLayoutLine], each of which contains a
     list of [PangoGlyphItem]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

@@ -9,6 +9,14 @@
 
 (** {b The methods, signals and properties of a [PasswordEntry].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Editable.class-type-editable_t}Ocgtk.Editable}
+
     A single-line text entry widget for entering passwords and other secrets.
 
     An example GtkPasswordEntry
@@ -42,17 +50,18 @@
 
     [GtkPasswordEntry] uses the [Gtk.AccessibleRole.text_box] role. *)
 class type password_entry_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Editable.editable_t
+
+  (** {2:signals Signals} *)
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the entry is activated.
 
       The keybindings for this signal are all forms of the Enter key. *)
+
+  (** {2:methods Methods} *)
 
   method get_extra_menu : unit -> Ocgio.Menu_model.menu_model_t option
   (** Gets the menu model set with gtk_password_entry_set_extra_menu(). *)
@@ -70,6 +79,8 @@ class type password_entry_t = object
 
       Setting this to [FALSE] also hides the text again. *)
 
+  (** {2:properties Properties} *)
+
   method activates_default : bool
   (** Whether to activate the default widget when Enter is pressed. *)
 
@@ -83,6 +94,8 @@ class type password_entry_t = object
   method set_placeholder_text : string -> unit
   (** The text that will be displayed in the [GtkPasswordEntry] when it is empty
       and unfocused. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_password_entry : Raw.Password_entry.t
 end

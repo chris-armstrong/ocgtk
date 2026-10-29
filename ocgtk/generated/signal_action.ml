@@ -1,8 +1,12 @@
 class type signal_action_t = object
   inherit Shortcut_action.shortcut_action_t
 
+  (** {2:methods Methods} *)
+
   method get_signal_name : unit -> string
   (** Returns the name of the signal that will be emitted. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_signal_action : Raw.Signal_action.t
 end

@@ -1,4 +1,6 @@
 class type requisition_t = object
+  (** {2:conversions Conversions} *)
+
   method as_requisition : Raw.Requisition.t
 end
 

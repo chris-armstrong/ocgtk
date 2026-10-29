@@ -11,6 +11,8 @@
 
     Builds the uniforms data for a [GskGLShader]. *)
 class type shader_args_builder_t = object
+  (** {2:methods Methods} *)
+
   method ref : unit -> Raw.Shader_args_builder.t
   (** Increases the reference count of a [GskShaderArgsBuilder] by one. *)
 
@@ -60,6 +62,8 @@ class type shader_args_builder_t = object
 
       This function is intended primarily for bindings. C code should use
       [Gsk.ShaderArgsBuilder.free_to_args]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_shader_args_builder : Raw.Shader_args_builder.t
 end

@@ -5,8 +5,8 @@
 
     Its methods, signals and properties are on
     {!class-type-cell_area_context_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgtk.Raw.Cell_area_context}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.Cell_area_context}. *)
 
 (** {1:class Class} *)
 
@@ -44,3 +44,8 @@ class cell_area_context : Raw.Cell_area_context.t -> cell_area_context_t
     same context which was used to request sizes for a given [GtkTreeModel] row
     also be used for the same row when calling other [GtkCellArea] APIs such as
     gtk_cell_area_render() and gtk_cell_area_event(). *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

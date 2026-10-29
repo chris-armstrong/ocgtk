@@ -10,6 +10,9 @@
 
 (** {b The methods, signals and properties of a [SignalListItemFactory].}
 
+    Inherits from:
+    {{!Ocgtk.List_item_factory.class-type-list_item_factory_t}Ocgtk.List_item_factory}
+
     Emits signals to manage listitems.
 
     Signals are emitted for every listitem in the same order:
@@ -51,6 +54,9 @@
     [Gtk.SignalListItemFactory::teardown]. *)
 class type signal_list_item_factory_t = object
   inherit List_item_factory.list_item_factory_t
+
+  (** {2:conversions Conversions} *)
+
   method as_signal_list_item_factory : Raw.Signal_list_item_factory.t
 end
 

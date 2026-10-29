@@ -3,12 +3,20 @@
 
     Its methods, signals and properties are on
     {!class-type-shortcuts_section_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgtk.Raw.Shortcuts_section}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.Shortcuts_section}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [ShortcutsSection].}
+
+    Inherits from: {{!Ocgtk.Box.class-type-box_t}Ocgtk.Box}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}
 
     A [GtkShortcutsSection] collects all the keyboard shortcuts and gestures for
     a major application mode.
@@ -41,6 +49,8 @@
 class type shortcuts_section_t = object
   inherit Box.box_t
 
+  (** {2:signals Signals} *)
+
   method on_change_current_page :
     ?after:bool ->
     callback:(offset:int -> bool) ->
@@ -51,6 +61,8 @@ class type shortcuts_section_t = object
       The default bindings for this signal are <kbd>Ctrl</kbd>+<kbd>PgUp</kbd>,
       <kbd>PgUp</kbd>, <kbd>Ctrl</kbd>+<kbd>PgDn</kbd>, <kbd>PgDn</kbd>. *)
 
+  (** {2:methods Methods} *)
+
   method add_group : Shortcuts_group.shortcuts_group_t -> unit
   (** Adds a group to the shortcuts section.
 
@@ -59,6 +71,8 @@ class type shortcuts_section_t = object
 
       Adding children with the [GtkBox] API is not appropriate, as
       [GtkShortcutsSection] manages its children internally. *)
+
+  (** {2:properties Properties} *)
 
   method max_height : int
   (** The maximum number of lines to allow per column.
@@ -118,6 +132,8 @@ class type shortcuts_section_t = object
       Applications are expected to use the [Gtk.ShortcutsWindow:view-name]
       property for this purpose. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_shortcuts_section : Raw.Shortcuts_section.t
 end
 
@@ -154,3 +170,8 @@ class shortcuts_section : Raw.Shortcuts_section.t -> shortcuts_section_t
     The following signals have default keybindings:
 
     - [Gtk.ShortcutsSection::change-current-page] *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

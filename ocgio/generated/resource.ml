@@ -1,4 +1,6 @@
 class type resource_t = object
+  (** {2:methods Methods} *)
+
   method _register : unit -> unit
   (** Registers the resource with the process-global set of resources.
 
@@ -59,6 +61,8 @@ class type resource_t = object
   (** Atomically increments the reference count of [resource] by one.
 
       This function is threadsafe and may be called from any thread. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_resource : Raw.Resource.t
 end

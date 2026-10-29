@@ -9,6 +9,11 @@
 
 (** {b The methods, signals and properties of a [TreeModelSort].}
 
+    Implements:
+    - {{!Ocgtk.Tree_drag_source.class-type-tree_drag_source_t}Ocgtk.Tree_drag_source}
+    - {{!Ocgtk.Tree_model.class-type-tree_model_t}Ocgtk.Tree_model}
+    - {{!Ocgtk.Tree_sortable.class-type-tree_sortable_t}Ocgtk.Tree_sortable}
+
     A GtkTreeModel which makes an underlying tree model sortable
 
     The [GtkTreeModelSort] is a model which implements the [GtkTreeSortable]
@@ -109,6 +114,8 @@ class type tree_model_sort_t = object
   inherit Tree_model.tree_model_t
   inherit Tree_sortable.tree_sortable_t
 
+  (** {2:methods Methods} *)
+
   method clear_cache : unit -> unit
   (** This function should almost never be called. It clears the
       [tree_model_sort] of any cached iterators that haven’t been reffed with
@@ -143,6 +150,8 @@ class type tree_model_sort_t = object
       is, it is in the same order as the child model. It will re-sort the model
       to be in the same order as the child model only if the [GtkTreeModelSort]
       is in “unsorted” state. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tree_model_sort : Raw.Tree_model_sort.t
 end

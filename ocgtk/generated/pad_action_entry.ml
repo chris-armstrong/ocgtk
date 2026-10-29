@@ -1,4 +1,6 @@
 class type pad_action_entry_t = object
+  (** {2:conversions Conversions} *)
+
   method as_pad_action_entry : Raw.Pad_action_entry.t
 end
 

@@ -4,8 +4,9 @@
 (** Handles the preferred size and allocation for children of a widget.
 
     Its methods, signals and properties are on {!class-type-layout_manager_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Layout_manager}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Layout_manager}. *)
 
 (** {1:class Class} *)
 
@@ -98,3 +99,8 @@ class layout_manager : Raw.Layout_manager.t -> layout_manager_t
  the layout properties; each [GtkLayoutChild] instance should call\n\
  [Gtk.LayoutManager.layout_changed] every time a property is\n\
  updated, in order to queue a new size measuring and allocation."]
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

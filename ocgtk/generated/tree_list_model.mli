@@ -1,15 +1,21 @@
 (** A list model that can create child models on demand.
 
     Its methods, signals and properties are on {!class-type-tree_list_model_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Tree_list_model}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Tree_list_model}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [TreeListModel].}
 
+    Implements:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
+
     A list model that can create child models on demand. *)
 class type tree_list_model_t = object
   inherit Ocgio.List_model.list_model_t
+
+  (** {2:methods Methods} *)
 
   method get_autoexpand : unit -> bool
   (** Gets whether the model is set to automatically expand new rows that get
@@ -66,14 +72,23 @@ class type tree_list_model_t = object
       added to the model. This can be either rows added by changes to the
       underlying models or via [Gtk.TreeListRow.set_expanded]. *)
 
+  (** {2:properties Properties} *)
+
   method item_type : Gobject.Type.t
   (** The type of items. See [Gio.ListModel.get_item_type]. *)
 
   method n_items : int
   (** The number of items. See [Gio.ListModel.get_n_items]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_tree_list_model : Raw.Tree_list_model.t
 end
 
 class tree_list_model : Raw.Tree_list_model.t -> tree_list_model_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Tree_list_model.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

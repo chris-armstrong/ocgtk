@@ -3,8 +3,8 @@
 
     Its methods, signals and properties are on
     {!class-type-d_bus_method_invocation_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgio.Raw.D_bus_method_invocation}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.D_bus_method_invocation}. *)
 
 (** {1:class Class} *)
 
@@ -18,6 +18,8 @@
     [Gio.DBusInterfaceVTable] that was passed to
     [Gio.DBusConnection.register_object]. *)
 class type d_bus_method_invocation_t = object
+  (** {2:methods Methods} *)
+
   method get_connection : unit -> D_bus_connection.d_bus_connection_t
   (** Gets the [GDBusConnection] the method was invoked on. *)
 
@@ -136,6 +138,8 @@ class type d_bus_method_invocation_t = object
       [GDBusInterfaceVTable] for more information about the ownership of
       [invocation]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_d_bus_method_invocation : Raw.D_bus_method_invocation.t
 end
 
@@ -153,3 +157,8 @@ class d_bus_method_invocation :
     as an argument to the [handle_method_call()] function in a
     [Gio.DBusInterfaceVTable] that was passed to
     [Gio.DBusConnection.register_object]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

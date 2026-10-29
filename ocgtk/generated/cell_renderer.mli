@@ -1,12 +1,15 @@
 (** An object for rendering a single cell
 
     Its methods, signals and properties are on {!class-type-cell_renderer_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Cell_renderer}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Cell_renderer}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [CellRenderer].}
+
+    Inherits from: [GObject.InitiallyUnowned]
 
     An object for rendering a single cell
 
@@ -44,6 +47,8 @@
     These “set” properties reflect whether a property has been set or not. You
     should not set them independently. *)
 class type cell_renderer_t = object
+  (** {2:signals Signals} *)
+
   method on_editing_canceled :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** This signal gets emitted when the user cancels the process of editing a
@@ -88,10 +93,11 @@ class type cell_renderer_t = object
       }
       ]} *)
 
+  (** {2:methods Methods} *)
+
   method activate :
     Ocgdk.Event.event_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
+    Widget.widget_t ->
     string ->
     Ocgdk.Rectangle.rectangle_t ->
     Ocgdk.Rectangle.rectangle_t ->
@@ -115,11 +121,7 @@ class type cell_renderer_t = object
   (** Returns the cell renderer’s sensitivity. *)
 
   method get_state :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    Enums.cellrendererstate ->
-    Enums.stateflags
+    Widget.widget_t option -> Enums.cellrendererstate -> Enums.stateflags
   (** Translates the cell renderer state to [GtkStateFlags], based on the cell
       renderer and widget sensitivity, and the given [GtkCellRenderer]State. *)
 
@@ -153,8 +155,7 @@ class type cell_renderer_t = object
 
   method snapshot :
     Snapshot.snapshot_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
+    Widget.widget_t ->
     Ocgdk.Rectangle.rectangle_t ->
     Ocgdk.Rectangle.rectangle_t ->
     Enums.cellrendererstate ->
@@ -169,8 +170,7 @@ class type cell_renderer_t = object
 
   method start_editing :
     Ocgdk.Event.event_t option ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
+    Widget.widget_t ->
     string ->
     Ocgdk.Rectangle.rectangle_t ->
     Ocgdk.Rectangle.rectangle_t ->
@@ -188,6 +188,8 @@ class type cell_renderer_t = object
       This function should be called by cell renderer implementations in
       response to the [GtkCellEditable::editing-done] signal of
       [GtkCellEditable]. *)
+
+  (** {2:properties Properties} *)
 
   method set_cell_background : string -> unit
   (** Set property: cell-background *)
@@ -249,6 +251,8 @@ class type cell_renderer_t = object
   method set_ypad : int -> unit
   (** Set property: ypad *)
 
+  (** {2:conversions Conversions} *)
+
   method as_cell_renderer : Raw.Cell_renderer.t
 end
 
@@ -292,3 +296,8 @@ class cell_renderer : Raw.Cell_renderer.t -> cell_renderer_t
     “set” property, e.g. “cell-background-set” corresponds to “cell-background”.
     These “set” properties reflect whether a property has been set or not. You
     should not set them independently. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

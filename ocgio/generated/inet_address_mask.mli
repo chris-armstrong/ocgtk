@@ -12,12 +12,17 @@
 
 (** {b The methods, signals and properties of a [InetAddressMask].}
 
+    Implements:
+    - {{!Ocgio.Initable.class-type-initable_t}Ocgio.Initable}
+
     [GInetAddressMask] represents a range of IPv4 or IPv6 addresses described by
     a base address and a length indicating how many bits of the base address are
     relevant for matching purposes. These are often given in string form. For
     example, [10.0.0.0/8], or [fe80::/10]. *)
 class type inet_address_mask_t = object
   inherit Initable.initable_t
+
+  (** {2:methods Methods} *)
 
   method equal : inet_address_mask_t -> bool
   (** Tests if [mask] and [mask2] are the same mask. *)
@@ -36,6 +41,8 @@ class type inet_address_mask_t = object
 
   method to_string : unit -> string
   (** Converts [mask] back to its corresponding string form. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_inet_address_mask : Raw.Inet_address_mask.t
 end

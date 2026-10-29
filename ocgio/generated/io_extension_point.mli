@@ -4,12 +4,14 @@
 
     Its methods, signals and properties are on
     {!class-type-io_extension_point_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgio.Raw.Io_extension_point}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.Io_extension_point}. *)
 
 (** {1:class Class} *)
 
 class type io_extension_point_t = object
+  (** {2:methods Methods} *)
+
   method get_extension_by_name : string -> Raw.Io_extension.t
   (** Finds a [GIOExtension] for an extension point by name. *)
 
@@ -23,6 +25,8 @@ class type io_extension_point_t = object
   method set_required_type : Gobject.Type.t -> unit
   (** Sets the required type for [extension_point] to [type]. All
       implementations must henceforth have this type. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_io_extension_point : Raw.Io_extension_point.t
 end
@@ -120,3 +124,8 @@ class io_extension_point : Raw.Io_extension_point.t -> io_extension_point_t
  directories, then the latter one will be ignored. If additional\n\
  directories are specified GIO will load modules from the built-in\n\
  directory last."]
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

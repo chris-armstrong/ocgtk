@@ -8,15 +8,22 @@
 
 (** {b The methods, signals and properties of a [ContainerNode].}
 
+    Inherits from:
+    {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
+
     A render node that can contain other render nodes. *)
 class type container_node_t = object
   inherit Render_node.render_node_t
+
+  (** {2:methods Methods} *)
 
   method get_child : int -> Render_node.render_node_t
   (** Gets one of the children of [container]. *)
 
   method get_n_children : unit -> int
   (** Retrieves the number of direct children of [node]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_container_node : Raw.Container_node.t
 end

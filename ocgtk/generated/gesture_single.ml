@@ -1,6 +1,8 @@
 class type gesture_single_t = object
   inherit Gesture.gesture_t
 
+  (** {2:methods Methods} *)
+
   method get_button : unit -> int
   (** Returns the button number [gesture] listens for.
 
@@ -43,6 +45,8 @@ class type gesture_single_t = object
       If [touch_only] is [TRUE], [gesture] will only handle events of type
       [GDK_TOUCH_BEGIN], [GDK_TOUCH_UPDATE] or [GDK_TOUCH_END]. If [FALSE],
       mouse events will be handled too. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_gesture_single : Raw.Gesture_single.t
 end

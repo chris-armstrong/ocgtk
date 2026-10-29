@@ -9,6 +9,15 @@
 
 (** {b The methods, signals and properties of a [ScaleButton].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Accessible_range.class-type-accessible_range_t}Ocgtk.Accessible_range}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}
+
     Provides a button which pops up a scale widget.
 
     This kind of widget is commonly used for volume controls in multimedia
@@ -32,12 +41,11 @@
     [GtkScaleButton] has a single CSS node with name scalebutton and [.scale]
     style class, and contains a [button] node with a [.toggle] style class. *)
 class type scale_button_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Accessible_range.accessible_range_t
   inherit Orientable.orientable_t
+
+  (** {2:signals Signals} *)
 
   method on_popdown :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -63,6 +71,8 @@ class type scale_button_t = object
     Gobject.Signal.handler_id
   (** Emitted when the value field has changed. *)
 
+  (** {2:methods Methods} *)
+
   method get_active : unit -> bool
   (** Queries a [GtkScaleButton] and returns its current state.
 
@@ -83,10 +93,7 @@ class type scale_button_t = object
   method get_plus_button : unit -> Button.button_t
   (** Retrieves the plus button of the [GtkScaleButton.] *)
 
-  method get_popup :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  method get_popup : unit -> Widget.widget_t
   (** Retrieves the popup of the [GtkScaleButton]. *)
 
   method get_value : unit -> float
@@ -112,6 +119,8 @@ class type scale_button_t = object
 
       The scale button emits the [Gtk.ScaleButton::value-changed] signal if the
       value changes. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_scale_button : Raw.Scale_button.t
 end

@@ -1,9 +1,8 @@
 class type switch_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Actionable.actionable_t
+
+  (** {2:signals Signals} *)
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -29,6 +28,8 @@ class type switch_t = object
       signal handler should return [TRUE] to prevent the default handler from
       running. *)
 
+  (** {2:methods Methods} *)
+
   method get_active : unit -> bool
   (** Gets whether the [GtkSwitch] is in its “on” or “off” state. *)
 
@@ -46,17 +47,15 @@ class type switch_t = object
 
       See [Gtk.Switch::state-set] for details. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_switch : Raw.Switch.t
 end
 
 (* High-level class for Switch *)
 class switch (obj : Raw.Switch.t) : switch_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
-
+    inherit Widget.widget (obj :> Raw.Widget.t)
     inherit Actionable.actionable (Raw.Actionable.from_gobject obj)
 
     method on_activate ?(after = false) ~callback () =

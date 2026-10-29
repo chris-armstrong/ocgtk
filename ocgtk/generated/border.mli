@@ -13,6 +13,8 @@
 
     Each side can have a different width. *)
 class type border_t = object
+  (** {2:conversions Conversions} *)
+
   method as_border : Raw.Border.t
 end
 

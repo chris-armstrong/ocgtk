@@ -2,12 +2,14 @@
 
     Its methods, signals and properties are on
     {!class-type-column_view_sorter_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgtk.Raw.Column_view_sorter}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.Column_view_sorter}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [ColumnViewSorter].}
+
+    Inherits from: {{!Ocgtk.Sorter.class-type-sorter_t}Ocgtk.Sorter}
 
     Sorts [Gtk.ColumnView] columns.
 
@@ -42,6 +44,8 @@
 class type column_view_sorter_t = object
   inherit Sorter.sorter_t
 
+  (** {2:methods Methods} *)
+
   method get_n_sort_columns : unit -> int
   (** Returns the number of columns by which the sorter sorts.
 
@@ -52,7 +56,7 @@ class type column_view_sorter_t = object
       sort columns changes. *)
 
   method get_primary_sort_column :
-    unit -> Column_view_and__column_view_column.column_view_column_t option
+    unit -> Column_view_column.column_view_column_t option
   (** Returns the primary sort column.
 
       The primary sort column is the one that displays the triangle in a column
@@ -66,6 +70,8 @@ class type column_view_sorter_t = object
 
       If there is no primary sort column, then this function returns
       [GTK_SORT_ASCENDING]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_column_view_sorter : Raw.Column_view_sorter.t
 end
@@ -105,3 +111,8 @@ class column_view_sorter : Raw.Column_view_sorter.t -> column_view_sorter_t
         gtk_column_view_sort_by_column (view, column, order);
       }
     ]} *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

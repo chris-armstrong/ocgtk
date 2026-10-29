@@ -10,6 +10,10 @@
 
 (** {b The methods, signals and properties of a [IconPaintable].}
 
+    Implements:
+    - {{!Ocgdk.Paintable.class-type-paintable_t}Ocgdk.Paintable}
+    - {{!Ocgtk.Symbolic_paintable.class-type-symbolic_paintable_t}Ocgtk.Symbolic_paintable}
+
     Contains information found when looking up an icon in [GtkIconTheme] or
     loading it from a file.
 
@@ -17,6 +21,8 @@
 class type icon_paintable_t = object
   inherit Ocgdk.Paintable.paintable_t
   inherit Symbolic_paintable.symbolic_paintable_t
+
+  (** {2:methods Methods} *)
 
   method get_file : unit -> Ocgio.File.file_t option
   (** Gets the [GFile] that was used to load the icon.
@@ -39,6 +45,8 @@ class type icon_paintable_t = object
       This currently uses only the file name and not the file contents for
       determining this. This behaviour may change in the future. *)
 
+  (** {2:properties Properties} *)
+
   method scale : int
   (** Get property: scale *)
 
@@ -50,6 +58,8 @@ class type icon_paintable_t = object
 
   method set_size : int -> unit
   (** Set property: size *)
+
+  (** {2:conversions Conversions} *)
 
   method as_icon_paintable : Raw.Icon_paintable.t
 end

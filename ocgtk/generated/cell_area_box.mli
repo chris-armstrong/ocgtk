@@ -8,8 +8,10 @@
 (** {1:class Class} *)
 
 class type cell_area_box_t = object
-  inherit Cell_area_and__cell_area_context_and__cell_layout.cell_area_t
+  inherit Cell_area.cell_area_t
   inherit Orientable.orientable_t
+
+  (** {2:methods Methods} *)
 
   method get_spacing : unit -> int
   (** Gets the spacing added between cell renderers. *)
@@ -17,10 +19,17 @@ class type cell_area_box_t = object
   method set_spacing : int -> unit
   (** Sets the spacing to add between cell renderers in [box]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_cell_area_box : Raw.Cell_area_box.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [CellAreaBox].}\n\n\
+     Inherits from: {{!Ocgtk.Cell_area.class-type-cell_area_t}Ocgtk.Cell_area}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - {{!Ocgtk.Cell_layout.class-type-cell_layout_t}Ocgtk.Cell_layout}\n\
+     - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}\n\n\
      A cell area that renders GtkCellRenderers into a row or a column\n\n\
      The [GtkCellAreaBox] renders cell renderers into a row or a column\n\
      depending on its [GtkOrientation].\n\n\

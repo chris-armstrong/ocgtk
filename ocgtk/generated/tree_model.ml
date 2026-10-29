@@ -1,4 +1,6 @@
 class type tree_model_t = object
+  (** {2:methods Methods} *)
+
   method filter_new : Raw.Tree_path.t option -> tree_model_t
   (** Creates a new [GtkTreeModel], with [child_model] as the child_model and
       [root] as the virtual root. *)
@@ -112,6 +114,8 @@ class type tree_model_t = object
       gtk_tree_model_ref_node().
 
       Please note that nodes that are deleted are not unreffed. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tree_model : Raw.Tree_model.t
 end

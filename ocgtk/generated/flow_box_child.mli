@@ -9,14 +9,21 @@
 
 (** {b The methods, signals and properties of a [FlowBoxChild].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     The kind of widget that can be added to a [GtkFlowBox].
 
     [Gtk.FlowBox] will automatically wrap its children in a [GtkFlowBoxChild]
     when necessary. *)
 class type flow_box_child_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:signals Signals} *)
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -29,6 +36,8 @@ class type flow_box_child_t = object
       own purposes.
 
       The default bindings are <kbd>Space</kbd> and <kbd>Enter</kbd>. *)
+
+  (** {2:methods Methods} *)
 
   method changed : unit -> unit
   (** Marks [child] as changed, causing any state that depends on this to be
@@ -50,11 +59,7 @@ class type flow_box_child_t = object
       Another alternative is to call [Gtk.FlowBox.invalidate_sort] on any model
       change, but that is more expensive. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [self]. *)
 
   method get_index : unit -> int
@@ -64,12 +69,10 @@ class type flow_box_child_t = object
   (** Returns whether the [child] is currently selected in its [GtkFlowBox]
       container. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [self]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_flow_box_child : Raw.Flow_box_child.t
 end

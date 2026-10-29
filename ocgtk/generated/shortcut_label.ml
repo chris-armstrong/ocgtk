@@ -1,7 +1,7 @@
 class type shortcut_label_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:methods Methods} *)
 
   method get_accelerator : unit -> string option
   (** Retrieves the current accelerator of [self]. *)
@@ -15,16 +15,15 @@ class type shortcut_label_t = object
   method set_disabled_text : string -> unit
   (** Sets the text to be displayed by [self] when no accelerator is set. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_shortcut_label : Raw.Shortcut_label.t
 end
 
 (* High-level class for ShortcutLabel *)
 class shortcut_label (obj : Raw.Shortcut_label.t) : shortcut_label_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     method get_accelerator : unit -> string option =
       fun () -> Raw.Shortcut_label.get_accelerator obj

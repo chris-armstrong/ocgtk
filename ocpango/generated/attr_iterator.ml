@@ -1,4 +1,6 @@
 class type attr_iterator_t = object
+  (** {2:methods Methods} *)
+
   method destroy : unit -> unit
   (** Destroy a [PangoAttrIterator] and free all associated memory. *)
 
@@ -13,6 +15,8 @@ class type attr_iterator_t = object
 
   method next : unit -> bool
   (** Advance the iterator until the next change of style. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_attr_iterator : Raw.Attr_iterator.t
 end

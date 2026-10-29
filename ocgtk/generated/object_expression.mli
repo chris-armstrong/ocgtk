@@ -9,12 +9,18 @@
 
 (** {b The methods, signals and properties of a [ObjectExpression].}
 
+    Inherits from: {{!Ocgtk.Expression.class-type-expression_t}Ocgtk.Expression}
+
     A [GObject] value in a [GtkExpression]. *)
 class type object_expression_t = object
   inherit Expression.expression_t
 
+  (** {2:methods Methods} *)
+
   method get_object : unit -> [ `object_ ] Gobject.obj option
   (** Gets the object that the expression evaluates to. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_object_expression : Raw.Object_expression.t
 end

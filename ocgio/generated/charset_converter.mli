@@ -10,11 +10,17 @@
 
 (** {b The methods, signals and properties of a [CharsetConverter].}
 
+    Implements:
+    - {{!Ocgio.Converter.class-type-converter_t}Ocgio.Converter}
+    - {{!Ocgio.Initable.class-type-initable_t}Ocgio.Initable}
+
     [GCharsetConverter] is an implementation of [Gio.Converter] based on
     [GLib.IConv]. *)
 class type charset_converter_t = object
   inherit Converter.converter_t
   inherit Initable.initable_t
+
+  (** {2:methods Methods} *)
 
   method get_num_fallbacks : unit -> int
   (** Gets the number of fallbacks that [converter] has applied so far. *)
@@ -25,11 +31,15 @@ class type charset_converter_t = object
   method set_use_fallback : bool -> unit
   (** Sets the [GCharsetConverter:use]-fallback property. *)
 
+  (** {2:properties Properties} *)
+
   method from_charset : string
   (** The character encoding to convert from. *)
 
   method to_charset : string
   (** The character encoding to convert to. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_charset_converter : Raw.Charset_converter.t
 end

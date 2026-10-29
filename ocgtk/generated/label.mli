@@ -8,11 +8,10 @@
 (** {1:class Class} *)
 
 class type label_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Accessible_text.accessible_text_t
+
+  (** {2:signals Signals} *)
 
   method on_activate_current_link :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -68,6 +67,8 @@ class type label_t = object
         individual characters/lines
       - <kbd>Ctrl</kbd>+<kbd>←</kbd>, etc. move by words/paragraphs
       - <kbd>Home</kbd> and <kbd>End</kbd> move to the ends of the buffer *)
+
+  (** {2:methods Methods} *)
 
   method get_attributes : unit -> Ocpango.Attr_list.attr_list_t option
   (** Gets the label's attribute list.
@@ -135,11 +136,7 @@ class type label_t = object
       returns the keyval used for the mnemonic accelerator. If there is no
       mnemonic set up it returns [GDK_KEY_VoidSymbol]. *)
 
-  method get_mnemonic_widget :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_mnemonic_widget : unit -> Widget.widget_t option
   (** Retrieves the mnemonic target of this label.
 
       See [Gtk.Label.set_mnemonic_widget]. *)
@@ -290,11 +287,7 @@ class type label_t = object
   method set_max_width_chars : int -> unit
   (** Sets the maximum width of the label in characters. *)
 
-  method set_mnemonic_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_mnemonic_widget : Widget.widget_t option -> unit
   (** Associate the label with its mnemonic target.
 
       If the label has been set so that it has a mnemonic key (using i.e.
@@ -391,10 +384,20 @@ class type label_t = object
 
       See the [Gtk.Label:yalign] property. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_label : Raw.Label.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Label].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - \
+     {{!Ocgtk.Accessible_text.class-type-accessible_text_t}Ocgtk.Accessible_text}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      Displays a small amount of text.\n\n\
      Most labels are used to label another widget (such as an [Entry]).\n\n\
      An example GtkLabel\n\n\

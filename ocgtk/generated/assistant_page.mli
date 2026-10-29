@@ -1,7 +1,8 @@
 (** [GtkAssistantPage] is an auxiliary object used by [GtkAssistant].
 
     Its methods, signals and properties are on {!class-type-assistant_page_t}.
-    The functions it is built on are in {!Ocgtk.Raw.Assistant_page}. *)
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Assistant_page}. *)
 
 (** {1:class Class} *)
 
@@ -9,11 +10,12 @@
 
     [GtkAssistantPage] is an auxiliary object used by [GtkAssistant]. *)
 class type assistant_page_t = object
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  (** {2:methods Methods} *)
+
+  method get_child : unit -> Widget.widget_t
   (** Returns the child to which [page] belongs. *)
+
+  (** {2:properties Properties} *)
 
   method complete : bool
   (** Whether all required fields are filled in.
@@ -39,8 +41,15 @@ class type assistant_page_t = object
   method set_title : string -> unit
   (** The title of the page. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_assistant_page : Raw.Assistant_page.t
 end
 
 class assistant_page : Raw.Assistant_page.t -> assistant_page_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Assistant_page.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

@@ -1,7 +1,7 @@
 class type gl_area_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:signals Signals} *)
 
   method on_create_context :
     ?after:bool ->
@@ -44,6 +44,8 @@ class type gl_area_t = object
       is emitted.
 
       The default handler sets up the GL viewport. *)
+
+  (** {2:methods Methods} *)
 
   method attach_buffers : unit -> unit
   (** Binds buffers to the framebuffer.
@@ -156,16 +158,15 @@ class type gl_area_t = object
       You should check the capabilities of the [GdkGLContext] before drawing
       with either API. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_gl_area : Raw.Gl_area.t
 end
 
 (* High-level class for GLArea *)
 class gl_area (obj : Raw.Gl_area.t) : gl_area_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     method on_create_context ?(after = false) ~callback () =
       Raw.Gl_area.on_create_context ~after self#as_gl_area ~callback:(fun () ->

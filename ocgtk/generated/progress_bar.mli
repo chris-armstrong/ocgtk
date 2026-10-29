@@ -9,6 +9,15 @@
 
 (** {b The methods, signals and properties of a [ProgressBar].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Accessible_range.class-type-accessible_range_t}Ocgtk.Accessible_range}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}
+
     Displays the progress of a long-running operation.
 
     [GtkProgressBar] provides a visual clue that processing is underway. It can
@@ -58,12 +67,11 @@
     and [Gtk.AccessibleProperty.value_now] properties to reflect the progress.
 *)
 class type progress_bar_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Accessible_range.accessible_range_t
   inherit Orientable.orientable_t
+
+  (** {2:methods Methods} *)
 
   method get_ellipsize : unit -> Ocpango.Enums.ellipsizemode
   (** Returns the ellipsizing position of the progress bar.
@@ -144,6 +152,8 @@ class type progress_bar_t = object
       percentage. If [text] is the empty string, the progress bar will still be
       styled and sized suitably for containing text, as long as
       [Gtk.ProgressBar:show-text] is [TRUE]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_progress_bar : Raw.Progress_bar.t
 end

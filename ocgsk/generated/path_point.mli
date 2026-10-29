@@ -4,8 +4,9 @@
 (** Represents a point on a path.
 
     Its methods, signals and properties are on {!class-type-path_point_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgsk.Raw.Path_point}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgsk.Raw.Path_point}. *)
 
 (** {1:class Class} *)
 
@@ -44,3 +45,8 @@ class path_point : Raw.Path_point.t -> path_point_t
     hold a reference to the path object they are obtained from. It is the
     callers responsibility to keep a reference to the path as long as the
     [GskPathPoint] is used. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

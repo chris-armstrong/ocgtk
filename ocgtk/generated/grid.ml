@@ -1,29 +1,18 @@
 class type grid_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Orientable.orientable_t
 
-  method attach :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int ->
-    int ->
-    int ->
-    int ->
-    unit
+  (** {2:methods Methods} *)
+
+  method attach : Widget.widget_t -> int -> int -> int -> int -> unit
   (** Adds a widget to the grid.
 
       The position of [child] is determined by [column] and [row]. The number of
       “cells” that [child] will occupy is determined by [width] and [height]. *)
 
   method attach_next_to :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
+    Widget.widget_t ->
+    Widget.widget_t option ->
     Enums.positiontype ->
     int ->
     int ->
@@ -41,12 +30,7 @@ class type grid_t = object
   method get_baseline_row : unit -> int
   (** Returns which row defines the global baseline of [grid]. *)
 
-  method get_child_at :
-    int ->
-    int ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child_at : int -> int -> Widget.widget_t option
   (** Gets the child of [grid] whose area covers the grid cell at [column],
       [row]. *)
 
@@ -74,11 +58,7 @@ class type grid_t = object
       one column to the right. Children which span across this position are
       grown to span the new column. *)
 
-  method insert_next_to :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Enums.positiontype ->
-    unit
+  method insert_next_to : Widget.widget_t -> Enums.positiontype -> unit
   (** Inserts a row or column at the specified position.
 
       The new row or column is placed next to [sibling], on the side determined
@@ -93,10 +73,7 @@ class type grid_t = object
       down. Children which span across this position are grown to span the new
       row. *)
 
-  method remove :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method remove : Widget.widget_t -> unit
   (** Removes a child from [grid].
 
       The child must have been added with [Gtk.Grid.attach] or
@@ -141,37 +118,25 @@ class type grid_t = object
   method set_row_spacing : int -> unit
   (** Sets the amount of space between rows of [grid]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_grid : Raw.Grid.t
 end
 
 (* High-level class for Grid *)
 class grid (obj : Raw.Grid.t) : grid_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
-
+    inherit Widget.widget (obj :> Raw.Widget.t)
     inherit Orientable.orientable (Raw.Orientable.from_gobject obj)
 
-    method attach :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        int ->
-        int ->
-        int ->
-        int ->
-        unit =
+    method attach : Widget.widget_t -> int -> int -> int -> int -> unit =
       fun child column row width height ->
         let child = child#as_widget in
         Raw.Grid.attach obj child column row width height
 
     method attach_next_to :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
+        Widget.widget_t ->
+        Widget.widget_t option ->
         Enums.positiontype ->
         int ->
         int ->
@@ -184,19 +149,10 @@ class grid (obj : Raw.Grid.t) : grid_t =
     method get_baseline_row : unit -> int =
       fun () -> Raw.Grid.get_baseline_row obj
 
-    method get_child_at :
-        int ->
-        int ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_child_at : int -> int -> Widget.widget_t option =
       fun column row ->
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.Grid.get_child_at obj column row)
 
     method get_column_homogeneous : unit -> bool =
@@ -217,11 +173,7 @@ class grid (obj : Raw.Grid.t) : grid_t =
     method insert_column : int -> unit =
       fun position -> Raw.Grid.insert_column obj position
 
-    method insert_next_to :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        Enums.positiontype ->
-        unit =
+    method insert_next_to : Widget.widget_t -> Enums.positiontype -> unit =
       fun sibling side ->
         let sibling = sibling#as_widget in
         Raw.Grid.insert_next_to obj sibling side
@@ -229,10 +181,7 @@ class grid (obj : Raw.Grid.t) : grid_t =
     method insert_row : int -> unit =
       fun position -> Raw.Grid.insert_row obj position
 
-    method remove :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        unit =
+    method remove : Widget.widget_t -> unit =
       fun child ->
         let child = child#as_widget in
         Raw.Grid.remove obj child

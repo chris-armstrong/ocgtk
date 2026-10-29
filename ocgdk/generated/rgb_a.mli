@@ -2,8 +2,9 @@
     color.
 
     Its methods, signals and properties are on {!class-type-rgb_a_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgdk.Raw.Rgb_a}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Rgb_a}. *)
 
 (** {1:class Class} *)
 
@@ -18,6 +19,8 @@
     represents transparent black and (1.0, 1.0, 1.0, 1.0) is opaque white. Other
     values will be clamped to this range when drawing. *)
 class type rgb_a_t = object
+  (** {2:methods Methods} *)
+
   method equal : Raw.Rgb_a.t -> bool
   (** Compares two [GdkRGBA] colors. *)
 
@@ -70,6 +73,8 @@ class type rgb_a_t = object
       “g” and “b” are represented as 8-bit integers. If this is a concern, you
       should use a different representation. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_rgb_a : Raw.Rgb_a.t
 end
 
@@ -86,3 +91,8 @@ class rgb_a : Raw.Rgb_a.t -> rgb_a_t
     range from 0.0 to 1.0 inclusive. So the color (0.0, 0.0, 0.0, 0.0)
     represents transparent black and (1.0, 1.0, 1.0, 1.0) is opaque white. Other
     values will be clamped to this range when drawing. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

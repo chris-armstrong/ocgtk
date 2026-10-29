@@ -11,6 +11,9 @@
 
 (** {b The methods, signals and properties of a [EmblemedIcon].}
 
+    Implements:
+    - {{!Ocgio.Icon.class-type-icon_t}Ocgio.Icon}
+
     [GEmblemedIcon] is an implementation of [Gio.Icon] that supports adding an
     emblem to an icon. Adding multiple emblems to an icon is ensured via
     [Gio.EmblemedIcon.add_emblem].
@@ -19,6 +22,8 @@
     emblems. See also [Gio.Emblem] for more information. *)
 class type emblemed_icon_t = object
   inherit Icon.icon_t
+
+  (** {2:methods Methods} *)
 
   method add_emblem : Emblem.emblem_t -> unit
   (** Adds [emblem] to the [GList] of [GEmblems]. *)
@@ -32,8 +37,12 @@ class type emblemed_icon_t = object
   method get_icon : unit -> Icon.icon_t
   (** Gets the main icon for [emblemed]. *)
 
+  (** {2:properties Properties} *)
+
   method gicon : Icon.icon_t
   (** The [Gio.Icon] to attach emblems to. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_emblemed_icon : Raw.Emblemed_icon.t
 end

@@ -21,6 +21,8 @@
     The predefined keys try to use shared values as much as possible so that
     moving such a document between systems still works. *)
 class type print_settings_t = object
+  (** {2:methods Methods} *)
+
   method copy : unit -> print_settings_t
   (** Copies a [GtkPrintSettings] object. *)
 
@@ -258,6 +260,8 @@ class type print_settings_t = object
   (** Removes any value associated with [key].
 
       This has the same effect as setting the value to [NULL]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_print_settings : Raw.Print_settings.t
 end

@@ -1,8 +1,9 @@
 (** [GActionGroup] represents a group of actions.
 
     Its methods, signals and properties are on {!class-type-action_group_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgio.Raw.Action_group}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Action_group}. *)
 
 (** {1:class Class} *)
 
@@ -54,6 +55,8 @@
     implemented — their ‘wrappers’ are actually implemented with calls to
     [Gio.ActionGroup.query_action]. *)
 class type action_group_t = object
+  (** {2:signals Signals} *)
+
   method on_action_added :
     ?after:bool ->
     callback:(action_name:string -> unit) ->
@@ -87,6 +90,8 @@ class type action_group_t = object
     unit ->
     Gobject.Signal.handler_id
   (** Signals that the state of the named action has changed. *)
+
+  (** {2:methods Methods} *)
 
   method action_added : string -> unit
   (** Emits the [Gio.ActionGroup::action-added] signal on [action_group].
@@ -233,6 +238,8 @@ class type action_group_t = object
       The caller is responsible for freeing the list with [GLib.strfreev] when
       it is no longer required. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_action_group : Raw.Action_group.t
 end
 
@@ -286,3 +293,8 @@ class action_group : Raw.Action_group.t -> action_group_t
     [Gio.ActionGroup.query_action]. The other virtual functions should not be
     implemented — their ‘wrappers’ are actually implemented with calls to
     [Gio.ActionGroup.query_action]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

@@ -2,8 +2,9 @@
     a module.
 
     Its methods, signals and properties are on {!class-type-pixbuf_format_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgdkpixbuf.Raw.Pixbuf_format}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgdkpixbuf.Raw.Pixbuf_format}. *)
 
 (** {1:class Class} *)
 
@@ -15,6 +16,8 @@
     Only modules should access the fields directly, applications should use the
     [gdk_pixbuf_format_*] family of functions. *)
 class type pixbuf_format_t = object
+  (** {2:methods Methods} *)
+
   method get_description : unit -> string option
   (** Returns a description of the format. *)
 
@@ -65,6 +68,8 @@ class type pixbuf_format_t = object
       Applications can use this to avoid using image loaders with an
       inappropriate license, see gdk_pixbuf_format_get_license(). *)
 
+  (** {2:conversions Conversions} *)
+
   method as_pixbuf_format : Raw.Pixbuf_format.t
 end
 
@@ -78,3 +83,8 @@ class pixbuf_format : Raw.Pixbuf_format.t -> pixbuf_format_t
 
     Only modules should access the fields directly, applications should use the
     [gdk_pixbuf_format_*] family of functions. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

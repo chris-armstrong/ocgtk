@@ -10,10 +10,14 @@
     responsible for updating the accessible state in response to state changes
     in [GtkAccessible]. *)
 class type at_context_t = object
+  (** {2:signals Signals} *)
+
   method on_state_change :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the attributes of the accessible for the [GtkATContext]
       instance change. *)
+
+  (** {2:methods Methods} *)
 
   method get_accessible : unit -> accessible_t
   (** Retrieves the [GtkAccessible] using this context. *)
@@ -21,11 +25,15 @@ class type at_context_t = object
   method get_accessible_role : unit -> Enums.accessiblerole
   (** Retrieves the accessible role of this context. *)
 
+  (** {2:properties Properties} *)
+
   method display : Ocgdk.Display.display_t
   (** The [GdkDisplay] for the [GtkATContext]. *)
 
   method set_display : Ocgdk.Display.display_t -> unit
   (** The [GdkDisplay] for the [GtkATContext]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_at_context : Raw.At_context.t
 end
@@ -63,6 +71,8 @@ end
     [Gtk.Accessible.set_accessible_parent] and updating the sibling by
     [Gtk.Accessible.update_next_accessible_sibling]. *)
 and accessible_t = object
+  (** {2:methods Methods} *)
+
   method announce : string -> Enums.accessibleannouncementpriority -> unit
   (** Requests the user's screen reader to announce the given message.
 
@@ -130,6 +140,8 @@ and accessible_t = object
       This function should be used by [GtkAccessible] implementations that have
       a platform state but are not widgets. Widgets handle platform states
       automatically. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_accessible : Raw.Accessible.t
 end

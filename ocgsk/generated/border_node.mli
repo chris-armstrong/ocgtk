@@ -8,9 +8,14 @@
 
 (** {b The methods, signals and properties of a [BorderNode].}
 
+    Inherits from:
+    {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
+
     A render node for a border. *)
 class type border_node_t = object
   inherit Render_node.render_node_t
+
+  (** {2:methods Methods} *)
 
   method get_colors : unit -> Ocgdk.Raw.Rgb_a.t array
   (** Retrieves the colors of the border. *)
@@ -20,6 +25,8 @@ class type border_node_t = object
 
   method get_widths : unit -> float array
   (** Retrieves the stroke widths of the border. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_border_node : Raw.Border_node.t
 end

@@ -10,10 +10,18 @@
 
 (** {b The methods, signals and properties of a [DataInputStream].}
 
+    Inherits from:
+    {{!Ocgio.Buffered_input_stream.class-type-buffered_input_stream_t}Ocgio.Buffered_input_stream}
+
+    Implements:
+    - {{!Ocgio.Seekable.class-type-seekable_t}Ocgio.Seekable}
+
     Data input stream implements [Gio.InputStream] and includes functions for
     reading structured data directly from a binary input stream. *)
 class type data_input_stream_t = object
   inherit Buffered_input_stream.buffered_input_stream_t
+
+  (** {2:methods Methods} *)
 
   method get_byte_order : unit -> Enums.datastreambyteorder
   (** Gets the byte order for the data input stream. *)
@@ -96,6 +104,8 @@ class type data_input_stream_t = object
      chunk ends in \"CR\" we must read an additional byte to know if this is \
      \"CR\" or\n\
      \"CR LF\", and this might block if there is no more data available."]
+
+  (** {2:conversions Conversions} *)
 
   method as_data_input_stream : Raw.Data_input_stream.t
 end

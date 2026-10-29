@@ -10,6 +10,8 @@
 class type drag_source_t = object
   inherit Gesture_single.gesture_single_t
 
+  (** {2:signals Signals} *)
+
   method on_drag_begin :
     ?after:bool ->
     callback:(drag:Ocgdk.Drag.drag_t -> unit) ->
@@ -54,6 +56,8 @@ class type drag_source_t = object
       start. The default handler for this signal returns the value of the
       [Gtk.DragSource:content] property, so if you set up that property ahead of
       time, you don't need to connect to this signal. *)
+
+  (** {2:methods Methods} *)
 
   method drag_cancel : unit -> unit
   (** Cancels a currently ongoing drag operation. *)
@@ -101,10 +105,14 @@ class type drag_source_t = object
       [Gtk.DragSource::prepare] or [Gtk.DragSource::drag-begin] signal handler.
   *)
 
+  (** {2:conversions Conversions} *)
+
   method as_drag_source : Raw.Drag_source.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [DragSource].}\n\n\
+     Inherits from: \
+     {{!Ocgtk.Gesture_single.class-type-gesture_single_t}Ocgtk.Gesture_single}\n\n\
      An event controller to initiate Drag-And-Drop operations.\n\n\
      [GtkDragSource] can be set up with the necessary\n\
      ingredients for a DND operation ahead of time. This includes\n\

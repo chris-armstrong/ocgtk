@@ -9,6 +9,8 @@
 (** {1:class Class} *)
 
 class type test_d_bus_t = object
+  (** {2:methods Methods} *)
+
   method add_service_dir : string -> unit
   (** Add a path where dbus-daemon will look up .service files. This can't be
       called after g_test_dbus_up(). *)
@@ -47,6 +49,8 @@ class type test_d_bus_t = object
 
       If this function is called from unit test's main(), then
       g_test_dbus_down() must be called after g_test_run(). *)
+
+  (** {2:conversions Conversions} *)
 
   method as_test_d_bus : Raw.Test_d_bus.t
 end

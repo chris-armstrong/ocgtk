@@ -7,14 +7,17 @@
     client-side and server-side TLS, respectively.
 
     Its methods, signals and properties are on {!class-type-tls_connection_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgio.Raw.Tls_connection}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Tls_connection}. *)
 
 (** {1:class Class} *)
 
 class type tls_connection_t =
   Tls_connection_and__tls_database_and__tls_interaction.tls_connection_t
 (** {b The methods, signals and properties of a [TlsConnection].}
+
+    Inherits from: {{!Ocgio.Io_stream.class-type-io_stream_t}Ocgio.Io_stream}
 
     [GTlsConnection] is the base TLS connection class type, which wraps a
     [Gio.IOStream] and provides TLS encryption on top of it. Its subclasses,
@@ -34,3 +37,8 @@ class tls_connection : Raw.Tls_connection.t -> tls_connection_t
     client-side and server-side TLS, respectively.
 
     For DTLS (Datagram TLS) support, see [Gio.DtlsConnection]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

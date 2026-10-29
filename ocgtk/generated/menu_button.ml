@@ -1,7 +1,7 @@
 class type menu_button_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:signals Signals} *)
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -9,6 +9,8 @@ class type menu_button_t = object
 
       The [::activate] signal on [GtkMenuButton] is an action signal and
       emitting it causes the button to pop up its menu. *)
+
+  (** {2:methods Methods} *)
 
   method get_active : unit -> bool
   (** Returns whether the menu button is active. *)
@@ -21,11 +23,7 @@ class type menu_button_t = object
   (** Retrieves whether the button can be smaller than the natural size of its
       contents. *)
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [menu_button]. *)
 
   method get_has_frame : unit -> bool
@@ -73,11 +71,7 @@ class type menu_button_t = object
 
       For icon buttons, this function has no effect. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [menu_button].
 
       Setting a child resets [Gtk.MenuButton:label] and
@@ -138,16 +132,15 @@ class type menu_button_t = object
   method set_use_underline : bool -> unit
   (** If true, an underline in the text indicates a mnemonic. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_menu_button : Raw.Menu_button.t
 end
 
 (* High-level class for MenuButton *)
 class menu_button (obj : Raw.Menu_button.t) : menu_button_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     method on_activate ?(after = false) ~callback () =
       Raw.Menu_button.on_activate ~after self#as_menu_button ~callback
@@ -160,18 +153,10 @@ class menu_button (obj : Raw.Menu_button.t) : menu_button_t =
     method get_can_shrink : unit -> bool =
       fun () -> Raw.Menu_button.get_can_shrink obj
 
-    method get_child :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_child : unit -> Widget.widget_t option =
       fun () ->
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.Menu_button.get_child obj)
 
     method get_has_frame : unit -> bool =
@@ -214,11 +199,7 @@ class menu_button (obj : Raw.Menu_button.t) : menu_button_t =
     method set_can_shrink : bool -> unit =
       fun can_shrink -> Raw.Menu_button.set_can_shrink obj can_shrink
 
-    method set_child :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        unit =
+    method set_child : Widget.widget_t option -> unit =
       fun child ->
         let child = Option.map (fun c -> c#as_widget) child in
         Raw.Menu_button.set_child obj child

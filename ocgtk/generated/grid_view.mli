@@ -9,6 +9,15 @@
 
 (** {b The methods, signals and properties of a [GridView].}
 
+    Inherits from: {{!Ocgtk.List_base.class-type-list_base_t}Ocgtk.List_base}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}
+    - {{!Ocgtk.Scrollable.class-type-scrollable_t}Ocgtk.Scrollable}
+
     Presents a large dynamic grid of items.
 
     [GtkGridView] uses its factory to generate one child widget for each visible
@@ -53,6 +62,8 @@
 class type grid_view_t = object
   inherit List_base.list_base_t
 
+  (** {2:signals Signals} *)
+
   method on_activate :
     ?after:bool ->
     callback:(position:int -> unit) ->
@@ -63,6 +74,8 @@ class type grid_view_t = object
 
       This allows for a convenient way to handle activation in a gridview. See
       [Gtk.ListItem:activatable] for details on how to use this signal. *)
+
+  (** {2:methods Methods} *)
 
   method get_enable_rubberband : unit -> bool
   (** Returns whether rows can be selected by dragging with the mouse. *)
@@ -128,6 +141,8 @@ class type grid_view_t = object
   method set_tab_behavior : Enums.listtabbehavior -> unit
   (** Sets the behavior of the <kbd>Tab</kbd> and
       <kbd>Shift</kbd>+<kbd>Tab</kbd> keys. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_grid_view : Raw.Grid_view.t
 end

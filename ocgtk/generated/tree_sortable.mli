@@ -1,12 +1,16 @@
 (** The interface for sortable models used by GtkTreeView
 
     Its methods, signals and properties are on {!class-type-tree_sortable_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgtk.Raw.Tree_sortable}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Tree_sortable}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [TreeSortable].}
+
+    Requires:
+    - {{!Ocgtk.Tree_model.class-type-tree_model_t}Ocgtk.Tree_model}
 
     The interface for sortable models used by GtkTreeView
 
@@ -14,11 +18,15 @@
     support sorting. The [GtkTreeView] uses the methods provided by this
     interface to sort the model. *)
 class type tree_sortable_t = object
+  (** {2:signals Signals} *)
+
   method on_sort_column_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** The ::sort-column-changed signal is emitted when the sort column or sort
       order of [sortable] is changed. The signal is emitted before the contents
       of [sortable] are resorted. *)
+
+  (** {2:methods Methods} *)
 
   method has_default_sort_func : unit -> bool
   (** Returns [TRUE] if the model has a default sort function. This is used
@@ -39,6 +47,8 @@ class type tree_sortable_t = object
   method sort_column_changed : unit -> unit
   (** Emits a [GtkTreeSortable::sort-column-changed] signal on [sortable]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_tree_sortable : Raw.Tree_sortable.t
 end
 
@@ -52,3 +62,8 @@ class tree_sortable : Raw.Tree_sortable.t -> tree_sortable_t
     [GtkTreeSortable] is an interface to be implemented by tree models which
     support sorting. The [GtkTreeView] uses the methods provided by this
     interface to sort the model. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

@@ -1,13 +1,16 @@
 (** A [GTask] represents and manages a cancellable ‘task’.
 
     Its methods, signals and properties are on {!class-type-task_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgio.Raw.Task}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Task}. *)
 
 (** {1:class Class} *)
 
 class type task_t = object
   inherit Async_result.async_result_t
+
+  (** {2:methods Methods} *)
 
   method get_cancellable : unit -> Cancellable.cancellable_t option
   (** Gets [task]'s [GCancellable] *)
@@ -161,10 +164,14 @@ class type task_t = object
       This function is called automatically by [Gio.Task.set_source_tag] unless
       a name is set. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_task : Raw.Task.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Task].}\n\n\
+     Implements:\n\
+     - {{!Ocgio.Async_result.class-type-async_result_t}Ocgio.Async_result}\n\n\
      A [GTask] represents and manages a cancellable ‘task’.\n\n\
      {b Asynchronous operations}\n\n\
      The most common usage of [GTask] is as a [Gio.AsyncResult], to\n\
@@ -1078,3 +1085,8 @@ class task : Raw.Task.t -> task_t
  - Keep iterating a main context in the main thread and defer\n\
  dropping the reference to the source object to that main\n\
  context when the task is finalized"]
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

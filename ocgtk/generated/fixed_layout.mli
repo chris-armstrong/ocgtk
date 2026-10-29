@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [FixedLayout].}
 
+    Inherits from:
+    {{!Ocgtk.Layout_manager.class-type-layout_manager_t}Ocgtk.Layout_manager}
+
     Places child widgets at fixed positions.
 
     Most applications should never use this layout manager; fixed positioning
@@ -38,9 +41,9 @@
     elements, since you have to reposition all the other elements. This is a
     long-term maintenance problem for your application. *)
 class type fixed_layout_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .layout_manager_t
+  inherit Layout_manager.layout_manager_t
+
+  (** {2:conversions Conversions} *)
 
   method as_fixed_layout : Raw.Fixed_layout.t
 end

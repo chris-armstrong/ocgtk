@@ -4,12 +4,15 @@
 
     Its methods, signals and properties are on
     {!class-type-remote_action_group_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgio.Raw.Remote_action_group}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.Remote_action_group}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [RemoteActionGroup].}
+
+    Requires:
+    - {{!Ocgio.Action_group.class-type-action_group_t}Ocgio.Action_group}
 
     The [GRemoteActionGroup] interface is implemented by [Gio.ActionGroup]
     instances that either transmit action invocations to other processes or
@@ -30,6 +33,8 @@
     which to receive platform data for action invocations that arrive by way of
     D-Bus. *)
 class type remote_action_group_t = object
+  (** {2:methods Methods} *)
+
   method activate_action_full :
     string -> Gvariant.t option -> Gvariant.t -> unit
   [@@ocaml.doc
@@ -50,6 +55,8 @@ class type remote_action_group_t = object
      user interaction timestamp or startup notification information.\n\n\
      [platform_data] must be non-[NULL] and must have the type\n\
      [G_VARIANT_TYPE_VARDICT].  If it is floating, it will be consumed."]
+
+  (** {2:conversions Conversions} *)
 
   method as_remote_action_group : Raw.Remote_action_group.t
 end
@@ -77,3 +84,8 @@ class remote_action_group : Raw.Remote_action_group.t -> remote_action_group_t
     [_full] variants of the calls if available. This provides a mechanism by
     which to receive platform data for action invocations that arrive by way of
     D-Bus. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

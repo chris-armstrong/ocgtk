@@ -1,9 +1,10 @@
 class type assistant_page_t = object
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  (** {2:methods Methods} *)
+
+  method get_child : unit -> Widget.widget_t
   (** Returns the child to which [page] belongs. *)
+
+  (** {2:properties Properties} *)
 
   method complete : bool
   (** Whether all required fields are filled in.
@@ -29,21 +30,16 @@ class type assistant_page_t = object
   method set_title : string -> unit
   (** The title of the page. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_assistant_page : Raw.Assistant_page.t
 end
 
 (* High-level class for AssistantPage *)
 class assistant_page (obj : Raw.Assistant_page.t) : assistant_page_t =
   object (self)
-    method get_child :
-        unit ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t =
-      fun () ->
-        new
-          Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-          .widget
-          (Raw.Assistant_page.get_child obj)
+    method get_child : unit -> Widget.widget_t =
+      fun () -> new Widget.widget (Raw.Assistant_page.get_child obj)
 
     method complete = Raw.Assistant_page.get_complete obj
     method set_complete v = Raw.Assistant_page.set_complete obj v

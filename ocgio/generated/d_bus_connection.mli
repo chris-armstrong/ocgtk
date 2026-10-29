@@ -10,6 +10,10 @@
 
 (** {b The methods, signals and properties of a [DBusConnection].}
 
+    Implements:
+    - {{!Ocgio.Async_initable.class-type-async_initable_t}Ocgio.Async_initable}
+    - {{!Ocgio.Initable.class-type-initable_t}Ocgio.Initable}
+
     The [GDBusConnection] type is used for D-Bus connections to remote peers
     such as a message buses.
 
@@ -65,6 +69,8 @@
 class type d_bus_connection_t = object
   inherit Async_initable.async_initable_t
   inherit Initable.initable_t
+
+  (** {2:methods Methods} *)
 
   method call_finish :
     Async_result.async_result_t -> (Gvariant.t, GError.t) result
@@ -163,9 +169,7 @@ class type d_bus_connection_t = object
       exported from only one main context. *)
 
   method export_menu_model :
-    string ->
-    Menu_link_iter_and__menu_model.menu_model_t ->
-    (int, GError.t) result
+    string -> Menu_model.menu_model_t -> (int, GError.t) result
   (** Exports [menu] on [connection] at [object_path].
 
       The implemented D-Bus API should be considered private. It is subject to
@@ -314,6 +318,8 @@ class type d_bus_connection_t = object
 
   method unregister_subtree : int -> bool
   (** Unregisters a subtree. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_d_bus_connection : Raw.D_bus_connection.t
 end

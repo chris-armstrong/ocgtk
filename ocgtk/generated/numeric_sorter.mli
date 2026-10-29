@@ -9,12 +9,16 @@
 
 (** {b The methods, signals and properties of a [NumericSorter].}
 
+    Inherits from: {{!Ocgtk.Sorter.class-type-sorter_t}Ocgtk.Sorter}
+
     Sorts items numerically.
 
     To obtain the numbers to compare, this sorter evaluates a [Gtk.Expression].
 *)
 class type numeric_sorter_t = object
   inherit Sorter.sorter_t
+
+  (** {2:methods Methods} *)
 
   method get_expression : unit -> Expression.expression_t option
   (** Gets the expression that is evaluated to obtain numbers from items. *)
@@ -33,6 +37,8 @@ class type numeric_sorter_t = object
 
   method set_sort_order : Enums.sorttype -> unit
   (** Sets whether to sort smaller numbers before larger ones. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_numeric_sorter : Raw.Numeric_sorter.t
 end

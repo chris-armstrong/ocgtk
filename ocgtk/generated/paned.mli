@@ -8,12 +8,11 @@
 (** {1:class Class} *)
 
 class type paned_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Accessible_range.accessible_range_t
   inherit Orientable.orientable_t
+
+  (** {2:signals Signals} *)
 
   method on_accept_position :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
@@ -82,11 +81,9 @@ class type paned_t = object
 
       The default binding is <kbd>Tab</kbd>. *)
 
-  method get_end_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  (** {2:methods Methods} *)
+
+  method get_end_child : unit -> Widget.widget_t option
   (** Retrieves the end child of the given [GtkPaned]. *)
 
   method get_position : unit -> int
@@ -104,21 +101,13 @@ class type paned_t = object
   method get_shrink_start_child : unit -> bool
   (** Returns whether the [Gtk.Paned:start-child] can shrink. *)
 
-  method get_start_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_start_child : unit -> Widget.widget_t option
   (** Retrieves the start child of the given [GtkPaned]. *)
 
   method get_wide_handle : unit -> bool
   (** Gets whether the separator should be wide. *)
 
-  method set_end_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_end_child : Widget.widget_t option -> unit
   (** Sets the end child of [paned] to [child].
 
       If [child] is [NULL], the existing child will be removed. *)
@@ -138,17 +127,15 @@ class type paned_t = object
   method set_shrink_start_child : bool -> unit
   (** Sets whether the [Gtk.Paned:start-child] can shrink. *)
 
-  method set_start_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_start_child : Widget.widget_t option -> unit
   (** Sets the start child of [paned] to [child].
 
       If [child] is [NULL], the existing child will be removed. *)
 
   method set_wide_handle : bool -> unit
   (** Sets whether the separator should be wide. *)
+
+  (** {2:properties Properties} *)
 
   method max_position : int
   (** The largest possible value for the [Gtk.Paned:position] property.
@@ -168,10 +155,21 @@ class type paned_t = object
   method set_position_set : bool -> unit
   (** Whether the [Gtk.Paned:position] property has been set. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_paned : Raw.Paned.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Paned].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - \
+     {{!Ocgtk.Accessible_range.class-type-accessible_range_t}Ocgtk.Accessible_range}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\
+     - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}\n\n\
      Arranges its children in two panes, horizontally or vertically.\n\n\
      An example GtkPaned\n\n\
      The division between the two panes is adjustable by the user\n\

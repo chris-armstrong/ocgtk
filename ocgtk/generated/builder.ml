@@ -1,4 +1,6 @@
 class type builder_t = object
+  (** {2:methods Methods} *)
+
   method add_from_file : string -> (bool, GError.t) result
   (** Parses a file containing a UI definition and merges it with the current
       contents of [builder].
@@ -157,6 +159,8 @@ class type builder_t = object
 
   method set_translation_domain : string option -> unit
   (** Sets the translation domain of [builder]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_builder : Raw.Builder.t
 end

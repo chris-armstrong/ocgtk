@@ -20,6 +20,8 @@
     See [Gtk.ColorDialogButton] for a convenient control that uses
     [GtkColorDialog] and presents the results. *)
 class type color_dialog_t = object
+  (** {2:methods Methods} *)
+
   method choose_rgba_finish :
     Ocgio.Async_result.async_result_t -> (Ocgdk.Rgb_a.rgb_a_t, GError.t) result
   (** Finishes the [Gtk.ColorDialog.choose_rgba] call
@@ -46,6 +48,8 @@ class type color_dialog_t = object
 
   method set_with_alpha : bool -> unit
   (** Sets whether colors may have alpha. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_color_dialog : Raw.Color_dialog.t
 end

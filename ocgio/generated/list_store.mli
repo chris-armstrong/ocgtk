@@ -10,6 +10,9 @@
 
 (** {b The methods, signals and properties of a [ListStore].}
 
+    Implements:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
+
     [GListStore] is a simple implementation of [Gio.ListModel] that stores all
     items in memory.
 
@@ -17,6 +20,8 @@
     fast path for the common case of iterating the list linearly. *)
 class type list_store_t = object
   inherit List_model.list_model_t
+
+  (** {2:methods Methods} *)
 
   method append : [ `object_ ] Gobject.obj -> unit
   (** Appends [item] to [store]. [item] must be of type [GListStore:item]-type.
@@ -61,12 +66,16 @@ class type list_store_t = object
       \+ [n_removals] must be less than or equal to the length of the list at
       the time this function is called). *)
 
+  (** {2:properties Properties} *)
+
   method item_type : Gobject.Type.t
   (** The type of items contained in this list store. Items must be subclasses
       of [GObject]. *)
 
   method n_items : int
   (** The number of items contained in this list store. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_list_store : Raw.List_store.t
 end

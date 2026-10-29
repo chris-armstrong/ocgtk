@@ -1,4 +1,6 @@
 class type d_bus_auth_observer_t = object
+  (** {2:signals Signals} *)
+
   method on_allow_mechanism :
     ?after:bool ->
     callback:(mechanism:string -> bool) ->
@@ -17,6 +19,8 @@ class type d_bus_auth_observer_t = object
   (** Emitted to check if a peer that is successfully authenticated is
       authorized. *)
 
+  (** {2:methods Methods} *)
+
   method allow_mechanism : string -> bool
   (** Emits the [GDBusAuthObserver::allow]-mechanism signal on [observer]. *)
 
@@ -24,6 +28,8 @@ class type d_bus_auth_observer_t = object
     Io_stream.io_stream_t -> Credentials.credentials_t option -> bool
   (** Emits the [GDBusAuthObserver::authorize]-authenticated-peer signal on
       [observer]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_d_bus_auth_observer : Raw.D_bus_auth_observer.t
 end

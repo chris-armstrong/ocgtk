@@ -9,10 +9,15 @@
 
 (** {b The methods, signals and properties of a [ZlibCompressor].}
 
+    Implements:
+    - {{!Ocgio.Converter.class-type-converter_t}Ocgio.Converter}
+
     [GZlibCompressor] is an implementation of [Gio.Converter] that compresses
     data using zlib. *)
 class type zlib_compressor_t = object
   inherit Converter.converter_t
+
+  (** {2:methods Methods} *)
 
   method get_file_info : unit -> File_info.file_info_t option
   (** Gets the [Gio.ZlibCompressor:file-info] property. *)
@@ -34,6 +39,8 @@ class type zlib_compressor_t = object
       progress; it may only be called immediately after creation of
       [compressor], or after resetting it with [Gio.Converter.reset]. *)
 
+  (** {2:properties Properties} *)
+
   method format : Enums.zlibcompressorformat
   (** The format of the compressed data. *)
 
@@ -42,6 +49,8 @@ class type zlib_compressor_t = object
       compression).
 
       [-1] for the default level. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_zlib_compressor : Raw.Zlib_compressor.t
 end

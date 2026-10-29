@@ -3,8 +3,9 @@
     method [Gio.SocketConnectable.proxy_enumerate].
 
     Its methods, signals and properties are on {!class-type-proxy_resolver_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocgio.Raw.Proxy_resolver}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Proxy_resolver}. *)
 
 (** {1:class Class} *)
 
@@ -19,6 +20,8 @@
     found in {{:https://gitlab.gnome.org/GNOME/glib-networking}glib-networking}.
     GIO comes with an implementation for use inside Flatpak portals. *)
 class type proxy_resolver_t = object
+  (** {2:methods Methods} *)
+
   method is_supported : unit -> bool
   (** Checks if [resolver] can be used on this system. (This is used internally;
       g_proxy_resolver_get_default() will only return a proxy resolver that
@@ -47,6 +50,8 @@ class type proxy_resolver_t = object
       g_proxy_resolver_lookup_async() is complete. See g_proxy_resolver_lookup()
       for more details. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_proxy_resolver : Raw.Proxy_resolver.t
 end
 
@@ -63,3 +68,8 @@ class proxy_resolver : Raw.Proxy_resolver.t -> proxy_resolver_t
     {{:https://github.com/libproxy/libproxy}libproxy} and GNOME settings can be
     found in {{:https://gitlab.gnome.org/GNOME/glib-networking}glib-networking}.
     GIO comes with an implementation for use inside Flatpak portals. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

@@ -1,5 +1,8 @@
 class type callback_action_t = object
   inherit Shortcut_action.shortcut_action_t
+
+  (** {2:conversions Conversions} *)
+
   method as_callback_action : Raw.Callback_action.t
 end
 

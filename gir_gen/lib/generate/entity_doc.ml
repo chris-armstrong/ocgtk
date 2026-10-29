@@ -82,12 +82,7 @@ let l1_module ~namespace ~class_name ~class_doc =
          (layer2_path ~namespace ~class_name))
     ~context:Doc_translate.Member class_doc
 
-let l2_module ~namespace ~class_name ~has_constructors ~class_doc =
-  let constructors =
-    if has_constructors then
-      " Its constructors are under {!section-constructors}."
-    else ""
-  in
+let l2_module ~namespace ~class_name ~class_doc =
   let description =
     match description_text ~class_name ~class_doc with
     | Some _ -> " Its full description is under {!section-description}."
@@ -97,10 +92,11 @@ let l2_module ~namespace ~class_name ~has_constructors ~class_doc =
     ~fallback:(synopsis ~class_name ~class_doc)
     ~suffix:
       (Fmt.str
-         "Its methods, signals and properties are on {!class-type-%s}.%s%s The \
-          functions it is built on are in {!%s}."
+         "Its methods, signals and properties are on {!class-type-%s}.%s Its \
+          constructors are under {!section-constructors}. The functions it is \
+          built on are in {!%s}."
          (Utils.class_type_name class_name)
-         description constructors
+         description
          (layer1_path ~namespace ~class_name))
     ~context:Doc_translate.Member None
 
@@ -111,10 +107,48 @@ let description ~class_name ~class_doc =
       Doc_emit.item_doc ~indent:"" ~fallback:text
         ~prefix:"{1:description Description}" ~context:Doc_translate.Member None)
 
-let class_type ~class_name ~class_doc =
+type ancestor =
+  | Bound of { namespace : string; name : string }
+  | Unbound of string
+
+type inheritance = {
+  parent : ancestor option;
+  implements : ancestor list;
+  requires : ancestor list;
+}
+
+let no_inheritance = { parent = None; implements = []; requires = [] }
+
+let ancestor_ref = function
+  | Bound { namespace; name } ->
+      let path = Module_paths.cross_ns_layer2_module ~namespace name in
+      Fmt.str "{{!%s.class-type-%s}%s}" path (Utils.class_type_name name) path
+  | Unbound name -> Fmt.str "[%s]" name
+
+let ancestor_list ~label = function
+  | [] -> None
+  | ancestors ->
+      Some
+        (String.concat ~sep:"\n"
+           ((label ^ ":")
+           :: List.map ancestors ~f:(fun a -> "- " ^ ancestor_ref a)))
+
+let inheritance_paragraphs { parent; implements; requires } =
+  List.filter_map ~f:Fun.id
+    [
+      Option.map (fun p -> "Inherits from: " ^ ancestor_ref p) parent;
+      ancestor_list ~label:"Implements" implements;
+      ancestor_list ~label:"Requires" requires;
+    ]
+
+let class_type ~class_name ~inheritance ~class_doc =
+  let heading =
+    Fmt.str "{b The methods, signals and properties of a [%s].}" class_name
+  in
   Doc_emit.item_doc ~indent:""
     ~prefix:
-      (Fmt.str "{b The methods, signals and properties of a [%s].}" class_name)
+      (String.concat ~sep:"\n\n"
+         (heading :: inheritance_paragraphs inheritance))
     ~context:Doc_translate.Member class_doc
 
 let class_ ~namespace ~class_name =
@@ -154,6 +188,21 @@ let upstream_base_url = function
   | _ -> None
 
 let constructors_heading = "(** {1:constructors Constructors} *)"
+
+type instantiation = Abstract_class | Interface | Returned_only
+
+let no_constructors instantiation =
+  canned
+    (match instantiation with
+    | Abstract_class ->
+        "This is an abstract class that can't be instantiated directly. Refer \
+         to its subclasses for a concrete implementation."
+    | Interface ->
+        "This is an interface which can't be instantiated directly, but which \
+         may be returned from a method or function."
+    | Returned_only ->
+        "This class is not instantiated directly - it is used as a return \
+         value by methods on other classes.")
 
 let constructor ~namespace ~class_name (ctor : Types.gir_constructor) =
   let c_function = Fmt.str "[%s]" ctor.c_identifier in

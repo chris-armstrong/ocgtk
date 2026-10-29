@@ -2,12 +2,15 @@
 
     Its methods, signals and properties are on
     {!class-type-symbolic_paintable_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgtk.Raw.Symbolic_paintable}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.Symbolic_paintable}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [SymbolicPaintable].}
+
+    Requires:
+    - {{!Ocgdk.Paintable.class-type-paintable_t}Ocgdk.Paintable}
 
     An interface that supports symbolic colors in paintables.
 
@@ -21,6 +24,8 @@
 
     More colors may be added in the future. *)
 class type symbolic_paintable_t = object
+  (** {2:methods Methods} *)
+
   method snapshot_symbolic :
     Ocgdk.Snapshot.snapshot_t ->
     float ->
@@ -32,6 +37,8 @@ class type symbolic_paintable_t = object
 
       If less than 4 colors are provided, GTK will pad the array with default
       colors. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_symbolic_paintable : Raw.Symbolic_paintable.t
 end
@@ -52,3 +59,8 @@ class symbolic_paintable : Raw.Symbolic_paintable.t -> symbolic_paintable_t
     warnings and success information in that order.
 
     More colors may be added in the future. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an interface which can't be instantiated directly, but which may be
+    returned from a method or function. *)

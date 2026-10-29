@@ -5,8 +5,8 @@
 
     Its methods, signals and properties are on
     {!class-type-app_launch_context_t}. Its full description is under
-    {!section-description}. The functions it is built on are in
-    {!Ocgdk.Raw.App_launch_context}. *)
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgdk.Raw.App_launch_context}. *)
 
 (** {1:class Class} *)
 
@@ -14,6 +14,8 @@ class type app_launch_context_t =
   App_launch_context_cycle_de440b34.app_launch_context_t
   [@@ocaml.doc
     "{b The methods, signals and properties of a [AppLaunchContext].}\n\n\
+     Inherits from: \
+     {{!Ocgio.App_launch_context.class-type-app_launch_context_t}Ocgio.App_launch_context}\n\n\
      Handles launching an application in a graphical context.\n\n\
      It is an implementation of [GAppLaunchContext] that provides startup\n\
      notification and allows to launch applications on a specific workspace.\n\n\
@@ -46,3 +48,8 @@ class app_launch_context : Raw.App_launch_context.t -> app_launch_context_t
 \  g_warning (\"Launching failed: %s\\n\", error->message);\n\n\
  g_object_unref (context);\n\
  ]}"]
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

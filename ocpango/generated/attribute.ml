@@ -1,4 +1,6 @@
 class type attribute_t = object
+  (** {2:methods Methods} *)
+
   method as_color : unit -> Raw.Attr_color.t option
   (** Returns the attribute cast to [PangoAttrColor].
 
@@ -58,6 +60,8 @@ class type attribute_t = object
       [PANGO_ATTR_INDEX_FROM_TEXT_BEGINNING] and end_index to
       [PANGO_ATTR_INDEX_TO_TEXT_END] such that the attribute applies to the
       entire text by default. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_attribute : Raw.Attribute.t
 end

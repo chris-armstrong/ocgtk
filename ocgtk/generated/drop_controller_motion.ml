@@ -1,7 +1,7 @@
 class type drop_controller_motion_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .event_controller_t
+  inherit Event_controller.event_controller_t
+
+  (** {2:signals Signals} *)
 
   method on_enter :
     ?after:bool ->
@@ -21,6 +21,8 @@ class type drop_controller_motion_t = object
     Gobject.Signal.handler_id
   (** Emitted when the pointer moves inside the widget. *)
 
+  (** {2:methods Methods} *)
+
   method contains_pointer : unit -> bool
   (** Returns if a Drag-and-Drop operation is within the widget [self] or one of
       its children. *)
@@ -33,6 +35,8 @@ class type drop_controller_motion_t = object
   (** Returns if a Drag-and-Drop operation is within the widget [self], not one
       of its children. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_drop_controller_motion : Raw.Drop_controller_motion.t
 end
 
@@ -40,10 +44,7 @@ end
 class drop_controller_motion (obj : Raw.Drop_controller_motion.t) :
   drop_controller_motion_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .event_controller
-        (obj :> Raw.Event_controller.t)
+    inherit Event_controller.event_controller (obj :> Raw.Event_controller.t)
 
     method on_enter ?(after = false) ~callback () =
       Raw.Drop_controller_motion.on_enter ~after self#as_drop_controller_motion

@@ -1,4 +1,6 @@
 class type region_t = object
+  (** {2:conversions Conversions} *)
+
   method as_region : Raw.Region.t
 end
 

@@ -1,4 +1,6 @@
 class type device_t = object
+  (** {2:conversions Conversions} *)
+
   method as_device : Raw.Device.t
 end
 

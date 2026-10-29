@@ -8,7 +8,9 @@
 (** {1:class Class} *)
 
 class type dialog_t = object
-  inherit Application_and__window_and__window_group.window_t
+  inherit Window.window_t
+
+  (** {2:signals Signals} *)
 
   method on_close :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -30,11 +32,9 @@ class type dialog_t = object
       is [GTK_RESPONSE_DELETE_EVENT]. Otherwise, it depends on which action
       widget was clicked. *)
 
-  method add_action_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int ->
-    unit
+  (** {2:methods Methods} *)
+
+  method add_action_widget : Widget.widget_t -> int -> unit
   (** Adds an activatable widget to the action area of a [GtkDialog].
 
       GTK connects a signal handler that will emit the [Gtk.Dialog::response]
@@ -44,11 +44,7 @@ class type dialog_t = object
       If you want to add a non-activatable widget, simply pack it into the
       [action_area] field of the [GtkDialog] struct. *)
 
-  method add_button :
-    string ->
-    int ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  method add_button : string -> int -> Widget.widget_t
   (** Adds a button with the given text.
 
       GTK arranges things so that clicking the button will emit the
@@ -65,17 +61,10 @@ class type dialog_t = object
       Note that the headerbar is only used by the dialog if the
       [Gtk.Dialog:use-header-bar] property is [TRUE]. *)
 
-  method get_response_for_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int
+  method get_response_for_widget : Widget.widget_t -> int
   (** Gets the response id of a widget in the action area of a dialog. *)
 
-  method get_widget_for_response :
-    int ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_widget_for_response : int -> Widget.widget_t option
   (** Gets the widget button that uses the given response ID in the action area
       of a dialog. *)
 
@@ -95,6 +84,8 @@ class type dialog_t = object
       Calls [gtk_widget_set_sensitive (widget, @setting)] for each widget in the
       dialog’s action area with the given [response_id]. *)
 
+  (** {2:properties Properties} *)
+
   method use_header_bar : int
   [@@ocaml.doc
     "[TRUE] if the dialog uses a headerbar for action buttons\n\
@@ -111,10 +102,22 @@ class type dialog_t = object
      dialog = g_object_new (GTK_TYPE_DIALOG, header, TRUE, NULL);\n\
      ]}"]
 
+  (** {2:conversions Conversions} *)
+
   method as_dialog : Raw.Dialog.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Dialog].}\n\n\
+     Inherits from: {{!Ocgtk.Window.class-type-window_t}Ocgtk.Window}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\
+     - {{!Ocgtk.Native.class-type-native_t}Ocgtk.Native}\n\
+     - {{!Ocgtk.Root.class-type-root_t}Ocgtk.Root}\n\
+     - \
+     {{!Ocgtk.Shortcut_manager.class-type-shortcut_manager_t}Ocgtk.Shortcut_manager}\n\n\
      Dialogs are a convenient way to prompt the user for a small amount\n\
      of input.\n\n\
      An example GtkDialog\n\n\

@@ -1,7 +1,7 @@
 class type notebook_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:signals Signals} *)
 
   method on_change_current_page :
     ?after:bool ->
@@ -17,11 +17,7 @@ class type notebook_t = object
 
   method on_create_window :
     ?after:bool ->
-    callback:
-      (page:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .widget_t ->
-      notebook_t option) ->
+    callback:(page:Widget.widget_t -> notebook_t option) ->
     unit ->
     Gobject.Signal.handler_id
   (** The ::create-window signal is emitted when a detachable tab is dropped on
@@ -53,12 +49,7 @@ class type notebook_t = object
 
   method on_page_added :
     ?after:bool ->
-    callback:
-      (child:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .widget_t ->
-      page_num:int ->
-      unit) ->
+    callback:(child:Widget.widget_t -> page_num:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
   (** the ::page-added signal is emitted in the notebook right after a page is
@@ -66,12 +57,7 @@ class type notebook_t = object
 
   method on_page_removed :
     ?after:bool ->
-    callback:
-      (child:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .widget_t ->
-      page_num:int ->
-      unit) ->
+    callback:(child:Widget.widget_t -> page_num:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
   (** the ::page-removed signal is emitted in the notebook right after a page is
@@ -79,12 +65,7 @@ class type notebook_t = object
 
   method on_page_reordered :
     ?after:bool ->
-    callback:
-      (child:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .widget_t ->
-      page_num:int ->
-      unit) ->
+    callback:(child:Widget.widget_t -> page_num:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
   (** the ::page-reordered signal is emitted in the notebook right after a page
@@ -114,53 +95,29 @@ class type notebook_t = object
 
   method on_switch_page :
     ?after:bool ->
-    callback:
-      (page:
-         Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-         .widget_t ->
-      page_num:int ->
-      unit) ->
+    callback:(page:Widget.widget_t -> page_num:int -> unit) ->
     unit ->
     Gobject.Signal.handler_id
   (** Emitted when the user or a function changes the current page. *)
 
-  method append_page :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    int
+  (** {2:methods Methods} *)
+
+  method append_page : Widget.widget_t -> Widget.widget_t option -> int
   (** Appends a page to [notebook]. *)
 
   method append_page_menu :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    int
+    Widget.widget_t -> Widget.widget_t option -> Widget.widget_t option -> int
   (** Appends a page to [notebook], specifying the widget to use as the label in
       the popup menu. *)
 
-  method detach_tab :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method detach_tab : Widget.widget_t -> unit
   (** Removes the child from the notebook.
 
       This function is very similar to [Gtk.Notebook.remove_page], but
       additionally informs the notebook that the removal is happening as part of
       a tab DND operation, which should not be cancelled. *)
 
-  method get_action_widget :
-    Enums.packtype ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_action_widget : Enums.packtype -> Widget.widget_t option
   (** Gets one of the action widgets.
 
       See [Gtk.Notebook.set_action_widget]. *)
@@ -171,34 +128,19 @@ class type notebook_t = object
   method get_group_name : unit -> string option
   (** Gets the current group name for [notebook]. *)
 
-  method get_menu_label :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_menu_label : Widget.widget_t -> Widget.widget_t option
   (** Retrieves the menu label widget of the page containing [child]. *)
 
-  method get_menu_label_text :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    string option
+  method get_menu_label_text : Widget.widget_t -> string option
   (** Retrieves the text of the menu label for the page containing [child]. *)
 
   method get_n_pages : unit -> int
   (** Gets the number of pages in a notebook. *)
 
-  method get_nth_page :
-    int ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_nth_page : int -> Widget.widget_t option
   (** Returns the child widget contained in page number [page_num]. *)
 
-  method get_page :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Notebook_page.notebook_page_t
+  method get_page : Widget.widget_t -> Notebook_page.notebook_page_t
   (** Returns the [GtkNotebookPage] for [child]. *)
 
   method get_pages : unit -> Ocgio.List_model.list_model_t
@@ -217,57 +159,31 @@ class type notebook_t = object
   method get_show_tabs : unit -> bool
   (** Returns whether the tabs of the notebook are shown. *)
 
-  method get_tab_detachable :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    bool
+  method get_tab_detachable : Widget.widget_t -> bool
   (** Returns whether the tab contents can be detached from [notebook]. *)
 
-  method get_tab_label :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  method get_tab_label : Widget.widget_t -> Widget.widget_t option
   (** Returns the tab label widget for the page [child].
 
       [NULL] is returned if [child] is not in [notebook] or if no tab label has
       specifically been set for [child]. *)
 
-  method get_tab_label_text :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    string option
+  method get_tab_label_text : Widget.widget_t -> string option
   (** Retrieves the text of the tab label for the page containing [child]. *)
 
   method get_tab_pos : unit -> Enums.positiontype
   (** Gets the edge at which the tabs are drawn. *)
 
-  method get_tab_reorderable :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    bool
+  method get_tab_reorderable : Widget.widget_t -> bool
   (** Gets whether the tab can be reordered via drag and drop or not. *)
 
-  method insert_page :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    int ->
-    int
+  method insert_page : Widget.widget_t -> Widget.widget_t option -> int -> int
   (** Insert a page into [notebook] at the given position. *)
 
   method insert_page_menu :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
+    Widget.widget_t ->
+    Widget.widget_t option ->
+    Widget.widget_t option ->
     int ->
     int
   (** Insert a page into [notebook] at the given position, specifying the widget
@@ -278,10 +194,7 @@ class type notebook_t = object
 
       Nothing happens if the current page is the last page. *)
 
-  method page_num :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int
+  method page_num : Widget.widget_t -> int
   (** Finds the index of the page which contains the given child widget. *)
 
   method popup_disable : unit -> unit
@@ -293,25 +206,11 @@ class type notebook_t = object
       If the user clicks with the right mouse button on the tab labels, a menu
       with all the pages will be popped up. *)
 
-  method prepend_page :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    int
+  method prepend_page : Widget.widget_t -> Widget.widget_t option -> int
   (** Prepends a page to [notebook]. *)
 
   method prepend_page_menu :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    int
+    Widget.widget_t -> Widget.widget_t option -> Widget.widget_t option -> int
   (** Prepends a page to [notebook], specifying the widget to use as the label
       in the popup menu. *)
 
@@ -323,22 +222,14 @@ class type notebook_t = object
   method remove_page : int -> unit
   (** Removes a page from the notebook given its index in the notebook. *)
 
-  method reorder_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    int ->
-    unit
+  method reorder_child : Widget.widget_t -> int -> unit
   (** Reorders the page containing [child], so that it appears in position
       [position].
 
       If [position] is greater than or equal to the number of children in the
       list or negative, [child] will be moved to the end of the list. *)
 
-  method set_action_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Enums.packtype ->
-    unit
+  method set_action_widget : Widget.widget_t -> Enums.packtype -> unit
   (** Sets [widget] as one of the action widgets.
 
       Depending on the pack type the widget will be placed before or after the
@@ -359,20 +250,10 @@ class type notebook_t = object
       drop. A notebook with a [NULL] group name will not be able to exchange
       tabs with any other notebook. *)
 
-  method set_menu_label :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_menu_label : Widget.widget_t -> Widget.widget_t option -> unit
   (** Changes the menu label for the page containing [child]. *)
 
-  method set_menu_label_text :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    string ->
-    unit
+  method set_menu_label_text : Widget.widget_t -> string -> unit
   (** Creates a new label and sets it as the menu label of [child]. *)
 
   method set_scrollable : bool -> unit
@@ -387,11 +268,7 @@ class type notebook_t = object
   method set_show_tabs : bool -> unit
   (** Sets whether to show the tabs for the notebook or not. *)
 
-  method set_tab_detachable :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    bool ->
-    unit
+  method set_tab_detachable : Widget.widget_t -> bool -> unit
   [@@ocaml.doc
     "Sets whether the tab can be detached from [notebook] to another\n\
      notebook or widget.\n\n\
@@ -433,36 +310,24 @@ class type notebook_t = object
      If you want a notebook to accept drags from other widgets,\n\
      you will have to set your own DnD code to do it."]
 
-  method set_tab_label :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_tab_label : Widget.widget_t -> Widget.widget_t option -> unit
   (** Changes the tab label for [child].
 
       If [NULL] is specified for [tab_label], then the page will have the label
       “page N”. *)
 
-  method set_tab_label_text :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    string ->
-    unit
+  method set_tab_label_text : Widget.widget_t -> string -> unit
   (** Creates a new label and sets it as the tab label for the page containing
       [child]. *)
 
   method set_tab_pos : Enums.positiontype -> unit
   (** Sets the edge at which the tabs are drawn. *)
 
-  method set_tab_reorderable :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    bool ->
-    unit
+  method set_tab_reorderable : Widget.widget_t -> bool -> unit
   (** Sets whether the notebook tab can be reordered via drag and drop or not.
   *)
+
+  (** {2:properties Properties} *)
 
   method enable_popup : bool
   (** If [TRUE], pressing the right mouse button on the notebook shows a page
@@ -472,16 +337,15 @@ class type notebook_t = object
   (** If [TRUE], pressing the right mouse button on the notebook shows a page
       switching menu. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_notebook : Raw.Notebook.t
 end
 
 (* High-level class for Notebook *)
 class notebook (obj : Raw.Notebook.t) : notebook_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
+    inherit Widget.widget (obj :> Raw.Widget.t)
 
     method on_change_current_page ?(after = false) ~callback () =
       Raw.Notebook.on_change_current_page ~after self#as_notebook ~callback
@@ -491,12 +355,7 @@ class notebook (obj : Raw.Notebook.t) : notebook_t =
         ~callback:(fun ~page ->
           Option.map
             (fun w -> w#as_notebook)
-            (callback
-               ~page:
-                 (new
-                    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-                    .widget
-                    page)))
+            (callback ~page:(new Widget.widget page)))
 
     method on_focus_tab ?(after = false) ~callback () =
       Raw.Notebook.on_focus_tab ~after self#as_notebook ~callback
@@ -507,35 +366,17 @@ class notebook (obj : Raw.Notebook.t) : notebook_t =
     method on_page_added ?(after = false) ~callback () =
       Raw.Notebook.on_page_added ~after self#as_notebook
         ~callback:(fun ~child ~page_num ->
-          callback
-            ~child:
-              (new
-                 Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-                 .widget
-                 child)
-            ~page_num)
+          callback ~child:(new Widget.widget child) ~page_num)
 
     method on_page_removed ?(after = false) ~callback () =
       Raw.Notebook.on_page_removed ~after self#as_notebook
         ~callback:(fun ~child ~page_num ->
-          callback
-            ~child:
-              (new
-                 Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-                 .widget
-                 child)
-            ~page_num)
+          callback ~child:(new Widget.widget child) ~page_num)
 
     method on_page_reordered ?(after = false) ~callback () =
       Raw.Notebook.on_page_reordered ~after self#as_notebook
         ~callback:(fun ~child ~page_num ->
-          callback
-            ~child:
-              (new
-                 Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-                 .widget
-                 child)
-            ~page_num)
+          callback ~child:(new Widget.widget child) ~page_num)
 
     method on_reorder_tab ?(after = false) ~callback () =
       Raw.Notebook.on_reorder_tab ~after self#as_notebook ~callback
@@ -546,35 +387,18 @@ class notebook (obj : Raw.Notebook.t) : notebook_t =
     method on_switch_page ?(after = false) ~callback () =
       Raw.Notebook.on_switch_page ~after self#as_notebook
         ~callback:(fun ~page ~page_num ->
-          callback
-            ~page:
-              (new
-                 Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-                 .widget
-                 page)
-            ~page_num)
+          callback ~page:(new Widget.widget page) ~page_num)
 
-    method append_page :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        int =
+    method append_page : Widget.widget_t -> Widget.widget_t option -> int =
       fun child tab_label ->
         let child = child#as_widget in
         let tab_label = Option.map (fun c -> c#as_widget) tab_label in
         Raw.Notebook.append_page obj child tab_label
 
     method append_page_menu :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
+        Widget.widget_t ->
+        Widget.widget_t option ->
+        Widget.widget_t option ->
         int =
       fun child tab_label menu_label ->
         let child = child#as_widget in
@@ -582,26 +406,15 @@ class notebook (obj : Raw.Notebook.t) : notebook_t =
         let menu_label = Option.map (fun c -> c#as_widget) menu_label in
         Raw.Notebook.append_page_menu obj child tab_label menu_label
 
-    method detach_tab :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        unit =
+    method detach_tab : Widget.widget_t -> unit =
       fun child ->
         let child = child#as_widget in
         Raw.Notebook.detach_tab obj child
 
-    method get_action_widget :
-        Enums.packtype ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_action_widget : Enums.packtype -> Widget.widget_t option =
       fun pack_type ->
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.Notebook.get_action_widget obj pack_type)
 
     method get_current_page : unit -> int =
@@ -610,50 +423,27 @@ class notebook (obj : Raw.Notebook.t) : notebook_t =
     method get_group_name : unit -> string option =
       fun () -> Raw.Notebook.get_group_name obj
 
-    method get_menu_label :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_menu_label : Widget.widget_t -> Widget.widget_t option =
       fun child ->
         let child = child#as_widget in
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.Notebook.get_menu_label obj child)
 
-    method get_menu_label_text :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        string option =
+    method get_menu_label_text : Widget.widget_t -> string option =
       fun child ->
         let child = child#as_widget in
         Raw.Notebook.get_menu_label_text obj child
 
     method get_n_pages : unit -> int = fun () -> Raw.Notebook.get_n_pages obj
 
-    method get_nth_page :
-        int ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_nth_page : int -> Widget.widget_t option =
       fun page_num ->
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.Notebook.get_nth_page obj page_num)
 
-    method get_page :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        Notebook_page.notebook_page_t =
+    method get_page : Widget.widget_t -> Notebook_page.notebook_page_t =
       fun child ->
         let child = child#as_widget in
         new Notebook_page.notebook_page (Raw.Notebook.get_page obj child)
@@ -670,34 +460,19 @@ class notebook (obj : Raw.Notebook.t) : notebook_t =
     method get_show_tabs : unit -> bool =
       fun () -> Raw.Notebook.get_show_tabs obj
 
-    method get_tab_detachable :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        bool =
+    method get_tab_detachable : Widget.widget_t -> bool =
       fun child ->
         let child = child#as_widget in
         Raw.Notebook.get_tab_detachable obj child
 
-    method get_tab_label :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option =
+    method get_tab_label : Widget.widget_t -> Widget.widget_t option =
       fun child ->
         let child = child#as_widget in
         Option.map
-          (fun ret ->
-            new
-              Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-              .widget
-              ret)
+          (fun ret -> new Widget.widget ret)
           (Raw.Notebook.get_tab_label obj child)
 
-    method get_tab_label_text :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        string option =
+    method get_tab_label_text : Widget.widget_t -> string option =
       fun child ->
         let child = child#as_widget in
         Raw.Notebook.get_tab_label_text obj child
@@ -705,36 +480,22 @@ class notebook (obj : Raw.Notebook.t) : notebook_t =
     method get_tab_pos : unit -> Enums.positiontype =
       fun () -> Raw.Notebook.get_tab_pos obj
 
-    method get_tab_reorderable :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        bool =
+    method get_tab_reorderable : Widget.widget_t -> bool =
       fun child ->
         let child = child#as_widget in
         Raw.Notebook.get_tab_reorderable obj child
 
-    method insert_page :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        int ->
-        int =
+    method insert_page : Widget.widget_t -> Widget.widget_t option -> int -> int
+        =
       fun child tab_label position ->
         let child = child#as_widget in
         let tab_label = Option.map (fun c -> c#as_widget) tab_label in
         Raw.Notebook.insert_page obj child tab_label position
 
     method insert_page_menu :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
+        Widget.widget_t ->
+        Widget.widget_t option ->
+        Widget.widget_t option ->
         int ->
         int =
       fun child tab_label menu_label position ->
@@ -745,10 +506,7 @@ class notebook (obj : Raw.Notebook.t) : notebook_t =
 
     method next_page : unit -> unit = fun () -> Raw.Notebook.next_page obj
 
-    method page_num :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        int =
+    method page_num : Widget.widget_t -> int =
       fun child ->
         let child = child#as_widget in
         Raw.Notebook.page_num obj child
@@ -758,27 +516,16 @@ class notebook (obj : Raw.Notebook.t) : notebook_t =
 
     method popup_enable : unit -> unit = fun () -> Raw.Notebook.popup_enable obj
 
-    method prepend_page :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        int =
+    method prepend_page : Widget.widget_t -> Widget.widget_t option -> int =
       fun child tab_label ->
         let child = child#as_widget in
         let tab_label = Option.map (fun c -> c#as_widget) tab_label in
         Raw.Notebook.prepend_page obj child tab_label
 
     method prepend_page_menu :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
+        Widget.widget_t ->
+        Widget.widget_t option ->
+        Widget.widget_t option ->
         int =
       fun child tab_label menu_label ->
         let child = child#as_widget in
@@ -791,20 +538,12 @@ class notebook (obj : Raw.Notebook.t) : notebook_t =
     method remove_page : int -> unit =
       fun page_num -> Raw.Notebook.remove_page obj page_num
 
-    method reorder_child :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        int ->
-        unit =
+    method reorder_child : Widget.widget_t -> int -> unit =
       fun child position ->
         let child = child#as_widget in
         Raw.Notebook.reorder_child obj child position
 
-    method set_action_widget :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        Enums.packtype ->
-        unit =
+    method set_action_widget : Widget.widget_t -> Enums.packtype -> unit =
       fun widget pack_type ->
         let widget = widget#as_widget in
         Raw.Notebook.set_action_widget obj widget pack_type
@@ -815,23 +554,13 @@ class notebook (obj : Raw.Notebook.t) : notebook_t =
     method set_group_name : string option -> unit =
       fun group_name -> Raw.Notebook.set_group_name obj group_name
 
-    method set_menu_label :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        unit =
+    method set_menu_label : Widget.widget_t -> Widget.widget_t option -> unit =
       fun child menu_label ->
         let child = child#as_widget in
         let menu_label = Option.map (fun c -> c#as_widget) menu_label in
         Raw.Notebook.set_menu_label obj child menu_label
 
-    method set_menu_label_text :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        string ->
-        unit =
+    method set_menu_label_text : Widget.widget_t -> string -> unit =
       fun child menu_text ->
         let child = child#as_widget in
         Raw.Notebook.set_menu_label_text obj child menu_text
@@ -845,32 +574,18 @@ class notebook (obj : Raw.Notebook.t) : notebook_t =
     method set_show_tabs : bool -> unit =
       fun show_tabs -> Raw.Notebook.set_show_tabs obj show_tabs
 
-    method set_tab_detachable :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        bool ->
-        unit =
+    method set_tab_detachable : Widget.widget_t -> bool -> unit =
       fun child detachable ->
         let child = child#as_widget in
         Raw.Notebook.set_tab_detachable obj child detachable
 
-    method set_tab_label :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        unit =
+    method set_tab_label : Widget.widget_t -> Widget.widget_t option -> unit =
       fun child tab_label ->
         let child = child#as_widget in
         let tab_label = Option.map (fun c -> c#as_widget) tab_label in
         Raw.Notebook.set_tab_label obj child tab_label
 
-    method set_tab_label_text :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        string ->
-        unit =
+    method set_tab_label_text : Widget.widget_t -> string -> unit =
       fun child tab_text ->
         let child = child#as_widget in
         Raw.Notebook.set_tab_label_text obj child tab_text
@@ -878,11 +593,7 @@ class notebook (obj : Raw.Notebook.t) : notebook_t =
     method set_tab_pos : Enums.positiontype -> unit =
       fun pos -> Raw.Notebook.set_tab_pos obj pos
 
-    method set_tab_reorderable :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        bool ->
-        unit =
+    method set_tab_reorderable : Widget.widget_t -> bool -> unit =
       fun child reorderable ->
         let child = child#as_widget in
         Raw.Notebook.set_tab_reorderable obj child reorderable

@@ -10,12 +10,24 @@
 
 (** {b The methods, signals and properties of a [VolumeButton].}
 
+    Inherits from:
+    {{!Ocgtk.Scale_button.class-type-scale_button_t}Ocgtk.Scale_button}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Accessible_range.class-type-accessible_range_t}Ocgtk.Accessible_range}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}
+
     [GtkVolumeButton] is a [GtkScaleButton] subclass tailored for volume
     control.
 
     An example GtkVolumeButton *)
 class type volume_button_t = object
   inherit Scale_button.scale_button_t
+
+  (** {2:properties Properties} *)
 
   method use_symbolic : bool
   (** Whether to use symbolic icons as the icons.
@@ -28,6 +40,8 @@ class type volume_button_t = object
 
       Note that if the symbolic icons are not available in your installed theme,
       then the normal (potentially colorful) icons will be used. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_volume_button : Raw.Volume_button.t
 end

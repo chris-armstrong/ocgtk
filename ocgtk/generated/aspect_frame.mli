@@ -9,6 +9,13 @@
 
 (** {b The methods, signals and properties of a [AspectFrame].}
 
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
     Preserves the aspect ratio of its child.
 
     The frame can respect the aspect ratio of the child widget, or use its own
@@ -25,15 +32,11 @@
     Starting from GTK 4.12, [GtkAspectFrame] uses the
     [Gtk.AccessibleRole.generic] role. *)
 class type aspect_frame_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
 
-  method get_child :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  (** {2:methods Methods} *)
+
+  method get_child : unit -> Widget.widget_t option
   (** Gets the child widget of [self]. *)
 
   method get_obey_child : unit -> bool
@@ -51,11 +54,7 @@ class type aspect_frame_t = object
   (** Returns the vertical alignment of the child within the allocation of the
       [GtkAspectFrame]. *)
 
-  method set_child :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_child : Widget.widget_t option -> unit
   (** Sets the child widget of [self]. *)
 
   method set_obey_child : bool -> unit
@@ -72,6 +71,8 @@ class type aspect_frame_t = object
   method set_yalign : float -> unit
   (** Sets the vertical alignment of the child within the allocation of the
       [GtkAspectFrame]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_aspect_frame : Raw.Aspect_frame.t
 end

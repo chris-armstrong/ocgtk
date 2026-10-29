@@ -1,7 +1,7 @@
 class type video_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:methods Methods} *)
 
   method get_autoplay : unit -> bool
   (** Returns [TRUE] if videos have been set to loop. *)
@@ -55,17 +55,15 @@ class type video_t = object
 
       This is a utility function that calls [Gtk.Video.set_file]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_video : Raw.Video.t
 end
 
 (* High-level class for Video *)
 class video (obj : Raw.Video.t) : video_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
-
+    inherit Widget.widget (obj :> Raw.Widget.t)
     method get_autoplay : unit -> bool = fun () -> Raw.Video.get_autoplay obj
 
     method get_file : unit -> Ocgio.File.file_t option =

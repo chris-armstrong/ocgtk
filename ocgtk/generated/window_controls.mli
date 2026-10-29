@@ -8,9 +8,9 @@
 (** {1:class Class} *)
 
 class type window_controls_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:methods Methods} *)
 
   method get_decoration_layout : unit -> string option
   (** Gets the decoration layout of this window controls widget *)
@@ -53,10 +53,18 @@ class type window_controls_t = object
      For Linux, this option has no effect.\n\n\
      See also Using GTK on Apple macOS."]
 
+  (** {2:conversions Conversions} *)
+
   method as_window_controls : Raw.Window_controls.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [WindowControls].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      Shows window frame controls.\n\n\
      Typical window frame controls are minimize, maximize and close buttons,\n\
      and the window icon.\n\n\

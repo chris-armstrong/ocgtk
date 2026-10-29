@@ -10,8 +10,12 @@
 
     Wraps a list of references to [Gtk.Accessible] objects. *)
 class type accessible_list_t = object
-  method get_objects : unit -> At_context_and__accessible.accessible_t list
+  (** {2:methods Methods} *)
+
+  method get_objects : unit -> Accessible.accessible_t list
   (** Gets the list of objects this boxed type holds. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_accessible_list : Raw.Accessible_list.t
 end

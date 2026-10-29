@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [CellRendererPixbuf].}
 
+    Inherits from:
+    {{!Ocgtk.Cell_renderer.class-type-cell_renderer_t}Ocgtk.Cell_renderer}
+
     Renders a pixbuf in a cell
 
     A [GtkCellRendererPixbuf] can be used to render an image in a cell. It
@@ -25,6 +28,8 @@
     set to a pixbuf, it renders that one. *)
 class type cell_renderer_pixbuf_t = object
   inherit Cell_renderer.cell_renderer_t
+
+  (** {2:properties Properties} *)
 
   method gicon : Ocgio.Icon.icon_t
   (** The GIcon representing the icon to display. If the icon theme is changed,
@@ -72,6 +77,8 @@ class type cell_renderer_pixbuf_t = object
 
   method set_texture : Ocgdk.Texture.texture_t -> unit
   (** Set property: texture *)
+
+  (** {2:conversions Conversions} *)
 
   method as_cell_renderer_pixbuf : Raw.Cell_renderer_pixbuf.t
 end

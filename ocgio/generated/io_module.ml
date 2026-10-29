@@ -1,4 +1,6 @@
 class type io_module_t = object
+  (** {2:conversions Conversions} *)
+
   method as_io_module : Raw.Io_module.t
 end
 

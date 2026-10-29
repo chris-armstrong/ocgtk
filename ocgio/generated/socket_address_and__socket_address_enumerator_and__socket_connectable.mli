@@ -5,16 +5,23 @@
 
 (** {b The methods, signals and properties of a [SocketAddress].}
 
+    Implements:
+    - {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}Ocgio.Socket_connectable}
+
     [GSocketAddress] is the equivalent of [struct sockaddr]) and its subtypes in
     the BSD sockets API. This is an abstract class; use [Gio.InetSocketAddress]
     for internet sockets, or [Gio.UnixSocketAddress] for UNIX domain sockets. *)
 class type socket_address_t = object
+  (** {2:methods Methods} *)
+
   method get_family : unit -> Enums.socketfamily
   (** Gets the socket family type of [address]. *)
 
   method get_native_size : unit -> int
   (** Gets the size of [address]'s native struct sockaddr. You can use this to
       allocate memory to pass to g_socket_address_to_native(). *)
+
+  (** {2:conversions Conversions} *)
 
   method as_socket_address : Raw.Socket_address.t
 end
@@ -36,6 +43,8 @@ end
     with that [GSocketAddressEnumerator] is not possible, and it can be
     unreffed. *)
 and socket_address_enumerator_t = object
+  (** {2:methods Methods} *)
+
   method next :
     Cancellable.cancellable_t option ->
     (socket_address_t option, GError.t) result
@@ -57,6 +66,8 @@ and socket_address_enumerator_t = object
       g_socket_address_enumerator_next_async(). See
       g_socket_address_enumerator_next() for more information about error
       handling. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_socket_address_enumerator : Raw.Socket_address_enumerator.t
 end
@@ -120,6 +131,8 @@ end
     }
     ]} *)
 and socket_connectable_t = object
+  (** {2:methods Methods} *)
+
   method enumerate : unit -> socket_address_enumerator_t
   (** Creates a [GSocketAddressEnumerator] for [connectable]. *)
 
@@ -141,6 +154,8 @@ and socket_connectable_t = object
       If the [GSocketConnectable] implementation does not support string
       formatting, the implementation’s type name will be returned as a fallback.
   *)
+
+  (** {2:conversions Conversions} *)
 
   method as_socket_connectable : Raw.Socket_connectable.t
 end

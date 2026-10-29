@@ -1,4 +1,6 @@
 class type d_bus_interface_v_table_t = object
+  (** {2:conversions Conversions} *)
+
   method as_d_bus_interface_v_table : Raw.D_bus_interface_v_table.t
 end
 

@@ -11,6 +11,8 @@ class type string_list_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Buildable.buildable_t
 
+  (** {2:methods Methods} *)
+
   method append : string -> unit
   (** Appends [string] to [self].
 
@@ -59,16 +61,23 @@ class type string_list_t = object
      gtk_string_list_take (self, g_strdup_print (\"%d dollars\", lots));\n\
      ]}"]
 
+  (** {2:properties Properties} *)
+
   method item_type : Gobject.Type.t
   (** The type of items. See [Gio.ListModel.get_item_type]. *)
 
   method n_items : int
   (** The number of items. See [Gio.ListModel.get_n_items]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_string_list : Raw.String_list.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [StringList].}\n\n\
+     Implements:\n\
+     - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\n\
      A list model that wraps an array of strings.\n\n\
      The objects in the model are of type [Gtk.StringObject] and have\n\
      a \"string\" property that can be used inside expressions.\n\n\

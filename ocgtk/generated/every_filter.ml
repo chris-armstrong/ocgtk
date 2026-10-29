@@ -1,5 +1,8 @@
 class type every_filter_t = object
   inherit Multi_filter.multi_filter_t
+
+  (** {2:conversions Conversions} *)
+
   method as_every_filter : Raw.Every_filter.t
 end
 

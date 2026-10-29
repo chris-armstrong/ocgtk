@@ -12,6 +12,9 @@
 
 (** {b The methods, signals and properties of a [NetworkService].}
 
+    Implements:
+    - {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}Ocgio.Socket_connectable}
+
     Like [Gio.NetworkAddress] does with hostnames, [GNetworkService] provides an
     easy way to resolve a SRV record, and then attempt to connect to one of the
     hosts that implements that service, handling service priority/weighting,
@@ -21,9 +24,9 @@
     [Gio.SocketConnectable] for an example of using the connectable interface.
 *)
 class type network_service_t = object
-  inherit
-    Socket_address_and__socket_address_enumerator_and__socket_connectable
-    .socket_connectable_t
+  inherit Socket_connectable.socket_connectable_t
+
+  (** {2:methods Methods} *)
 
   method get_domain : unit -> string
   (** Gets the domain that [srv] serves. This might be either UTF-8 or
@@ -42,6 +45,8 @@ class type network_service_t = object
   method set_scheme : string -> unit
   (** Set's the URI scheme used to resolve proxies. By default, the service name
       is used as scheme. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_network_service : Raw.Network_service.t
 end

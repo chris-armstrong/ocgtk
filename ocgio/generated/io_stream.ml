@@ -1,4 +1,6 @@
 class type io_stream_t = object
+  (** {2:methods Methods} *)
+
   method clear_pending : unit -> unit
   (** Clears the pending flag on [stream]. *)
 
@@ -54,6 +56,8 @@ class type io_stream_t = object
   method set_pending : unit -> (bool, GError.t) result
   (** Sets [stream] to have actions pending. If the pending flag is already set
       or [stream] is closed, it will return [FALSE] and set [error]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_io_stream : Raw.Io_stream.t
 end

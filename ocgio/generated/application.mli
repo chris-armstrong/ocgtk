@@ -11,6 +11,8 @@ class type application_t = object
   inherit Action_group.action_group_t
   inherit Action_map.action_map_t
 
+  (** {2:signals Signals} *)
+
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** The ::activate signal is emitted on the primary instance when an
@@ -43,6 +45,8 @@ class type application_t = object
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** The ::startup signal is emitted on the primary instance immediately after
       registration. See g_application_register(). *)
+
+  (** {2:methods Methods} *)
 
   method activate : unit -> unit
   (** Activates the application.
@@ -442,10 +446,15 @@ class type application_t = object
       buttons in a notification or triggers its default action, so there is no
       need to explicitly withdraw the notification in that case. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_application : Raw.Application.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Application].}\n\n\
+     Implements:\n\
+     - {{!Ocgio.Action_group.class-type-action_group_t}Ocgio.Action_group}\n\
+     - {{!Ocgio.Action_map.class-type-action_map_t}Ocgio.Action_map}\n\n\
      [GApplication] is the core class for application support.\n\n\
      A [GApplication] is the foundation of an application. It wraps some\n\
      low-level platform-specific services and is intended to act as the\n\

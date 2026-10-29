@@ -14,6 +14,8 @@
     Because sections are nested into one another, you can use
     [CssSection.get_parent] to get the containing region. *)
 class type css_section_t = object
+  (** {2:methods Methods} *)
+
   method get_bytes : unit -> Glib_bytes.t option
   (** Gets the bytes that [section] was parsed from. *)
 
@@ -45,6 +47,8 @@ class type css_section_t = object
   method to_string : unit -> string
   (** Prints the section into a human-readable text form using
       [Gtk.CssSection.print]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_css_section : Raw.Css_section.t
 end

@@ -9,6 +9,9 @@
 
 (** {b The methods, signals and properties of a [WidgetPaintable].}
 
+    Implements:
+    - {{!Ocgdk.Paintable.class-type-paintable_t}Ocgdk.Paintable}
+
     A [GdkPaintable] that displays the contents of a widget.
 
     [GtkWidgetPaintable] will also take care of the widget not being in a state
@@ -30,19 +33,15 @@
 class type widget_paintable_t = object
   inherit Ocgdk.Paintable.paintable_t
 
-  method get_widget :
-    unit ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option
+  (** {2:methods Methods} *)
+
+  method get_widget : unit -> Widget.widget_t option
   (** Returns the widget that is observed or [NULL] if none. *)
 
-  method set_widget :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method set_widget : Widget.widget_t option -> unit
   (** Sets the widget that should be observed. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_widget_paintable : Raw.Widget_paintable.t
 end
@@ -73,9 +72,5 @@ class widget_paintable : Raw.Widget_paintable.t -> widget_paintable_t
 
 (** {1:constructors Constructors} *)
 
-val new_ :
-  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-  .widget_t
-  option ->
-  widget_paintable_t
+val new_ : Widget.widget_t option -> widget_paintable_t
 (** Creates a new widget paintable observing the given widget. *)

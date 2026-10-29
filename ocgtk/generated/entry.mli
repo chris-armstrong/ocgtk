@@ -8,12 +8,11 @@
 (** {1:class Class} *)
 
 class type entry_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Cell_editable.cell_editable_t
   inherit Editable.editable_t
+
+  (** {2:signals Signals} *)
 
   method on_activate :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -35,6 +34,8 @@ class type entry_t = object
     Gobject.Signal.handler_id
   (** Emitted on the button release from a mouse click over an activatable icon.
   *)
+
+  (** {2:methods Methods} *)
 
   method get_activates_default : unit -> bool
   (** Retrieves the value set by gtk_entry_set_activates_default(). *)
@@ -366,6 +367,8 @@ class type entry_t = object
   (** Unsets the invisible char, so that the default invisible char is used
       again. See [Gtk.Entry.set_invisible_char]. *)
 
+  (** {2:properties Properties} *)
+
   method enable_emoji_completion : bool
   (** Whether to suggest Emoji replacements for :-delimited names like
       [:heart:]. *)
@@ -633,10 +636,20 @@ class type entry_t = object
   method set_truncate_multiline : bool -> unit
   (** When [TRUE], pasted multi-line text is truncated to the first line. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_entry : Raw.Entry.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Entry].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - {{!Ocgtk.Cell_editable.class-type-cell_editable_t}Ocgtk.Cell_editable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\
+     - {{!Ocgtk.Editable.class-type-editable_t}Ocgtk.Editable}\n\n\
      A single-line text entry widget.\n\n\
      An example GtkEntry\n\n\
      A fairly large set of key bindings are supported by default. If the\n\

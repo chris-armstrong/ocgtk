@@ -9,12 +9,18 @@
 
 (** {b The methods, signals and properties of a [ConstantExpression].}
 
+    Inherits from: {{!Ocgtk.Expression.class-type-expression_t}Ocgtk.Expression}
+
     A constant value in a [GtkExpression]. *)
 class type constant_expression_t = object
   inherit Expression.expression_t
 
+  (** {2:methods Methods} *)
+
   method get_value : unit -> Gobject.Value.t
   (** Gets the value that a constant expression evaluates to. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_constant_expression : Raw.Constant_expression.t
 end

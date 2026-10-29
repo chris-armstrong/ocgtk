@@ -1,14 +1,10 @@
 class type box_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Orientable.orientable_t
 
-  method append :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  (** {2:methods Methods} *)
+
+  method append : Widget.widget_t -> unit
   (** Adds a child at the end. *)
 
   method get_baseline_child : unit -> int
@@ -25,41 +21,23 @@ class type box_t = object
   method get_spacing : unit -> int
   (** Gets the value set by [Gtk.Box.set_spacing]. *)
 
-  method insert_child_after :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method insert_child_after : Widget.widget_t -> Widget.widget_t option -> unit
   (** Inserts a child at a specific position.
 
       The child is added after [sibling] in the list of [box] children.
 
       If [sibling] is [NULL], the [child] is placed at the beginning. *)
 
-  method prepend :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method prepend : Widget.widget_t -> unit
   (** Adds a child at the beginning. *)
 
-  method remove :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    unit
+  method remove : Widget.widget_t -> unit
   (** Removes a child widget from the box.
 
       The child must have been added before with [Gtk.Box.append],
       [Gtk.Box.prepend], or [Gtk.Box.insert_child_after]. *)
 
-  method reorder_child_after :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-    option ->
-    unit
+  method reorder_child_after : Widget.widget_t -> Widget.widget_t option -> unit
   (** Moves a child to a different position.
 
       The child is moved to the position after [sibling] in the list of [box]
@@ -86,23 +64,18 @@ class type box_t = object
   method set_spacing : int -> unit
   (** Sets the number of pixels to place between children. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_box : Raw.Box.t
 end
 
 (* High-level class for Box *)
 class box (obj : Raw.Box.t) : box_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
-
+    inherit Widget.widget (obj :> Raw.Widget.t)
     inherit Orientable.orientable (Raw.Orientable.from_gobject obj)
 
-    method append :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        unit =
+    method append : Widget.widget_t -> unit =
       fun child ->
         let child = child#as_widget in
         Raw.Box.append obj child
@@ -119,40 +92,24 @@ class box (obj : Raw.Box.t) : box_t =
     method get_spacing : unit -> int = fun () -> Raw.Box.get_spacing obj
 
     method insert_child_after :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        unit =
+        Widget.widget_t -> Widget.widget_t option -> unit =
       fun child sibling ->
         let child = child#as_widget in
         let sibling = Option.map (fun c -> c#as_widget) sibling in
         Raw.Box.insert_child_after obj child sibling
 
-    method prepend :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        unit =
+    method prepend : Widget.widget_t -> unit =
       fun child ->
         let child = child#as_widget in
         Raw.Box.prepend obj child
 
-    method remove :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        unit =
+    method remove : Widget.widget_t -> unit =
       fun child ->
         let child = child#as_widget in
         Raw.Box.remove obj child
 
     method reorder_child_after :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t
-        option ->
-        unit =
+        Widget.widget_t -> Widget.widget_t option -> unit =
       fun child sibling ->
         let child = child#as_widget in
         let sibling = Option.map (fun c -> c#as_widget) sibling in

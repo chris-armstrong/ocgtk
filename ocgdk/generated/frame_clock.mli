@@ -1,8 +1,9 @@
 (** Tells the application when to update and repaint a surface.
 
     Its methods, signals and properties are on {!class-type-frame_clock_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgdk.Raw.Frame_clock}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgdk.Raw.Frame_clock}. *)
 
 (** {1:class Class} *)
 
@@ -41,6 +42,8 @@
     [Gdk.FrameClock::update] signal of the clock, they will stay exactly
     synchronized. *)
 class type frame_clock_t = object
+  (** {2:signals Signals} *)
+
   method on_after_paint :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** This signal ends processing of the frame.
@@ -92,6 +95,8 @@ class type frame_clock_t = object
       Animations should be updated using [Gdk.FrameClock.get_frame_time].
       Applications can connect directly to this signal, or use
       gtk_widget_add_tick_callback() as a more convenient interface. *)
+
+  (** {2:methods Methods} *)
 
   method begin_updating : unit -> unit
   (** Starts updates for an animation.
@@ -154,6 +159,8 @@ class type frame_clock_t = object
       this allows GTK to adjust system parameters to get maximally smooth
       animations. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_frame_clock : Raw.Frame_clock.t
 end
 
@@ -194,3 +201,8 @@ class frame_clock : Raw.Frame_clock.t -> frame_clock_t
     [Gdk.FrameClock.get_frame_time] and the value inside the
     [Gdk.FrameClock::update] signal of the clock, they will stay exactly
     synchronized. *)
+
+(** {1:constructors Constructors} *)
+
+(** This is an abstract class that can't be instantiated directly. Refer to its
+    subclasses for a concrete implementation. *)

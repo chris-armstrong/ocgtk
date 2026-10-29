@@ -52,6 +52,8 @@
     [GdkPixbuf.PixbufAnimationIter] to retrieve the pixbuf for the desired time
     stamp. *)
 class type pixbuf_loader_t = object
+  (** {2:signals Signals} *)
+
   method on_area_prepared :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** This signal is emitted when the pixbuf loader has allocated the pixbuf in
@@ -92,6 +94,8 @@ class type pixbuf_loader_t = object
 
       Applications can call gdk_pixbuf_loader_set_size() in response to this
       signal to set the desired size to which the image should be scaled. *)
+
+  (** {2:methods Methods} *)
 
   method close : unit -> (bool, GError.t) result
   (** Informs a pixbuf loader that no further writes with
@@ -151,6 +155,8 @@ class type pixbuf_loader_t = object
 
   method write_bytes : Glib_bytes.t -> (bool, GError.t) result
   (** Parses the next contents of the given image buffer. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_pixbuf_loader : Raw.Pixbuf_loader.t
 end

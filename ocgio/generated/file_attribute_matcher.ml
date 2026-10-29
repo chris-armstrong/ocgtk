@@ -1,4 +1,6 @@
 class type file_attribute_matcher_t = object
+  (** {2:methods Methods} *)
+
   method enumerate_namespace : string -> bool
   [@@ocaml.doc
     "Checks if the matcher will match all of the keys in a given namespace.\n\
@@ -40,6 +42,8 @@ class type file_attribute_matcher_t = object
       the format passed to g_file_attribute_matcher_new(). The output however,
       might not be identical, as the matcher may decide to use a different order
       or omit needless parts. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_file_attribute_matcher : Raw.File_attribute_matcher.t
 end

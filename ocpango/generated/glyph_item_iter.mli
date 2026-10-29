@@ -2,8 +2,9 @@
     [PangoGlyphItem].
 
     Its methods, signals and properties are on {!class-type-glyph_item_iter_t}.
-    Its full description is under {!section-description}. The functions it is
-    built on are in {!Ocpango.Raw.Glyph_item_iter}. *)
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocpango.Raw.Glyph_item_iter}. *)
 
 (** {1:class Class} *)
 
@@ -51,6 +52,8 @@
     None of the members of a [PangoGlyphItemIter] should be modified manually.
 *)
 class type glyph_item_iter_t = object
+  (** {2:methods Methods} *)
+
   method init_end : Raw.Glyph_item.t -> string -> bool
   (** Initializes a [PangoGlyphItemIter] structure to point to the last cluster
       in a glyph item.
@@ -71,6 +74,8 @@ class type glyph_item_iter_t = object
   method prev_cluster : unit -> bool
   (** Moves the iterator to the preceding cluster in the glyph item. See
       [PangoGlyphItemIter] for details of cluster orders. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_glyph_item_iter : Raw.Glyph_item_iter.t
 end
@@ -121,3 +126,8 @@ class glyph_item_iter : Raw.Glyph_item_iter.t -> glyph_item_iter_t
 
     None of the members of a [PangoGlyphItemIter] should be modified manually.
 *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

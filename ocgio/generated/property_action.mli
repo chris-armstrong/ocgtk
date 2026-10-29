@@ -10,6 +10,9 @@
 
 (** {b The methods, signals and properties of a [PropertyAction].}
 
+    Implements:
+    - {{!Ocgio.Action.class-type-action_t}Ocgio.Action}
+
     A [GPropertyAction] is a way to get a [Gio.Action] with a state value
     reflecting and controlling the value of a [GObject.Object] property.
 
@@ -64,6 +67,8 @@
 class type property_action_t = object
   inherit Action.action_t
 
+  (** {2:properties Properties} *)
+
   method enabled : bool
   (** If [action] is currently enabled.
 
@@ -88,6 +93,8 @@ class type property_action_t = object
   method state_type : Gvariant_type.t
   (** The [GVariantType] of the state that the action has, or [NULL] if the
       action is stateless. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_property_action : Raw.Property_action.t
 end

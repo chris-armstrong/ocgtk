@@ -1,12 +1,22 @@
 (** Base class for widgets which visualize an adjustment.
 
     Its methods, signals and properties are on {!class-type-range_t}. Its full
-    description is under {!section-description}. The functions it is built on
-    are in {!Ocgtk.Raw.Range}. *)
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Range}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [Range].}
+
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Accessible_range.class-type-accessible_range_t}Ocgtk.Accessible_range}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Orientable.class-type-orientable_t}Ocgtk.Orientable}
 
     Base class for widgets which visualize an adjustment.
 
@@ -23,12 +33,11 @@
     dragging, or initiating the drag with a long-press will enable the
     fine-tuning mode. *)
 class type range_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Accessible_range.accessible_range_t
   inherit Orientable.orientable_t
+
+  (** {2:signals Signals} *)
 
   method on_adjust_bounds :
     ?after:bool ->
@@ -68,6 +77,8 @@ class type range_t = object
   method on_value_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted when the range value changes. *)
+
+  (** {2:methods Methods} *)
 
   method get_adjustment : unit -> Adjustment.adjustment_t
   (** Get the adjustment which is the “model” object for [GtkRange]. *)
@@ -192,6 +203,8 @@ class type range_t = object
       clamped to fit inside them. The range emits the [Gtk.Range::value-changed]
       signal if the value changes. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_range : Raw.Range.t
 end
 
@@ -214,3 +227,8 @@ class range : Raw.Range.t -> range_t
     The [GtkRange] slider is draggable. Holding the <kbd>Shift</kbd> key while
     dragging, or initiating the drag with a long-press will enable the
     fine-tuning mode. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

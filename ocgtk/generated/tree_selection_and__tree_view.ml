@@ -2,12 +2,16 @@
 (* Combined classes for cyclic dependencies *)
 
 class type tree_selection_t = object
+  (** {2:signals Signals} *)
+
   method on_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
   (** Emitted whenever the selection has (possibly) changed. Please note that
       this signal is mostly a hint. It may only be emitted once when a range of
       rows are selected, and it may occasionally be emitted when nothing has
       happened. *)
+
+  (** {2:methods Methods} *)
 
   method count_selected_rows : unit -> int
   (** Returns the number of rows that have been selected in [tree]. *)
@@ -58,15 +62,16 @@ class type tree_selection_t = object
   (** Unselects a range of nodes, determined by [start_path] and [end_path]
       inclusive. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_tree_selection : Raw.Tree_selection.t
 end
 
 and tree_view_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
-
+  inherit Widget.widget_t
   inherit Scrollable.scrollable_t
+
+  (** {2:signals Signals} *)
 
   method on_columns_changed :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
@@ -122,6 +127,8 @@ and tree_view_t = object
 
   method on_unselect_all :
     ?after:bool -> callback:(unit -> bool) -> unit -> Gobject.Signal.handler_id
+
+  (** {2:methods Methods} *)
 
   method append_column : Tree_view_column.tree_view_column_t -> int
   (** Appends [column] to the list of columns. If [tree_view] has “fixed_height”
@@ -441,8 +448,7 @@ and tree_view_t = object
       effects for lists. *)
 
   method set_tooltip_cell :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .tooltip_t ->
+    Tooltip.tooltip_t ->
     Raw.Tree_path.t option ->
     Tree_view_column.tree_view_column_t option ->
     Cell_renderer.cell_renderer_t option ->
@@ -471,11 +477,7 @@ and tree_view_t = object
       Note that the signal handler sets the text with gtk_tooltip_set_markup(),
       so &, <, etc have to be escaped in the text. *)
 
-  method set_tooltip_row :
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .tooltip_t ->
-    Raw.Tree_path.t ->
-    unit
+  method set_tooltip_row : Tooltip.tooltip_t -> Raw.Tree_path.t -> unit
   (** Sets the tip area of [tooltip] to be the area covered by the row at
       [path]. See also gtk_tree_view_set_tooltip_column() for a simpler
       alternative. See also gtk_tooltip_set_tip_area(). *)
@@ -488,11 +490,15 @@ and tree_view_t = object
   (** Undoes the effect of gtk_tree_view_enable_model_drag_source(). Calling
       this method sets [GtkTreeView]:reorderable to [FALSE]. *)
 
+  (** {2:properties Properties} *)
+
   method enable_grid_lines : Enums.treeviewgridlines
   (** Get property: enable-grid-lines *)
 
   method set_enable_grid_lines : Enums.treeviewgridlines -> unit
   (** Set property: enable-grid-lines *)
+
+  (** {2:conversions Conversions} *)
 
   method as_tree_view : Raw.Tree_view.t
 end
@@ -551,11 +557,7 @@ class tree_selection (obj : Raw.Tree_selection.t) : tree_selection_t =
 
 and tree_view (obj : Raw.Tree_view.t) : tree_view_t =
   object (self)
-    inherit
-      Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-      .widget
-        (obj :> Raw.Widget.t)
-
+    inherit Widget.widget (obj :> Raw.Widget.t)
     inherit Scrollable.scrollable (Raw.Scrollable.from_gobject obj)
 
     method on_columns_changed ?(after = false) ~callback () =
@@ -844,8 +846,7 @@ and tree_view (obj : Raw.Tree_view.t) : tree_view_t =
       fun enabled -> Raw.Tree_view.set_show_expanders obj enabled
 
     method set_tooltip_cell :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .tooltip_t ->
+        Tooltip.tooltip_t ->
         Raw.Tree_path.t option ->
         Tree_view_column.tree_view_column_t option ->
         Cell_renderer.cell_renderer_t option ->
@@ -859,11 +860,7 @@ and tree_view (obj : Raw.Tree_view.t) : tree_view_t =
     method set_tooltip_column : int -> unit =
       fun column -> Raw.Tree_view.set_tooltip_column obj column
 
-    method set_tooltip_row :
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .tooltip_t ->
-        Raw.Tree_path.t ->
-        unit =
+    method set_tooltip_row : Tooltip.tooltip_t -> Raw.Tree_path.t -> unit =
       fun tooltip path ->
         let tooltip = tooltip#as_tooltip in
         Raw.Tree_view.set_tooltip_row obj tooltip path

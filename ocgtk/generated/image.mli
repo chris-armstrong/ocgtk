@@ -8,9 +8,9 @@
 (** {1:class Class} *)
 
 class type image_t = object
-  inherit
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t
+  inherit Widget.widget_t
+
+  (** {2:methods Methods} *)
 
   method clear : unit -> unit
   (** Resets the image to be empty. *)
@@ -96,6 +96,8 @@ class type image_t = object
       If the pixel size is set to a value != -1, it is used instead of the icon
       size set by [Gtk.Image.set_icon_size]. *)
 
+  (** {2:properties Properties} *)
+
   method use_fallback : bool
   (** Whether the icon displayed in the [GtkImage] will use standard icon names
       fallback.
@@ -110,10 +112,18 @@ class type image_t = object
       The value of this property is only relevant for images of type
       [GTK_IMAGE_ICON_NAME] and [GTK_IMAGE_GICON]. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_image : Raw.Image.t
 end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [Image].}\n\n\
+     Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
+     Implements:\n\
+     - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}\n\
+     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
+     - \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      Displays an image.\n\n\
      An example GtkImage\n\n\
      Various kinds of object can be displayed as an image; most typically,\n\

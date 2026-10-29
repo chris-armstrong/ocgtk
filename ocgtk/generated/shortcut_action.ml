@@ -1,10 +1,8 @@
 class type shortcut_action_t = object
+  (** {2:methods Methods} *)
+
   method activate :
-    Enums.shortcutactionflags ->
-    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-    .widget_t ->
-    Gvariant.t option ->
-    bool
+    Enums.shortcutactionflags -> Widget.widget_t -> Gvariant.t option -> bool
   (** Activates the action on the [widget] with the given [args].
 
       Note that some actions ignore the passed in [flags], [widget] or [args].
@@ -19,6 +17,8 @@ class type shortcut_action_t = object
       This is a small wrapper around [Gtk.ShortcutAction.print] to help when
       debugging. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_shortcut_action : Raw.Shortcut_action.t
 end
 
@@ -27,8 +27,7 @@ class shortcut_action (obj : Raw.Shortcut_action.t) : shortcut_action_t =
   object (self)
     method activate :
         Enums.shortcutactionflags ->
-        Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-        .widget_t ->
+        Widget.widget_t ->
         Gvariant.t option ->
         bool =
       fun flags widget args ->

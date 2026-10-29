@@ -1,6 +1,8 @@
 class type gesture_pan_t = object
   inherit Gesture_drag.gesture_drag_t
 
+  (** {2:signals Signals} *)
+
   method on_pan :
     ?after:bool ->
     callback:(direction:Enums.pandirection -> offset:float -> unit) ->
@@ -8,12 +10,16 @@ class type gesture_pan_t = object
     Gobject.Signal.handler_id
   (** Emitted once a panning gesture along the expected axis is detected. *)
 
+  (** {2:methods Methods} *)
+
   method get_orientation : unit -> Enums.orientation
   (** Returns the orientation of the pan gestures that this [gesture] expects.
   *)
 
   method set_orientation : Enums.orientation -> unit
   (** Sets the orientation to be expected on pan gestures. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_gesture_pan : Raw.Gesture_pan.t
 end

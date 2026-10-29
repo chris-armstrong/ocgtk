@@ -1,4 +1,6 @@
 class type settings_schema_t = object
+  (** {2:methods Methods} *)
+
   method get_id : unit -> string
   (** Get the ID of [schema]. *)
 
@@ -37,6 +39,8 @@ class type settings_schema_t = object
 
   method ref : unit -> Raw.Settings_schema.t
   (** Increase the reference count of [schema], returning a new reference. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_settings_schema : Raw.Settings_schema.t
 end

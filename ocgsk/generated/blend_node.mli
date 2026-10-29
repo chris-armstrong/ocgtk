@@ -8,9 +8,14 @@
 
 (** {b The methods, signals and properties of a [BlendNode].}
 
+    Inherits from:
+    {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
+
     A render node applying a blending function between its two child nodes. *)
 class type blend_node_t = object
   inherit Render_node.render_node_t
+
+  (** {2:methods Methods} *)
 
   method get_blend_mode : unit -> Enums.blendmode
   (** Retrieves the blend mode used by [node]. *)
@@ -20,6 +25,8 @@ class type blend_node_t = object
 
   method get_top_child : unit -> Render_node.render_node_t
   (** Retrieves the top [GskRenderNode] child of the [node]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_blend_node : Raw.Blend_node.t
 end

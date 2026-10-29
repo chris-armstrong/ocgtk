@@ -9,6 +9,11 @@
 
 (** {b The methods, signals and properties of a [SingleSelection].}
 
+    Implements:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
+    - {{!Ocgtk.Section_model.class-type-section_model_t}Ocgtk.Section_model}
+    - {{!Ocgtk.Selection_model.class-type-selection_model_t}Ocgtk.Selection_model}
+
     A selection model that allows selecting a single item.
 
     Note that the selection is {i persistent} -- if the selected item is removed
@@ -19,6 +24,8 @@ class type single_selection_t = object
   inherit Ocgio.List_model.list_model_t
   inherit Section_model.section_model_t
   inherit Selection_model.selection_model_t
+
+  (** {2:methods Methods} *)
 
   method get_autoselect : unit -> bool
   (** Checks if autoselect has been enabled or disabled via
@@ -71,11 +78,15 @@ class type single_selection_t = object
       selection will be unset and no item will be selected. This also applies if
       [Gtk.SingleSelection:can-unselect] is set to [FALSE]. *)
 
+  (** {2:properties Properties} *)
+
   method item_type : Gobject.Type.t
   (** The type of items. See [Gio.ListModel.get_item_type]. *)
 
   method n_items : int
   (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_single_selection : Raw.Single_selection.t
 end

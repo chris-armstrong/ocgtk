@@ -1,4 +1,6 @@
 class type glyph_item_t = object
+  (** {2:methods Methods} *)
+
   method apply_attrs : string -> Raw.Attr_list.t -> Raw.Glyph_item.t list
   (** Splits a shaped item ([PangoGlyphItem]) into multiple items based on an
       attribute list.
@@ -30,6 +32,8 @@ class type glyph_item_t = object
 
       This function is similar in function to pango_item_split() (and uses it
       internally.) *)
+
+  (** {2:conversions Conversions} *)
 
   method as_glyph_item : Raw.Glyph_item.t
 end

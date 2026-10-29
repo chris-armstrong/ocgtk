@@ -11,6 +11,9 @@
 
 (** {b The methods, signals and properties of a [SocketService].}
 
+    Inherits from:
+    {{!Ocgio.Socket_listener.class-type-socket_listener_t}Ocgio.Socket_listener}
+
     A [GSocketService] is an object that represents a service that is provided
     to the network or over local sockets. When a new connection is made to the
     service the [Gio.SocketService::incoming] signal is emitted.
@@ -37,6 +40,8 @@
     incoming clients. *)
 class type socket_service_t = object
   inherit Socket_listener.socket_listener_t
+
+  (** {2:methods Methods} *)
 
   method is_active : unit -> bool
   (** Check whether the service is active or not. An active service will accept
@@ -67,6 +72,8 @@ class type socket_service_t = object
       This must be called before calling g_socket_listener_close() as the socket
       service will start accepting connections immediately when a new socket is
       added. *)
+
+  (** {2:conversions Conversions} *)
 
   method as_socket_service : Raw.Socket_service.t
 end

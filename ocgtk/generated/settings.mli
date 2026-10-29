@@ -1,12 +1,16 @@
 (** Provides a mechanism to share global settings between applications.
 
     Its methods, signals and properties are on {!class-type-settings_t}. Its
-    full description is under {!section-description}. The functions it is built
-    on are in {!Ocgtk.Raw.Settings}. *)
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Settings}. *)
 
 (** {1:class Class} *)
 
 (** {b The methods, signals and properties of a [Settings].}
+
+    Implements:
+    - {{!Ocgtk.Style_provider.class-type-style_provider_t}Ocgtk.Style_provider}
 
     Provides a mechanism to share global settings between applications.
 
@@ -37,12 +41,16 @@
 class type settings_t = object
   inherit Style_provider.style_provider_t
 
+  (** {2:methods Methods} *)
+
   method reset_property : string -> unit
   (** Undoes the effect of calling g_object_set() to install an
       application-specific value for a setting.
 
       After this call, the setting will again follow the session-wide value for
       this setting. *)
+
+  (** {2:properties Properties} *)
 
   method gtk_alternative_button_order : bool
   (** Whether buttons in dialogs should use the alternative button order. *)
@@ -722,6 +730,8 @@ class type settings_t = object
       Note that GSK does not support subpixel antialiasing, and this setting has
       no effect on font rendering in GTK. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_settings : Raw.Settings.t
 end
 
@@ -756,3 +766,8 @@ class settings : Raw.Settings.t -> settings_t
     There is one [GtkSettings] instance per display. It can be obtained with
     [Gtk.Settings.get_for_display], but in many cases, it is more convenient to
     use [Gtk.Widget.get_settings]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

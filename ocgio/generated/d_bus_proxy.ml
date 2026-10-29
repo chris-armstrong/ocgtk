@@ -1,7 +1,9 @@
 class type d_bus_proxy_t = object
   inherit Async_initable.async_initable_t
-  inherit D_bus_interface_and__d_bus_object.d_bus_interface_t
+  inherit D_bus_interface.d_bus_interface_t
   inherit Initable.initable_t
+
+  (** {2:signals Signals} *)
 
   method on_g_signal :
     ?after:bool ->
@@ -18,6 +20,8 @@ class type d_bus_proxy_t = object
       Since 2.72 this signal supports detailed connections. You can connect to
       the detailed signal [g-signal::x] in order to receive callbacks only when
       signal [x] is received from the remote object. *)
+
+  (** {2:methods Methods} *)
 
   method call_finish :
     Async_result.async_result_t -> (Gvariant.t, GError.t) result
@@ -150,6 +154,8 @@ class type d_bus_proxy_t = object
   (** Ensure that interactions with [proxy] conform to the given interface. See
       the [GDBusProxy:g]-interface-info property for more details. *)
 
+  (** {2:properties Properties} *)
+
   method g_connection : D_bus_connection.d_bus_connection_t
   (** The [GDBusConnection] the proxy is for. *)
 
@@ -236,6 +242,8 @@ class type d_bus_proxy_t = object
   method g_object_path : string
   (** The object path the proxy is for. *)
 
+  (** {2:conversions Conversions} *)
+
   method as_d_bus_proxy : Raw.D_bus_proxy.t
 end
 
@@ -245,8 +253,7 @@ class d_bus_proxy (obj : Raw.D_bus_proxy.t) : d_bus_proxy_t =
     inherit Async_initable.async_initable (Raw.Async_initable.from_gobject obj)
 
     inherit
-      D_bus_interface_and__d_bus_object.d_bus_interface
-        (Raw.D_bus_interface.from_gobject obj)
+      D_bus_interface.d_bus_interface (Raw.D_bus_interface.from_gobject obj)
 
     inherit Initable.initable (Raw.Initable.from_gobject obj)
 
