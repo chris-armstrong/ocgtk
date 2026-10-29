@@ -12,13 +12,15 @@
     Describes a keyboard shortcut.
 
     It contains a description of how to trigger the shortcut via a
-    [Gtk.ShortcutTrigger] and a way to activate the shortcut on a widget via a
-    [Gtk.ShortcutAction].
+    {{!Ocgtk.Shortcut_trigger.class-type-shortcut_trigger_t}[Gtk.ShortcutTrigger]}
+    and a way to activate the shortcut on a widget via a
+    {{!Ocgtk.Shortcut_action.class-type-shortcut_action_t}[Gtk.ShortcutAction]}.
 
-    The actual work is usually done via [Gtk.ShortcutController], which decides
-    if and when to activate a shortcut. Using that controller directly however
-    is rarely necessary as various higher level convenience APIs exist on
-    [GtkWidget]s that make it easier to use shortcuts in GTK.
+    The actual work is usually done via
+    {{!Ocgtk.Shortcut_controller.class-type-shortcut_controller_t}[Gtk.ShortcutController]},
+    which decides if and when to activate a shortcut. Using that controller
+    directly however is rarely necessary as various higher level convenience
+    APIs exist on [GtkWidget]s that make it easier to use shortcuts in GTK.
 
     [GtkShortcut] does provide functionality to make it easy for users to work
     with shortcuts, either by providing informational strings for display
@@ -57,13 +59,15 @@ class shortcut : Raw.Shortcut.t -> shortcut_t
     Describes a keyboard shortcut.
 
     It contains a description of how to trigger the shortcut via a
-    [Gtk.ShortcutTrigger] and a way to activate the shortcut on a widget via a
-    [Gtk.ShortcutAction].
+    {{!Ocgtk.Shortcut_trigger.class-type-shortcut_trigger_t}[Gtk.ShortcutTrigger]}
+    and a way to activate the shortcut on a widget via a
+    {{!Ocgtk.Shortcut_action.class-type-shortcut_action_t}[Gtk.ShortcutAction]}.
 
-    The actual work is usually done via [Gtk.ShortcutController], which decides
-    if and when to activate a shortcut. Using that controller directly however
-    is rarely necessary as various higher level convenience APIs exist on
-    [GtkWidget]s that make it easier to use shortcuts in GTK.
+    The actual work is usually done via
+    {{!Ocgtk.Shortcut_controller.class-type-shortcut_controller_t}[Gtk.ShortcutController]},
+    which decides if and when to activate a shortcut. Using that controller
+    directly however is rarely necessary as various higher level convenience
+    APIs exist on [GtkWidget]s that make it easier to use shortcuts in GTK.
 
     [GtkShortcut] does provide functionality to make it easy for users to work
     with shortcuts, either by providing informational strings for display

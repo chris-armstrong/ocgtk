@@ -38,12 +38,12 @@
     between search results and ending the search.
 
     Often, [GtkSearchEntry] will be fed events by means of being placed inside a
-    [Gtk.SearchBar]. If that is not the case, you can use
-    [Gtk.SearchEntry.set_key_capture_widget] to let it capture key input from
-    another widget.
+    {{!Ocgtk.Search_bar.class-type-search_bar_t}[Gtk.SearchBar]}. If that is not
+    the case, you can use [Gtk.SearchEntry.set_key_capture_widget] to let it
+    capture key input from another widget.
 
     [GtkSearchEntry] provides only minimal API and should be used with the
-    [Gtk.Editable] API.
+    {{!Ocgtk.Editable.class-type-editable_t}[Gtk.Editable]} API.
 
     {b Shortcuts and Gestures}
 
@@ -208,12 +208,12 @@ class search_entry : Raw.Search_entry.t -> search_entry_t
     between search results and ending the search.
 
     Often, [GtkSearchEntry] will be fed events by means of being placed inside a
-    [Gtk.SearchBar]. If that is not the case, you can use
-    [Gtk.SearchEntry.set_key_capture_widget] to let it capture key input from
-    another widget.
+    {{!Ocgtk.Search_bar.class-type-search_bar_t}[Gtk.SearchBar]}. If that is not
+    the case, you can use [Gtk.SearchEntry.set_key_capture_widget] to let it
+    capture key input from another widget.
 
     [GtkSearchEntry] provides only minimal API and should be used with the
-    [Gtk.Editable] API.
+    {{!Ocgtk.Editable.class-type-editable_t}[Gtk.Editable]} API.
 
     {b Shortcuts and Gestures}
 

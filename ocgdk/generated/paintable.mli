@@ -25,10 +25,11 @@
     it is suggested that you scale your paintable ignoring any potential aspect
     ratio.
 
-    The contents that a [GdkPaintable] produces may depend on the [Gdk.Snapshot]
-    passed to it. For example, paintables may decide to use more detailed images
-    on higher resolution screens or when OpenGL is available. A [GdkPaintable]
-    will however always produce the same output for the same snapshot.
+    The contents that a [GdkPaintable] produces may depend on the
+    {{!Ocgdk.Snapshot.class-type-snapshot_t}[Gdk.Snapshot]} passed to it. For
+    example, paintables may decide to use more detailed images on higher
+    resolution screens or when OpenGL is available. A [GdkPaintable] will
+    however always produce the same output for the same snapshot.
 
     A [GdkPaintable] may change its contents, meaning that it will now produce a
     different output with the same snapshot. Once that happens, it will call
@@ -190,10 +191,11 @@ class paintable : Raw.Paintable.t -> paintable_t
     it is suggested that you scale your paintable ignoring any potential aspect
     ratio.
 
-    The contents that a [GdkPaintable] produces may depend on the [Gdk.Snapshot]
-    passed to it. For example, paintables may decide to use more detailed images
-    on higher resolution screens or when OpenGL is available. A [GdkPaintable]
-    will however always produce the same output for the same snapshot.
+    The contents that a [GdkPaintable] produces may depend on the
+    {{!Ocgdk.Snapshot.class-type-snapshot_t}[Gdk.Snapshot]} passed to it. For
+    example, paintables may decide to use more detailed images on higher
+    resolution screens or when OpenGL is available. A [GdkPaintable] will
+    however always produce the same output for the same snapshot.
 
     A [GdkPaintable] may change its contents, meaning that it will now produce a
     different output with the same snapshot. Once that happens, it will call

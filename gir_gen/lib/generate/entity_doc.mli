@@ -1,9 +1,11 @@
 (* Entity_doc — the docs of a class, interface or record's modules, class
    type and class at both layers: the translated GIR doc where there is one,
-   and the fixed text that tells a reader how the modules fit together. *)
+   and the fixed text that tells a reader how the modules fit together.
+
+   [refs] resolves the GIR doc's references; its namespace is the class's. *)
 
 val l1_module :
-  namespace:string ->
+  refs:Doc_resolve.env ->
   class_name:string ->
   class_doc:string option ->
   Doc_emit.t option
@@ -13,7 +15,7 @@ val l1_module :
     synopsis on its parent's page. *)
 
 val l2_module :
-  namespace:string ->
+  refs:Doc_resolve.env ->
   class_name:string ->
   class_doc:string option ->
   Doc_emit.t option
@@ -28,7 +30,10 @@ val class_heading : string
 (** The floating [Class] heading before the layer 2 class type and class. *)
 
 val description :
-  class_name:string -> class_doc:string option -> Doc_emit.t option
+  refs:Doc_resolve.env ->
+  class_name:string ->
+  class_doc:string option ->
+  Doc_emit.t option
 (** The floating [Description] section after the class: a heading, then the
     whole class doc. [None] without a class doc, or when the synopsis is the
     whole of it. *)
@@ -51,6 +56,7 @@ type inheritance = {
 val no_inheritance : inheritance
 
 val class_type :
+  refs:Doc_resolve.env ->
   class_name:string ->
   inheritance:inheritance ->
   class_doc:string option ->
@@ -89,7 +95,7 @@ val no_constructors : instantiation -> Doc_emit.t option
     generated constructor. *)
 
 val constructor :
-  namespace:string ->
+  refs:Doc_resolve.env ->
   class_name:string ->
   Types.gir_constructor ->
   Doc_emit.t option
@@ -99,7 +105,11 @@ val constructor :
 
 type accessor = Getter | Setter
 
-val property : accessor:accessor -> Types.gir_property -> Doc_emit.t option
+val property :
+  refs:Doc_resolve.env ->
+  accessor:accessor ->
+  Types.gir_property ->
+  Doc_emit.t option
 (** A property accessor's doc at either layer: the property's translated GIR
     doc, the same on its getter and setter, else "Get property: <name>" or "Set
     property: <name>". *)

@@ -71,8 +71,9 @@ and Font_family : sig
       Note that the returned faces are not in any particular order, and multiple
       faces may have the same name or characteristics.
 
-      [PangoFontFamily] also implemented the [Gio.ListModel] interface for
-      enumerating faces. *)
+      [PangoFontFamily] also implemented the
+      {{!Ocgio.Raw.List_model}[Gio.ListModel]} interface for enumerating faces.
+  *)
 
   external is_variable : t -> bool = "ml_pango_font_family_is_variable"
   (** A variable font is a font which has axes that can be modified to produce

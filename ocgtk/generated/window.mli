@@ -33,9 +33,10 @@ class type window_t = Application_and__window_and__window_group.window_t
 
     {b GtkWindow as GtkBuildable}
 
-    The [GtkWindow] implementation of the [Gtk.Buildable] interface supports
-    setting a child as the titlebar by specifying “titlebar” as the “type”
-    attribute of a [<child>] element.
+    The [GtkWindow] implementation of the
+    {{!Ocgtk.Buildable.class-type-buildable_t}[Gtk.Buildable]} interface
+    supports setting a child as the titlebar by specifying “titlebar” as the
+    “type” attribute of a [<child>] element.
 
     {b Shortcuts and Gestures}
 
@@ -111,9 +112,10 @@ class window : Raw.Window.t -> window_t
 
     {b GtkWindow as GtkBuildable}
 
-    The [GtkWindow] implementation of the [Gtk.Buildable] interface supports
-    setting a child as the titlebar by specifying “titlebar” as the “type”
-    attribute of a [<child>] element.
+    The [GtkWindow] implementation of the
+    {{!Ocgtk.Buildable.class-type-buildable_t}[Gtk.Buildable]} interface
+    supports setting a child as the titlebar by specifying “titlebar” as the
+    “type” attribute of a [<child>] element.
 
     {b Shortcuts and Gestures}
 

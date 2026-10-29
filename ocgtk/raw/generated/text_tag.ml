@@ -7,8 +7,8 @@
     gives an overview of all the objects and data types related to the text
     widget and how they work together.
 
-    Tags should be in the [Gtk.TextTagTable] for a given [GtkTextBuffer] before
-    using them with that buffer.
+    Tags should be in the {{!Ocgtk.Raw.Text_tag_table}[Gtk.TextTagTable]} for a
+    given [GtkTextBuffer] before using them with that buffer.
 
     [Gtk.TextBuffer.create_tag] is the best way to create tags. See “gtk4-demo”
     for numerous examples.

@@ -1,8 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* LoadableIcon: LoadableIcon *)
 
-(** [GLoadableIcon] extends the [Gio.Icon] interface and adds the ability to
-    load icons from streams.
+(** [GLoadableIcon] extends the {{!Ocgio.Raw.Icon}[Gio.Icon]} interface and adds
+    the ability to load icons from streams.
 
     The class built on this module is in {!Ocgio.Loadable_icon}. *)
 

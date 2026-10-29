@@ -1,8 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* CharsetConverter: CharsetConverter *)
 
-(** [GCharsetConverter] is an implementation of [Gio.Converter] based on
-    [GLib.IConv].
+(** [GCharsetConverter] is an implementation of
+    {{!Ocgio.Raw.Converter}[Gio.Converter]} based on [GLib.IConv].
 
     The class built on this module is in {!Ocgio.Charset_converter}. *)
 

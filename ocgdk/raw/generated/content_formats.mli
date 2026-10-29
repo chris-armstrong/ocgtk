@@ -5,15 +5,17 @@
 
     You will encounter [GdkContentFormats] when interacting with objects
     controlling operations that pass data between different widgets, window or
-    application, like [Gdk.Drag], [Gdk.Drop], [Gdk.Clipboard] or
-    [Gdk.ContentProvider].
+    application, like {{!Ocgdk.Raw.Drag}[Gdk.Drag]},
+    {{!Ocgdk.Raw.Drop}[Gdk.Drop]}, {{!Ocgdk.Raw.Clipboard}[Gdk.Clipboard]} or
+    {{!Ocgdk.Raw.Content_provider}[Gdk.ContentProvider]}.
 
     GDK supports content in 2 forms: [GType] and mime type. Using [GTypes] is
     meant only for in-process content transfers. Mime types are meant to be used
     for data passing both in-process and out-of-process. The details of how data
     is passed is described in the documentation of the actual implementations.
-    To transform between the two forms, [Gdk.ContentSerializer] and
-    [Gdk.ContentDeserializer] are used.
+    To transform between the two forms,
+    {{!Ocgdk.Raw.Content_serializer}[Gdk.ContentSerializer]} and
+    {{!Ocgdk.Raw.Content_deserializer}[Gdk.ContentDeserializer]} are used.
 
     A [GdkContentFormats] describes a set of possible formats content can be
     exchanged in. It is assumed that this set is ordered. [GTypes] are more
@@ -30,8 +32,9 @@
 
     [GdkContentFormats] is an immutable struct. After creation, you cannot
     change the types it represents. Instead, new [GdkContentFormats] have to be
-    created. The [Gdk.ContentFormatsBuilder] structure is meant to help in this
-    endeavor.
+    created. The
+    {{!Ocgdk.Raw.Content_formats_builder}[Gdk.ContentFormatsBuilder]} structure
+    is meant to help in this endeavor.
 
     The class built on this module is in {!Ocgdk.Content_formats}. *)
 
@@ -44,7 +47,8 @@ external new_ : string array option -> int -> t = "ml_gdk_content_formats_new"
 
     The mime types must be valid and different from each other or the behavior
     of the return value is undefined. If you cannot guarantee this, use
-    [Gdk.ContentFormatsBuilder] instead. *)
+    {{!Ocgdk.Raw.Content_formats_builder}[Gdk.ContentFormatsBuilder]} instead.
+*)
 
 external new_for_gtype : Gobject.Type.t -> t
   = "ml_gdk_content_formats_new_for_gtype"

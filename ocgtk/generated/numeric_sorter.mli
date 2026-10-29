@@ -13,8 +13,8 @@
 
     Sorts items numerically.
 
-    To obtain the numbers to compare, this sorter evaluates a [Gtk.Expression].
-*)
+    To obtain the numbers to compare, this sorter evaluates a
+    {{!Ocgtk.Expression.class-type-expression_t}[Gtk.Expression]}. *)
 class type numeric_sorter_t = object
   inherit Sorter.sorter_t
 
@@ -50,8 +50,8 @@ class numeric_sorter : Raw.Numeric_sorter.t -> numeric_sorter_t
 
     Sorts items numerically.
 
-    To obtain the numbers to compare, this sorter evaluates a [Gtk.Expression].
-*)
+    To obtain the numbers to compare, this sorter evaluates a
+    {{!Ocgtk.Expression.class-type-expression_t}[Gtk.Expression]}. *)
 
 (** {1:constructors Constructors} *)
 

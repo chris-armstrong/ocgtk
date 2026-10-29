@@ -1,13 +1,14 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Menu: Menu *)
 
-(** [GMenu] is a simple implementation of [Gio.MenuModel]. You populate a
-    [GMenu] by adding [Gio.MenuItem] instances to it.
+(** [GMenu] is a simple implementation of
+    {{!Ocgio.Raw.Menu_model}[Gio.MenuModel]}. You populate a [GMenu] by adding
+    {{!Ocgio.Raw.Menu_item}[Gio.MenuItem]} instances to it.
 
     There are some convenience functions to allow you to directly add items
-    (avoiding [Gio.MenuItem]) for the common cases. To add a regular item, use
-    [Gio.Menu.insert]. To add a section, use [Gio.Menu.insert_section]. To add a
-    submenu, use [Gio.Menu.insert_submenu].
+    (avoiding {{!Ocgio.Raw.Menu_item}[Gio.MenuItem]}) for the common cases. To
+    add a regular item, use [Gio.Menu.insert]. To add a section, use
+    [Gio.Menu.insert_section]. To add a submenu, use [Gio.Menu.insert_submenu].
 
     The class built on this module is in {!Ocgio.Menu}. *)
 

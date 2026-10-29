@@ -323,7 +323,9 @@ let generate_class_signature_body ~(ctx : Types.generation_context)
       | Error _ -> ()
       | Ok emission ->
           Buffer.add_string section
-            (Signal_gen.emit_l2_method_sig ~current_layer2_module emission));
+            (Signal_gen.emit_l2_method_sig
+               ~refs:(Doc_resolve.class_member (Doc_resolve.env_of_ctx ctx))
+               ~current_layer2_module emission));
   add_class_type_section buf ~label:"signals" ~title:"Signals"
     (Buffer.contents section);
 

@@ -23,10 +23,10 @@
     An example GtkScale
 
     To use it, you’ll probably want to investigate the methods on its base
-    class, [Gtk.Range], in addition to the methods for [GtkScale] itself. To set
-    the value of a scale, you would normally use [Gtk.Range.set_value]. To
-    detect changes to the value, you would normally use the
-    [Gtk.Range::value-changed] signal.
+    class, {{!Ocgtk.Range.class-type-range_t}[Gtk.Range]}, in addition to the
+    methods for [GtkScale] itself. To set the value of a scale, you would
+    normally use [Gtk.Range.set_value]. To detect changes to the value, you
+    would normally use the [Gtk.Range::value-changed] signal.
 
     Note that using the same upper and lower bounds for the [GtkScale] (through
     the [GtkRange] methods) will hide the slider itself. This is useful for
@@ -187,10 +187,10 @@ class scale : Raw.Scale.t -> scale_t
     An example GtkScale
 
     To use it, you’ll probably want to investigate the methods on its base
-    class, [Gtk.Range], in addition to the methods for [GtkScale] itself. To set
-    the value of a scale, you would normally use [Gtk.Range.set_value]. To
-    detect changes to the value, you would normally use the
-    [Gtk.Range::value-changed] signal.
+    class, {{!Ocgtk.Range.class-type-range_t}[Gtk.Range]}, in addition to the
+    methods for [GtkScale] itself. To set the value of a scale, you would
+    normally use [Gtk.Range.set_value]. To detect changes to the value, you
+    would normally use the [Gtk.Range::value-changed] signal.
 
     Note that using the same upper and lower bounds for the [GtkScale] (through
     the [GtkRange] methods) will hide the slider itself. This is useful for

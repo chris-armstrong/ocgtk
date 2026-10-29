@@ -1,5 +1,5 @@
 (** A [GtkStatusbar] widget is usually placed along the bottom of an
-    application's main [Gtk.Window].
+    application's main {{!Ocgtk.Window.class-type-window_t}[Gtk.Window]}.
 
     Its methods, signals and properties are on {!class-type-statusbar_t}. Its
     full description is under {!section-description}. Its constructors are under
@@ -18,7 +18,7 @@
     - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
 
     A [GtkStatusbar] widget is usually placed along the bottom of an
-    application's main [Gtk.Window].
+    application's main {{!Ocgtk.Window.class-type-window_t}[Gtk.Window]}.
 
     An example GtkStatusbar
 
@@ -109,7 +109,7 @@ class statusbar : Raw.Statusbar.t -> statusbar_t
 (** {1:description Description}
 
     A [GtkStatusbar] widget is usually placed along the bottom of an
-    application's main [Gtk.Window].
+    application's main {{!Ocgtk.Window.class-type-window_t}[Gtk.Window]}.
 
     An example GtkStatusbar
 

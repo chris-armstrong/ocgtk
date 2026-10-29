@@ -5,6 +5,8 @@
 
 open Gir_gen_lib.Generate
 
+let no_links namespace = Doc_resolve.no_links ~namespace
+
 let text = function
   | Some (Doc_emit.Comment c) -> c
   | Some (Doc_emit.Attribute a) -> "<attribute>" ^ a
@@ -19,7 +21,7 @@ let test_l2_module_with_class_doc () =
      Its methods, signals and properties are on {!class-type-button_t}. Its \
      constructors are under {!section-constructors}. The functions it is built \
      on are in {!Ocgtk.Raw.Button}. *)"
-    (Entity_doc.l2_module ~namespace:"Gtk" ~class_name:"Button"
+    (Entity_doc.l2_module ~refs:(no_links "Gtk") ~class_name:"Button"
        ~class_doc:(Some "A button."))
 
 (* The first paragraph is also the synopsis on the parent's page, where
@@ -30,7 +32,8 @@ let test_l2_module_without_class_doc_starts_with_synopsis () =
      Its methods, signals and properties are on {!class-type-button_t}. Its \
      constructors are under {!section-constructors}. The functions it is built \
      on are in {!Ocgtk.Raw.Button}. *)"
-    (Entity_doc.l2_module ~namespace:"Gtk" ~class_name:"Button" ~class_doc:None)
+    (Entity_doc.l2_module ~refs:(no_links "Gtk") ~class_name:"Button"
+       ~class_doc:None)
 
 let long_doc = "A button.\n\nIt can hold a child."
 
@@ -41,13 +44,13 @@ let test_l2_module_synopsis_is_first_paragraph () =
      full description is under {!section-description}. Its constructors are \
      under {!section-constructors}. The functions it is built on are in \
      {!Ocgtk.Raw.Button}. *)"
-    (Entity_doc.l2_module ~namespace:"Gtk" ~class_name:"Button"
+    (Entity_doc.l2_module ~refs:(no_links "Gtk") ~class_name:"Button"
        ~class_doc:(Some long_doc))
 
 (* A code block split at its blank line would leave markup open. *)
 let test_l2_module_block_first_paragraph_falls_back () =
   let doc =
-    Entity_doc.l2_module ~namespace:"Gtk" ~class_name:"Button"
+    Entity_doc.l2_module ~refs:(no_links "Gtk") ~class_name:"Button"
       ~class_doc:(Some "```c\nint x;\n\nint y;\n```\n\nA button.")
   in
   Alcotest.(check bool)
@@ -58,24 +61,27 @@ let test_l2_module_block_first_paragraph_falls_back () =
 let test_description_with_long_doc () =
   check_text "heading, then the whole class doc"
     "(** {1:description Description}\n\nA button.\n\nIt can hold a child. *)"
-    (Entity_doc.description ~class_name:"Button" ~class_doc:(Some long_doc))
+    (Entity_doc.description ~refs:(no_links "Gtk") ~class_name:"Button"
+       ~class_doc:(Some long_doc))
 
 let test_description_omitted_when_synopsis_is_all () =
   check_text "nothing beyond the synopsis" "<none>"
-    (Entity_doc.description ~class_name:"Button" ~class_doc:(Some "A button."));
+    (Entity_doc.description ~refs:(no_links "Gtk") ~class_name:"Button"
+       ~class_doc:(Some "A button."));
   check_text "no class doc" "<none>"
-    (Entity_doc.description ~class_name:"Button" ~class_doc:None)
+    (Entity_doc.description ~refs:(no_links "Gtk") ~class_name:"Button"
+       ~class_doc:None)
 
 let test_class_type_with_class_doc () =
   check_text "the bold line, then the class doc"
     "(** {b The methods, signals and properties of a [Button].}\n\nA button. *)"
-    (Entity_doc.class_type ~class_name:"Button"
+    (Entity_doc.class_type ~refs:(no_links "Gtk") ~class_name:"Button"
        ~inheritance:Entity_doc.no_inheritance ~class_doc:(Some "A button."))
 
 let test_class_type_without_class_doc () =
   check_text "the bold line alone"
     "(** {b The methods, signals and properties of a [Button].} *)"
-    (Entity_doc.class_type ~class_name:"Button"
+    (Entity_doc.class_type ~refs:(no_links "Gtk") ~class_name:"Button"
        ~inheritance:Entity_doc.no_inheritance ~class_doc:None)
 
 let bound namespace name = Entity_doc.Bound { namespace; name }
@@ -88,7 +94,7 @@ let test_class_type_inheritance_block () =
      - {{!Ocgtk.Actionable.class-type-actionable_t}Ocgtk.Actionable}\n\
      - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}\n\n\
      A button. *)"
-    (Entity_doc.class_type ~class_name:"Button"
+    (Entity_doc.class_type ~refs:(no_links "Gtk") ~class_name:"Button"
        ~inheritance:
          {
            Entity_doc.parent = Some (bound "Gtk" "Widget");
@@ -101,7 +107,7 @@ let test_class_type_unbound_ancestor_is_code () =
   check_text "an ancestor without a layer 2 class is named, not linked"
     "(** {b The methods, signals and properties of a [Button].}\n\n\
      Inherits from: [GObject.InitiallyUnowned] *)"
-    (Entity_doc.class_type ~class_name:"Button"
+    (Entity_doc.class_type ~refs:(no_links "Gtk") ~class_name:"Button"
        ~inheritance:
          {
            Entity_doc.no_inheritance with
@@ -114,7 +120,7 @@ let test_interface_requires () =
     "(** {b The methods, signals and properties of a [Actionable].}\n\n\
      Requires:\n\
      - {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget} *)"
-    (Entity_doc.class_type ~class_name:"Actionable"
+    (Entity_doc.class_type ~refs:(no_links "Gtk") ~class_name:"Actionable"
        ~inheritance:
          { Entity_doc.no_inheritance with requires = [ bound "Gtk" "Widget" ] }
        ~class_doc:None)
@@ -128,22 +134,24 @@ let test_constructor_fallback_links_upstream () =
     "(** Create a new [Button]. Wraps \
      {{:https://docs.gtk.org/gtk4/ctor.Button.new_with_label.html}[gtk_button_new_with_label]}. \
      *)"
-    (Entity_doc.constructor ~namespace:"Gtk" ~class_name:"Button" (ctor ()))
+    (Entity_doc.constructor ~refs:(no_links "Gtk") ~class_name:"Button"
+       (ctor ()))
 
 let test_constructor_fallback_without_upstream_site () =
   check_text "C function, not linked"
     "(** Create a new [Button]. Wraps [gtk_button_new_with_label]. *)"
-    (Entity_doc.constructor ~namespace:"cairo" ~class_name:"Button" (ctor ()))
+    (Entity_doc.constructor ~refs:(no_links "cairo") ~class_name:"Button"
+       (ctor ()))
 
 let test_constructor_gir_doc_wins () =
   check_text "translated GIR doc" "(** Creates a labelled button. *)"
-    (Entity_doc.constructor ~namespace:"Gtk" ~class_name:"Button"
+    (Entity_doc.constructor ~refs:(no_links "Gtk") ~class_name:"Button"
        (ctor ~ctor_doc:"Creates a labelled button." ()))
 
 let test_constructor_null_on_error_throwing () =
   check_text "a throwing constructor's error is its Error result"
     "(** Reads the settings. Returns them, or an [Error] result. *)"
-    (Entity_doc.constructor ~namespace:"Gtk" ~class_name:"Button"
+    (Entity_doc.constructor ~refs:(no_links "Gtk") ~class_name:"Button"
        (Type_factory.make_gir_constructor ~ctor_name:"new_from_file"
           ~c_identifier:"gtk_button_new_from_file" ~throws:true
           ~ctor_doc:"Reads the settings. Returns them, or %NULL on error." ()))
@@ -151,7 +159,7 @@ let test_constructor_null_on_error_throwing () =
 let test_constructor_null_on_error_plain () =
   check_text "a non-throwing constructor keeps the null"
     "(** Returns them, or [None] on error. *)"
-    (Entity_doc.constructor ~namespace:"Gtk" ~class_name:"Button"
+    (Entity_doc.constructor ~refs:(no_links "Gtk") ~class_name:"Button"
        (ctor ~ctor_doc:"Returns them, or %NULL on error." ()))
 
 let label_property ?prop_doc () =
@@ -162,21 +170,21 @@ let label_property ?prop_doc () =
 let test_property_gir_doc_on_both_accessors () =
   let prop = label_property ~prop_doc:"Text of the label." () in
   check_text "getter" "(** Text of the label. *)"
-    (Entity_doc.property ~accessor:Entity_doc.Getter prop);
+    (Entity_doc.property ~refs:(no_links "Gtk") ~accessor:Entity_doc.Getter prop);
   check_text "setter" "(** Text of the label. *)"
-    (Entity_doc.property ~accessor:Entity_doc.Setter prop)
+    (Entity_doc.property ~refs:(no_links "Gtk") ~accessor:Entity_doc.Setter prop)
 
 let test_property_fallback () =
   let prop = label_property () in
   check_text "getter" "(** Get property: label *)"
-    (Entity_doc.property ~accessor:Entity_doc.Getter prop);
+    (Entity_doc.property ~refs:(no_links "Gtk") ~accessor:Entity_doc.Getter prop);
   check_text "setter" "(** Set property: label *)"
-    (Entity_doc.property ~accessor:Entity_doc.Setter prop)
+    (Entity_doc.property ~refs:(no_links "Gtk") ~accessor:Entity_doc.Setter prop)
 
 let test_l1_module_points_to_layer2 () =
   check_text "class doc, then the layer 2 module"
     "(** A button.\n\nThe class built on this module is in {!Ocgtk.Button}. *)"
-    (Entity_doc.l1_module ~namespace:"Gtk" ~class_name:"Button"
+    (Entity_doc.l1_module ~refs:(no_links "Gtk") ~class_name:"Button"
        ~class_doc:(Some "A button."))
 
 let test_class_links_layer1_type () =

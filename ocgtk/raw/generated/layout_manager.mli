@@ -11,7 +11,8 @@
  manager instance using [Gtk.Widget.set_layout_manager].\n\n\
  {b Layout properties}\n\n\
  A layout manager can expose properties for controlling the layout of\n\
- each child, by creating an object type derived from [Gtk.LayoutChild]\n\
+ each child, by creating an object type derived from \
+ {{!Ocgtk.Raw.Layout_child}[Gtk.LayoutChild]}\n\
  and installing the properties on it as normal [GObject] properties.\n\n\
  Each [GtkLayoutChild] instance storing the layout properties for a\n\
  specific child is created through the [Gtk.LayoutManager.get_layout_child]\n\

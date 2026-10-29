@@ -31,18 +31,20 @@
     specified in the form of a tree model, and the display of the choices can be
     adapted to the data in the model by using cell renderers, as you would in a
     tree view. This is possible since [GtkComboBox] implements the
-    [Gtk.CellLayout] interface. The tree model holding the valid choices is not
-    restricted to a flat list, it can be a real tree, and the popup will reflect
-    the tree structure.
+    {{!Ocgtk.Cell_layout.class-type-cell_layout_t}[Gtk.CellLayout]} interface.
+    The tree model holding the valid choices is not restricted to a flat list,
+    it can be a real tree, and the popup will reflect the tree structure.
 
     To allow the user to enter values not in the model, the
     [Gtk.ComboBox:has-entry] property allows the [GtkComboBox] to contain a
-    [Gtk.Entry]. This entry can be accessed by calling [Gtk.ComboBox.get_child]
-    on the combo box.
+    {{!Ocgtk.Entry.class-type-entry_t}[Gtk.Entry]}. This entry can be accessed
+    by calling [Gtk.ComboBox.get_child] on the combo box.
 
     For a simple list of textual choices, the model-view API of [GtkComboBox]
-    can be a bit overwhelming. In this case, [Gtk.ComboBoxText] offers a simple
-    alternative. Both [GtkComboBox] and [GtkComboBoxText] can contain an entry.
+    can be a bit overwhelming. In this case,
+    {{!Ocgtk.Combo_box_text.class-type-combo_box_text_t}[Gtk.ComboBoxText]}
+    offers a simple alternative. Both [GtkComboBox] and [GtkComboBoxText] can
+    contain an entry.
 
     {b CSS nodes}
 
@@ -328,18 +330,20 @@ class combo_box : Raw.Combo_box.t -> combo_box_t
     specified in the form of a tree model, and the display of the choices can be
     adapted to the data in the model by using cell renderers, as you would in a
     tree view. This is possible since [GtkComboBox] implements the
-    [Gtk.CellLayout] interface. The tree model holding the valid choices is not
-    restricted to a flat list, it can be a real tree, and the popup will reflect
-    the tree structure.
+    {{!Ocgtk.Cell_layout.class-type-cell_layout_t}[Gtk.CellLayout]} interface.
+    The tree model holding the valid choices is not restricted to a flat list,
+    it can be a real tree, and the popup will reflect the tree structure.
 
     To allow the user to enter values not in the model, the
     [Gtk.ComboBox:has-entry] property allows the [GtkComboBox] to contain a
-    [Gtk.Entry]. This entry can be accessed by calling [Gtk.ComboBox.get_child]
-    on the combo box.
+    {{!Ocgtk.Entry.class-type-entry_t}[Gtk.Entry]}. This entry can be accessed
+    by calling [Gtk.ComboBox.get_child] on the combo box.
 
     For a simple list of textual choices, the model-view API of [GtkComboBox]
-    can be a bit overwhelming. In this case, [Gtk.ComboBoxText] offers a simple
-    alternative. Both [GtkComboBox] and [GtkComboBoxText] can contain an entry.
+    can be a bit overwhelming. In this case,
+    {{!Ocgtk.Combo_box_text.class-type-combo_box_text_t}[Gtk.ComboBoxText]}
+    offers a simple alternative. Both [GtkComboBox] and [GtkComboBoxText] can
+    contain an entry.
 
     {b CSS nodes}
 

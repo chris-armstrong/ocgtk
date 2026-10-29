@@ -23,7 +23,11 @@ let generate_property_getter ~ctx ~class_name ~buf (prop : gir_property)
   in
   let getter_name = Fmt.str "get_%s" prop_snake in
   let c_getter = Utils.ml_property_name ~ctx ~class_name prop in
-  let doc = Entity_doc.property ~accessor:Entity_doc.Getter prop in
+  let doc =
+    Entity_doc.property
+      ~refs:(Doc_resolve.env_of_ctx ctx)
+      ~accessor:Entity_doc.Getter prop
+  in
   bprintf buf "%s" (Doc_emit.before_item doc);
   bprintf buf "external %s : t -> %s = \"%s\"\n\n" getter_name prop_ocaml_type
     c_getter;
@@ -37,7 +41,11 @@ let generate_property_setter ~ctx ~class_name ~buf (prop : gir_property)
   in
   let setter_name = Fmt.str "set_%s" prop_snake in
   let c_setter = Utils.ml_property_setter_name ~ctx ~class_name prop in
-  let doc = Entity_doc.property ~accessor:Entity_doc.Setter prop in
+  let doc =
+    Entity_doc.property
+      ~refs:(Doc_resolve.env_of_ctx ctx)
+      ~accessor:Entity_doc.Setter prop
+  in
   bprintf buf "%s" (Doc_emit.before_item doc);
   bprintf buf "external %s : t -> %s -> unit = \"%s\"\n\n" setter_name
     prop_ocaml_type c_setter;

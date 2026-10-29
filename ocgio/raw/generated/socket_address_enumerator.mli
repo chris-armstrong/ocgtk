@@ -1,11 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SocketAddressEnumerator, a member of the cyclic module Socket_address_and__socket_address_enumerator_and__socket_connectable *)
 
-(** [GSocketAddressEnumerator] is an enumerator type for [Gio.SocketAddress]
-    instances. It is returned by enumeration functions such as
-    [Gio.SocketConnectable.enumerate], which returns a
-    [GSocketAddressEnumerator] to list each [Gio.SocketAddress] which could be
-    used to connect to that [Gio.SocketConnectable].
+(** [GSocketAddressEnumerator] is an enumerator type for
+    {{!Ocgio.Raw.Socket_address}[Gio.SocketAddress]} instances. It is returned
+    by enumeration functions such as [Gio.SocketConnectable.enumerate], which
+    returns a [GSocketAddressEnumerator] to list each
+    {{!Ocgio.Raw.Socket_address}[Gio.SocketAddress]} which could be used to
+    connect to that {{!Ocgio.Raw.Socket_connectable}[Gio.SocketConnectable]}.
 
     Enumeration is typically a blocking operation, so the asynchronous methods
     [Gio.SocketAddressEnumerator.next_async] and

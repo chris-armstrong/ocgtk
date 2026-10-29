@@ -173,7 +173,9 @@ end
      availability via the [Gtk.DropTarget:value] property\n\n\
      However, [GtkDropTarget] is ultimately modeled in a synchronous way\n\
      and only supports data transferred via [GType]. If you want full control\n\
-     over an ongoing drop, the [Gtk.DropTargetAsync] object gives you\n\
+     over an ongoing drop, the \
+     {{!Ocgtk.Drop_target_async.class-type-drop_target_async_t}[Gtk.DropTargetAsync]} \
+     object gives you\n\
      this ability.\n\n\
      While a pointer is dragged over the drop target's widget and the drop\n\
      has not been rejected, that widget will receive the\n\
@@ -181,7 +183,8 @@ end
      widget.\n\n\
      If you are not interested in receiving the drop, but just want to update\n\
      UI state during a Drag-and-Drop operation (e.g. switching tabs), you can\n\
-     use [Gtk.DropControllerMotion]."]
+     use \
+     {{!Ocgtk.Drop_controller_motion.class-type-drop_controller_motion_t}[Gtk.DropControllerMotion]}."]
 
 class drop_target : Raw.Drop_target.t -> drop_target_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Drop_target.t}. *)
@@ -239,14 +242,17 @@ class drop_target : Raw.Drop_target.t -> drop_target_t
  availability via the [Gtk.DropTarget:value] property\n\n\
  However, [GtkDropTarget] is ultimately modeled in a synchronous way\n\
  and only supports data transferred via [GType]. If you want full control\n\
- over an ongoing drop, the [Gtk.DropTargetAsync] object gives you\n\
+ over an ongoing drop, the \
+ {{!Ocgtk.Drop_target_async.class-type-drop_target_async_t}[Gtk.DropTargetAsync]} \
+ object gives you\n\
  this ability.\n\n\
  While a pointer is dragged over the drop target's widget and the drop\n\
  has not been rejected, that widget will receive the\n\
  [GTK_STATE_FLAG_DROP_ACTIVE] state, which can be used to style the widget.\n\n\
  If you are not interested in receiving the drop, but just want to update\n\
  UI state during a Drag-and-Drop operation (e.g. switching tabs), you can\n\
- use [Gtk.DropControllerMotion]."]
+ use \
+ {{!Ocgtk.Drop_controller_motion.class-type-drop_controller_motion_t}[Gtk.DropControllerMotion]}."]
 
 (** {1:constructors Constructors} *)
 

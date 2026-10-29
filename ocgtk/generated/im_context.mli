@@ -192,7 +192,8 @@ end
      composition states as preedit text. To do so, the [GtkIMContext] will emit\n\
      [Gtk.IMContext::preedit-start], [Gtk.IMContext::preedit-changed]\n\
      and [Gtk.IMContext::preedit-end] signals.\n\n\
-     For instance, the built-in GTK input method [Gtk.IMContextSimple]\n\
+     For instance, the built-in GTK input method \
+     {{!Ocgtk.Im_context_simple.class-type-im_context_simple_t}[Gtk.IMContextSimple]}\n\
      implements the input of arbitrary Unicode code points by holding down the\n\
      <kbd>Control</kbd> and <kbd>Shift</kbd> keys and then typing <kbd>u</kbd>\n\
      followed by the hexadecimal digits of the code point. When releasing the\n\
@@ -205,7 +206,7 @@ end
      provides a [GIOExtension] for the extension point named \
      \"gtk-im-module\".\n\n\
      To connect a widget to the users preferred input method, you should use\n\
-     [Gtk.IMMulticontext]."]
+     {{!Ocgtk.Im_multicontext.class-type-im_multicontext_t}[Gtk.IMMulticontext]}."]
 
 class im_context : Raw.Im_context.t -> im_context_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Im_context.t}. *)
@@ -221,7 +222,8 @@ class im_context : Raw.Im_context.t -> im_context_t
  composition states as preedit text. To do so, the [GtkIMContext] will emit\n\
  [Gtk.IMContext::preedit-start], [Gtk.IMContext::preedit-changed]\n\
  and [Gtk.IMContext::preedit-end] signals.\n\n\
- For instance, the built-in GTK input method [Gtk.IMContextSimple]\n\
+ For instance, the built-in GTK input method \
+ {{!Ocgtk.Im_context_simple.class-type-im_context_simple_t}[Gtk.IMContextSimple]}\n\
  implements the input of arbitrary Unicode code points by holding down the\n\
  <kbd>Control</kbd> and <kbd>Shift</kbd> keys and then typing <kbd>u</kbd>\n\
  followed by the hexadecimal digits of the code point. When releasing the\n\
@@ -233,7 +235,7 @@ class im_context : Raw.Im_context.t -> im_context_t
  loadable modules. An input method module is a small shared library which\n\
  provides a [GIOExtension] for the extension point named \"gtk-im-module\".\n\n\
  To connect a widget to the users preferred input method, you should use\n\
- [Gtk.IMMulticontext]."]
+ {{!Ocgtk.Im_multicontext.class-type-im_multicontext_t}[Gtk.IMMulticontext]}."]
 
 (** {1:constructors Constructors} *)
 

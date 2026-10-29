@@ -14,7 +14,9 @@
     choosing fonts.
 
     In GTK, the main objects that implement this interface are
-    [Gtk.FontChooserWidget], [Gtk.FontChooserDialog] and [Gtk.FontButton]. *)
+    {{!Ocgtk.Font_chooser_widget.class-type-font_chooser_widget_t}[Gtk.FontChooserWidget]},
+    {{!Ocgtk.Font_chooser_dialog.class-type-font_chooser_dialog_t}[Gtk.FontChooserDialog]}
+    and {{!Ocgtk.Font_button.class-type-font_button_t}[Gtk.FontButton]}. *)
 class type font_chooser_t = object
   (** {2:signals Signals} *)
 
@@ -157,7 +159,9 @@ class font_chooser : Raw.Font_chooser.t -> font_chooser_t
     choosing fonts.
 
     In GTK, the main objects that implement this interface are
-    [Gtk.FontChooserWidget], [Gtk.FontChooserDialog] and [Gtk.FontButton]. *)
+    {{!Ocgtk.Font_chooser_widget.class-type-font_chooser_widget_t}[Gtk.FontChooserWidget]},
+    {{!Ocgtk.Font_chooser_dialog.class-type-font_chooser_dialog_t}[Gtk.FontChooserDialog]}
+    and {{!Ocgtk.Font_button.class-type-font_button_t}[Gtk.FontButton]}. *)
 
 (** {1:constructors Constructors} *)
 

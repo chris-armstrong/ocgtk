@@ -1,4 +1,5 @@
-(** Constructs [Gdk.Texture] objects from GL textures.
+(** Constructs {{!Ocgdk.Texture.class-type-texture_t}[Gdk.Texture]} objects from
+    GL textures.
 
     Its methods, signals and properties are on
     {!class-type-gl_texture_builder_t}. Its full description is under
@@ -9,7 +10,8 @@
 
 (** {b The methods, signals and properties of a [GLTextureBuilder].}
 
-    Constructs [Gdk.Texture] objects from GL textures.
+    Constructs {{!Ocgdk.Texture.class-type-texture_t}[Gdk.Texture]} objects from
+    GL textures.
 
     The operation is quite simple: Create a texture builder, set all the
     necessary properties - keep in mind that the properties
@@ -142,7 +144,8 @@ class gl_texture_builder : Raw.Gl_texture_builder.t -> gl_texture_builder_t
 
 (** {1:description Description}
 
-    Constructs [Gdk.Texture] objects from GL textures.
+    Constructs {{!Ocgdk.Texture.class-type-texture_t}[Gdk.Texture]} objects from
+    GL textures.
 
     The operation is quite simple: Create a texture builder, set all the
     necessary properties - keep in mind that the properties

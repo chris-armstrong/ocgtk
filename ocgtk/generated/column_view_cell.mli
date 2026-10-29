@@ -1,4 +1,5 @@
-(** Represents items in a cell in [Gtk.ColumnView].
+(** Represents items in a cell in
+    {{!Ocgtk.Column_view.class-type-column_view_t}[Gtk.ColumnView]}.
 
     Its methods, signals and properties are on {!class-type-column_view_cell_t}.
     Its full description is under {!section-description}. Its constructors are
@@ -11,9 +12,11 @@
 
     Inherits from: {{!Ocgtk.List_item.class-type-list_item_t}Ocgtk.List_item}
 
-    Represents items in a cell in [Gtk.ColumnView].
+    Represents items in a cell in
+    {{!Ocgtk.Column_view.class-type-column_view_t}[Gtk.ColumnView]}.
 
-    The [GtkColumnViewCell]s are managed by the [Gtk.ColumnView] widget (with
+    The [GtkColumnViewCell]s are managed by the
+    {{!Ocgtk.Column_view.class-type-column_view_t}[Gtk.ColumnView]} widget (with
     its factory) and cannot be created by applications, but they need to be
     populated by application code. This is done by calling
     [Gtk.ColumnViewCell.set_child].
@@ -39,9 +42,11 @@ class column_view_cell : Raw.Column_view_cell.t -> column_view_cell_t
 
 (** {1:description Description}
 
-    Represents items in a cell in [Gtk.ColumnView].
+    Represents items in a cell in
+    {{!Ocgtk.Column_view.class-type-column_view_t}[Gtk.ColumnView]}.
 
-    The [GtkColumnViewCell]s are managed by the [Gtk.ColumnView] widget (with
+    The [GtkColumnViewCell]s are managed by the
+    {{!Ocgtk.Column_view.class-type-column_view_t}[Gtk.ColumnView]} widget (with
     its factory) and cannot be created by applications, but they need to be
     populated by application code. This is done by calling
     [Gtk.ColumnViewCell.set_child].

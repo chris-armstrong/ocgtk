@@ -4,7 +4,8 @@
 [@@@ocaml.text
 "Allows drawing with OpenGL.\n\n\
  An example GtkGLArea\n\n\
- [GtkGLArea] sets up its own [Gdk.GLContext], and creates a custom\n\
+ [GtkGLArea] sets up its own {{!Ocgdk.Raw.Gl_context}[Gdk.GLContext]}, and \
+ creates a custom\n\
  GL framebuffer that the widget will do GL rendering onto. It also ensures\n\
  that this framebuffer is the default GL rendering target when rendering.\n\
  The completed rendering is integrated into the larger GTK scene graph as\n\

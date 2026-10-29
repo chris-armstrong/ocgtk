@@ -8,8 +8,9 @@
     It acts as a controller for the associated [GtkStack].
 
     All the content for the buttons comes from the properties of the stacks
-    [Gtk.StackPage] objects; the button visibility in a [GtkStackSwitcher]
-    widget is controlled by the visibility of the child in the [GtkStack].
+    {{!Ocgtk.Raw.Stack_page}[Gtk.StackPage]} objects; the button visibility in a
+    [GtkStackSwitcher] widget is controlled by the visibility of the child in
+    the [GtkStack].
 
     It is possible to associate multiple [GtkStackSwitcher] widgets with the
     same [GtkStack] widget.

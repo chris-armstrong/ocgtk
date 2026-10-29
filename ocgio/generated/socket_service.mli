@@ -18,9 +18,11 @@
     to the network or over local sockets. When a new connection is made to the
     service the [Gio.SocketService::incoming] signal is emitted.
 
-    A [GSocketService] is a subclass of [Gio.SocketListener] and you need to add
-    the addresses you want to accept connections on with the
-    [Gio.SocketListener] APIs.
+    A [GSocketService] is a subclass of
+    {{!Ocgio.Socket_listener.class-type-socket_listener_t}[Gio.SocketListener]}
+    and you need to add the addresses you want to accept connections on with the
+    {{!Ocgio.Socket_listener.class-type-socket_listener_t}[Gio.SocketListener]}
+    APIs.
 
     There are two options for implementing a network service based on
     [GSocketService]. The first is to create the service using
@@ -31,7 +33,7 @@
     In either case, the handler must immediately return, or else it will block
     additional incoming connections from being serviced. If you are interested
     in writing connection handlers that contain blocking code then see
-    [Gio.ThreadedSocketService].
+    {{!Ocgio.Threaded_socket_service.class-type-threaded_socket_service_t}[Gio.ThreadedSocketService]}.
 
     The socket service runs on the main loop of the thread-default context (see
     [GLib.MainContext.push_thread_default]) of the thread it is created in, and
@@ -87,9 +89,11 @@ class socket_service : Raw.Socket_service.t -> socket_service_t
     to the network or over local sockets. When a new connection is made to the
     service the [Gio.SocketService::incoming] signal is emitted.
 
-    A [GSocketService] is a subclass of [Gio.SocketListener] and you need to add
-    the addresses you want to accept connections on with the
-    [Gio.SocketListener] APIs.
+    A [GSocketService] is a subclass of
+    {{!Ocgio.Socket_listener.class-type-socket_listener_t}[Gio.SocketListener]}
+    and you need to add the addresses you want to accept connections on with the
+    {{!Ocgio.Socket_listener.class-type-socket_listener_t}[Gio.SocketListener]}
+    APIs.
 
     There are two options for implementing a network service based on
     [GSocketService]. The first is to create the service using
@@ -100,7 +104,7 @@ class socket_service : Raw.Socket_service.t -> socket_service_t
     In either case, the handler must immediately return, or else it will block
     additional incoming connections from being serviced. If you are interested
     in writing connection handlers that contain blocking code then see
-    [Gio.ThreadedSocketService].
+    {{!Ocgio.Threaded_socket_service.class-type-threaded_socket_service_t}[Gio.ThreadedSocketService]}.
 
     The socket service runs on the main loop of the thread-default context (see
     [GLib.MainContext.push_thread_default]) of the thread it is created in, and

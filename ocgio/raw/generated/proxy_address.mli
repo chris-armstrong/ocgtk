@@ -1,7 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ProxyAddress: ProxyAddress *)
 
-(** A [Gio.InetSocketAddress] representing a connection via a proxy server.
+(** A {{!Ocgio.Raw.Inet_socket_address}[Gio.InetSocketAddress]} representing a
+    connection via a proxy server.
 
     The class built on this module is in {!Ocgio.Proxy_address}. *)
 

@@ -59,14 +59,18 @@
  [Gio.Application.register]). Unfortunately, this means that you cannot\n\
  use [Gio.Application:is-remote] to decide if you want to register\n\
  object paths.\n\n\
- [GApplication] also implements the [Gio.ActionGroup] and [Gio.ActionMap]\n\
+ [GApplication] also implements the \
+ {{!Ocgio.Raw.Action_group}[Gio.ActionGroup]} and \
+ {{!Ocgio.Raw.Action_map}[Gio.ActionMap]}\n\
  interfaces and lets you easily export actions by adding them with\n\
  [Gio.ActionMap.add_action]. When invoking an action by calling\n\
  [Gio.ActionGroup.activate_action] on the application, it is always\n\
  invoked in the primary instance. The actions are also exported on\n\
- the session bus, and GIO provides the [Gio.DBusActionGroup] wrapper to\n\
- conveniently access them remotely. GIO provides a [Gio.DBusMenuModel] wrapper\n\
- for remote access to exported [Gio.MenuModel]s.\n\n\
+ the session bus, and GIO provides the \
+ {{!Ocgio.Raw.D_bus_action_group}[Gio.DBusActionGroup]} wrapper to\n\
+ conveniently access them remotely. GIO provides a \
+ {{!Ocgio.Raw.D_bus_menu_model}[Gio.DBusMenuModel]} wrapper\n\
+ for remote access to exported {{!Ocgio.Raw.Menu_model}[Gio.MenuModel]}s.\n\n\
  Note: Due to the fact that actions are exported on the session bus,\n\
  using [maybe] parameters is not supported, since D-Bus does not support\n\
  [maybe] types.\n\n\
@@ -84,7 +88,8 @@
  data, override the [Gio.Application.before_emit] or\n\
  [Gio.Application.after_emit] virtual functions\n\
  in your [GApplication] subclass. When dealing with\n\
- [Gio.ApplicationCommandLine] objects, the platform data is\n\
+ {{!Ocgio.Raw.Application_command_line}[Gio.ApplicationCommandLine]} objects, \
+ the platform data is\n\
  directly available via [Gio.ApplicationCommandLine.get_cwd],\n\
  [Gio.ApplicationCommandLine.get_environ] and\n\
  [Gio.ApplicationCommandLine.get_platform_data].\n\n\
@@ -167,7 +172,8 @@ external set_resource_base_path : t -> string option -> unit
 [@@ocaml.doc
   "Sets (or unsets) the base resource path of [application].\n\n\
    The path is used to automatically load various\n\
-   \\[application resources\\][Gio.Resource] such as menu layouts and\n\
+   \\[application resources\\]{{!Ocgio.Raw.Resource}[Gio.Resource]} such as \
+   menu layouts and\n\
    action descriptions. The various types of resources will be found at\n\
    fixed names relative to the given base path.\n\n\
    By default, the resource base path is determined from the application\n\

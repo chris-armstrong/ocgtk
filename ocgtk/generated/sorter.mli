@@ -1,4 +1,5 @@
-(** Describes sorting criteria for a [Gtk.SortListModel].
+(** Describes sorting criteria for a
+    {{!Ocgtk.Sort_list_model.class-type-sort_list_model_t}[Gtk.SortListModel]}.
 
     Its methods, signals and properties are on {!class-type-sorter_t}. Its full
     description is under {!section-description}. Its constructors are under
@@ -9,9 +10,11 @@
 
 (** {b The methods, signals and properties of a [Sorter].}
 
-    Describes sorting criteria for a [Gtk.SortListModel].
+    Describes sorting criteria for a
+    {{!Ocgtk.Sort_list_model.class-type-sort_list_model_t}[Gtk.SortListModel]}.
 
-    Its primary user is [Gtk.SortListModel]
+    Its primary user is
+    {{!Ocgtk.Sort_list_model.class-type-sort_list_model_t}[Gtk.SortListModel]}
 
     The model will use a sorter to determine the order in which its items should
     appear by calling [Gtk.Sorter.compare] for pairs of items.
@@ -22,9 +25,9 @@
     gtk_sorter_compare() again.
 
     GTK provides various pre-made sorter implementations for common sorting
-    operations. [Gtk.ColumnView] has built-in support for sorting lists via the
-    [Gtk.ColumnViewColumn:sorter] property, where the user can change the
-    sorting by clicking on list headers.
+    operations. {{!Ocgtk.Column_view.class-type-column_view_t}[Gtk.ColumnView]}
+    has built-in support for sorting lists via the [Gtk.ColumnViewColumn:sorter]
+    property, where the user can change the sorting by clicking on list headers.
 
     Of course, in particular for large lists, it is also possible to subclass
     [GtkSorter] and provide one's own sorter. *)
@@ -93,9 +96,11 @@ class sorter : Raw.Sorter.t -> sorter_t
 
 (** {1:description Description}
 
-    Describes sorting criteria for a [Gtk.SortListModel].
+    Describes sorting criteria for a
+    {{!Ocgtk.Sort_list_model.class-type-sort_list_model_t}[Gtk.SortListModel]}.
 
-    Its primary user is [Gtk.SortListModel]
+    Its primary user is
+    {{!Ocgtk.Sort_list_model.class-type-sort_list_model_t}[Gtk.SortListModel]}
 
     The model will use a sorter to determine the order in which its items should
     appear by calling [Gtk.Sorter.compare] for pairs of items.
@@ -106,9 +111,9 @@ class sorter : Raw.Sorter.t -> sorter_t
     gtk_sorter_compare() again.
 
     GTK provides various pre-made sorter implementations for common sorting
-    operations. [Gtk.ColumnView] has built-in support for sorting lists via the
-    [Gtk.ColumnViewColumn:sorter] property, where the user can change the
-    sorting by clicking on list headers.
+    operations. {{!Ocgtk.Column_view.class-type-column_view_t}[Gtk.ColumnView]}
+    has built-in support for sorting lists via the [Gtk.ColumnViewColumn:sorter]
+    property, where the user can change the sorting by clicking on list headers.
 
     Of course, in particular for large lists, it is also possible to subclass
     [GtkSorter] and provide one's own sorter. *)

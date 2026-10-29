@@ -25,7 +25,8 @@
  [Gtk.Dialog::response] signal with a response ID that you specified.\n\
  GTK will never assign a meaning to positive response IDs; these are\n\
  entirely user-defined. But for convenience, you can use the response\n\
- IDs in the [Gtk.ResponseType] enumeration (these all have values\n\
+ IDs in the {{!Ocgtk.Enums.type-responsetype}[Gtk.ResponseType]} enumeration \
+ (these all have values\n\
  less than zero). If a dialog receives a delete event, the\n\
  [Gtk.Dialog::response] signal will be emitted with the\n\
  [GTK_RESPONSE_DELETE_EVENT] response ID.\n\n\
@@ -36,7 +37,8 @@
  from user input), can be created by calling [Gtk.Window.set_modal]\n\
  on the dialog. When using [Gtk.Dialog.new_with_buttons], you can also\n\
  pass the [GTK_DIALOG_MODAL] flag to make a dialog modal.\n\n\
- For the simple dialog in the following example, a [Gtk.MessageDialog]\n\
+ For the simple dialog in the following example, a \
+ {{!Ocgtk.Raw.Message_dialog}[Gtk.MessageDialog]}\n\
  would save some effort. But you’d need to create the dialog contents manually\n\
  if you had more than a simple message in the dialog.\n\n\
  An example for simple [GtkDialog] usage:\n\n\
@@ -198,7 +200,8 @@ external get_use_header_bar : t -> int = "ml_gtk_dialog_get_use_header_bar"
    For technical reasons, this property is declared as an integer\n\
    property, but you should only set it to [true] or [false].\n\n\
    {b Creating a dialog with headerbar}\n\n\
-   Builtin [GtkDialog] subclasses such as [Gtk.ColorChooserDialog]\n\
+   Builtin [GtkDialog] subclasses such as \
+   {{!Ocgtk.Raw.Color_chooser_dialog}[Gtk.ColorChooserDialog]}\n\
    set this property according to platform conventions (using the\n\
    [Gtk.Settings:gtk-dialogs-use-header] setting).\n\n\
    Here is how you can achieve the same:\n\n\

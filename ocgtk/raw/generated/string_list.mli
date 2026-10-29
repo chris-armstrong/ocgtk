@@ -3,7 +3,8 @@
 
 [@@@ocaml.text
 "A list model that wraps an array of strings.\n\n\
- The objects in the model are of type [Gtk.StringObject] and have\n\
+ The objects in the model are of type \
+ {{!Ocgtk.Raw.String_object}[Gtk.StringObject]} and have\n\
  a \"string\" property that can be used inside expressions.\n\n\
  [GtkStringList] is well-suited for any place where you would\n\
  typically use a char*\\[\\], but need a list model.\n\n\

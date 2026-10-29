@@ -1,9 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Emblem: Emblem *)
 
-(** [GEmblem] is an implementation of [Gio.Icon] that supports having an emblem,
-    which is an icon with additional properties. It can than be added to a
-    [Gio.EmblemedIcon].
+(** [GEmblem] is an implementation of {{!Ocgio.Raw.Icon}[Gio.Icon]} that
+    supports having an emblem, which is an icon with additional properties. It
+    can than be added to a {{!Ocgio.Raw.Emblemed_icon}[Gio.EmblemedIcon]}.
 
     Currently, only metainformation about the emblem's origin is supported. More
     may be added in the future.

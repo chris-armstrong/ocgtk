@@ -81,6 +81,7 @@ let create_context_with_mixed_enums () =
     current_cycle_classes = [];
     cross_references = StringMap.empty;
     target_library = Raw_library;
+    doc_index = StringMap.empty;
   }
 
 (* Helper: Create a context with local and external bitfields to test
@@ -149,6 +150,7 @@ let create_context_with_mixed_bitfields () =
     current_cycle_classes = [];
     cross_references = StringMap.empty;
     target_library = Raw_library;
+    doc_index = StringMap.empty;
   }
 
 (* Test: Local enums produce correct forward declarations (Val_<Enum>, <Enum>_val) *)

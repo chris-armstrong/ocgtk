@@ -1,7 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FileInfo: FileInfo *)
 
-(** Stores information about a file system object referenced by a [Gio.File].
+(** Stores information about a file system object referenced by a
+    {{!Ocgio.Raw.File}[Gio.File]}.
 
     Functionality for manipulating basic metadata for files. [GFileInfo]
     implements methods for getting information that all files should contain,
@@ -10,10 +11,10 @@
     See the file attributes document for more information on how GIO handles
     file attributes.
 
-    To obtain a [GFileInfo] for a [Gio.File], use [Gio.File.query_info] (or its
-    async variant). To obtain a [GFileInfo] for a file input or output stream,
-    use [Gio.FileInputStream.query_info] or [Gio.FileOutputStream.query_info]
-    (or their async variants).
+    To obtain a [GFileInfo] for a {{!Ocgio.Raw.File}[Gio.File]}, use
+    [Gio.File.query_info] (or its async variant). To obtain a [GFileInfo] for a
+    file input or output stream, use [Gio.FileInputStream.query_info] or
+    [Gio.FileOutputStream.query_info] (or their async variants).
 
     To change the actual attributes of a file, you should then set the attribute
     in the [GFileInfo] and call [Gio.File.set_attributes_from_info] or
@@ -35,8 +36,8 @@
     [Gio.FileInfo.has_attribute] or [Gio.FileInfo.list_attributes] to check what
     attributes are specified for a [GFileInfo].
 
-    [Gio.FileAttributeMatcher] allows for searching through a [GFileInfo] for
-    attributes.
+    {{!Ocgio.Raw.File_attribute_matcher}[Gio.FileAttributeMatcher]} allows for
+    searching through a [GFileInfo] for attributes.
 
     The class built on this module is in {!Ocgio.File_info}. *)
 
@@ -250,8 +251,8 @@ external get_file_type : t -> Ocgio_enums.filetype
     [G_FILE_ATTRIBUTE_STANDARD_TYPE]. *)
 
 external get_etag : t -> string option = "ml_g_file_info_get_etag"
-(** Gets the \[entity tag\][Gio.File] for a given [GFileInfo]. See
-    [G_FILE_ATTRIBUTE_ETAG_VALUE].
+(** Gets the \[entity tag\]{{!Ocgio.Raw.File}[Gio.File]} for a given
+    [GFileInfo]. See [G_FILE_ATTRIBUTE_ETAG_VALUE].
 
     It is an error to call this if the [GFileInfo] does not contain
     [G_FILE_ATTRIBUTE_ETAG_VALUE]. *)

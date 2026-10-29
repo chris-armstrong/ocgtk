@@ -7,8 +7,10 @@
     Base type for D-Bus interfaces.
 
     The [GDBusInterface] type is the base type for D-Bus interfaces both on the
-    service side (see [Gio.DBusInterfaceSkeleton]) and client side (see
-    [Gio.DBusProxy]). *)
+    service side (see
+    {{!Ocgio.D_bus_interface_skeleton.class-type-d_bus_interface_skeleton_t}[Gio.DBusInterfaceSkeleton]})
+    and client side (see
+    {{!Ocgio.D_bus_proxy.class-type-d_bus_proxy_t}[Gio.DBusProxy]}). *)
 class type d_bus_interface_t = object
   (** {2:methods Methods} *)
 
@@ -32,8 +34,11 @@ end
 (** {b The methods, signals and properties of a [DBusObject].}
 
     The [GDBusObject] type is the base type for D-Bus objects on both the
-    service side (see [Gio.DBusObjectSkeleton]) and the client side (see
-    [Gio.DBusObjectProxy]). It is essentially just a container of interfaces. *)
+    service side (see
+    {{!Ocgio.D_bus_object_skeleton.class-type-d_bus_object_skeleton_t}[Gio.DBusObjectSkeleton]})
+    and the client side (see
+    {{!Ocgio.D_bus_object_proxy.class-type-d_bus_object_proxy_t}[Gio.DBusObjectProxy]}).
+    It is essentially just a container of interfaces. *)
 and d_bus_object_t = object
   (** {2:signals Signals} *)
 

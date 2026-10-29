@@ -13,8 +13,10 @@
 
     Actions can be used to expose functionality in a structured way, either from
     one part of a program to another, or to the outside world. Action groups are
-    often used together with a [Gio.MenuModel] that provides additional
-    representation data for displaying the actions to the user, e.g. in a menu.
+    often used together with a
+    {{!Ocgio.Menu_model.class-type-menu_model_t}[Gio.MenuModel]} that provides
+    additional representation data for displaying the actions to the user, e.g.
+    in a menu.
 
     The main way to interact with the actions in a [GActionGroup] is to activate
     them with [Gio.ActionGroup.activate_action]. Activating an action may
@@ -252,8 +254,10 @@ class action_group : Raw.Action_group.t -> action_group_t
 
     Actions can be used to expose functionality in a structured way, either from
     one part of a program to another, or to the outside world. Action groups are
-    often used together with a [Gio.MenuModel] that provides additional
-    representation data for displaying the actions to the user, e.g. in a menu.
+    often used together with a
+    {{!Ocgio.Menu_model.class-type-menu_model_t}[Gio.MenuModel]} that provides
+    additional representation data for displaying the actions to the user, e.g.
+    in a menu.
 
     The main way to interact with the actions in a [GActionGroup] is to activate
     them with [Gio.ActionGroup.activate_action]. Activating an action may

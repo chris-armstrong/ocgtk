@@ -1,9 +1,9 @@
 (** Applications and libraries often contain binary or textual data that is
     really part of the application, rather than user data. For instance
     {{:https://docs.gtk.org/gtk4/class.Builder.html}[GtkBuilder]} [.ui] files,
-    splashscreen images, [Gio.Menu] markup XML, CSS files, icons, etc. These are
-    often shipped as files in [$datadir/appname], or manually included as
-    literal strings in the code.
+    splashscreen images, {{!Ocgio.Menu.class-type-menu_t}[Gio.Menu]} markup XML,
+    CSS files, icons, etc. These are often shipped as files in
+    [$datadir/appname], or manually included as literal strings in the code.
 
     Its methods, signals and properties are on {!class-type-resource_t}. Its
     full description is under {!section-description}. Its constructors are under
@@ -85,7 +85,8 @@ end
      Applications and libraries often contain binary or textual data that is\n\
      really part of the application, rather than user data. For instance\n\
      {{:https://docs.gtk.org/gtk4/class.Builder.html}[GtkBuilder]} [.ui] files,\n\
-     splashscreen images, [Gio.Menu] markup XML, CSS files, icons, etc.\n\
+     splashscreen images, {{!Ocgio.Menu.class-type-menu_t}[Gio.Menu]} markup \
+     XML, CSS files, icons, etc.\n\
      These are often shipped as files in [$datadir/appname], or manually\n\
      included as literal strings in the code.\n\n\
      The [GResource] API and the\n\
@@ -183,7 +184,7 @@ end
      [Gio.resources_open_stream] to stream the data or\n\
      [Gio.resources_lookup_data] to get a direct pointer to the data. You can\n\
      also use URIs like [resource:///org/gtk/Example/data/splashscreen.png] with\n\
-     [Gio.File] to access the resource data.\n\n\
+     {{!Ocgio.File.class-type-file_t}[Gio.File]} to access the resource data.\n\n\
      Some higher-level APIs, such as \
      {{:https://docs.gtk.org/gtk4/class.Application.html}[GtkApplication]},\n\
      will automatically load resources from certain well-known paths in the\n\
@@ -248,7 +249,8 @@ class resource : Raw.Resource.t -> resource_t
  Applications and libraries often contain binary or textual data that is\n\
  really part of the application, rather than user data. For instance\n\
  {{:https://docs.gtk.org/gtk4/class.Builder.html}[GtkBuilder]} [.ui] files,\n\
- splashscreen images, [Gio.Menu] markup XML, CSS files, icons, etc.\n\
+ splashscreen images, {{!Ocgio.Menu.class-type-menu_t}[Gio.Menu]} markup XML, \
+ CSS files, icons, etc.\n\
  These are often shipped as files in [$datadir/appname], or manually\n\
  included as literal strings in the code.\n\n\
  The [GResource] API and the\n\
@@ -338,7 +340,7 @@ class resource : Raw.Resource.t -> resource_t
  [Gio.resources_open_stream] to stream the data or\n\
  [Gio.resources_lookup_data] to get a direct pointer to the data. You can\n\
  also use URIs like [resource:///org/gtk/Example/data/splashscreen.png] with\n\
- [Gio.File] to access the resource data.\n\n\
+ {{!Ocgio.File.class-type-file_t}[Gio.File]} to access the resource data.\n\n\
  Some higher-level APIs, such as \
  {{:https://docs.gtk.org/gtk4/class.Application.html}[GtkApplication]},\n\
  will automatically load resources from certain well-known paths in the\n\
@@ -390,7 +392,8 @@ class resource : Raw.Resource.t -> resource_t
 (** {1:constructors Constructors} *)
 
 val new_from_data : Glib_bytes.t -> (resource_t, GError.t) result
-(** Creates a [Gio.Resource] from a reference to the binary resource bundle.
+(** Creates a {{!Ocgio.Resource.class-type-resource_t}[Gio.Resource]} from a
+    reference to the binary resource bundle.
 
     This will keep a reference to [data] while the resource lives, so the data
     should not be modified or freed.

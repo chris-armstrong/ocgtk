@@ -819,8 +819,9 @@ and Text_iter : sig
     = "ml_gtk_text_iter_is_cursor_position"
   (** Determine if [iter] is at a cursor position.
 
-      See [Gtk.TextIter.forward_cursor_position] or [Pango.LogAttr] or
-      [Pango.break] for details on what a cursor position is. *)
+      See [Gtk.TextIter.forward_cursor_position] or
+      {{!Ocpango.Raw.Log_attr}[Pango.LogAttr]} or [Pango.break] for details on
+      what a cursor position is. *)
 
   external inside_word : t -> bool = "ml_gtk_text_iter_inside_word"
   (** Determines whether the character pointed by [iter] is part of a
@@ -1150,7 +1151,8 @@ and Text_iter : sig
     \  with an accent mark will be represented as two characters, first\n\
     \  the letter then a \"combining mark\" that causes the accent to be\n\
     \  rendered; so the cursor can’t go between those two characters.\n\n\
-    \  See also the [Pango.LogAttr] struct and the [Pango.break]\n\
+    \  See also the {{!Ocpango.Raw.Log_attr}[Pango.LogAttr]} struct and the \
+     [Pango.break]\n\
     \  function."]
 
   external forward_chars : t -> int -> bool = "ml_gtk_text_iter_forward_chars"

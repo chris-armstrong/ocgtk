@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DmabufTextureBuilder: DmabufTextureBuilder *)
 
-(** Constructs [Gdk.Texture] objects from DMA buffers.
+(** Constructs {{!Ocgdk.Raw.Texture}[Gdk.Texture]} objects from DMA buffers.
 
     DMA buffers are commonly called {b _dma-bufs_}.
 

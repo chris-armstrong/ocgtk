@@ -6,8 +6,8 @@
 
     The normal way to obtain a [GDBusMethodInvocation] object is to receive it
     as an argument to the [handle_method_call()] function in a
-    [Gio.DBusInterfaceVTable] that was passed to
-    [Gio.DBusConnection.register_object].
+    {{!Ocgio.Raw.D_bus_interface_v_table}[Gio.DBusInterfaceVTable]} that was
+    passed to [Gio.DBusConnection.register_object].
 
     The class built on this module is in {!Ocgio.D_bus_method_invocation}. *)
 
@@ -122,9 +122,10 @@ external get_message : t -> D_bus_message.t
     need to use low-level protocol features, such as UNIX file descriptor
     passing, that cannot be properly expressed in the [GVariant] API.
 
-    See this \[server\][Gio.DBusConnection] and \[client\][Gio.DBusConnection]
-    for an example of how to use this low-level API to send and receive UNIX
-    file descriptors. *)
+    See this \[server\]{{!Ocgio.Raw.D_bus_connection}[Gio.DBusConnection]} and
+    \[client\]{{!Ocgio.Raw.D_bus_connection}[Gio.DBusConnection]} for an example
+    of how to use this low-level API to send and receive UNIX file descriptors.
+*)
 
 external get_interface_name : t -> string option
   = "ml_g_dbus_method_invocation_get_interface_name"

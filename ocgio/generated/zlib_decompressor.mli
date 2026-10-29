@@ -1,5 +1,6 @@
-(** [GZlibDecompressor] is an implementation of [Gio.Converter] that
-    decompresses data compressed with zlib.
+(** [GZlibDecompressor] is an implementation of
+    {{!Ocgio.Converter.class-type-converter_t}[Gio.Converter]} that decompresses
+    data compressed with zlib.
 
     Its methods, signals and properties are on
     {!class-type-zlib_decompressor_t}. Its constructors are under
@@ -13,8 +14,9 @@
     Implements:
     - {{!Ocgio.Converter.class-type-converter_t}Ocgio.Converter}
 
-    [GZlibDecompressor] is an implementation of [Gio.Converter] that
-    decompresses data compressed with zlib. *)
+    [GZlibDecompressor] is an implementation of
+    {{!Ocgio.Converter.class-type-converter_t}[Gio.Converter]} that decompresses
+    data compressed with zlib. *)
 class type zlib_decompressor_t = object
   inherit Converter.converter_t
 

@@ -26,8 +26,10 @@ class type application_t =
      management, provides some basic scriptability and desktop shell integration\n\
      by exporting actions and menus and manages a list of toplevel windows whose\n\
      life-cycle is automatically tied to the life-cycle of your application.\n\n\
-     While [GtkApplication] works fine with plain [Gtk.Window]s,\n\
-     it is recommended to use it together with [Gtk.ApplicationWindow].\n\n\
+     While [GtkApplication] works fine with plain \
+     {{!Ocgtk.Window.class-type-window_t}[Gtk.Window]}s,\n\
+     it is recommended to use it together with \
+     {{!Ocgtk.Application_window.class-type-application_window_t}[Gtk.ApplicationWindow]}.\n\n\
      {b Automatic resources}\n\n\
      [GtkApplication] will automatically load menus from the [GtkBuilder]\n\
      resource located at \"gtk/menus.ui\", relative to the application's\n\
@@ -47,9 +49,13 @@ class type application_t =
      resources. See [Gtk.IconTheme.add_resource_path] for more\n\
      information.\n\n\
      If there is a resource located at [gtk/help-overlay.ui] which\n\
-     defines a [Gtk.ShortcutsWindow] with ID [help_overlay] then\n\
+     defines a \
+     {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t}[Gtk.ShortcutsWindow]} \
+     with ID [help_overlay] then\n\
      [GtkApplication] associates an instance of this shortcuts window with\n\
-     each [Gtk.ApplicationWindow] and sets up the keyboard accelerator\n\
+     each \
+     {{!Ocgtk.Application_window.class-type-application_window_t}[Gtk.ApplicationWindow]} \
+     and sets up the keyboard accelerator\n\
      <kbd>Control</kbd>+<kbd>?</kbd> to open it. To create a menu item that\n\
      displays the shortcuts window, associate the item with the action\n\
      [win.show-help-overlay].\n\n\
@@ -87,8 +93,10 @@ class application : Raw.Application.t -> application_t
  management, provides some basic scriptability and desktop shell integration\n\
  by exporting actions and menus and manages a list of toplevel windows whose\n\
  life-cycle is automatically tied to the life-cycle of your application.\n\n\
- While [GtkApplication] works fine with plain [Gtk.Window]s,\n\
- it is recommended to use it together with [Gtk.ApplicationWindow].\n\n\
+ While [GtkApplication] works fine with plain \
+ {{!Ocgtk.Window.class-type-window_t}[Gtk.Window]}s,\n\
+ it is recommended to use it together with \
+ {{!Ocgtk.Application_window.class-type-application_window_t}[Gtk.ApplicationWindow]}.\n\n\
  {b Automatic resources}\n\n\
  [GtkApplication] will automatically load menus from the [GtkBuilder]\n\
  resource located at \"gtk/menus.ui\", relative to the application's\n\
@@ -108,9 +116,13 @@ class application : Raw.Application.t -> application_t
  resources. See [Gtk.IconTheme.add_resource_path] for more\n\
  information.\n\n\
  If there is a resource located at [gtk/help-overlay.ui] which\n\
- defines a [Gtk.ShortcutsWindow] with ID [help_overlay] then\n\
+ defines a \
+ {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t}[Gtk.ShortcutsWindow]} \
+ with ID [help_overlay] then\n\
  [GtkApplication] associates an instance of this shortcuts window with\n\
- each [Gtk.ApplicationWindow] and sets up the keyboard accelerator\n\
+ each \
+ {{!Ocgtk.Application_window.class-type-application_window_t}[Gtk.ApplicationWindow]} \
+ and sets up the keyboard accelerator\n\
  <kbd>Control</kbd>+<kbd>?</kbd> to open it. To create a menu item that\n\
  displays the shortcuts window, associate the item with the action\n\
  [win.show-help-overlay].\n\n\

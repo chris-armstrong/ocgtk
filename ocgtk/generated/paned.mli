@@ -182,7 +182,8 @@ end
      small handle that the user can drag to adjust the division. It does not\n\
      draw any relief around the children or around the separator. (The space\n\
      in which the separator is called the gutter.) Often, it is useful to put\n\
-     each child inside a [Gtk.Frame] so that the gutter appears as a\n\
+     each child inside a {{!Ocgtk.Frame.class-type-frame_t}[Gtk.Frame]} so \
+     that the gutter appears as a\n\
      ridge. No separator is drawn if one of the children is missing.\n\n\
      Each child has two options that can be set, \"resize\" and \"shrink\". If\n\
      \"resize\" is true then, when the [GtkPaned] is resized, that child will\n\
@@ -248,7 +249,8 @@ class paned : Raw.Paned.t -> paned_t
  small handle that the user can drag to adjust the division. It does not\n\
  draw any relief around the children or around the separator. (The space\n\
  in which the separator is called the gutter.) Often, it is useful to put\n\
- each child inside a [Gtk.Frame] so that the gutter appears as a\n\
+ each child inside a {{!Ocgtk.Frame.class-type-frame_t}[Gtk.Frame]} so that \
+ the gutter appears as a\n\
  ridge. No separator is drawn if one of the children is missing.\n\n\
  Each child has two options that can be set, \"resize\" and \"shrink\". If\n\
  \"resize\" is true then, when the [GtkPaned] is resized, that child will\n\

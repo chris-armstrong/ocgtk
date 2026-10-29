@@ -47,8 +47,8 @@ let emit_member_branch ~namespace ~class_version ~member_version ~fallback_line
 
 (* The doc of an enumeration or bitfield type. It goes on the type whose
    constructors the members' docs are on: for a bitfield, the flag type. *)
-let type_doc ?since doc =
-  Doc_emit.item_doc ~indent:"" ?since ~context:Doc_translate.Member doc
+let type_doc ~refs ?since doc =
+  Doc_emit.item_doc ~indent:"" ?since ~refs ~context:Doc_translate.Member doc
 
 (* What follows a type's closing bracket: its doc attribute, which ends with a
    blank line, or just the blank line. *)
@@ -56,12 +56,12 @@ let after_type doc =
   match Doc_emit.after_item doc with "" -> "\n" | attribute -> attribute
 
 (* Generate OCaml enum type definition plus val declarations for converters *)
-let generate_ocaml_enum enum =
+let generate_ocaml_enum ~refs enum =
   let buf = Buffer.create 512 in
   let lower_name = Utils.ocaml_enum_name enum in
 
   bprintf buf "(* %s - enumeration *)\n" enum.enum_name;
-  let doc = type_doc ?since:enum.enum_version enum.enum_doc in
+  let doc = type_doc ~refs ?since:enum.enum_version enum.enum_doc in
   bprintf buf "%s" (Doc_emit.before_item doc);
 
   bprintf buf "type %s = [\n" lower_name;
@@ -74,7 +74,7 @@ let generate_ocaml_enum enum =
          the tag, so the doc goes after it, not before. *)
       bprintf buf "%s"
         (Doc_emit.member_suffix
-           (Doc_emit.item_doc ~indent:"  " ~context:Doc_translate.Member
+           (Doc_emit.item_doc ~indent:"  " ~refs ~context:Doc_translate.Member
               member.member_doc));
       if i < List.length enum.members - 1 then bprintf buf "\n"
       else bprintf buf "\n]\n%s" (after_type doc))
@@ -87,12 +87,14 @@ let generate_ocaml_enum enum =
 
 (* Generate OCaml bitfield type definition plus val declarations for
    converters *)
-let generate_ocaml_bitfield bitfield =
+let generate_ocaml_bitfield ~refs bitfield =
   let buf = Buffer.create 512 in
   let lower_name = Utils.ocaml_bitfield_name bitfield in
 
   bprintf buf "(* %s - bitfield/flags *)\n" bitfield.bitfield_name;
-  let doc = type_doc ?since:bitfield.bitfield_version bitfield.bitfield_doc in
+  let doc =
+    type_doc ~refs ?since:bitfield.bitfield_version bitfield.bitfield_doc
+  in
   bprintf buf "%s" (Doc_emit.before_item doc);
 
   bprintf buf "type %s_flag = [\n" lower_name;
@@ -103,7 +105,7 @@ let generate_ocaml_bitfield bitfield =
       bprintf buf "  | `%s" vname;
       bprintf buf "%s"
         (Doc_emit.member_suffix
-           (Doc_emit.item_doc ~indent:"  " ~context:Doc_translate.Member
+           (Doc_emit.item_doc ~indent:"  " ~refs ~context:Doc_translate.Member
               flag.flag_doc));
       if i < List.length bitfield.flags - 1 then bprintf buf "\n"
       else bprintf buf "\n]\n%s" (after_type doc))

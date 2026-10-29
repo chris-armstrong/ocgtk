@@ -3,7 +3,8 @@
 
 (** A [GDBusObjectProxy] is an object used to represent a remote object with one
     or more D-Bus interfaces. Normally, you don’t instantiate a
-    [GDBusObjectProxy] yourself — typically [Gio.DBusObjectManagerClient] is
+    [GDBusObjectProxy] yourself — typically
+    {{!Ocgio.Raw.D_bus_object_manager_client}[Gio.DBusObjectManagerClient]} is
     used to obtain it.
 
     The class built on this module is in {!Ocgio.D_bus_object_proxy}. *)

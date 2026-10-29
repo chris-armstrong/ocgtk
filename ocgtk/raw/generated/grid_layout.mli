@@ -6,7 +6,8 @@
  Children have an \"attach point\" defined by the horizontal and vertical\n\
  index of the cell they occupy; children can span multiple rows or columns.\n\
  The layout properties for setting the attach points and spans are set\n\
- using the [Gtk.GridLayoutChild] associated to each child widget.\n\n\
+ using the {{!Ocgtk.Raw.Grid_layout_child}[Gtk.GridLayoutChild]} associated to \
+ each child widget.\n\n\
  The behaviour of [GtkGridLayout] when several children occupy the same\n\
  grid cell is undefined.\n\n\
  [GtkGridLayout] can be used like a [GtkBoxLayout] if all children are\n\

@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* UnixCredentialsMessage: UnixCredentialsMessage *)
 
-(** This [Gio.SocketControlMessage] contains a [Gio.Credentials] instance. It
-    may be sent using [Gio.Socket.send_message] and received using
+(** This {{!Ocgio.Raw.Socket_control_message}[Gio.SocketControlMessage]}
+    contains a {{!Ocgio.Raw.Credentials}[Gio.Credentials]} instance. It may be
+    sent using [Gio.Socket.send_message] and received using
     [Gio.Socket.receive_message] over UNIX sockets (ie: sockets in the
     [G_SOCKET_FAMILY_UNIX] family).
 

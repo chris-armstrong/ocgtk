@@ -15,8 +15,10 @@
     [GSubprocess] allows the creation of and interaction with child processes.
 
     Processes can be communicated with using standard GIO-style APIs (ie:
-    [Gio.InputStream], [Gio.OutputStream]). There are GIO-style APIs to wait for
-    process termination (ie: cancellable and with an asynchronous variant).
+    {{!Ocgio.Input_stream.class-type-input_stream_t}[Gio.InputStream]},
+    {{!Ocgio.Output_stream.class-type-output_stream_t}[Gio.OutputStream]}).
+    There are GIO-style APIs to wait for process termination (ie: cancellable
+    and with an asynchronous variant).
 
     There is an API to force a process to terminate, as well as a race-free API
     for sending UNIX signals to a subprocess.
@@ -54,7 +56,8 @@
 
     [GSubprocess] attempts to have a very simple API for most uses (ie: spawning
     a subprocess with arguments and support for most typical kinds of input and
-    output redirection). See [Gio.Subprocess.new]. The [Gio.SubprocessLauncher]
+    output redirection). See [Gio.Subprocess.new]. The
+    {{!Ocgio.Subprocess_launcher.class-type-subprocess_launcher_t}[Gio.SubprocessLauncher]}
     API is provided for more complicated cases (advanced types of redirection,
     environment variable manipulation, change of working directory, child setup
     functions, etc).
@@ -214,8 +217,10 @@ class subprocess : Raw.Subprocess.t -> subprocess_t
     [GSubprocess] allows the creation of and interaction with child processes.
 
     Processes can be communicated with using standard GIO-style APIs (ie:
-    [Gio.InputStream], [Gio.OutputStream]). There are GIO-style APIs to wait for
-    process termination (ie: cancellable and with an asynchronous variant).
+    {{!Ocgio.Input_stream.class-type-input_stream_t}[Gio.InputStream]},
+    {{!Ocgio.Output_stream.class-type-output_stream_t}[Gio.OutputStream]}).
+    There are GIO-style APIs to wait for process termination (ie: cancellable
+    and with an asynchronous variant).
 
     There is an API to force a process to terminate, as well as a race-free API
     for sending UNIX signals to a subprocess.
@@ -253,7 +258,8 @@ class subprocess : Raw.Subprocess.t -> subprocess_t
 
     [GSubprocess] attempts to have a very simple API for most uses (ie: spawning
     a subprocess with arguments and support for most typical kinds of input and
-    output redirection). See [Gio.Subprocess.new]. The [Gio.SubprocessLauncher]
+    output redirection). See [Gio.Subprocess.new]. The
+    {{!Ocgio.Subprocess_launcher.class-type-subprocess_launcher_t}[Gio.SubprocessLauncher]}
     API is provided for more complicated cases (advanced types of redirection,
     environment variable manipulation, change of working directory, child setup
     functions, etc).

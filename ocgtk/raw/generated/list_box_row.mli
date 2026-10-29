@@ -3,8 +3,8 @@
 
 (** The kind of widget that can be added to a [GtkListBox].
 
-    [Gtk.ListBox] will automatically wrap its children in a [GtkListboxRow] when
-    necessary.
+    {{!Ocgtk.Raw.List_box}[Gtk.ListBox]} will automatically wrap its children in
+    a [GtkListboxRow] when necessary.
 
     The class built on this module is in {!Ocgtk.List_box_row}. *)
 

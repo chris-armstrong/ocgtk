@@ -2,9 +2,11 @@
 (* DebugControllerDBus: DebugControllerDBus *)
 
 [@@@ocaml.text
-"[GDebugControllerDBus] is an implementation of [Gio.DebugController]\n\
+"[GDebugControllerDBus] is an implementation of \
+ {{!Ocgio.Raw.Debug_controller}[Gio.DebugController]}\n\
  which exposes debug settings as a D-Bus object.\n\n\
- It is a [Gio.Initable] object, and will register an object at\n\
+ It is a {{!Ocgio.Raw.Initable}[Gio.Initable]} object, and will register an \
+ object at\n\
  [/org/gtk/Debugging] on the bus given as\n\
  [Gio.DebugControllerDBus:connection] once it’s initialized. The\n\
  object will be unregistered when the last reference to the\n\

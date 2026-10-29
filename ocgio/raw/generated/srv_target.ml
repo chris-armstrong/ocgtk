@@ -14,8 +14,9 @@
     You can use [Gio.Resolver.lookup_service] or
     [Gio.Resolver.lookup_service_async] to find the [GSrvTarget]s for a given
     service. However, if you are simply planning to connect to the remote
-    service, you can use [Gio.NetworkService]’s [Gio.SocketConnectable]
-    interface and not need to worry about [GSrvTarget] at all.
+    service, you can use {{!Ocgio.Raw.Network_service}[Gio.NetworkService]}’s
+    {{!Ocgio.Raw.Socket_connectable}[Gio.SocketConnectable]} interface and not
+    need to worry about [GSrvTarget] at all.
 
     The class built on this module is in {!Ocgio.Srv_target}. *)
 

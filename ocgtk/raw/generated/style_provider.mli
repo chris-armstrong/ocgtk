@@ -1,12 +1,14 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* StyleProvider: StyleProvider *)
 
-(** An interface for style information used by [Gtk.StyleContext].
+(** An interface for style information used by
+    {{!Ocgtk.Raw.Style_context}[Gtk.StyleContext]}.
 
     See [Gtk.StyleContext.add_provider] and
     [Gtk.StyleContext.add_provider_for_display] for adding [GtkStyleProviders].
 
-    GTK uses the [GtkStyleProvider] implementation for CSS in [Gtk.CssProvider].
+    GTK uses the [GtkStyleProvider] implementation for CSS in
+    {{!Ocgtk.Raw.Css_provider}[Gtk.CssProvider]}.
 
     The class built on this module is in {!Ocgtk.Style_provider}. *)
 

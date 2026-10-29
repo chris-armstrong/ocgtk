@@ -178,10 +178,12 @@ end
      of course cannot be mapped to a POSIX path (in GVfs there’s no FUSE mount\n\
      for it); such URIs will be passed unmodified to the application.\n\n\
      Specifically for GVfs 2.26 and later, the POSIX URI will be mapped\n\
-     back to the GIO URI in the [Gio.File] constructors (since GVfs\n\
+     back to the GIO URI in the {{!Ocgio.File.class-type-file_t}[Gio.File]} \
+     constructors (since GVfs\n\
      implements the GVfs extension point). As such, if the application\n\
      needs to examine the URI, it needs to use [Gio.File.get_uri]\n\
-     or similar on [Gio.File]. In other words, an application cannot\n\
+     or similar on {{!Ocgio.File.class-type-file_t}[Gio.File]}. In other \
+     words, an application cannot\n\
      assume that the URI passed to e.g. [Gio.File.new_for_commandline_arg]\n\
      is equal to the result of [Gio.File.get_uri]. The following snippet\n\
      illustrates this:\n\n\
@@ -336,7 +338,8 @@ end
     generally only created for removable hardware or hardware with removable
     media. For example, an optical disc drive, or a USB flash drive.
 
-    [GDrive] is a container class for [Gio.Volume] objects that stem from the
+    [GDrive] is a container class for
+    {{!Ocgio.Volume.class-type-volume_t}[Gio.Volume]} objects that stem from the
     same piece of media. As such, [GDrive] abstracts a drive with (or without)
     removable media and provides operations for querying whether media is
     available, determining whether media change is automatically detected and
@@ -471,8 +474,9 @@ end
     system. [GFile]s are lightweight, immutable objects that do no I/O upon
     creation. It is necessary to understand that [GFile] objects do not
     represent files, merely an identifier for a file. All file content I/O is
-    implemented as streaming operations (see [Gio.InputStream] and
-    [Gio.OutputStream]).
+    implemented as streaming operations (see
+    {{!Ocgio.Input_stream.class-type-input_stream_t}[Gio.InputStream]} and
+    {{!Ocgio.Output_stream.class-type-output_stream_t}[Gio.OutputStream]}).
 
     To construct a [GFile], you can use:
 
@@ -529,8 +533,9 @@ end
     suit your application. Asynchronous versions of synchronous functions simply
     have [_async()] appended to their function names. The asynchronous I/O
     functions call a [Gio.AsyncReadyCallback] which is then used to finalize the
-    operation, producing a [Gio.AsyncResult] which is then passed to the
-    function’s matching [_finish()] operation.
+    operation, producing a
+    {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]} which is
+    then passed to the function’s matching [_finish()] operation.
 
     It is highly recommended to use asynchronous calls when running within a
     shared main loop, such as in the main thread of an application. This avoids
@@ -1506,16 +1511,18 @@ end
 
 (** {b The methods, signals and properties of a [FileEnumerator].}
 
-    [GFileEnumerator] allows you to operate on a set of [Gio.File] objects,
-    returning a [Gio.FileInfo] structure for each file enumerated (e.g.
-    [Gio.File.enumerate_children] will return a [GFileEnumerator] for each of
-    the children within a directory).
+    [GFileEnumerator] allows you to operate on a set of
+    {{!Ocgio.File.class-type-file_t}[Gio.File]} objects, returning a
+    {{!Ocgio.File_info.class-type-file_info_t}[Gio.FileInfo]} structure for each
+    file enumerated (e.g. [Gio.File.enumerate_children] will return a
+    [GFileEnumerator] for each of the children within a directory).
 
     To get the next file's information from a [GFileEnumerator], use
     [Gio.FileEnumerator.next_file] or its asynchronous version,
     [Gio.FileEnumerator.next_files_async]. Note that the asynchronous version
-    will return a list of [Gio.FileInfo] objects, whereas the synchronous will
-    only return the next file in the enumerator.
+    will return a list of
+    {{!Ocgio.File_info.class-type-file_info_t}[Gio.FileInfo]} objects, whereas
+    the synchronous will only return the next file in the enumerator.
 
     The ordering of returned files is unspecified for non-Unix platforms; for
     more information, see [GLib.Dir.read_name]. On Unix, when operating on local
@@ -1695,20 +1702,24 @@ end
     because it’s not the same as a UNIX mount, it might be a GVFS mount, but you
     can still access the files on it if you use GIO.
 
-    A [GMount] might be associated with a [Gio.Volume] (such as a USB flash
+    A [GMount] might be associated with a
+    {{!Ocgio.Volume.class-type-volume_t}[Gio.Volume]} (such as a USB flash
     drive) which hosts it.
 
     Unmounting a [GMount] instance is an asynchronous operation. For more
-    information about asynchronous operations, see [Gio.AsyncResult] and
-    [Gio.Task]. To unmount a [GMount] instance, first call
-    [Gio.Mount.unmount_with_operation] with (at least) the [GMount] instance and
-    a [Gio.AsyncReadyCallback]. The callback will be fired when the operation
-    has resolved (either with success or failure), and a [Gio.AsyncResult]
-    structure will be passed to the callback. That callback should then call
+    information about asynchronous operations, see
+    {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]} and
+    {{!Ocgio.Task.class-type-task_t}[Gio.Task]}. To unmount a [GMount] instance,
+    first call [Gio.Mount.unmount_with_operation] with (at least) the [GMount]
+    instance and a [Gio.AsyncReadyCallback]. The callback will be fired when the
+    operation has resolved (either with success or failure), and a
+    {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]} structure
+    will be passed to the callback. That callback should then call
     [Gio.Mount.unmount_with_operation_finish] with the [GMount] and the
-    [Gio.AsyncResult] data to see if the operation was completed successfully.
-    If an [error] is present when [Gio.Mount.unmount_with_operation_finish] is
-    called, then it will be filled with any error information.
+    {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]} data to
+    see if the operation was completed successfully. If an [error] is present
+    when [Gio.Mount.unmount_with_operation_finish] is called, then it will be
+    filled with any error information.
 
     Note, when porting from GnomeVFS, [GMount] is the moral equivalent of
     [GnomeVFSVolume]. *)
@@ -1861,26 +1872,32 @@ end
     For example, a file system partition on a USB flash drive, or an optical
     disc inserted into a disc drive.
 
-    If a [GVolume] is currently mounted, the corresponding [Gio.Mount] can be
-    retrieved using [Gio.Volume.get_mount].
+    If a [GVolume] is currently mounted, the corresponding
+    {{!Ocgio.Mount.class-type-mount_t}[Gio.Mount]} can be retrieved using
+    [Gio.Volume.get_mount].
 
     Mounting a [GVolume] instance is an asynchronous operation. For more
-    information about asynchronous operations, see [Gio.AsyncResult] and
-    [Gio.Task]. To mount a [GVolume], first call [Gio.Volume.mount] with (at
-    least) the [GVolume] instance, optionally a [Gio.MountOperation] object and
-    a [Gio.AsyncReadyCallback].
+    information about asynchronous operations, see
+    {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]} and
+    {{!Ocgio.Task.class-type-task_t}[Gio.Task]}. To mount a [GVolume], first
+    call [Gio.Volume.mount] with (at least) the [GVolume] instance, optionally a
+    {{!Ocgio.Mount_operation.class-type-mount_operation_t}[Gio.MountOperation]}
+    object and a [Gio.AsyncReadyCallback].
 
-    Typically, one will only want to pass [None] for the [Gio.MountOperation] if
-    automounting all volumes when a desktop session starts since it’s not
+    Typically, one will only want to pass [None] for the
+    {{!Ocgio.Mount_operation.class-type-mount_operation_t}[Gio.MountOperation]}
+    if automounting all volumes when a desktop session starts since it’s not
     desirable to put up a lot of dialogs asking for credentials.
 
     The callback will be fired when the operation has resolved (either with
-    success or failure), and a [Gio.AsyncResult] instance will be passed to the
-    callback. That callback should then call [Gio.Volume.mount_finish] with the
-    [GVolume] instance and the [Gio.AsyncResult] data to see if the operation
-    was completed successfully. If a [GLib.Error] is present when
-    [Gio.Volume.mount_finish] is called, then it will be filled with any error
-    information.
+    success or failure), and a
+    {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]} instance
+    will be passed to the callback. That callback should then call
+    [Gio.Volume.mount_finish] with the [GVolume] instance and the
+    {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]} data to
+    see if the operation was completed successfully. If a [GLib.Error] is
+    present when [Gio.Volume.mount_finish] is called, then it will be filled
+    with any error information.
 
     Note, when porting from GnomeVFS, [GVolume] is the moral equivalent of
     [GnomeVFSDrive].

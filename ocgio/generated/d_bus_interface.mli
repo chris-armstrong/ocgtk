@@ -17,8 +17,10 @@ class type d_bus_interface_t =
     Base type for D-Bus interfaces.
 
     The [GDBusInterface] type is the base type for D-Bus interfaces both on the
-    service side (see [Gio.DBusInterfaceSkeleton]) and client side (see
-    [Gio.DBusProxy]). *)
+    service side (see
+    {{!Ocgio.D_bus_interface_skeleton.class-type-d_bus_interface_skeleton_t}[Gio.DBusInterfaceSkeleton]})
+    and client side (see
+    {{!Ocgio.D_bus_proxy.class-type-d_bus_proxy_t}[Gio.DBusProxy]}). *)
 
 class d_bus_interface : Raw.D_bus_interface.t -> d_bus_interface_t
 (** Wraps a raw handle of {!Ocgio.Raw.D_bus_interface.t}. *)
@@ -28,8 +30,10 @@ class d_bus_interface : Raw.D_bus_interface.t -> d_bus_interface_t
     Base type for D-Bus interfaces.
 
     The [GDBusInterface] type is the base type for D-Bus interfaces both on the
-    service side (see [Gio.DBusInterfaceSkeleton]) and client side (see
-    [Gio.DBusProxy]). *)
+    service side (see
+    {{!Ocgio.D_bus_interface_skeleton.class-type-d_bus_interface_skeleton_t}[Gio.DBusInterfaceSkeleton]})
+    and client side (see
+    {{!Ocgio.D_bus_proxy.class-type-d_bus_proxy_t}[Gio.DBusProxy]}). *)
 
 (** {1:constructors Constructors} *)
 

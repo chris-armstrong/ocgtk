@@ -19,8 +19,8 @@
 
     The kind of widget that can be added to a [GtkListBox].
 
-    [Gtk.ListBox] will automatically wrap its children in a [GtkListboxRow] when
-    necessary. *)
+    {{!Ocgtk.List_box.class-type-list_box_t}[Gtk.ListBox]} will automatically
+    wrap its children in a [GtkListboxRow] when necessary. *)
 class type list_box_row_t = object
   inherit Widget.widget_t
   inherit Actionable.actionable_t
@@ -106,8 +106,8 @@ class list_box_row : Raw.List_box_row.t -> list_box_row_t
 
     The kind of widget that can be added to a [GtkListBox].
 
-    [Gtk.ListBox] will automatically wrap its children in a [GtkListboxRow] when
-    necessary. *)
+    {{!Ocgtk.List_box.class-type-list_box_t}[Gtk.ListBox]} will automatically
+    wrap its children in a [GtkListboxRow] when necessary. *)
 
 (** {1:constructors Constructors} *)
 

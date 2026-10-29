@@ -30,10 +30,14 @@
     showing information that is not relevant in the current application context.
 
     The recommended way to construct a [GtkShortcutsWindow] is with
-    [Gtk.Builder], by using the [<child>] tag to populate a [GtkShortcutsWindow]
-    with one or more [Gtk.ShortcutsSection] objects, which contain one or more
-    [Gtk.ShortcutsGroup] instances, which, in turn, contain
-    [Gtk.ShortcutsShortcut] instances.
+    {{!Ocgtk.Builder.class-type-builder_t}[Gtk.Builder]}, by using the [<child>]
+    tag to populate a [GtkShortcutsWindow] with one or more
+    {{!Ocgtk.Shortcuts_section.class-type-shortcuts_section_t}[Gtk.ShortcutsSection]}
+    objects, which contain one or more
+    {{!Ocgtk.Shortcuts_group.class-type-shortcuts_group_t}[Gtk.ShortcutsGroup]}
+    instances, which, in turn, contain
+    {{!Ocgtk.Shortcuts_shortcut.class-type-shortcuts_shortcut_t}[Gtk.ShortcutsShortcut]}
+    instances.
 
     If you need to add a section programmatically, use
     [Gtk.ShortcutsWindow.add_section] instead of [Gtk.Window.set_child], as the
@@ -163,10 +167,14 @@ class shortcuts_window : Raw.Shortcuts_window.t -> shortcuts_window_t
     showing information that is not relevant in the current application context.
 
     The recommended way to construct a [GtkShortcutsWindow] is with
-    [Gtk.Builder], by using the [<child>] tag to populate a [GtkShortcutsWindow]
-    with one or more [Gtk.ShortcutsSection] objects, which contain one or more
-    [Gtk.ShortcutsGroup] instances, which, in turn, contain
-    [Gtk.ShortcutsShortcut] instances.
+    {{!Ocgtk.Builder.class-type-builder_t}[Gtk.Builder]}, by using the [<child>]
+    tag to populate a [GtkShortcutsWindow] with one or more
+    {{!Ocgtk.Shortcuts_section.class-type-shortcuts_section_t}[Gtk.ShortcutsSection]}
+    objects, which contain one or more
+    {{!Ocgtk.Shortcuts_group.class-type-shortcuts_group_t}[Gtk.ShortcutsGroup]}
+    instances, which, in turn, contain
+    {{!Ocgtk.Shortcuts_shortcut.class-type-shortcuts_shortcut_t}[Gtk.ShortcutsShortcut]}
+    instances.
 
     If you need to add a section programmatically, use
     [Gtk.ShortcutsWindow.add_section] instead of [Gtk.Window.set_child], as the

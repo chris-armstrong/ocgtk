@@ -11,8 +11,8 @@
     bonus that it can be checked to ensure it is in a given range.
 
     The main properties of a [GtkSpinButton] are through an adjustment. See the
-    [Gtk.Adjustment] documentation for more details about an adjustment's
-    properties.
+    {{!Ocgtk.Raw.Adjustment}[Gtk.Adjustment]} documentation for more details
+    about an adjustment's properties.
 
     Note that [GtkSpinButton] will by default make its entry large enough to
     accommodate the lower and upper bounds of the adjustment. If this is not

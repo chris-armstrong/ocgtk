@@ -13,7 +13,8 @@
 
     Sorts items by comparing strings.
 
-    To obtain the strings to compare, this sorter evaluates a [Gtk.Expression].
+    To obtain the strings to compare, this sorter evaluates a
+    {{!Ocgtk.Expression.class-type-expression_t}[Gtk.Expression]}.
 
     It does the comparison in a linguistically correct way using the current
     locale by normalizing Unicode strings and possibly case-folding them before
@@ -55,7 +56,8 @@ class string_sorter : Raw.String_sorter.t -> string_sorter_t
 
     Sorts items by comparing strings.
 
-    To obtain the strings to compare, this sorter evaluates a [Gtk.Expression].
+    To obtain the strings to compare, this sorter evaluates a
+    {{!Ocgtk.Expression.class-type-expression_t}[Gtk.Expression]}.
 
     It does the comparison in a linguistically correct way using the current
     locale by normalizing Unicode strings and possibly case-folding them before

@@ -856,7 +856,9 @@ let generate_cycle_member_shims ~ctx ~dirs ~module_group =
             ~path:(Filename.concat dirs.raw_generated (stem ^ ext))
             ~content:
               (Generate.Ml_interface.generate_cycle_member_shim ~output_mode
-                 ~namespace:ctx.Types.namespace.namespace_name
+                 ~refs:
+                   (Generate.Doc_resolve.env_of_ctx
+                      (Module_paths.raw_library_ctx ctx))
                  ~combined_module_name ~member_name:entity.name
                  ~member_doc:entity.doc))
         [
@@ -943,7 +945,7 @@ let guard_converters ~namespace_name version_opt converters =
 
 (* Generate enum and bitfield files for a namespace. The OCaml files are
    written even when empty, so that every namespace has an enums library. *)
-let generate_enum_files ~dirs ~generated_stubs namespace enums bitfields =
+let generate_enum_files ~refs ~dirs ~generated_stubs namespace enums bitfields =
   begin
     (* Generate OCaml .mli file with type definitions *)
     let enum_file =
@@ -955,8 +957,11 @@ let generate_enum_files ~dirs ~generated_stubs namespace enums bitfields =
         "(* GENERATED CODE - DO NOT EDIT *)\n";
         Fmt.str "(* %s Enumeration and Bitfield Types *)\n\n" namespace.name;
       ]
-      @ List.map ~f:Gir_gen_lib.Generate.Enum_code.generate_ocaml_enum enums
-      @ List.map ~f:Gir_gen_lib.Generate.Enum_code.generate_ocaml_bitfield
+      @ List.map
+          ~f:(Gir_gen_lib.Generate.Enum_code.generate_ocaml_enum ~refs)
+          enums
+      @ List.map
+          ~f:(Gir_gen_lib.Generate.Enum_code.generate_ocaml_bitfield ~refs)
           bitfields
     in
     write_file ~path:enum_file
@@ -1056,6 +1061,45 @@ let core_module_names dir =
   else []
 
 (* The main library's Constants module, when the namespace has constants *)
+(* Enumeration, bitfield and constant docs are shared by both layers and link
+   like layer 2 docs. *)
+let main_library_refs ctx =
+  Gir_gen_lib.(
+    Generate.Doc_resolve.env_of_ctx (Module_paths.main_library_ctx ctx))
+
+(* How the references in the namespace's GIR docs resolve, as layer 2 docs:
+   from every doc the generator may emit, whether or not its item is emitted. *)
+let print_doc_reference_summary ~(ctx : Gir_gen_lib.Types.generation_context)
+    entities =
+  let open Gir_gen_lib in
+  let entity_docs (e : Types.entity) =
+    (e.doc :: List.map e.methods ~f:(fun (m : Types.gir_method) -> m.doc))
+    @ List.map e.constructors ~f:(fun (c : Types.gir_constructor) -> c.ctor_doc)
+    @ List.map e.properties ~f:(fun (p : Types.gir_property) -> p.prop_doc)
+    @ List.map e.signals ~f:(fun (s : Types.gir_signal) -> s.doc)
+  in
+  let docs =
+    List.concat_map entities ~f:entity_docs
+    @ List.concat_map ctx.enums ~f:(fun (e : Types.gir_enum) ->
+        e.enum_doc
+        :: List.map e.members ~f:(fun (m : Types.gir_enum_member) ->
+            m.member_doc))
+    @ List.concat_map ctx.bitfields ~f:(fun (b : Types.gir_bitfield) ->
+        b.bitfield_doc
+        :: List.map b.flags ~f:(fun (f : Types.gir_bitfield_member) ->
+            f.flag_doc))
+    @ List.map ctx.constants ~f:(fun (c : Types.gir_constant) -> c.constant_doc)
+  in
+  let refs = main_library_refs ctx in
+  let outcomes =
+    List.filter_map docs ~f:Fun.id
+    |> List.concat_map ~f:(fun raw ->
+        Generate.Doc_translate.parse Generate.Doc_translate.Member raw
+        |> Generate.Doc_resolve.resolve refs
+        |> snd)
+  in
+  Fmt.pr "%a" Generate.Doc_resolve.pp_summary outcomes
+
 let generate_constants_files ~ctx ~dirs =
   let open Gir_gen_lib in
   let constants = ctx.constants in
@@ -1068,8 +1112,8 @@ let generate_constants_files ~ctx ~dirs =
     in
     write_file ~path:(path ".mli")
       ~content:
-        (Generate.Constant_code.generate_constants_interface ~namespace
-           constants);
+        (Generate.Constant_code.generate_constants_interface
+           ~refs:(main_library_refs ctx) ~namespace constants);
     write_file ~path:(path ".ml")
       ~content:
         (Generate.Constant_code.generate_constants_implementation ~namespace
@@ -1104,6 +1148,9 @@ let build_generation_context ~namespace ~repository ~classes ~interfaces ~enums
       current_cycle_classes = [];
       cross_references;
       target_library = Raw_library;
+      doc_index =
+        Generate.Doc_index.build ~namespace:namespace.namespace_name ~classes
+          ~interfaces ~records ~enums ~bitfields ~constants ~cross_references;
     }
   in
   let entities : Types.entity list =
@@ -1342,11 +1389,13 @@ let generate_bindings filter_file gir_file output_dir reference_files
         Gir_gen_lib.Generate.C_stubs.include_header_for_namespace ns_name;
     }
   in
-  generate_enum_files ~dirs ~generated_stubs current_namespace gtk_enums
-    gtk_bitfields;
+  generate_enum_files ~refs:(main_library_refs ctx) ~dirs ~generated_stubs
+    current_namespace gtk_enums gtk_bitfields;
 
   (* Generate constant files for current namespace *)
   generate_constants_files ~ctx ~dirs;
+
+  print_doc_reference_summary ~ctx entities;
 
   (* Generate C files for all entities (classes and interfaces and records only) *)
   generate_all_c_stubs ~ctx ~dirs ~generated_stubs entities;
@@ -1574,14 +1623,14 @@ let generate_references ~gir_file ~output_file ~overrides_file =
                 { opaque = rec_.opaque; get_type_func = rec_.glib_get_type };
             cr_c_type = rec_.c_type;
           }))
-    @ List.map
-        ~f:(fun cst ->
+    @ (constants
+      |> List.filter ~f:Gir_gen_lib.Generate.Constant_code.is_generated
+      |> List.map ~f:(fun cst ->
           {
             cr_name = cst.constant_name;
             cr_type = Crt_Constant;
             cr_c_type = cst.constant_c_type;
-          })
-        constants
+          }))
   in
   let crns =
     Gir_gen_lib.Types.

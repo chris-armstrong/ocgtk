@@ -41,14 +41,15 @@ external set_action_target_value : t -> Gvariant.t option -> unit
     it is used to determine if the widget should be rendered as “active” — the
     widget is active if the state is equal to the given target.
 
-    Consider the example of associating a set of buttons with a [Gio.Action]
-    with string state in a typical “radio button” situation. Each button will be
-    associated with the same action, but with a different target value for that
-    action. Clicking on a particular button will activate the action with the
-    target of that button, which will typically cause the action’s state to
-    change to that value. Since the action’s state is now equal to the target
-    value of the button, the button will now be rendered as active (and the
-    other buttons, with different targets, rendered inactive). *)
+    Consider the example of associating a set of buttons with a
+    {{!Ocgio.Raw.Action}[Gio.Action]} with string state in a typical “radio
+    button” situation. Each button will be associated with the same action, but
+    with a different target value for that action. Clicking on a particular
+    button will activate the action with the target of that button, which will
+    typically cause the action’s state to change to that value. Since the
+    action’s state is now equal to the target value of the button, the button
+    will now be rendered as active (and the other buttons, with different
+    targets, rendered inactive). *)
 
 external set_action_name : t -> string option -> unit
   = "ml_gtk_actionable_set_action_name"
@@ -62,9 +63,10 @@ external set_action_name : t -> string option -> unit
     located) within the hierarchy of a [GtkApplicationWindow].
 
     Names are of the form “win.save” or “app.quit” for actions on the containing
-    [ApplicationWindow] or its associated [Application], respectively. This is
-    the same form used for actions in the [Gio.Menu] associated with the window.
-*)
+    {{!Ocgtk.Raw.Application_window}[ApplicationWindow]} or its associated
+    {{!Ocgtk.Raw.Application}[Application]}, respectively. This is the same form
+    used for actions in the {{!Ocgio.Raw.Menu}[Gio.Menu]} associated with the
+    window. *)
 
 external get_action_target_value : t -> Gvariant.t option
   = "ml_gtk_actionable_get_action_target_value"

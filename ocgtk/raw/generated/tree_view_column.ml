@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TreeViewColumn: TreeViewColumn *)
 
-(** A visible column in a [Gtk.TreeView] widget
+(** A visible column in a {{!Ocgtk.Raw.Tree_view}[Gtk.TreeView]} widget
 
     The [GtkTreeViewColumn] object represents a visible column in a
     [GtkTreeView] widget. It allows to set properties of the column header, and
@@ -10,8 +10,8 @@
 
     Please refer to the tree widget conceptual overview for an overview of all
     the objects and data types related to the tree widget and how they work
-    together, and to the [Gtk.TreeView] documentation for specifics about the
-    CSS node structure for treeviews and their headers.
+    together, and to the {{!Ocgtk.Raw.Tree_view}[Gtk.TreeView]} documentation
+    for specifics about the CSS node structure for treeviews and their headers.
 
     The class built on this module is in {!Ocgtk.Tree_view_column}. *)
 

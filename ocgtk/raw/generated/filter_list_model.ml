@@ -29,9 +29,9 @@ external set_watch_items : t -> bool -> unit
   = "ml_gtk_filter_list_model_set_watch_items"
 (** Sets the filter model to monitor properties of its items.
 
-    This allows implementations of [Gtk.Filter] that support expression watching
-    to react to property changes. This property has no effect if the current
-    filter doesn't support watching items.
+    This allows implementations of {{!Ocgtk.Raw.Filter}[Gtk.Filter]} that
+    support expression watching to react to property changes. This property has
+    no effect if the current filter doesn't support watching items.
 
     By default, watching items is disabled. *)
 

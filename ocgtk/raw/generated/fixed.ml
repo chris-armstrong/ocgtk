@@ -57,9 +57,9 @@ external set_child_transform :
   unit = "ml_gtk_fixed_set_child_transform"
 (** Sets the transformation for [widget].
 
-    This is a convenience function that retrieves the [Gtk.FixedLayoutChild]
-    instance associated to [widget] and calls
-    [Gtk.FixedLayoutChild.set_transform]. *)
+    This is a convenience function that retrieves the
+    {{!Ocgtk.Raw.Fixed_layout_child}[Gtk.FixedLayoutChild]} instance associated
+    to [widget] and calls [Gtk.FixedLayoutChild.set_transform]. *)
 
 external remove :
   t ->

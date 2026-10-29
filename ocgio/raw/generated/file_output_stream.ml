@@ -4,9 +4,10 @@
 (** [GFileOutputStream] provides output streams that write their content to a
     file.
 
-    [GFileOutputStream] implements [Gio.Seekable], which allows the output
-    stream to jump to arbitrary positions in the file and to truncate the file,
-    provided the filesystem of the file supports these operations.
+    [GFileOutputStream] implements {{!Ocgio.Raw.Seekable}[Gio.Seekable]}, which
+    allows the output stream to jump to arbitrary positions in the file and to
+    truncate the file, provided the filesystem of the file supports these
+    operations.
 
     To find the position of a file output stream, use [Gio.Seekable.tell]. To
     find out if a file output stream supports seeking, use

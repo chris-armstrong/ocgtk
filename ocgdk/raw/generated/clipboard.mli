@@ -9,8 +9,8 @@
 
     To make text or image data available in a clipboard, use
     [Gdk.Clipboard.set_text] or [Gdk.Clipboard.set_texture]. For other data, you
-    can use [Gdk.Clipboard.set_content], which takes a [Gdk.ContentProvider]
-    object.
+    can use [Gdk.Clipboard.set_content], which takes a
+    {{!Ocgdk.Raw.Content_provider}[Gdk.ContentProvider]} object.
 
     To read textual or image data from a clipboard, use
     [Gdk.Clipboard.read_text_async] or [Gdk.Clipboard.read_texture_async]. For

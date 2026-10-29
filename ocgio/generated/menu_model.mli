@@ -71,9 +71,13 @@ class type menu_model_t = Menu_link_iter_and__menu_model.menu_model_t
     application. Examples include global menus, jumplists, dash boards, etc. To
     support such uses, it is necessary to ‘export’ information about actions and
     their representation in menus, which is exactly what the action group
-    exporter and the menu model exporter do for [Gio.ActionGroup] and
-    [Gio.MenuModel]. The client-side counterparts to make use of the exported
-    information are [Gio.DBusActionGroup] and [Gio.DBusMenuModel].
+    exporter and the menu model exporter do for
+    {{!Ocgio.Action_group.class-type-action_group_t}[Gio.ActionGroup]} and
+    {{!Ocgio.Menu_model.class-type-menu_model_t}[Gio.MenuModel]}. The
+    client-side counterparts to make use of the exported information are
+    {{!Ocgio.D_bus_action_group.class-type-d_bus_action_group_t}[Gio.DBusActionGroup]}
+    and
+    {{!Ocgio.D_bus_menu_model.class-type-d_bus_menu_model_t}[Gio.DBusMenuModel]}.
 
     The API of [GMenuModel] is very generic, with iterators for the attributes
     and links of an item, see [Gio.MenuModel.iterate_item_attributes] and
@@ -187,9 +191,13 @@ class menu_model : Raw.Menu_model.t -> menu_model_t
     application. Examples include global menus, jumplists, dash boards, etc. To
     support such uses, it is necessary to ‘export’ information about actions and
     their representation in menus, which is exactly what the action group
-    exporter and the menu model exporter do for [Gio.ActionGroup] and
-    [Gio.MenuModel]. The client-side counterparts to make use of the exported
-    information are [Gio.DBusActionGroup] and [Gio.DBusMenuModel].
+    exporter and the menu model exporter do for
+    {{!Ocgio.Action_group.class-type-action_group_t}[Gio.ActionGroup]} and
+    {{!Ocgio.Menu_model.class-type-menu_model_t}[Gio.MenuModel]}. The
+    client-side counterparts to make use of the exported information are
+    {{!Ocgio.D_bus_action_group.class-type-d_bus_action_group_t}[Gio.DBusActionGroup]}
+    and
+    {{!Ocgio.D_bus_menu_model.class-type-d_bus_menu_model_t}[Gio.DBusMenuModel]}.
 
     The API of [GMenuModel] is very generic, with iterators for the attributes
     and links of an item, see [Gio.MenuModel.iterate_item_attributes] and

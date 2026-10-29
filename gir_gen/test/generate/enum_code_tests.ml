@@ -29,17 +29,22 @@ let check_doc msg expected actual =
 let test_enum_type_doc () =
   check_doc "translated doc on the type" (Some " The mode. ")
     (type_doc ~type_name:"mode"
-       (Enum_code.generate_ocaml_enum (enum ~enum_doc:"The mode." ())))
+       (Enum_code.generate_ocaml_enum
+          ~refs:(Doc_resolve.no_links ~namespace:"Gtk")
+          (enum ~enum_doc:"The mode." ())))
 
 let test_enum_type_doc_with_since () =
   check_doc "@since after the prose" (Some " The mode.\n    @since 4.10 ")
     (type_doc ~type_name:"mode"
        (Enum_code.generate_ocaml_enum
+          ~refs:(Doc_resolve.no_links ~namespace:"Gtk")
           (enum ~enum_doc:"The mode." ~enum_version:"4.10" ())))
 
 let test_enum_type_doc_with_quote_is_attribute () =
   let text =
-    Enum_code.generate_ocaml_enum (enum ~enum_doc:"Shows \"on\" or off." ())
+    Enum_code.generate_ocaml_enum
+      ~refs:(Doc_resolve.no_links ~namespace:"Gtk")
+      (enum ~enum_doc:"Shows \"on\" or off." ())
   in
   Alcotest.(check bool)
     "carried as an attribute" true
@@ -50,11 +55,16 @@ let test_enum_type_doc_with_quote_is_attribute () =
 
 let test_enum_without_doc () =
   check_doc "no doc" None
-    (type_doc ~type_name:"mode" (Enum_code.generate_ocaml_enum (enum ())))
+    (type_doc ~type_name:"mode"
+       (Enum_code.generate_ocaml_enum
+          ~refs:(Doc_resolve.no_links ~namespace:"Gtk")
+          (enum ())))
 
 let test_bitfield_doc_on_flag_type () =
   let text =
-    Enum_code.generate_ocaml_bitfield (bitfield ~bitfield_doc:"Some flags." ())
+    Enum_code.generate_ocaml_bitfield
+      ~refs:(Doc_resolve.no_links ~namespace:"Gtk")
+      (bitfield ~bitfield_doc:"Some flags." ())
   in
   check_doc "on the flag type" (Some " Some flags. ")
     (type_doc ~type_name:"flags_flag" text);

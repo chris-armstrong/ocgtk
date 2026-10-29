@@ -18,7 +18,8 @@
 
     [GtkShortcutLabel] displays a single keyboard shortcut or gesture.
 
-    The main use case for [GtkShortcutLabel] is inside a [Gtk.ShortcutsWindow].
+    The main use case for [GtkShortcutLabel] is inside a
+    {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t}[Gtk.ShortcutsWindow]}.
 *)
 class type shortcut_label_t = object
   inherit Widget.widget_t
@@ -49,7 +50,8 @@ class shortcut_label : Raw.Shortcut_label.t -> shortcut_label_t
 
     [GtkShortcutLabel] displays a single keyboard shortcut or gesture.
 
-    The main use case for [GtkShortcutLabel] is inside a [Gtk.ShortcutsWindow].
+    The main use case for [GtkShortcutLabel] is inside a
+    {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t}[Gtk.ShortcutsWindow]}.
 *)
 
 (** {1:constructors Constructors} *)

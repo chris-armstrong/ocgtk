@@ -7,11 +7,14 @@
     re-exports it; use that module rather than this one. *)
 
 (** [GTlsConnection] is the base TLS connection class type, which wraps a
-    [Gio.IOStream] and provides TLS encryption on top of it. Its subclasses,
-    [Gio.TlsClientConnection] and [Gio.TlsServerConnection], implement
+    {{!Ocgio.Raw.Io_stream}[Gio.IOStream]} and provides TLS encryption on top of
+    it. Its subclasses,
+    {{!Ocgio.Raw.Tls_client_connection}[Gio.TlsClientConnection]} and
+    {{!Ocgio.Raw.Tls_server_connection}[Gio.TlsServerConnection]}, implement
     client-side and server-side TLS, respectively.
 
-    For DTLS (Datagram TLS) support, see [Gio.DtlsConnection].
+    For DTLS (Datagram TLS) support, see
+    {{!Ocgio.Raw.Dtls_connection}[Gio.DtlsConnection]}.
 
     The class built on this module is in {!Ocgio.Tls_connection}. *)
 module rec Tls_connection : sig
@@ -301,7 +304,8 @@ end
     All implementations are required to be fully thread-safe.
 
     Most common client applications will not directly interact with
-    [GTlsDatabase]. It is used internally by [Gio.TlsConnection].
+    [GTlsDatabase]. It is used internally by
+    {{!Ocgio.Raw.Tls_connection}[Gio.TlsConnection]}.
 
     The class built on this module is in {!Ocgio.Tls_database}. *)
 and Tls_database : sig

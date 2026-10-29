@@ -2,7 +2,8 @@
 (* ListStore: ListStore *)
 
 [@@@ocaml.text
-"A list-like data structure that can be used with the [Gtk.TreeView].\n\n\
+"A list-like data structure that can be used with the \
+ {{!Ocgtk.Raw.Tree_view}[Gtk.TreeView]}.\n\n\
  The [GtkListStore] object is a list model for use with a [GtkTreeView]\n\
  widget.  It implements the [GtkTreeModel] interface, and consequentialy,\n\
  can use all of the methods available there.  It also implements the\n\
@@ -18,7 +19,7 @@
  value.  As a result, if the object is modified, it is up to the\n\
  application writer to call [Gtk.TreeModel.row_changed] to emit the\n\
  [Gtk.TreeModel::row_changed] signal. This most commonly affects lists\n\
- with [Gdk.Texture]s stored.\n\n\
+ with {{!Ocgdk.Raw.Texture}[Gdk.Texture]}s stored.\n\n\
  An example for creating a simple list store:\n\n\
  {[\n\
  enum {\n\
@@ -63,7 +64,8 @@
  }\n\
  ]}\n\n\
  [GtkListStore] is deprecated since GTK 4.10, and should not be used in newly\n\
- written code. You should use [Gio.ListStore] instead, and the various\n\
+ written code. You should use {{!Ocgio.Raw.List_store}[Gio.ListStore]} \
+ instead, and the various\n\
  list models provided by GTK.\n\n\
  {b Performance Considerations}\n\n\
  Internally, the [GtkListStore] was originally implemented with a linked list\n\
@@ -90,7 +92,8 @@
  [GtkTreeModel]FilterVisibleFunc to be visited with an empty row first; the\n\
  function must be prepared for that.\n\n\
  {b GtkListStore as GtkBuildable}\n\n\
- The GtkListStore implementation of the [Gtk.Buildable] interface allows\n\
+ The GtkListStore implementation of the \
+ {{!Ocgtk.Raw.Buildable}[Gtk.Buildable]} interface allows\n\
  to specify the model columns with a [<columns>] element that may contain\n\
  multiple [<column>] elements, each specifying one model column. The “type”\n\
  attribute specifies the data type for the column.\n\n\

@@ -12,11 +12,14 @@
  The behaviour of [GtkGrid] when several children occupy the same grid\n\
  cell is undefined.\n\n\
  {b GtkGrid as GtkBuildable}\n\n\
- Every child in a [GtkGrid] has access to a custom [Gtk.Buildable]\n\
+ Every child in a [GtkGrid] has access to a custom \
+ {{!Ocgtk.Raw.Buildable}[Gtk.Buildable]}\n\
  element, called [<layout>]. It can by used to specify a position in the\n\
  grid and optionally spans. All properties that can be used in the [<layout>]\n\
- element are implemented by [Gtk.GridLayoutChild].\n\n\
- It is implemented by [GtkWidget] using [Gtk.LayoutManager].\n\n\
+ element are implemented by \
+ {{!Ocgtk.Raw.Grid_layout_child}[Gtk.GridLayoutChild]}.\n\n\
+ It is implemented by [GtkWidget] using \
+ {{!Ocgtk.Raw.Layout_manager}[Gtk.LayoutManager]}.\n\n\
  To showcase it, here is a simple example:\n\n\
  {[\n\
  <object class=\"GtkGrid\" id=\"my_grid\">\n\

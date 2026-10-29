@@ -19,7 +19,8 @@
     let the user change these settings.
 
     On Wayland, the settings are obtained either via a settings portal, or by
-    reading desktop settings from [Gio.Settings].
+    reading desktop settings from
+    {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]}.
 
     On macOS, the settings are obtained from [NSUserDefaults].
 
@@ -747,7 +748,8 @@ class settings : Raw.Settings.t -> settings_t
     let the user change these settings.
 
     On Wayland, the settings are obtained either via a settings portal, or by
-    reading desktop settings from [Gio.Settings].
+    reading desktop settings from
+    {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]}.
 
     On macOS, the settings are obtained from [NSUserDefaults].
 

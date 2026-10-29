@@ -6,13 +6,15 @@
  An example GtkStack\n\n\
  In contrast to [GtkNotebook], [GtkStack] does not provide a means\n\
  for users to change the visible child. Instead, a separate widget\n\
- such as [Gtk.StackSwitcher] or [Gtk.StackSidebar] can\n\
+ such as {{!Ocgtk.Raw.Stack_switcher}[Gtk.StackSwitcher]} or \
+ {{!Ocgtk.Raw.Stack_sidebar}[Gtk.StackSidebar]} can\n\
  be used with [GtkStack] to provide this functionality.\n\n\
  Transitions between pages can be animated as slides or fades. This\n\
  can be controlled with [Gtk.Stack.set_transition_type].\n\
  These animations respect the [Gtk.Settings:gtk-enable-animations]\n\
  setting.\n\n\
- [GtkStack] maintains a [Gtk.StackPage] object for each added\n\
+ [GtkStack] maintains a {{!Ocgtk.Raw.Stack_page}[Gtk.StackPage]} object for \
+ each added\n\
  child, which holds additional per-child properties. You\n\
  obtain the [GtkStackPage] for a child with [Gtk.Stack.get_page]\n\
  and you can obtain a [GtkSelectionModel] containing all the pages\n\
@@ -168,8 +170,8 @@ external get_pages : t -> Selection_model.t = "ml_gtk_stack_get_pages"
 (** Returns a [GListModel] that contains the pages of the stack.
 
     This can be used to keep an up-to-date view. The model also implements
-    [Gtk.SelectionModel] and can be used to track and modify the visible page.
-*)
+    {{!Ocgtk.Raw.Selection_model}[Gtk.SelectionModel]} and can be used to track
+    and modify the visible page. *)
 
 external get_page :
   t ->

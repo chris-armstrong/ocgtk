@@ -1,7 +1,7 @@
 (* Doc_emit — assembles one item doc from GIR [<doc>] text.
 
    Every item-doc emission site goes through [item_doc], which translates the
-   raw GIR text, appends the [@since] tag after the prose so an upstream
+   raw GIR text, links its references through [Doc_resolve], appends the [@since] tag after the prose so an upstream
    [@self] or [@group] can never start a tag, and sanitises the assembled
    text.
 
@@ -16,6 +16,16 @@
    after their tag, since odoc only renders a member doc written after its tag;
    a module's floating doc is a comment or an [ocaml.text] attribute. *)
 
+val translate :
+  ?ret_shape:Doc_translate.ret_shape ->
+  refs:Doc_resolve.env ->
+  Doc_translate.context ->
+  string ->
+  string
+(** Raw GIR text to odoc markup, with its references linked: parse, then
+    [Doc_resolve.resolve], then render. The one translation emission sites use.
+*)
+
 type t =
   | Comment of string  (** A complete [(** ... *)] comment. *)
   | Attribute of string  (** The raw doc text, carried as a string literal. *)
@@ -27,14 +37,16 @@ val item_doc :
   ?prefix:string ->
   ?suffix:string ->
   ?ret_shape:Doc_translate.ret_shape ->
+  refs:Doc_resolve.env ->
   context:Doc_translate.context ->
   string option ->
   t option
 (** [item_doc ~indent ?since ?fallback ~context doc] returns the doc for an
     item, or [None] when there is nothing to say.
 
-    - [doc] is raw GIR [<doc>] text, translated in [context]. When it is absent,
-      or translates to nothing, [fallback] is used instead.
+    - [doc] is raw GIR [<doc>] text, translated in [context], with the
+      references [refs] can resolve linked. When it is absent, or translates to
+      nothing, [fallback] is used instead.
     - [fallback] is trusted odoc markup (e.g. a synthetic code span holding a C
       type name). It is not translated, but it is still sanitised.
     - [prefix] is trusted odoc markup too, added as a paragraph of its own

@@ -15,8 +15,9 @@
     gives an overview of all the objects and data types related to the text
     widget and how they work together.
 
-    Tags should be in the [Gtk.TextTagTable] for a given [GtkTextBuffer] before
-    using them with that buffer.
+    Tags should be in the
+    {{!Ocgtk.Text_tag_table.class-type-text_tag_table_t}[Gtk.TextTagTable]} for
+    a given [GtkTextBuffer] before using them with that buffer.
 
     [Gtk.TextBuffer.create_tag] is the best way to create tags. See “gtk4-demo”
     for numerous examples.
@@ -686,8 +687,9 @@ class text_tag : Raw.Text_tag.t -> text_tag_t
     gives an overview of all the objects and data types related to the text
     widget and how they work together.
 
-    Tags should be in the [Gtk.TextTagTable] for a given [GtkTextBuffer] before
-    using them with that buffer.
+    Tags should be in the
+    {{!Ocgtk.Text_tag_table.class-type-text_tag_table_t}[Gtk.TextTagTable]} for
+    a given [GtkTextBuffer] before using them with that buffer.
 
     [Gtk.TextBuffer.create_tag] is the best way to create tags. See “gtk4-demo”
     for numerous examples.

@@ -1,5 +1,6 @@
-(** Data output stream implements [Gio.OutputStream] and includes functions for
-    writing data directly to an output stream.
+(** Data output stream implements
+    {{!Ocgio.Output_stream.class-type-output_stream_t}[Gio.OutputStream]} and
+    includes functions for writing data directly to an output stream.
 
     Its methods, signals and properties are on
     {!class-type-data_output_stream_t}. Its constructors are under
@@ -16,8 +17,9 @@
     Implements:
     - {{!Ocgio.Seekable.class-type-seekable_t}Ocgio.Seekable}
 
-    Data output stream implements [Gio.OutputStream] and includes functions for
-    writing data directly to an output stream. *)
+    Data output stream implements
+    {{!Ocgio.Output_stream.class-type-output_stream_t}[Gio.OutputStream]} and
+    includes functions for writing data directly to an output stream. *)
 class type data_output_stream_t = object
   inherit Filter_output_stream.filter_output_stream_t
   inherit Seekable.seekable_t

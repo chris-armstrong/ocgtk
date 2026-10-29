@@ -1,6 +1,11 @@
-(** [GProxyAddressEnumerator] is a wrapper around [Gio.SocketAddressEnumerator]
-    which takes the [Gio.SocketAddress] instances returned by the
-    [Gio.SocketAddressEnumerator] and wraps them in [Gio.ProxyAddress]
+(** [GProxyAddressEnumerator] is a wrapper around
+    {{!Ocgio.Socket_address_enumerator.class-type-socket_address_enumerator_t}[Gio.SocketAddressEnumerator]}
+    which takes the
+    {{!Ocgio.Socket_address.class-type-socket_address_t}[Gio.SocketAddress]}
+    instances returned by the
+    {{!Ocgio.Socket_address_enumerator.class-type-socket_address_enumerator_t}[Gio.SocketAddressEnumerator]}
+    and wraps them in
+    {{!Ocgio.Proxy_address.class-type-proxy_address_t}[Gio.ProxyAddress]}
     instances, using the given [Gio.ProxyAddressEnumerator:proxy-resolver].
 
     Its methods, signals and properties are on
@@ -16,15 +21,21 @@
     Inherits from:
     {{!Ocgio.Socket_address_enumerator.class-type-socket_address_enumerator_t}Ocgio.Socket_address_enumerator}
 
-    [GProxyAddressEnumerator] is a wrapper around [Gio.SocketAddressEnumerator]
-    which takes the [Gio.SocketAddress] instances returned by the
-    [Gio.SocketAddressEnumerator] and wraps them in [Gio.ProxyAddress]
+    [GProxyAddressEnumerator] is a wrapper around
+    {{!Ocgio.Socket_address_enumerator.class-type-socket_address_enumerator_t}[Gio.SocketAddressEnumerator]}
+    which takes the
+    {{!Ocgio.Socket_address.class-type-socket_address_t}[Gio.SocketAddress]}
+    instances returned by the
+    {{!Ocgio.Socket_address_enumerator.class-type-socket_address_enumerator_t}[Gio.SocketAddressEnumerator]}
+    and wraps them in
+    {{!Ocgio.Proxy_address.class-type-proxy_address_t}[Gio.ProxyAddress]}
     instances, using the given [Gio.ProxyAddressEnumerator:proxy-resolver].
 
     This enumerator will be returned (for example, by
     [Gio.SocketConnectable.enumerate]) as appropriate when a proxy is
     configured; there should be no need to manually wrap a
-    [Gio.SocketAddressEnumerator] instance with one. *)
+    {{!Ocgio.Socket_address_enumerator.class-type-socket_address_enumerator_t}[Gio.SocketAddressEnumerator]}
+    instance with one. *)
 class type proxy_address_enumerator_t = object
   inherit Socket_address_enumerator.socket_address_enumerator_t
 
@@ -58,15 +69,21 @@ class proxy_address_enumerator :
 
 (** {1:description Description}
 
-    [GProxyAddressEnumerator] is a wrapper around [Gio.SocketAddressEnumerator]
-    which takes the [Gio.SocketAddress] instances returned by the
-    [Gio.SocketAddressEnumerator] and wraps them in [Gio.ProxyAddress]
+    [GProxyAddressEnumerator] is a wrapper around
+    {{!Ocgio.Socket_address_enumerator.class-type-socket_address_enumerator_t}[Gio.SocketAddressEnumerator]}
+    which takes the
+    {{!Ocgio.Socket_address.class-type-socket_address_t}[Gio.SocketAddress]}
+    instances returned by the
+    {{!Ocgio.Socket_address_enumerator.class-type-socket_address_enumerator_t}[Gio.SocketAddressEnumerator]}
+    and wraps them in
+    {{!Ocgio.Proxy_address.class-type-proxy_address_t}[Gio.ProxyAddress]}
     instances, using the given [Gio.ProxyAddressEnumerator:proxy-resolver].
 
     This enumerator will be returned (for example, by
     [Gio.SocketConnectable.enumerate]) as appropriate when a proxy is
     configured; there should be no need to manually wrap a
-    [Gio.SocketAddressEnumerator] instance with one. *)
+    {{!Ocgio.Socket_address_enumerator.class-type-socket_address_enumerator_t}[Gio.SocketAddressEnumerator]}
+    instance with one. *)
 
 (** {1:constructors Constructors} *)
 

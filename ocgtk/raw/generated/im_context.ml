@@ -11,7 +11,8 @@
  composition states as preedit text. To do so, the [GtkIMContext] will emit\n\
  [Gtk.IMContext::preedit-start], [Gtk.IMContext::preedit-changed]\n\
  and [Gtk.IMContext::preedit-end] signals.\n\n\
- For instance, the built-in GTK input method [Gtk.IMContextSimple]\n\
+ For instance, the built-in GTK input method \
+ {{!Ocgtk.Raw.Im_context_simple}[Gtk.IMContextSimple]}\n\
  implements the input of arbitrary Unicode code points by holding down the\n\
  <kbd>Control</kbd> and <kbd>Shift</kbd> keys and then typing <kbd>u</kbd>\n\
  followed by the hexadecimal digits of the code point. When releasing the\n\
@@ -23,7 +24,7 @@
  loadable modules. An input method module is a small shared library which\n\
  provides a [GIOExtension] for the extension point named \"gtk-im-module\".\n\n\
  To connect a widget to the users preferred input method, you should use\n\
- [Gtk.IMMulticontext].\n\n\
+ {{!Ocgtk.Raw.Im_multicontext}[Gtk.IMMulticontext]}.\n\n\
  The class built on this module is in {!Ocgtk.Im_context}."]
 
 type t = [ `im_context | `object_ ] Gobject.obj

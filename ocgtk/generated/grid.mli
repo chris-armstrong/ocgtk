@@ -150,12 +150,15 @@ end
      The behaviour of [GtkGrid] when several children occupy the same grid\n\
      cell is undefined.\n\n\
      {b GtkGrid as GtkBuildable}\n\n\
-     Every child in a [GtkGrid] has access to a custom [Gtk.Buildable]\n\
+     Every child in a [GtkGrid] has access to a custom \
+     {{!Ocgtk.Buildable.class-type-buildable_t}[Gtk.Buildable]}\n\
      element, called [<layout>]. It can by used to specify a position in the\n\
      grid and optionally spans. All properties that can be used in the \
      [<layout>]\n\
-     element are implemented by [Gtk.GridLayoutChild].\n\n\
-     It is implemented by [GtkWidget] using [Gtk.LayoutManager].\n\n\
+     element are implemented by \
+     {{!Ocgtk.Grid_layout_child.class-type-grid_layout_child_t}[Gtk.GridLayoutChild]}.\n\n\
+     It is implemented by [GtkWidget] using \
+     {{!Ocgtk.Layout_manager.class-type-layout_manager_t}[Gtk.LayoutManager]}.\n\n\
      To showcase it, here is a simple example:\n\n\
      {[\n\
      <object class=\"GtkGrid\" id=\"my_grid\">\n\
@@ -226,11 +229,14 @@ class grid : Raw.Grid.t -> grid_t
  The behaviour of [GtkGrid] when several children occupy the same grid\n\
  cell is undefined.\n\n\
  {b GtkGrid as GtkBuildable}\n\n\
- Every child in a [GtkGrid] has access to a custom [Gtk.Buildable]\n\
+ Every child in a [GtkGrid] has access to a custom \
+ {{!Ocgtk.Buildable.class-type-buildable_t}[Gtk.Buildable]}\n\
  element, called [<layout>]. It can by used to specify a position in the\n\
  grid and optionally spans. All properties that can be used in the [<layout>]\n\
- element are implemented by [Gtk.GridLayoutChild].\n\n\
- It is implemented by [GtkWidget] using [Gtk.LayoutManager].\n\n\
+ element are implemented by \
+ {{!Ocgtk.Grid_layout_child.class-type-grid_layout_child_t}[Gtk.GridLayoutChild]}.\n\n\
+ It is implemented by [GtkWidget] using \
+ {{!Ocgtk.Layout_manager.class-type-layout_manager_t}[Gtk.LayoutManager]}.\n\n\
  To showcase it, here is a simple example:\n\n\
  {[\n\
  <object class=\"GtkGrid\" id=\"my_grid\">\n\

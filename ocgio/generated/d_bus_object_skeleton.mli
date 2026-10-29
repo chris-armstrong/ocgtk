@@ -18,7 +18,9 @@
     The set of exported interfaces on the object may be dynamic and change at
     runtime.
 
-    This type is intended to be used with [Gio.DBusObjectManager]. *)
+    This type is intended to be used with
+    {{!Ocgio.D_bus_object_manager.class-type-d_bus_object_manager_t}[Gio.DBusObjectManager]}.
+*)
 class type d_bus_object_skeleton_t = object
   inherit D_bus_object.d_bus_object_t
 
@@ -95,7 +97,9 @@ class d_bus_object_skeleton :
     The set of exported interfaces on the object may be dynamic and change at
     runtime.
 
-    This type is intended to be used with [Gio.DBusObjectManager]. *)
+    This type is intended to be used with
+    {{!Ocgio.D_bus_object_manager.class-type-d_bus_object_manager_t}[Gio.DBusObjectManager]}.
+*)
 
 (** {1:constructors Constructors} *)
 

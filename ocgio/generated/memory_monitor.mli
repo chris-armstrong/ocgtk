@@ -60,7 +60,9 @@ end
      make future heap allocations slower (due to releasing cached heap pages \
      back\n\
      to the kernel).\n\n\
-     See [Gio.MemoryMonitorWarningLevel] for details on the various warning\n\
+     See \
+     {{!Ocgio.Enums.type-memorymonitorwarninglevel}[Gio.MemoryMonitorWarningLevel]} \
+     for details on the various warning\n\
      levels.\n\n\
      {[\n\
      static void\n\
@@ -109,7 +111,9 @@ class memory_monitor : Raw.Memory_monitor.t -> memory_monitor_t
  should be profiled for your application. [malloc_trim()], for example, may\n\
  make future heap allocations slower (due to releasing cached heap pages back\n\
  to the kernel).\n\n\
- See [Gio.MemoryMonitorWarningLevel] for details on the various warning\n\
+ See \
+ {{!Ocgio.Enums.type-memorymonitorwarninglevel}[Gio.MemoryMonitorWarningLevel]} \
+ for details on the various warning\n\
  levels.\n\n\
  {[\n\
  static void\n\

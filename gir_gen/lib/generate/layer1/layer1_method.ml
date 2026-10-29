@@ -68,6 +68,7 @@ let generate_method_decl ~ctx ~class_name ~c_type ~c_symbol_prefix ~entity_kind
     let doc =
       Doc_emit.item_doc ~indent:""
         ~ret_shape:(Doc_translate.ret_shape_of_throws meth.throws)
+        ~refs:(Doc_resolve.env_of_ctx ctx)
         ~context:Doc_translate.Member meth.doc
     in
     bprintf buf "%s" (Doc_emit.before_item doc);

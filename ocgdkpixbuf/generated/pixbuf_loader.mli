@@ -47,10 +47,10 @@
     Loading an animation is almost as easy as loading an image. Once the first
     [GdkPixbuf.PixbufLoader::area-prepared] signal has been emitted, you can
     call [GdkPixbuf.PixbufLoader.get_animation] to get the
-    [GdkPixbuf.PixbufAnimation] instance, and then call and
-    [GdkPixbuf.PixbufAnimation.get_iter] to get a
-    [GdkPixbuf.PixbufAnimationIter] to retrieve the pixbuf for the desired time
-    stamp. *)
+    {{!Ocgdkpixbuf.Pixbuf_animation.class-type-pixbuf_animation_t}[GdkPixbuf.PixbufAnimation]}
+    instance, and then call and [GdkPixbuf.PixbufAnimation.get_iter] to get a
+    {{!Ocgdkpixbuf.Pixbuf_animation_iter.class-type-pixbuf_animation_iter_t}[GdkPixbuf.PixbufAnimationIter]}
+    to retrieve the pixbuf for the desired time stamp. *)
 class type pixbuf_loader_t = object
   (** {2:signals Signals} *)
 
@@ -204,10 +204,10 @@ class pixbuf_loader : Raw.Pixbuf_loader.t -> pixbuf_loader_t
     Loading an animation is almost as easy as loading an image. Once the first
     [GdkPixbuf.PixbufLoader::area-prepared] signal has been emitted, you can
     call [GdkPixbuf.PixbufLoader.get_animation] to get the
-    [GdkPixbuf.PixbufAnimation] instance, and then call and
-    [GdkPixbuf.PixbufAnimation.get_iter] to get a
-    [GdkPixbuf.PixbufAnimationIter] to retrieve the pixbuf for the desired time
-    stamp. *)
+    {{!Ocgdkpixbuf.Pixbuf_animation.class-type-pixbuf_animation_t}[GdkPixbuf.PixbufAnimation]}
+    instance, and then call and [GdkPixbuf.PixbufAnimation.get_iter] to get a
+    {{!Ocgdkpixbuf.Pixbuf_animation_iter.class-type-pixbuf_animation_iter_t}[GdkPixbuf.PixbufAnimationIter]}
+    to retrieve the pixbuf for the desired time stamp. *)
 
 (** {1:constructors Constructors} *)
 

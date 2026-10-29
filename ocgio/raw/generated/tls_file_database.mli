@@ -1,9 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TlsFileDatabase: TlsFileDatabase *)
 
-(** [GTlsFileDatabase] is implemented by [Gio.TlsDatabase] objects which load
-    their certificate information from a file. It is an interface which TLS
-    library specific subtypes implement.
+(** [GTlsFileDatabase] is implemented by
+    {{!Ocgio.Raw.Tls_database}[Gio.TlsDatabase]} objects which load their
+    certificate information from a file. It is an interface which TLS library
+    specific subtypes implement.
 
     The class built on this module is in {!Ocgio.Tls_file_database}. *)
 

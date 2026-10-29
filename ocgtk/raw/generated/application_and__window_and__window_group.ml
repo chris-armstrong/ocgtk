@@ -583,9 +583,9 @@ and Window : sig
     unit = "ml_gtk_window_set_titlebar"
   (** Sets a custom titlebar for the window.
 
-      A typical widget used here is [Gtk.HeaderBar], as it provides various
-      features expected of a titlebar while allowing the addition of child
-      widgets to it.
+      A typical widget used here is {{!Ocgtk.Raw.Header_bar}[Gtk.HeaderBar]}, as
+      it provides various features expected of a titlebar while allowing the
+      addition of child widgets to it.
 
       If you set a custom titlebar, GTK will do its best to convince the window
       manager not to put its own titlebar on the window. Depending on the
@@ -646,8 +646,8 @@ and Window : sig
     = "ml_gtk_window_set_icon_name"
   (** Sets the icon for the window from a named themed icon.
 
-      See the docs for [Gtk.IconTheme] for more details. On some platforms, the
-      window icon is not used at all.
+      See the docs for {{!Ocgtk.Raw.Icon_theme}[Gtk.IconTheme]} for more
+      details. On some platforms, the window icon is not used at all.
 
       Note that this has nothing to do with the WM_ICON_NAME property which is
       mentioned in the ICCCM. *)
@@ -1174,9 +1174,9 @@ end = struct
     unit = "ml_gtk_window_set_titlebar"
   (** Sets a custom titlebar for the window.
 
-      A typical widget used here is [Gtk.HeaderBar], as it provides various
-      features expected of a titlebar while allowing the addition of child
-      widgets to it.
+      A typical widget used here is {{!Ocgtk.Raw.Header_bar}[Gtk.HeaderBar]}, as
+      it provides various features expected of a titlebar while allowing the
+      addition of child widgets to it.
 
       If you set a custom titlebar, GTK will do its best to convince the window
       manager not to put its own titlebar on the window. Depending on the
@@ -1237,8 +1237,8 @@ end = struct
     = "ml_gtk_window_set_icon_name"
   (** Sets the icon for the window from a named themed icon.
 
-      See the docs for [Gtk.IconTheme] for more details. On some platforms, the
-      window icon is not used at all.
+      See the docs for {{!Ocgtk.Raw.Icon_theme}[Gtk.IconTheme]} for more
+      details. On some platforms, the window icon is not used at all.
 
       Note that this has nothing to do with the WM_ICON_NAME property which is
       mentioned in the ICCCM. *)

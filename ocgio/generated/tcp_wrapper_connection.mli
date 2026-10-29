@@ -1,8 +1,14 @@
-(** A [GTcpWrapperConnection] can be used to wrap a [Gio.IOStream] that is based
-    on a [Gio.Socket], but which is not actually a [Gio.SocketConnection]. This
-    is used by [Gio.SocketClient] so that it can always return a
-    [Gio.SocketConnection], even when the connection it has actually created is
-    not directly a [Gio.SocketConnection].
+(** A [GTcpWrapperConnection] can be used to wrap a
+    {{!Ocgio.Io_stream.class-type-io_stream_t}[Gio.IOStream]} that is based on a
+    {{!Ocgio.Socket.class-type-socket_t}[Gio.Socket]}, but which is not actually
+    a
+    {{!Ocgio.Socket_connection.class-type-socket_connection_t}[Gio.SocketConnection]}.
+    This is used by
+    {{!Ocgio.Socket_client.class-type-socket_client_t}[Gio.SocketClient]} so
+    that it can always return a
+    {{!Ocgio.Socket_connection.class-type-socket_connection_t}[Gio.SocketConnection]},
+    even when the connection it has actually created is not directly a
+    {{!Ocgio.Socket_connection.class-type-socket_connection_t}[Gio.SocketConnection]}.
 
     Its methods, signals and properties are on
     {!class-type-tcp_wrapper_connection_t}. Its constructors are under
@@ -16,11 +22,18 @@
     Inherits from:
     {{!Ocgio.Tcp_connection.class-type-tcp_connection_t}Ocgio.Tcp_connection}
 
-    A [GTcpWrapperConnection] can be used to wrap a [Gio.IOStream] that is based
-    on a [Gio.Socket], but which is not actually a [Gio.SocketConnection]. This
-    is used by [Gio.SocketClient] so that it can always return a
-    [Gio.SocketConnection], even when the connection it has actually created is
-    not directly a [Gio.SocketConnection]. *)
+    A [GTcpWrapperConnection] can be used to wrap a
+    {{!Ocgio.Io_stream.class-type-io_stream_t}[Gio.IOStream]} that is based on a
+    {{!Ocgio.Socket.class-type-socket_t}[Gio.Socket]}, but which is not actually
+    a
+    {{!Ocgio.Socket_connection.class-type-socket_connection_t}[Gio.SocketConnection]}.
+    This is used by
+    {{!Ocgio.Socket_client.class-type-socket_client_t}[Gio.SocketClient]} so
+    that it can always return a
+    {{!Ocgio.Socket_connection.class-type-socket_connection_t}[Gio.SocketConnection]},
+    even when the connection it has actually created is not directly a
+    {{!Ocgio.Socket_connection.class-type-socket_connection_t}[Gio.SocketConnection]}.
+*)
 class type tcp_wrapper_connection_t = object
   inherit Tcp_connection.tcp_connection_t
 

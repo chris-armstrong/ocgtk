@@ -11,9 +11,10 @@
 
     {b GtkWindow as GtkBuildable}
 
-    The [GtkWindow] implementation of the [Gtk.Buildable] interface supports
-    setting a child as the titlebar by specifying “titlebar” as the “type”
-    attribute of a [<child>] element.
+    The [GtkWindow] implementation of the
+    {{!Ocgtk.Raw.Buildable}[Gtk.Buildable]} interface supports setting a child
+    as the titlebar by specifying “titlebar” as the “type” attribute of a
+    [<child>] element.
 
     {b Shortcuts and Gestures}
 

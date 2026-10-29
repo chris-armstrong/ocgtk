@@ -822,7 +822,8 @@ and Display : sig
       The formats returned by this function can be used for negotiating buffer
       formats with producers such as v4l, pipewire or GStreamer.
 
-      To learn more about dma-bufs, see [Gdk.DmabufTextureBuilder].
+      To learn more about dma-bufs, see
+      {{!Ocgdk.Raw.Dmabuf_texture_builder}[Gdk.DmabufTextureBuilder]}.
 
       This function is threadsafe. It can be called from any thread. *)
 
@@ -1106,7 +1107,8 @@ end = struct
       The formats returned by this function can be used for negotiating buffer
       formats with producers such as v4l, pipewire or GStreamer.
 
-      To learn more about dma-bufs, see [Gdk.DmabufTextureBuilder].
+      To learn more about dma-bufs, see
+      {{!Ocgdk.Raw.Dmabuf_texture_builder}[Gdk.DmabufTextureBuilder]}.
 
       This function is threadsafe. It can be called from any thread. *)
 
@@ -1256,9 +1258,9 @@ and Draw_context : sig
       This makes the drawing available on screen. See
       [Gdk.DrawContext.begin_frame] for more details about drawing.
 
-      When using a [Gdk.GLContext], this function may call [glFlush()]
-      implicitly before returning; it is not recommended to call [glFlush()]
-      explicitly before calling this function. *)
+      When using a {{!Ocgdk.Raw.Gl_context}[Gdk.GLContext]}, this function may
+      call [glFlush()] implicitly before returning; it is not recommended to
+      call [glFlush()] explicitly before calling this function. *)
 
   external begin_frame : t -> Occairo_raw.Region.t -> unit
     = "ml_gdk_draw_context_begin_frame"
@@ -1268,8 +1270,8 @@ and Draw_context : sig
       Calling this function begins a drawing operation using [context] on the
       surface that [context] was created from. The actual requirements and
       guarantees for the drawing operation vary for different implementations of
-      drawing, so a [Gdk.CairoContext] and a [Gdk.GLContext] need to be treated
-      differently.
+      drawing, so a {{!Ocgdk.Raw.Cairo_context}[Gdk.CairoContext]} and a
+      {{!Ocgdk.Raw.Gl_context}[Gdk.GLContext]} need to be treated differently.
 
       A call to this function is a requirement for drawing and must be followed
       by a call to [Gdk.DrawContext.end_frame], which will complete the drawing
@@ -1326,9 +1328,9 @@ end = struct
       This makes the drawing available on screen. See
       [Gdk.DrawContext.begin_frame] for more details about drawing.
 
-      When using a [Gdk.GLContext], this function may call [glFlush()]
-      implicitly before returning; it is not recommended to call [glFlush()]
-      explicitly before calling this function. *)
+      When using a {{!Ocgdk.Raw.Gl_context}[Gdk.GLContext]}, this function may
+      call [glFlush()] implicitly before returning; it is not recommended to
+      call [glFlush()] explicitly before calling this function. *)
 
   external begin_frame : t -> Occairo_raw.Region.t -> unit
     = "ml_gdk_draw_context_begin_frame"
@@ -1338,8 +1340,8 @@ end = struct
       Calling this function begins a drawing operation using [context] on the
       surface that [context] was created from. The actual requirements and
       guarantees for the drawing operation vary for different implementations of
-      drawing, so a [Gdk.CairoContext] and a [Gdk.GLContext] need to be treated
-      differently.
+      drawing, so a {{!Ocgdk.Raw.Cairo_context}[Gdk.CairoContext]} and a
+      {{!Ocgdk.Raw.Gl_context}[Gdk.GLContext]} need to be treated differently.
 
       A call to this function is a requirement for drawing and must be followed
       by a call to [Gdk.DrawContext.end_frame], which will complete the drawing

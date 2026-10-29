@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ColumnViewSorter: ColumnViewSorter *)
 
-(** Sorts [Gtk.ColumnView] columns.
+(** Sorts {{!Ocgtk.Raw.Column_view}[Gtk.ColumnView]} columns.
 
     The sorter returned by [Gtk.ColumnView.get_sorter] is a
     [GtkColumnViewSorter].

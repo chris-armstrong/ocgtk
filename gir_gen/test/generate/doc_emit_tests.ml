@@ -9,7 +9,7 @@
 
 open Gir_gen_lib.Generate
 
-let item_doc = Doc_emit.item_doc
+let item_doc = Doc_emit.item_doc ~refs:(Doc_resolve.no_links ~namespace:"Gtk")
 
 let member ?since ?fallback doc =
   Option.map

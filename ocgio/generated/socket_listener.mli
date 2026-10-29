@@ -20,9 +20,10 @@
     implicitly, as some references to the [GSocketListener] may be held
     internally.
 
-    If you want to implement a network server, also look at [Gio.SocketService]
-    and [Gio.ThreadedSocketService] which are subclasses of [GSocketListener]
-    that make this even easier. *)
+    If you want to implement a network server, also look at
+    {{!Ocgio.Socket_service.class-type-socket_service_t}[Gio.SocketService]} and
+    {{!Ocgio.Threaded_socket_service.class-type-threaded_socket_service_t}[Gio.ThreadedSocketService]}
+    which are subclasses of [GSocketListener] that make this even easier. *)
 class type socket_listener_t = object
   (** {2:signals Signals} *)
 
@@ -141,9 +142,10 @@ class socket_listener : Raw.Socket_listener.t -> socket_listener_t
     implicitly, as some references to the [GSocketListener] may be held
     internally.
 
-    If you want to implement a network server, also look at [Gio.SocketService]
-    and [Gio.ThreadedSocketService] which are subclasses of [GSocketListener]
-    that make this even easier. *)
+    If you want to implement a network server, also look at
+    {{!Ocgio.Socket_service.class-type-socket_service_t}[Gio.SocketService]} and
+    {{!Ocgio.Threaded_socket_service.class-type-threaded_socket_service_t}[Gio.ThreadedSocketService]}
+    which are subclasses of [GSocketListener] that make this even easier. *)
 
 (** {1:constructors Constructors} *)
 

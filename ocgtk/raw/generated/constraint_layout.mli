@@ -4,11 +4,13 @@
 [@@@ocaml.text
 "Uses constraints to describe relations between widgets.\n\n\
  [GtkConstraintLayout] is a layout manager that uses relations between\n\
- widget attributes, expressed via [Gtk.Constraint] instances, to\n\
+ widget attributes, expressed via {{!Ocgtk.Raw.Constraint}[Gtk.Constraint]} \
+ instances, to\n\
  measure and allocate widgets.\n\n\
  {b How do constraints work}\n\n\
  Constraints are objects defining the relationship between attributes\n\
- of a widget; you can read the description of the [Gtk.Constraint]\n\
+ of a widget; you can read the description of the \
+ {{!Ocgtk.Raw.Constraint}[Gtk.Constraint]}\n\
  class to have a more in depth definition.\n\n\
  By taking multiple constraints and applying them to the children of\n\
  a widget using [GtkConstraintLayout], it's possible to describe\n\
@@ -28,11 +30,13 @@
  is undefined.\n\n\
  A constraint-based layout with conflicting constraints may be unsolvable,\n\
  and lead to an unstable layout. You can use the [Gtk.Constraint:strength]\n\
- property of [Gtk.Constraint] to \"nudge\" the layout towards a solution.\n\n\
+ property of {{!Ocgtk.Raw.Constraint}[Gtk.Constraint]} to \"nudge\" the layout \
+ towards a solution.\n\n\
  {b GtkConstraintLayout as GtkBuildable}\n\n\
- [GtkConstraintLayout] implements the [Gtk.Buildable] interface and\n\
+ [GtkConstraintLayout] implements the {{!Ocgtk.Raw.Buildable}[Gtk.Buildable]} \
+ interface and\n\
  has a custom \"constraints\" element which allows describing constraints in\n\
- a [Gtk.Builder] UI file.\n\n\
+ a {{!Ocgtk.Raw.Builder}[Gtk.Builder]} UI file.\n\n\
  An example of a UI definition fragment specifying a constraint:\n\n\
  {[\n\
 \  <object class=\"GtkConstraintLayout\">\n\
@@ -90,7 +94,7 @@
  The Visual Format Language describes all the constraints on a row or\n\
  column, typically starting from the leading edge towards the trailing\n\
  one. Each element of the layout is composed by \"views\", which identify\n\
- a [Gtk.ConstraintTarget].\n\n\
+ a {{!Ocgtk.Raw.Constraint_target}[Gtk.ConstraintTarget]}.\n\n\
  For instance:\n\n\
  {[\n\
 \  [button]-[textField]\n\
@@ -192,9 +196,10 @@ external add_constraint : t -> Constraint.t -> unit
 
     - set to [None] to indicate that the constraint refers to the widget using
       [layout]
-    - set to the [Gtk.Widget] using [layout]
-    - set to a child of the [Gtk.Widget] using [layout]
-    - set to a [Gtk.ConstraintGuide] that is part of [layout]
+    - set to the {{!Ocgtk.Raw.Widget}[Gtk.Widget]} using [layout]
+    - set to a child of the {{!Ocgtk.Raw.Widget}[Gtk.Widget]} using [layout]
+    - set to a {{!Ocgtk.Raw.Constraint_guide}[Gtk.ConstraintGuide]} that is part
+      of [layout]
 
     The [layout] acquires the ownership of [constraint] after calling this
     function. *)

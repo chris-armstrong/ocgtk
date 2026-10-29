@@ -5,7 +5,9 @@
     choosing fonts.
 
     In GTK, the main objects that implement this interface are
-    [Gtk.FontChooserWidget], [Gtk.FontChooserDialog] and [Gtk.FontButton].
+    {{!Ocgtk.Raw.Font_chooser_widget}[Gtk.FontChooserWidget]},
+    {{!Ocgtk.Raw.Font_chooser_dialog}[Gtk.FontChooserDialog]} and
+    {{!Ocgtk.Raw.Font_button}[Gtk.FontButton]}.
 
     The class built on this module is in {!Ocgtk.Font_chooser}. *)
 

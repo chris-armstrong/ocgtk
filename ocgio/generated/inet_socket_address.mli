@@ -1,5 +1,6 @@
 (** An IPv4 or IPv6 socket address. That is, the combination of a
-    [Gio.InetAddress] and a port number.
+    {{!Ocgio.Inet_address.class-type-inet_address_t}[Gio.InetAddress]} and a
+    port number.
 
     Its methods, signals and properties are on
     {!class-type-inet_socket_address_t}. Its full description is under
@@ -17,7 +18,8 @@
     - {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}Ocgio.Socket_connectable}
 
     An IPv4 or IPv6 socket address. That is, the combination of a
-    [Gio.InetAddress] and a port number.
+    {{!Ocgio.Inet_address.class-type-inet_address_t}[Gio.InetAddress]} and a
+    port number.
 
     In UNIX terms, [GInetSocketAddress] corresponds to a [struct sockaddr_in6]
     or [struct sockaddr_in]). *)
@@ -57,7 +59,8 @@ class inet_socket_address : Raw.Inet_socket_address.t -> inet_socket_address_t
 (** {1:description Description}
 
     An IPv4 or IPv6 socket address. That is, the combination of a
-    [Gio.InetAddress] and a port number.
+    {{!Ocgio.Inet_address.class-type-inet_address_t}[Gio.InetAddress]} and a
+    port number.
 
     In UNIX terms, [GInetSocketAddress] corresponds to a [struct sockaddr_in6]
     or [struct sockaddr_in]). *)

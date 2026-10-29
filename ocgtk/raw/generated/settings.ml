@@ -8,7 +8,7 @@
     let the user change these settings.
 
     On Wayland, the settings are obtained either via a settings portal, or by
-    reading desktop settings from [Gio.Settings].
+    reading desktop settings from {{!Ocgio.Raw.Settings}[Gio.Settings]}.
 
     On macOS, the settings are obtained from [NSUserDefaults].
 
@@ -427,13 +427,15 @@ external get_gtk_icon_theme_name : t -> string
   = "ml_gtk_settings_get_gtk_icon_theme_name"
 (** Name of the icon theme to use.
 
-    See [Gtk.IconTheme] for details about how GTK handles icon themes. *)
+    See {{!Ocgtk.Raw.Icon_theme}[Gtk.IconTheme]} for details about how GTK
+    handles icon themes. *)
 
 external set_gtk_icon_theme_name : t -> string -> unit
   = "ml_gtk_settings_set_gtk_icon_theme_name"
 (** Name of the icon theme to use.
 
-    See [Gtk.IconTheme] for details about how GTK handles icon themes. *)
+    See {{!Ocgtk.Raw.Icon_theme}[Gtk.IconTheme]} for details about how GTK
+    handles icon themes. *)
 
 external get_gtk_im_module : t -> string = "ml_gtk_settings_get_gtk_im_module"
 (** Which IM (input method) module should be used by default.
@@ -443,7 +445,7 @@ external get_gtk_im_module : t -> string = "ml_gtk_settings_get_gtk_im_module"
     colon-separated list of input methods, which GTK will try in turn until it
     finds one available on the system.
 
-    See [Gtk.IMContext]. *)
+    See {{!Ocgtk.Raw.Im_context}[Gtk.IMContext]}. *)
 
 external set_gtk_im_module : t -> string -> unit
   = "ml_gtk_settings_set_gtk_im_module"
@@ -454,7 +456,7 @@ external set_gtk_im_module : t -> string -> unit
     colon-separated list of input methods, which GTK will try in turn until it
     finds one available on the system.
 
-    See [Gtk.IMContext]. *)
+    See {{!Ocgtk.Raw.Im_context}[Gtk.IMContext]}. *)
 
 external get_gtk_interface_color_scheme : t -> Ocgtk_enums.interfacecolorscheme
   = "ml_gtk_settings_get_gtk_interface_color_scheme"
@@ -515,13 +517,13 @@ external get_gtk_long_press_time : t -> int
   = "ml_gtk_settings_get_gtk_long_press_time"
 (** The time for a button or touch press to be considered a “long press”.
 
-    See [Gtk.GestureLongPress]. *)
+    See {{!Ocgtk.Raw.Gesture_long_press}[Gtk.GestureLongPress]}. *)
 
 external set_gtk_long_press_time : t -> int -> unit
   = "ml_gtk_settings_set_gtk_long_press_time"
 (** The time for a button or touch press to be considered a “long press”.
 
-    See [Gtk.GestureLongPress]. *)
+    See {{!Ocgtk.Raw.Gesture_long_press}[Gtk.GestureLongPress]}. *)
 
 external get_gtk_overlay_scrolling : t -> bool
   = "ml_gtk_settings_get_gtk_overlay_scrolling"
@@ -706,15 +708,15 @@ external set_gtk_split_cursor : t -> bool -> unit
 external get_gtk_theme_name : t -> string = "ml_gtk_settings_get_gtk_theme_name"
 (** Name of the theme to load.
 
-    See [Gtk.CssProvider] for details about how GTK finds the CSS stylesheet for
-    a theme. *)
+    See {{!Ocgtk.Raw.Css_provider}[Gtk.CssProvider]} for details about how GTK
+    finds the CSS stylesheet for a theme. *)
 
 external set_gtk_theme_name : t -> string -> unit
   = "ml_gtk_settings_set_gtk_theme_name"
 (** Name of the theme to load.
 
-    See [Gtk.CssProvider] for details about how GTK finds the CSS stylesheet for
-    a theme. *)
+    See {{!Ocgtk.Raw.Css_provider}[Gtk.CssProvider]} for details about how GTK
+    finds the CSS stylesheet for a theme. *)
 
 external get_gtk_titlebar_double_click : t -> string
   = "ml_gtk_settings_get_gtk_titlebar_double_click"

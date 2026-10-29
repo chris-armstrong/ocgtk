@@ -22,7 +22,7 @@
     An example GtkEditableLabel
 
     [GtkEditableLabel] does not have API of its own, but it implements the
-    [Gtk.Editable] interface.
+    {{!Ocgtk.Editable.class-type-editable_t}[Gtk.Editable]} interface.
 
     The default bindings for activating the edit mode is to click or press the
     Enter key. The default bindings for leaving the edit mode are the Enter key
@@ -55,7 +55,7 @@
     entry is in editing mode, it gets the .editing style class.
 
     For all the subnodes added to the text node in various situations, see
-    [Gtk.Text]. *)
+    {{!Ocgtk.Text.class-type-text_t}[Gtk.Text]}. *)
 class type editable_label_t = object
   inherit Widget.widget_t
   inherit Editable.editable_t
@@ -91,7 +91,7 @@ class editable_label : Raw.Editable_label.t -> editable_label_t
     An example GtkEditableLabel
 
     [GtkEditableLabel] does not have API of its own, but it implements the
-    [Gtk.Editable] interface.
+    {{!Ocgtk.Editable.class-type-editable_t}[Gtk.Editable]} interface.
 
     The default bindings for activating the edit mode is to click or press the
     Enter key. The default bindings for leaving the edit mode are the Enter key
@@ -124,7 +124,7 @@ class editable_label : Raw.Editable_label.t -> editable_label_t
     entry is in editing mode, it gets the .editing style class.
 
     For all the subnodes added to the text node in various situations, see
-    [Gtk.Text]. *)
+    {{!Ocgtk.Text.class-type-text_t}[Gtk.Text]}. *)
 
 (** {1:constructors Constructors} *)
 

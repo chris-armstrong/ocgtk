@@ -25,7 +25,8 @@ external new_ : Sorter.t option -> t = "ml_gtk_tree_list_row_sorter_new"
     levels of a [GtkTreeListModel].
 
     Note that this sorter relies on [Gtk.TreeListModel:passthrough] being
-    [false] as it can only sort [Gtk.TreeListRow]s. *)
+    [false] as it can only sort {{!Ocgtk.Raw.Tree_list_row}[Gtk.TreeListRow]}s.
+*)
 
 (* Methods *)
 

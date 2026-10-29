@@ -17,9 +17,11 @@
     share some common resources and state. For instance, for seekable streams,
     both streams may use the same position.
 
-    Examples of [GIOStream] objects are [Gio.SocketConnection], which represents
-    a two-way network connection; and [Gio.FileIOStream], which represents a
-    file handle opened in read-write mode.
+    Examples of [GIOStream] objects are
+    {{!Ocgio.Socket_connection.class-type-socket_connection_t}[Gio.SocketConnection]},
+    which represents a two-way network connection; and
+    {{!Ocgio.File_io_stream.class-type-file_io_stream_t}[Gio.FileIOStream]},
+    which represents a file handle opened in read-write mode.
 
     To do the actual reading and writing you need to get the substreams with
     [Gio.IOStream.get_input_stream] and [Gio.IOStream.get_output_stream].
@@ -39,7 +41,9 @@
 
     Operations on [GIOStream]s cannot be started while another operation on the
     [GIOStream] or its substreams is in progress. Specifically, an application
-    can read from the [Gio.InputStream] and write to the [Gio.OutputStream]
+    can read from the
+    {{!Ocgio.Input_stream.class-type-input_stream_t}[Gio.InputStream]} and write
+    to the {{!Ocgio.Output_stream.class-type-output_stream_t}[Gio.OutputStream]}
     simultaneously (either in separate threads, or as asynchronous operations in
     the same thread), but an application cannot start any [GIOStream] operation
     while there is a [GIOStream], [GInputStream] or [GOutputStream] operation in
@@ -54,11 +58,13 @@
 
     GIO may run operations on [GIOStream]s from other (worker) threads, and this
     may be exposed to application code in the behaviour of wrapper streams, such
-    as [Gio.BufferedInputStream] or [Gio.TlsConnection]. With such wrapper APIs,
-    application code may only run operations on the base (wrapped) stream when
-    the wrapper stream is idle. Note that the semantics of such operations may
-    not be well-defined due to the state the wrapper stream leaves the base
-    stream in (though they are guaranteed not to crash). *)
+    as
+    {{!Ocgio.Buffered_input_stream.class-type-buffered_input_stream_t}[Gio.BufferedInputStream]}
+    or {{!Ocgio.Tls_connection.class-type-tls_connection_t}[Gio.TlsConnection]}.
+    With such wrapper APIs, application code may only run operations on the base
+    (wrapped) stream when the wrapper stream is idle. Note that the semantics of
+    such operations may not be well-defined due to the state the wrapper stream
+    leaves the base stream in (though they are guaranteed not to crash). *)
 class type io_stream_t = object
   (** {2:methods Methods} *)
 
@@ -133,9 +139,11 @@ class io_stream : Raw.Io_stream.t -> io_stream_t
     share some common resources and state. For instance, for seekable streams,
     both streams may use the same position.
 
-    Examples of [GIOStream] objects are [Gio.SocketConnection], which represents
-    a two-way network connection; and [Gio.FileIOStream], which represents a
-    file handle opened in read-write mode.
+    Examples of [GIOStream] objects are
+    {{!Ocgio.Socket_connection.class-type-socket_connection_t}[Gio.SocketConnection]},
+    which represents a two-way network connection; and
+    {{!Ocgio.File_io_stream.class-type-file_io_stream_t}[Gio.FileIOStream]},
+    which represents a file handle opened in read-write mode.
 
     To do the actual reading and writing you need to get the substreams with
     [Gio.IOStream.get_input_stream] and [Gio.IOStream.get_output_stream].
@@ -155,7 +163,9 @@ class io_stream : Raw.Io_stream.t -> io_stream_t
 
     Operations on [GIOStream]s cannot be started while another operation on the
     [GIOStream] or its substreams is in progress. Specifically, an application
-    can read from the [Gio.InputStream] and write to the [Gio.OutputStream]
+    can read from the
+    {{!Ocgio.Input_stream.class-type-input_stream_t}[Gio.InputStream]} and write
+    to the {{!Ocgio.Output_stream.class-type-output_stream_t}[Gio.OutputStream]}
     simultaneously (either in separate threads, or as asynchronous operations in
     the same thread), but an application cannot start any [GIOStream] operation
     while there is a [GIOStream], [GInputStream] or [GOutputStream] operation in
@@ -170,11 +180,13 @@ class io_stream : Raw.Io_stream.t -> io_stream_t
 
     GIO may run operations on [GIOStream]s from other (worker) threads, and this
     may be exposed to application code in the behaviour of wrapper streams, such
-    as [Gio.BufferedInputStream] or [Gio.TlsConnection]. With such wrapper APIs,
-    application code may only run operations on the base (wrapped) stream when
-    the wrapper stream is idle. Note that the semantics of such operations may
-    not be well-defined due to the state the wrapper stream leaves the base
-    stream in (though they are guaranteed not to crash). *)
+    as
+    {{!Ocgio.Buffered_input_stream.class-type-buffered_input_stream_t}[Gio.BufferedInputStream]}
+    or {{!Ocgio.Tls_connection.class-type-tls_connection_t}[Gio.TlsConnection]}.
+    With such wrapper APIs, application code may only run operations on the base
+    (wrapped) stream when the wrapper stream is idle. Note that the semantics of
+    such operations may not be well-defined due to the state the wrapper stream
+    leaves the base stream in (though they are guaranteed not to crash). *)
 
 (** {1:constructors Constructors} *)
 

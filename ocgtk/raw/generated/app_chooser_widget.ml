@@ -3,7 +3,8 @@
 
 (** [GtkAppChooserWidget] is a widget for selecting applications.
 
-    It is the main building block for [Gtk.AppChooserDialog]. Most applications
+    It is the main building block for
+    {{!Ocgtk.Raw.App_chooser_dialog}[Gtk.AppChooserDialog]}. Most applications
     only need to use the latter; but you can use this widget as part of a larger
     widget if you have special needs.
 
@@ -11,8 +12,9 @@
     shown, using the [Gtk.AppChooserWidget:show-default],
     [Gtk.AppChooserWidget:show-recommended],
     [Gtk.AppChooserWidget:show-fallback], [Gtk.AppChooserWidget:show-other] and
-    [Gtk.AppChooserWidget:show-all] properties. See the [Gtk.AppChooser]
-    documentation for more information about these groups of applications.
+    [Gtk.AppChooserWidget:show-all] properties. See the
+    {{!Ocgtk.Raw.App_chooser}[Gtk.AppChooser]} documentation for more
+    information about these groups of applications.
 
     To keep track of the selected application, use the
     [Gtk.AppChooserWidget::application-selected] and

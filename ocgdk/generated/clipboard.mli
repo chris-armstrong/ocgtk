@@ -21,7 +21,8 @@ class type clipboard_t = App_launch_context_cycle_de440b34.clipboard_t
 
     To make text or image data available in a clipboard, use
     [Gdk.Clipboard.set_text] or [Gdk.Clipboard.set_texture]. For other data, you
-    can use [Gdk.Clipboard.set_content], which takes a [Gdk.ContentProvider]
+    can use [Gdk.Clipboard.set_content], which takes a
+    {{!Ocgdk.Content_provider.class-type-content_provider_t}[Gdk.ContentProvider]}
     object.
 
     To read textual or image data from a clipboard, use
@@ -42,7 +43,8 @@ class clipboard : Raw.Clipboard.t -> clipboard_t
 
     To make text or image data available in a clipboard, use
     [Gdk.Clipboard.set_text] or [Gdk.Clipboard.set_texture]. For other data, you
-    can use [Gdk.Clipboard.set_content], which takes a [Gdk.ContentProvider]
+    can use [Gdk.Clipboard.set_content], which takes a
+    {{!Ocgdk.Content_provider.class-type-content_provider_t}[Gdk.ContentProvider]}
     object.
 
     To read textual or image data from a clipboard, use

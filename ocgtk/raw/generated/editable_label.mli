@@ -6,7 +6,7 @@
     An example GtkEditableLabel
 
     [GtkEditableLabel] does not have API of its own, but it implements the
-    [Gtk.Editable] interface.
+    {{!Ocgtk.Raw.Editable}[Gtk.Editable]} interface.
 
     The default bindings for activating the edit mode is to click or press the
     Enter key. The default bindings for leaving the edit mode are the Enter key
@@ -39,7 +39,7 @@
     entry is in editing mode, it gets the .editing style class.
 
     For all the subnodes added to the text node in various situations, see
-    [Gtk.Text].
+    {{!Ocgtk.Raw.Text}[Gtk.Text]}.
 
     The class built on this module is in {!Ocgtk.Editable_label}. *)
 

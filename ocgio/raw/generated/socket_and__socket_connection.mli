@@ -11,15 +11,17 @@
 
     [GSocket] is the platform independent base upon which the higher level
     network primitives are based. Applications are not typically meant to use it
-    directly, but rather through classes like [Gio.SocketClient],
-    [Gio.SocketService] and [Gio.SocketConnection]. However there may be cases
-    where direct use of [GSocket] is useful.
+    directly, but rather through classes like
+    {{!Ocgio.Raw.Socket_client}[Gio.SocketClient]},
+    {{!Ocgio.Raw.Socket_service}[Gio.SocketService]} and
+    {{!Ocgio.Raw.Socket_connection}[Gio.SocketConnection]}. However there may be
+    cases where direct use of [GSocket] is useful.
 
-    [GSocket] implements the [Gio.Initable] interface, so if it is manually
-    constructed by e.g. [GObject.Object.new] you must call [Gio.Initable.init]
-    and check the results before using the object. This is done automatically in
-    [Gio.Socket.new] and [Gio.Socket.new_from_fd], so these functions can return
-    [None].
+    [GSocket] implements the {{!Ocgio.Raw.Initable}[Gio.Initable]} interface, so
+    if it is manually constructed by e.g. [GObject.Object.new] you must call
+    [Gio.Initable.init] and check the results before using the object. This is
+    done automatically in [Gio.Socket.new] and [Gio.Socket.new_from_fd], so
+    these functions can return [None].
 
     Sockets operate in two general modes, blocking or non-blocking. When in
     blocking mode all operations (which don’t take an explicit blocking
@@ -747,13 +749,16 @@ module rec Socket : sig
   (** The socket’s type. *)
 end
 
-(** [GSocketConnection] is a [Gio.IOStream] for a connected socket. They can be
-    created either by [Gio.SocketClient] when connecting to a host, or by
-    [Gio.SocketListener] when accepting a new client.
+(** [GSocketConnection] is a {{!Ocgio.Raw.Io_stream}[Gio.IOStream]} for a
+    connected socket. They can be created either by
+    {{!Ocgio.Raw.Socket_client}[Gio.SocketClient]} when connecting to a host, or
+    by {{!Ocgio.Raw.Socket_listener}[Gio.SocketListener]} when accepting a new
+    client.
 
     The type of the [GSocketConnection] object returned from these calls depends
     on the type of the underlying socket that is in use. For instance, for a
-    TCP/IP connection it will be a [Gio.TcpConnection].
+    TCP/IP connection it will be a
+    {{!Ocgio.Raw.Tcp_connection}[Gio.TcpConnection]}.
 
     Choosing what type of object to construct is done with the socket connection
     factory, and it is possible for third parties to register custom socket
@@ -761,8 +766,8 @@ end
     using [Gio.SocketConnection.factory_register_type].
 
     To close a [GSocketConnection], use [Gio.IOStream.close]. Closing both
-    substreams of the [Gio.IOStream] separately will not close the underlying
-    [Gio.Socket].
+    substreams of the {{!Ocgio.Raw.Io_stream}[Gio.IOStream]} separately will not
+    close the underlying {{!Ocgio.Raw.Socket}[Gio.Socket]}.
 
     The class built on this module is in {!Ocgio.Socket_connection}. *)
 and Socket_connection : sig

@@ -2,24 +2,29 @@
 (* DtlsConnection: DtlsConnection *)
 
 (** [GDtlsConnection] is the base DTLS connection class type, which wraps a
-    [Gio.DatagramBased] and provides DTLS encryption on top of it. Its
-    subclasses, [Gio.DtlsClientConnection] and [Gio.DtlsServerConnection],
-    implement client-side and server-side DTLS, respectively.
+    {{!Ocgio.Raw.Datagram_based}[Gio.DatagramBased]} and provides DTLS
+    encryption on top of it. Its subclasses,
+    {{!Ocgio.Raw.Dtls_client_connection}[Gio.DtlsClientConnection]} and
+    {{!Ocgio.Raw.Dtls_server_connection}[Gio.DtlsServerConnection]}, implement
+    client-side and server-side DTLS, respectively.
 
-    For TLS support, see [Gio.TlsConnection].
+    For TLS support, see {{!Ocgio.Raw.Tls_connection}[Gio.TlsConnection]}.
 
-    As DTLS is datagram based, [GDtlsConnection] implements [Gio.DatagramBased],
-    presenting a datagram-socket-like API for the encrypted connection. This
-    operates over a base datagram connection, which is also a [GDatagramBased]
+    As DTLS is datagram based, [GDtlsConnection] implements
+    {{!Ocgio.Raw.Datagram_based}[Gio.DatagramBased]}, presenting a
+    datagram-socket-like API for the encrypted connection. This operates over a
+    base datagram connection, which is also a [GDatagramBased]
     ([Gio.DtlsConnection:base-socket]).
 
     To close a DTLS connection, use [Gio.DtlsConnection.close].
 
-    Neither [Gio.DtlsServerConnection] or [Gio.DtlsClientConnection] set the
-    peer address on their base [Gio.DatagramBased] if it is a [Gio.Socket] — it
-    is up to the caller to do that if they wish. If they do not, and
-    [Gio.Socket.close] is called on the base socket, the [GDtlsConnection] will
-    not raise a [G_IO_ERROR_NOT_CONNECTED] error on further I/O.
+    Neither {{!Ocgio.Raw.Dtls_server_connection}[Gio.DtlsServerConnection]} or
+    {{!Ocgio.Raw.Dtls_client_connection}[Gio.DtlsClientConnection]} set the peer
+    address on their base {{!Ocgio.Raw.Datagram_based}[Gio.DatagramBased]} if it
+    is a {{!Ocgio.Raw.Socket}[Gio.Socket]} — it is up to the caller to do that
+    if they wish. If they do not, and [Gio.Socket.close] is called on the base
+    socket, the [GDtlsConnection] will not raise a [G_IO_ERROR_NOT_CONNECTED]
+    error on further I/O.
 
     The class built on this module is in {!Ocgio.Dtls_connection}. *)
 

@@ -18,8 +18,9 @@
     To copy the content of an input stream to an output stream without manually
     handling the reads and writes, use [Gio.OutputStream.splice].
 
-    See the documentation for [Gio.IOStream] for details of thread safety of
-    streaming APIs.
+    See the documentation for
+    {{!Ocgio.Io_stream.class-type-io_stream_t}[Gio.IOStream]} for details of
+    thread safety of streaming APIs.
 
     All of these functions have async variants too. *)
 class type input_stream_t = object
@@ -141,8 +142,9 @@ class input_stream : Raw.Input_stream.t -> input_stream_t
     To copy the content of an input stream to an output stream without manually
     handling the reads and writes, use [Gio.OutputStream.splice].
 
-    See the documentation for [Gio.IOStream] for details of thread safety of
-    streaming APIs.
+    See the documentation for
+    {{!Ocgio.Io_stream.class-type-io_stream_t}[Gio.IOStream]} for details of
+    thread safety of streaming APIs.
 
     All of these functions have async variants too. *)
 

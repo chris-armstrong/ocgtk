@@ -4,7 +4,7 @@
 [@@@ocaml.text
 "[GApplicationCommandLine] represents a command-line invocation of\n\
  an application.\n\n\
- It is created by [Gio.Application] and emitted\n\
+ It is created by {{!Ocgio.Raw.Application}[Gio.Application]} and emitted\n\
  in the [Gio.Application::command-line] signal and virtual function.\n\n\
  The class contains the list of arguments that the program was invoked\n\
  with. It is also possible to query if the commandline invocation was\n\

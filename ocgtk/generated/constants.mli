@@ -20,19 +20,21 @@ val accessible_attribute_overline : string
 
     Possible values are:
 
-    - [Gtk.ACCESSIBLE_ATTRIBUTE_OVERLINE_NONE]
-    - [Gtk.ACCESSIBLE_ATTRIBUTE_OVERLINE_SINGLE]
+    - {{!Ocgtk.Constants.accessible_attribute_overline_none}[Gtk.ACCESSIBLE_ATTRIBUTE_OVERLINE_NONE]}
+    - {{!Ocgtk.Constants.accessible_attribute_overline_single}[Gtk.ACCESSIBLE_ATTRIBUTE_OVERLINE_SINGLE]}
 
     @since 4.14 *)
 
 val accessible_attribute_overline_none : string
 [@@ocaml.doc
-  "The \"none\" overline value for [Gtk.ACCESSIBLE_ATTRIBUTE_OVERLINE].\n\
+  "The \"none\" overline value for \
+   {{!Ocgtk.Constants.accessible_attribute_overline}[Gtk.ACCESSIBLE_ATTRIBUTE_OVERLINE]}.\n\
   \    @since 4.14"]
 
 val accessible_attribute_overline_single : string
 [@@ocaml.doc
-  "The \"single\" overline value for [Gtk.ACCESSIBLE_ATTRIBUTE_OVERLINE].\n\
+  "The \"single\" overline value for \
+   {{!Ocgtk.Constants.accessible_attribute_overline}[Gtk.ACCESSIBLE_ATTRIBUTE_OVERLINE]}.\n\
   \    @since 4.14"]
 
 val accessible_attribute_size : string
@@ -44,56 +46,65 @@ val accessible_attribute_stretch : string
 
     Possible values are:
 
-    - [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH_ULTRA_CONDENSED]
-    - [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH_EXTRA_CONDENSED]
-    - [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH_CONDENSED]
-    - [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH_SEMI_CONDENSED]
+    - {{!Ocgtk.Constants.accessible_attribute_stretch_ultra_condensed}[Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH_ULTRA_CONDENSED]}
+    - {{!Ocgtk.Constants.accessible_attribute_stretch_extra_condensed}[Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH_EXTRA_CONDENSED]}
+    - {{!Ocgtk.Constants.accessible_attribute_stretch_condensed}[Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH_CONDENSED]}
+    - {{!Ocgtk.Constants.accessible_attribute_stretch_semi_condensed}[Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH_SEMI_CONDENSED]}
 
     @since 4.14 *)
 
 val accessible_attribute_stretch_condensed : string
 [@@ocaml.doc
-  "The \"condensed\" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].\n\
+  "The \"condensed\" stretch value for \
+   {{!Ocgtk.Constants.accessible_attribute_stretch}[Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH]}.\n\
   \    @since 4.14"]
 
 val accessible_attribute_stretch_expanded : string
 [@@ocaml.doc
-  "The \"expanded\" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].\n\
+  "The \"expanded\" stretch value for \
+   {{!Ocgtk.Constants.accessible_attribute_stretch}[Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH]}.\n\
   \    @since 4.14"]
 
 val accessible_attribute_stretch_extra_condensed : string
 [@@ocaml.doc
-  "The \"extra condensed\" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].\n\
+  "The \"extra condensed\" stretch value for \
+   {{!Ocgtk.Constants.accessible_attribute_stretch}[Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH]}.\n\
   \    @since 4.14"]
 
 val accessible_attribute_stretch_extra_expanded : string
 [@@ocaml.doc
-  "The \"extra expanded\" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].\n\
+  "The \"extra expanded\" stretch value for \
+   {{!Ocgtk.Constants.accessible_attribute_stretch}[Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH]}.\n\
   \    @since 4.14"]
 
 val accessible_attribute_stretch_normal : string
 [@@ocaml.doc
-  "The \"normal\" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].\n\
+  "The \"normal\" stretch value for \
+   {{!Ocgtk.Constants.accessible_attribute_stretch}[Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH]}.\n\
   \    @since 4.14"]
 
 val accessible_attribute_stretch_semi_condensed : string
 [@@ocaml.doc
-  "The \"semi condensed\" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].\n\
+  "The \"semi condensed\" stretch value for \
+   {{!Ocgtk.Constants.accessible_attribute_stretch}[Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH]}.\n\
   \    @since 4.14"]
 
 val accessible_attribute_stretch_semi_expanded : string
 [@@ocaml.doc
-  "The \"semi expanded\" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].\n\
+  "The \"semi expanded\" stretch value for \
+   {{!Ocgtk.Constants.accessible_attribute_stretch}[Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH]}.\n\
   \    @since 4.14"]
 
 val accessible_attribute_stretch_ultra_condensed : string
 [@@ocaml.doc
-  "The \"ultra condensed\" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].\n\
+  "The \"ultra condensed\" stretch value for \
+   {{!Ocgtk.Constants.accessible_attribute_stretch}[Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH]}.\n\
   \    @since 4.14"]
 
 val accessible_attribute_stretch_ultra_expanded : string
 [@@ocaml.doc
-  "The \"ultra expanded\" stretch value for [Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH].\n\
+  "The \"ultra expanded\" stretch value for \
+   {{!Ocgtk.Constants.accessible_attribute_stretch}[Gtk.ACCESSIBLE_ATTRIBUTE_STRETCH]}.\n\
   \    @since 4.14"]
 
 val accessible_attribute_strikethrough : string
@@ -107,25 +118,28 @@ val accessible_attribute_style : string
 
     Possible values are:
 
-    - [Gtk.ACCESSIBLE_ATTRIBUTE_STYLE_NORMAL]
-    - [Gtk.ACCESSIBLE_ATTRIBUTE_STYLE_OBLIQUE]
-    - [Gtk.ACCESSIBLE_ATTRIBUTE_STYLE_ITALIC]
+    - {{!Ocgtk.Constants.accessible_attribute_style_normal}[Gtk.ACCESSIBLE_ATTRIBUTE_STYLE_NORMAL]}
+    - {{!Ocgtk.Constants.accessible_attribute_style_oblique}[Gtk.ACCESSIBLE_ATTRIBUTE_STYLE_OBLIQUE]}
+    - {{!Ocgtk.Constants.accessible_attribute_style_italic}[Gtk.ACCESSIBLE_ATTRIBUTE_STYLE_ITALIC]}
 
     @since 4.14 *)
 
 val accessible_attribute_style_italic : string
 [@@ocaml.doc
-  "The \"italic\" style value for [Gtk.ACCESSIBLE_ATTRIBUTE_STYLE].\n\
+  "The \"italic\" style value for \
+   {{!Ocgtk.Constants.accessible_attribute_style}[Gtk.ACCESSIBLE_ATTRIBUTE_STYLE]}.\n\
   \    @since 4.14"]
 
 val accessible_attribute_style_normal : string
 [@@ocaml.doc
-  "The \"normal\" style value for [Gtk.ACCESSIBLE_ATTRIBUTE_STYLE].\n\
+  "The \"normal\" style value for \
+   {{!Ocgtk.Constants.accessible_attribute_style}[Gtk.ACCESSIBLE_ATTRIBUTE_STYLE]}.\n\
   \    @since 4.14"]
 
 val accessible_attribute_style_oblique : string
 [@@ocaml.doc
-  "The \"oblique\" style value for [Gtk.ACCESSIBLE_ATTRIBUTE_STYLE].\n\
+  "The \"oblique\" style value for \
+   {{!Ocgtk.Constants.accessible_attribute_style}[Gtk.ACCESSIBLE_ATTRIBUTE_STYLE]}.\n\
   \    @since 4.14"]
 
 val accessible_attribute_underline : string
@@ -133,31 +147,35 @@ val accessible_attribute_underline : string
 
     Possible values are:
 
-    - [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE_NONE]
-    - [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE_SINGLE]
-    - [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE_DOUBLE]
-    - [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE_ERROR]
+    - {{!Ocgtk.Constants.accessible_attribute_underline_none}[Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE_NONE]}
+    - {{!Ocgtk.Constants.accessible_attribute_underline_single}[Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE_SINGLE]}
+    - {{!Ocgtk.Constants.accessible_attribute_underline_double}[Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE_DOUBLE]}
+    - {{!Ocgtk.Constants.accessible_attribute_underline_error}[Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE_ERROR]}
 
     @since 4.14 *)
 
 val accessible_attribute_underline_double : string
 [@@ocaml.doc
-  "The \"double\" underline value for [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].\n\
+  "The \"double\" underline value for \
+   {{!Ocgtk.Constants.accessible_attribute_underline}[Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE]}.\n\
   \    @since 4.14"]
 
 val accessible_attribute_underline_error : string
 [@@ocaml.doc
-  "The \"error\" underline value for [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].\n\
+  "The \"error\" underline value for \
+   {{!Ocgtk.Constants.accessible_attribute_underline}[Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE]}.\n\
   \    @since 4.14"]
 
 val accessible_attribute_underline_none : string
 [@@ocaml.doc
-  "The \"none\" underline value for [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].\n\
+  "The \"none\" underline value for \
+   {{!Ocgtk.Constants.accessible_attribute_underline}[Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE]}.\n\
   \    @since 4.14"]
 
 val accessible_attribute_underline_single : string
 [@@ocaml.doc
-  "The \"single\" underline value for [Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE].\n\
+  "The \"single\" underline value for \
+   {{!Ocgtk.Constants.accessible_attribute_underline}[Gtk.ACCESSIBLE_ATTRIBUTE_UNDERLINE]}.\n\
   \    @since 4.14"]
 
 val accessible_attribute_variant : string
@@ -165,43 +183,49 @@ val accessible_attribute_variant : string
 
     Possible values are:
 
-    - [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT_SMALL_CAPS]
-    - [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT_ALL_SMALL_CAPS]
-    - [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT_PETITE_CAPS]
-    - [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT_ALL_PETITE_CAPS]
-    - [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT_UNICASE]
-    - [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT_TITLE_CAPS]
+    - {{!Ocgtk.Constants.accessible_attribute_variant_small_caps}[Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT_SMALL_CAPS]}
+    - {{!Ocgtk.Constants.accessible_attribute_variant_all_small_caps}[Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT_ALL_SMALL_CAPS]}
+    - {{!Ocgtk.Constants.accessible_attribute_variant_petite_caps}[Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT_PETITE_CAPS]}
+    - {{!Ocgtk.Constants.accessible_attribute_variant_all_petite_caps}[Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT_ALL_PETITE_CAPS]}
+    - {{!Ocgtk.Constants.accessible_attribute_variant_unicase}[Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT_UNICASE]}
+    - {{!Ocgtk.Constants.accessible_attribute_variant_title_caps}[Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT_TITLE_CAPS]}
 
     @since 4.14 *)
 
 val accessible_attribute_variant_all_petite_caps : string
 [@@ocaml.doc
-  "The \"all petite caps\" variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].\n\
+  "The \"all petite caps\" variant value for \
+   {{!Ocgtk.Constants.accessible_attribute_variant}[Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT]}.\n\
   \    @since 4.14"]
 
 val accessible_attribute_variant_all_small_caps : string
 [@@ocaml.doc
-  "The \"all small caps\" variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].\n\
+  "The \"all small caps\" variant value for \
+   {{!Ocgtk.Constants.accessible_attribute_variant}[Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT]}.\n\
   \    @since 4.14"]
 
 val accessible_attribute_variant_petite_caps : string
 [@@ocaml.doc
-  "The \"petite caps\" variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].\n\
+  "The \"petite caps\" variant value for \
+   {{!Ocgtk.Constants.accessible_attribute_variant}[Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT]}.\n\
   \    @since 4.14"]
 
 val accessible_attribute_variant_small_caps : string
 [@@ocaml.doc
-  "The \"small caps\" variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].\n\
+  "The \"small caps\" variant value for \
+   {{!Ocgtk.Constants.accessible_attribute_variant}[Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT]}.\n\
   \    @since 4.14"]
 
 val accessible_attribute_variant_title_caps : string
 [@@ocaml.doc
-  "The \"title caps\" variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].\n\
+  "The \"title caps\" variant value for \
+   {{!Ocgtk.Constants.accessible_attribute_variant}[Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT]}.\n\
   \    @since 4.14"]
 
 val accessible_attribute_variant_unicase : string
 [@@ocaml.doc
-  "The \"unicase\" variant value for [Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT].\n\
+  "The \"unicase\" variant value for \
+   {{!Ocgtk.Constants.accessible_attribute_variant}[Gtk.ACCESSIBLE_ATTRIBUTE_VARIANT]}.\n\
   \    @since 4.14"]
 
 val accessible_attribute_weight : string
@@ -452,11 +476,13 @@ val text_view_priority_validate : int
     in the background. *)
 
 val tree_sortable_default_sort_column_id : int
-(** Uses the default sort function in a [Gtk.TreeSortable].
+(** Uses the default sort function in a
+    {{!Ocgtk.Tree_sortable.class-type-tree_sortable_t}[Gtk.TreeSortable]}.
 
     See also: [Gtk.TreeSortable.set_sort_column_id] *)
 
 val tree_sortable_unsorted_sort_column_id : int
-(** Disables sorting in a [Gtk.TreeSortable].
+(** Disables sorting in a
+    {{!Ocgtk.Tree_sortable.class-type-tree_sortable_t}[Gtk.TreeSortable]}.
 
     See also: [Gtk.TreeSortable.set_sort_column_id] *)

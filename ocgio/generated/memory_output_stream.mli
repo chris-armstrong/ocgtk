@@ -21,7 +21,8 @@
     for GIO streaming output operations.
 
     As of GLib 2.34, [GMemoryOutputStream] trivially implements
-    [Gio.PollableOutputStream]: it always polls as ready. *)
+    {{!Ocgio.Pollable_output_stream.class-type-pollable_output_stream_t}[Gio.PollableOutputStream]}:
+    it always polls as ready. *)
 class type memory_output_stream_t = object
   inherit Output_stream.output_stream_t
   inherit Pollable_output_stream.pollable_output_stream_t
@@ -69,7 +70,8 @@ class memory_output_stream :
     for GIO streaming output operations.
 
     As of GLib 2.34, [GMemoryOutputStream] trivially implements
-    [Gio.PollableOutputStream]: it always polls as ready. *)
+    {{!Ocgio.Pollable_output_stream.class-type-pollable_output_stream_t}[Gio.PollableOutputStream]}:
+    it always polls as ready. *)
 
 (** {1:constructors Constructors} *)
 

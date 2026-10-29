@@ -52,7 +52,9 @@ end
      - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\n\
      Groups widgets together so they all request the same size.\n\n\
      This is typically useful when you want a column of widgets to have\n\
-     the same size, but you can’t use a [Gtk.Grid] or [Gtk.Box].\n\n\
+     the same size, but you can’t use a \
+     {{!Ocgtk.Grid.class-type-grid_t}[Gtk.Grid]} or \
+     {{!Ocgtk.Box.class-type-box_t}[Gtk.Box]}.\n\n\
      In detail, the size requested for each widget in a [GtkSizeGroup] is\n\
      the maximum of the sizes that would have been requested for each\n\
      widget in the size group if they were not in the size group. The\n\
@@ -114,7 +116,8 @@ end
      children (see [Gtk.Box:homogeneous]). Using homogeneous mode\n\
      can also have large performance benefits compared to either the same\n\
      container in non-homogeneous mode, or to size groups.\n\n\
-     [Gtk.Grid] can be used to position widgets into rows and\n\
+     {{!Ocgtk.Grid.class-type-grid_t}[Gtk.Grid]} can be used to position \
+     widgets into rows and\n\
      columns. Members of each column will have the same width among them;\n\
      likewise, members of each row will have the same height. On top of\n\
      that, the heights can be made equal between all rows with\n\
@@ -145,7 +148,9 @@ class size_group : Raw.Size_group.t -> size_group_t
 "{1:description Description}\n\n\
  Groups widgets together so they all request the same size.\n\n\
  This is typically useful when you want a column of widgets to have\n\
- the same size, but you can’t use a [Gtk.Grid] or [Gtk.Box].\n\n\
+ the same size, but you can’t use a \
+ {{!Ocgtk.Grid.class-type-grid_t}[Gtk.Grid]} or \
+ {{!Ocgtk.Box.class-type-box_t}[Gtk.Box]}.\n\n\
  In detail, the size requested for each widget in a [GtkSizeGroup] is\n\
  the maximum of the sizes that would have been requested for each\n\
  widget in the size group if they were not in the size group. The\n\
@@ -207,7 +212,8 @@ class size_group : Raw.Size_group.t -> size_group_t
  children (see [Gtk.Box:homogeneous]). Using homogeneous mode\n\
  can also have large performance benefits compared to either the same\n\
  container in non-homogeneous mode, or to size groups.\n\n\
- [Gtk.Grid] can be used to position widgets into rows and\n\
+ {{!Ocgtk.Grid.class-type-grid_t}[Gtk.Grid]} can be used to position widgets \
+ into rows and\n\
  columns. Members of each column will have the same width among them;\n\
  likewise, members of each row will have the same height. On top of\n\
  that, the heights can be made equal between all rows with\n\

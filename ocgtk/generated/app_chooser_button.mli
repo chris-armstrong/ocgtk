@@ -30,7 +30,8 @@
     [Gtk.AppChooserButton:show-default-item] is set, the default application is
     also included. To let the user chooser other applications, you can set the
     [Gtk.AppChooserButton:show-dialog-item] property, which allows to open a
-    full [Gtk.AppChooserDialog].
+    full
+    {{!Ocgtk.App_chooser_dialog.class-type-app_chooser_dialog_t}[Gtk.AppChooserDialog]}.
 
     It is possible to add custom items to the list, using
     [Gtk.AppChooserButton.append_custom_item]. These items cause the
@@ -148,7 +149,8 @@ class app_chooser_button : Raw.App_chooser_button.t -> app_chooser_button_t
     [Gtk.AppChooserButton:show-default-item] is set, the default application is
     also included. To let the user chooser other applications, you can set the
     [Gtk.AppChooserButton:show-dialog-item] property, which allows to open a
-    full [Gtk.AppChooserDialog].
+    full
+    {{!Ocgtk.App_chooser_dialog.class-type-app_chooser_dialog_t}[Gtk.AppChooserDialog]}.
 
     It is possible to add custom items to the list, using
     [Gtk.AppChooserButton.append_custom_item]. These items cause the

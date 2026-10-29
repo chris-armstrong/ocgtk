@@ -82,7 +82,8 @@ type accessibleproperty =
     (** Indicates whether inputting text could trigger display of one or more
         predictions of the user's intended value for a combobox, searchbox, or
         textbox and specifies how predictions would be presented if they were
-        made. Value type: [AccessibleAutocomplete] *)
+        made. Value type:
+        {{!Ocgtk.Enums.type-accessibleautocomplete}[AccessibleAutocomplete]} *)
   | `DESCRIPTION
     (** Defines a string value that describes or annotates the current element.
         Value type: string *)
@@ -113,7 +114,8 @@ type accessibleproperty =
         selectable descendants. Value type: boolean *)
   | `ORIENTATION
     (** Indicates whether the element's orientation is horizontal, vertical, or
-        unknown/ambiguous. Value type: [Orientation] *)
+        unknown/ambiguous. Value type:
+        {{!Ocgtk.Enums.type-orientation}[Orientation]} *)
   | `PLACEHOLDER
     (** Defines a short hint (a word or short phrase) intended to aid the user
         with data entry when the control has no value. A hint could be a sample
@@ -130,7 +132,8 @@ type accessibleproperty =
         an element. Value type: string *)
   | `SORT
     (** Indicates if items in a table or grid are sorted in ascending or
-        descending order. Value type: [AccessibleSort] *)
+        descending order. Value type:
+        {{!Ocgtk.Enums.type-accessiblesort}[AccessibleSort]} *)
   | `VALUE_MAX
     (** Defines the maximum allowed value for a range widget. Value type: double
     *)
@@ -146,7 +149,8 @@ type accessibleproperty =
   | `HELP_TEXT
     (** Defines a string value that provides a description of non-standard
         keyboard interactions of the current element. Value type: string *) ]
-(** The possible accessible properties of a [Accessible]. *)
+(** The possible accessible properties of a
+    {{!Ocgtk.Accessible.class-type-accessible_t}[Accessible]}. *)
 
 val accessibleproperty_of_int : int -> accessibleproperty
 val accessibleproperty_to_int : accessibleproperty -> int
@@ -252,7 +256,8 @@ type accessiblerelation =
 
         This relation is managed by GTK and should not be set from application
         code. *) ]
-(** The possible accessible relations of a [Accessible].
+(** The possible accessible relations of a
+    {{!Ocgtk.Accessible.class-type-accessible_t}[Accessible]}.
 
     Accessible relations can be references to other widgets, integers or
     strings. *)
@@ -297,7 +302,9 @@ type accessiblerole =
   | `GRID_CELL  (** An item in a grid or tree grid. *)
   | `GROUP
     (** An element that groups multiple related widgets. GTK uses this role for
-        various containers, like [Gtk.HeaderBar] or [Gtk.Notebook]. *)
+        various containers, like
+        {{!Ocgtk.Header_bar.class-type-header_bar_t}[Gtk.HeaderBar]} or
+        {{!Ocgtk.Notebook.class-type-notebook_t}[Gtk.Notebook]}. *)
   | `HEADING  (** Unused *)
   | `IMG  (** An image. *)
   | `INPUT  (** Abstract role. *)
@@ -395,7 +402,8 @@ type accessiblerole =
   | `COMMENT
     (** A comment contains content expressing reaction to other content. *)
   | `TERMINAL  (** A virtual terminal. *) ]
-(** The accessible role for a [Accessible] implementation.
+(** The accessible role for a
+    {{!Ocgtk.Accessible.class-type-accessible_t}[Accessible]} implementation.
 
     Abstract roles are only used as part of the ontology; application developers
     must not use abstract roles in their code. *)
@@ -423,8 +431,9 @@ val accessiblesort_to_int : accessiblesort -> int
 type accessiblestate =
   [ `BUSY  (** A “busy” state. This state has boolean values *)
   | `CHECKED
-    (** A “checked” state; indicates the current state of a [CheckButton]. Value
-        type: [AccessibleTristate] *)
+    (** A “checked” state; indicates the current state of a
+        {{!Ocgtk.Check_button.class-type-check_button_t}[CheckButton]}. Value
+        type: {{!Ocgtk.Enums.type-accessibletristate}[AccessibleTristate]} *)
   | `DISABLED
     (** A “disabled” state; corresponds to the [Widget:sensitive] property. It
         indicates a UI element that is perceivable, but not editable or
@@ -439,17 +448,20 @@ type accessiblestate =
         [GTK_ACCESSIBLE_STATE_DISABLED] *)
   | `INVALID
     (** An “invalid” state; set when a widget is showing an error. Value type:
-        [AccessibleInvalidState] *)
+        {{!Ocgtk.Enums.type-accessibleinvalidstate}[AccessibleInvalidState]} *)
   | `PRESSED
-    (** A “pressed” state; indicates the current state of a [ToggleButton].
-        Value type: [AccessibleTristate] enumeration *)
+    (** A “pressed” state; indicates the current state of a
+        {{!Ocgtk.Toggle_button.class-type-toggle_button_t}[ToggleButton]}. Value
+        type: {{!Ocgtk.Enums.type-accessibletristate}[AccessibleTristate]}
+        enumeration *)
   | `SELECTED
     (** A “selected” state; set when a widget is selected. Value type: boolean
         or undefined *)
   | `VISITED
     (** Indicates that a widget with the GTK_ACCESSIBLE_ROLE_LINK has been
         visited. Value type: boolean. *) ]
-(** The possible accessible states of a [Accessible]. *)
+(** The possible accessible states of a
+    {{!Ocgtk.Accessible.class-type-accessible_t}[Accessible]}. *)
 
 val accessiblestate_of_int : int -> accessiblestate
 val accessiblestate_to_int : accessiblestate -> int
@@ -485,7 +497,8 @@ type accessibletextgranularity =
         current paragraph and ending at the beginning of the next paragraph *)
   ]
 (** The granularity for queries about the text contents of a
-    [Gtk.AccessibleText] implementation.
+    {{!Ocgtk.Accessible_text.class-type-accessible_text_t}[Gtk.AccessibleText]}
+    implementation.
     @since 4.14 *)
 
 val accessibletextgranularity_of_int : int -> accessibletextgranularity
@@ -523,10 +536,10 @@ type align =
 
     Alignment only matters if the widget receives a “too large” allocation, for
     example if you packed the widget with the [Gtk.Widget:hexpand] property
-    inside a [Box], then the widget might get extra space. If you have for
-    example a 16x16 icon inside a 32x32 space, the icon could be scaled and
-    stretched, it could be centered, or it could be positioned to one side of
-    the space.
+    inside a {{!Ocgtk.Box.class-type-box_t}[Box]}, then the widget might get
+    extra space. If you have for example a 16x16 icon inside a 32x32 space, the
+    icon could be scaled and stretched, it could be centered, or it could be
+    positioned to one side of the space.
 
     Note that in horizontal context [GTK_ALIGN_START] and [GTK_ALIGN_END] are
     interpreted relative to text direction.
@@ -711,8 +724,9 @@ type collation =
   [ `NONE  (** Don't do any collation *)
   | `UNICODE  (** Use [GLib.utf8_collate_key] *)
   | `FILENAME  (** Use [GLib.utf8_collate_key_for_filename] *) ]
-(** Describes how a [Gtk.StringSorter] turns strings into sort keys to compare
-    them.
+(** Describes how a
+    {{!Ocgtk.String_sorter.class-type-string_sorter_t}[Gtk.StringSorter]} turns
+    strings into sort keys to compare them.
 
     Note that the result of sorting will in general depend on the current locale
     unless the mode is \@GTK_COLLATION_NONE.
@@ -742,7 +756,8 @@ type constraintattribute =
   | `CENTER_X  (** The center of a widget, on the horizontal axis *)
   | `CENTER_Y  (** The center of a widget, on the vertical axis *)
   | `BASELINE  (** The baseline of a widget *) ]
-(** The widget attributes that can be used when creating a [Constraint]. *)
+(** The widget attributes that can be used when creating a
+    {{!Ocgtk.Constraint.class-type-constraint__t}[Constraint]}. *)
 
 val constraintattribute_of_int : int -> constraintattribute
 val constraintattribute_to_int : constraintattribute -> int
@@ -767,8 +782,9 @@ type constraintstrength =
   | `WEAK  (** A weak constraint *) ]
 (** The strength of a constraint, expressed as a symbolic constant.
 
-    The strength of a [Constraint] can be expressed with any positive integer;
-    the values of this enumeration can be used for readability. *)
+    The strength of a {{!Ocgtk.Constraint.class-type-constraint__t}[Constraint]}
+    can be expressed with any positive integer; the values of this enumeration
+    can be used for readability. *)
 
 val constraintstrength_of_int : int -> constraintstrength
 val constraintstrength_to_int : constraintstrength -> int
@@ -935,7 +951,8 @@ type editableproperties =
   | `PROP_XALIGN  (** the property id for [Gtk.Editable:xalign] *)
   | `PROP_ENABLE_UNDO  (** the property id for [Gtk.Editable:enable-undo] *)
   | `NUM_PROPERTIES  (** the number of properties *) ]
-(** The identifiers for [Gtk.Editable] properties.
+(** The identifiers for {{!Ocgtk.Editable.class-type-editable_t}[Gtk.Editable]}
+    properties.
 
     See [Gtk.Editable.install_properties] for details on how to implement the
     [GtkEditable] interface. *)
@@ -961,7 +978,9 @@ type eventsequencestate =
   [ `NONE  (** The sequence is handled, but not grabbed. *)
   | `CLAIMED  (** The sequence is handled and grabbed. *)
   | `DENIED  (** The sequence is denied. *) ]
-(** Describes the state of a [Gdk.EventSequence] in a [Gesture]. *)
+(** Describes the state of a
+    {{!Ocgdk.Event_sequence.class-type-event_sequence_t}[Gdk.EventSequence]} in
+    a {{!Ocgtk.Gesture.class-type-gesture_t}[Gesture]}. *)
 
 val eventsequencestate_of_int : int -> eventsequencestate
 val eventsequencestate_to_int : eventsequencestate -> int
@@ -1015,16 +1034,19 @@ type filterchange =
         return false still return false, others now may, too. *)
   | `DIFFERENT_REWATCH
     (** Similar to [Gtk.FilterChange.DIFFERENT], but signs that item watches
-        should be recreated. This is used by [Gtk.FilterListModel] to keep the
-        list up-to-date when items change. *)
+        should be recreated. This is used by
+        {{!Ocgtk.Filter_list_model.class-type-filter_list_model_t}[Gtk.FilterListModel]}
+        to keep the list up-to-date when items change. *)
   | `LESS_STRICT_REWATCH
     (** Similar to [Gtk.FilterChange.LESS_STRICT], but signs that item watches
-        should be recreated. This is used by [Gtk.FilterListModel] to keep the
-        list up-to-date when items change. *)
+        should be recreated. This is used by
+        {{!Ocgtk.Filter_list_model.class-type-filter_list_model_t}[Gtk.FilterListModel]}
+        to keep the list up-to-date when items change. *)
   | `MORE_STRICT_REWATCH
     (** Similar to [Gtk.FilterChange.MORE_STRICT], but signs that item watches
-        should be recreated. This is used by [Gtk.FilterListModel] to keep the
-        list up-to-date when items change. *) ]
+        should be recreated. This is used by
+        {{!Ocgtk.Filter_list_model.class-type-filter_list_model_t}[Gtk.FilterListModel]}
+        to keep the list up-to-date when items change. *) ]
 (** Describes changes in a filter in more detail and allows objects using the
     filter to optimize refiltering items.
 
@@ -1150,7 +1172,8 @@ type imagetype =
   | `GICON  (** the widget contains a [GIcon] *)
   | `PAINTABLE  (** the widget contains a [GdkPaintable] *) ]
 [@@ocaml.doc
-  "Describes the image data representation used by a [Gtk.Image].\n\n\
+  "Describes the image data representation used by a \
+   {{!Ocgtk.Image.class-type-image_t}[Gtk.Image]}.\n\n\
    If you want to get the image from the widget, you can only get the\n\
    currently-stored representation; for instance, if the \
    gtk_image_get_storage_type()\n\
@@ -1259,7 +1282,8 @@ type justification =
   | `RIGHT  (** The text is placed at the right edge of the label. *)
   | `CENTER  (** The text is placed in the center of the label. *)
   | `FILL  (** The text is placed is distributed across the label. *) ]
-(** Used for justifying the text inside a [Label] widget. *)
+(** Used for justifying the text inside a
+    {{!Ocgtk.Label.class-type-label_t}[Label]} widget. *)
 
 val justification_of_int : int -> justification
 val justification_to_int : justification -> int
@@ -1269,7 +1293,8 @@ val justification_to_int : justification -> int
 type levelbarmode =
   [ `CONTINUOUS  (** the bar has a continuous mode *)
   | `DISCRETE  (** the bar has a discrete mode *) ]
-(** Describes how [LevelBar] contents should be rendered.
+(** Describes how {{!Ocgtk.Level_bar.class-type-level_bar_t}[LevelBar]} contents
+    should be rendered.
 
     Note that this enumeration could be extended with additional modes in the
     future. *)
@@ -1291,7 +1316,7 @@ type listtabbehavior =
         behaves like [GTK_LIST_TAB_ITEM]. *) ]
 (** Used to configure the focus behavior in the [GTK_DIR_TAB_FORWARD] and
     [GTK_DIR_TAB_BACKWARD] direction, like the <kbd>Tab</kbd> key in a
-    [Gtk.ListView].
+    {{!Ocgtk.List_view.class-type-list_view_t}[Gtk.ListView]}.
     @since 4.12 *)
 
 val listtabbehavior_of_int : int -> listtabbehavior
@@ -1305,7 +1330,8 @@ type messagetype =
   | `QUESTION  (** Question requiring a choice *)
   | `ERROR  (** Fatal error message *)
   | `OTHER  (** None of the above *) ]
-(** The type of message being displayed in a [MessageDialog]. *)
+(** The type of message being displayed in a
+    {{!Ocgtk.Message_dialog.class-type-message_dialog_t}[MessageDialog]}. *)
 
 val messagetype_of_int : int -> messagetype
 val messagetype_to_int : messagetype -> int
@@ -1392,7 +1418,8 @@ type orientation =
   | `VERTICAL  (** The element is in vertical orientation. *) ]
 (** Represents the orientation of widgets and other objects.
 
-    Typical examples are [Box] or [GesturePan]. *)
+    Typical examples are {{!Ocgtk.Box.class-type-box_t}[Box]} or
+    {{!Ocgtk.Gesture_pan.class-type-gesture_pan_t}[GesturePan]}. *)
 
 val orientation_of_int : int -> orientation
 val orientation_to_int : orientation -> int
@@ -1421,7 +1448,8 @@ type packtype =
   | `END  (** The child is packed into the end of the widget *) ]
 (** Represents the packing location of a children in its parent.
 
-    See [WindowControls] for example. *)
+    See {{!Ocgtk.Window_controls.class-type-window_controls_t}[WindowControls]}
+    for example. *)
 
 val packtype_of_int : int -> packtype
 val packtype_to_int : packtype -> int
@@ -1468,7 +1496,8 @@ type pandirection =
   | `RIGHT  (** panned towards the right *)
   | `UP  (** panned upwards *)
   | `DOWN  (** panned downwards *) ]
-(** Describes the panning direction of a [GesturePan]. *)
+(** Describes the panning direction of a
+    {{!Ocgtk.Gesture_pan.class-type-gesture_pan_t}[GesturePan]}. *)
 
 val pandirection_of_int : int -> pandirection
 val pandirection_to_int : pandirection -> int
@@ -1504,7 +1533,9 @@ type positiontype =
   | `BOTTOM  (** The feature is at the bottom edge. *) ]
 (** Describes which edge of a widget a certain feature is positioned at.
 
-    For examples, see the tabs of a [Notebook], or the label of a [Scale]. *)
+    For examples, see the tabs of a
+    {{!Ocgtk.Notebook.class-type-notebook_t}[Notebook]}, or the label of a
+    {{!Ocgtk.Scale.class-type-scale_t}[Scale]}. *)
 
 val positiontype_of_int : int -> positiontype
 val positiontype_to_int : positiontype -> int
@@ -1627,12 +1658,13 @@ val printstatus_to_int : printstatus -> int
 type propagationlimit =
   [ `NONE  (** Events are handled regardless of what their target is. *)
   | `SAME_NATIVE
-    (** Events are only handled if their target is in the same [Native] (or
-        widget with [Gtk.Widget:limit-events] set) as the event controllers
-        widget. Note that some event types have two targets (origin and
-        destination). *) ]
-(** Describes limits of a [EventController] for handling events targeting other
-    widgets. *)
+    (** Events are only handled if their target is in the same
+        {{!Ocgtk.Native.class-type-native_t}[Native]} (or widget with
+        [Gtk.Widget:limit-events] set) as the event controllers widget. Note
+        that some event types have two targets (origin and destination). *) ]
+(** Describes limits of a
+    {{!Ocgtk.Event_controller.class-type-event_controller_t}[EventController]}
+    for handling events targeting other widgets. *)
 
 val propagationlimit_of_int : int -> propagationlimit
 val propagationlimit_to_int : propagationlimit -> int
@@ -1654,7 +1686,9 @@ type propagationphase =
     (** Events are delivered in the default widget event handlers, note that
         widget implementations must chain up on button, motion, touch and grab
         broken handlers for controllers in this phase to be run. *) ]
-(** Describes the stage at which events are fed into a [EventController]. *)
+(** Describes the stage at which events are fed into a
+    {{!Ocgtk.Event_controller.class-type-event_controller_t}[EventController]}.
+*)
 
 val propagationphase_of_int : int -> propagationphase
 val propagationphase_to_int : propagationphase -> int
@@ -1807,10 +1841,14 @@ type shortcutscope =
   [ `LOCAL
     (** Shortcuts are handled inside the widget the controller belongs to. *)
   | `MANAGED
-    (** Shortcuts are handled by the first ancestor that is a [ShortcutManager]
+    (** Shortcuts are handled by the first ancestor that is a
+        {{!Ocgtk.Shortcut_manager.class-type-shortcut_manager_t}[ShortcutManager]}
     *)
   | `GLOBAL  (** Shortcuts are handled by the root widget. *) ]
-(** Describes where [Shortcut]s added to a [ShortcutController] get handled. *)
+(** Describes where {{!Ocgtk.Shortcut.class-type-shortcut_t}[Shortcut]}s added
+    to a
+    {{!Ocgtk.Shortcut_controller.class-type-shortcut_controller_t}[ShortcutController]}
+    get handled. *)
 
 val shortcutscope_of_int : int -> shortcutscope
 val shortcutscope_to_int : shortcutscope -> int
@@ -2054,7 +2092,8 @@ type systemsetting =
     The values indicate which system setting has changed. Widgets may need to
     drop caches, or react otherwise.
 
-    Most of the values correspond to [Settings] properties.
+    Most of the values correspond to
+    {{!Ocgtk.Settings.class-type-settings_t}[Settings]} properties.
 
     More values may be added over time. *)
 
@@ -2239,9 +2278,10 @@ type builderclosureflags_flag =
 (** The list of flags that can be passed to gtk_builder_create_closure().
 
     New values may be added in the future for new features, so external
-    implementations of [Gtk.BuilderScope] should test the flags for unknown
-    values and raise a [GTK_BUILDER_ERROR_INVALID_ATTRIBUTE] error when they
-    encounter one. *)
+    implementations of
+    {{!Ocgtk.Builder_scope.class-type-builder_scope_t}[Gtk.BuilderScope]} should
+    test the flags for unknown values and raise a
+    [GTK_BUILDER_ERROR_INVALID_ATTRIBUTE] error when they encounter one. *)
 
 type builderclosureflags = builderclosureflags_flag list
 
@@ -2401,7 +2441,7 @@ type inputhints_flag =
     applications.
 
     Note that input methods may already tailor their behaviour according to the
-    [InputPurpose] of the entry.
+    {{!Ocgtk.Enums.type-inputpurpose}[InputPurpose]} of the entry.
 
     Some common sense is expected when using these flags - mixing
     [GTK_INPUT_HINT_LOWERCASE] with any of the uppercase hints makes no sense.
@@ -2451,7 +2491,9 @@ type popovermenuflags_flag =
     (** Submenus are presented as sliding submenus that replace the main menu.
     *)
   | `NESTED  (** Submenus are presented as traditional, nested popovers. *) ]
-(** Flags that affect how [Gtk.PopoverMenu] widgets built from a [Gio.MenuModel]
+(** Flags that affect how
+    {{!Ocgtk.Popover_menu.class-type-popover_menu_t}[Gtk.PopoverMenu]} widgets
+    built from a {{!Ocgio.Menu_model.class-type-menu_model_t}[Gio.MenuModel]}
     are created and displayed. *)
 
 type popovermenuflags = popovermenuflags_flag list

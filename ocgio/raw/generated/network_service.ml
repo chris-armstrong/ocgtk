@@ -1,13 +1,15 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* NetworkService: NetworkService *)
 
-(** Like [Gio.NetworkAddress] does with hostnames, [GNetworkService] provides an
-    easy way to resolve a SRV record, and then attempt to connect to one of the
-    hosts that implements that service, handling service priority/weighting,
-    multiple IP addresses, and multiple address families.
+(** Like {{!Ocgio.Raw.Network_address}[Gio.NetworkAddress]} does with hostnames,
+    [GNetworkService] provides an easy way to resolve a SRV record, and then
+    attempt to connect to one of the hosts that implements that service,
+    handling service priority/weighting, multiple IP addresses, and multiple
+    address families.
 
-    See [Gio.SrvTarget] for more information about SRV records, and see
-    [Gio.SocketConnectable] for an example of using the connectable interface.
+    See {{!Ocgio.Raw.Srv_target}[Gio.SrvTarget]} for more information about SRV
+    records, and see {{!Ocgio.Raw.Socket_connectable}[Gio.SocketConnectable]}
+    for an example of using the connectable interface.
 
     The class built on this module is in {!Ocgio.Network_service}. *)
 

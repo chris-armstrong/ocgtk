@@ -157,9 +157,11 @@ external set_tab_detachable :
    interchange between them.\n\n\
    If you want a widget to interact with a notebook through DnD\n\
    (i.e.: accept dragged tabs from it) it must be set as a drop\n\
-   destination by adding to it a [Gtk.DropTarget] controller that accepts\n\
+   destination by adding to it a {{!Ocgtk.Raw.Drop_target}[Gtk.DropTarget]} \
+   controller that accepts\n\
    the GType [GTK_TYPE_NOTEBOOK_PAGE]. The [:value] of said drop target will be\n\
-   preloaded with a [Gtk.NotebookPage] object that corresponds to the\n\
+   preloaded with a {{!Ocgtk.Raw.Notebook_page}[Gtk.NotebookPage]} object that \
+   corresponds to the\n\
    dropped tab, so you can process the value via [::accept] or [::drop] \
    signals.\n\n\
    Note that you should use [Gtk.Notebook.detach_tab] instead\n\
@@ -409,8 +411,8 @@ external get_pages : t -> Ocgio_raw.List_model.t = "ml_gtk_notebook_get_pages"
 (** Returns a [GListModel] that contains the pages of the notebook.
 
     This can be used to keep an up-to-date view. The model also implements
-    [Gtk.SelectionModel] and can be used to track and modify the visible page.
-*)
+    {{!Ocgtk.Raw.Selection_model}[Gtk.SelectionModel]} and can be used to track
+    and modify the visible page. *)
 
 external get_page :
   t ->

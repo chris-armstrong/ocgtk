@@ -1,10 +1,11 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Shim module for FileEnumerator from cyclic group App_info_cycle_64c425a0 *)
 
-(** [GFileEnumerator] allows you to operate on a set of [Gio.File] objects,
-    returning a [Gio.FileInfo] structure for each file enumerated (e.g.
-    [Gio.File.enumerate_children] will return a [GFileEnumerator] for each of
-    the children within a directory).
+(** [GFileEnumerator] allows you to operate on a set of
+    {{!Ocgio.File.class-type-file_t}[Gio.File]} objects, returning a
+    {{!Ocgio.File_info.class-type-file_info_t}[Gio.FileInfo]} structure for each
+    file enumerated (e.g. [Gio.File.enumerate_children] will return a
+    [GFileEnumerator] for each of the children within a directory).
 
     Its methods, signals and properties are on {!class-type-file_enumerator_t}.
     Its full description is under {!section-description}. Its constructors are
@@ -16,16 +17,18 @@
 class type file_enumerator_t = App_info_cycle_64c425a0.file_enumerator_t
 (** {b The methods, signals and properties of a [FileEnumerator].}
 
-    [GFileEnumerator] allows you to operate on a set of [Gio.File] objects,
-    returning a [Gio.FileInfo] structure for each file enumerated (e.g.
-    [Gio.File.enumerate_children] will return a [GFileEnumerator] for each of
-    the children within a directory).
+    [GFileEnumerator] allows you to operate on a set of
+    {{!Ocgio.File.class-type-file_t}[Gio.File]} objects, returning a
+    {{!Ocgio.File_info.class-type-file_info_t}[Gio.FileInfo]} structure for each
+    file enumerated (e.g. [Gio.File.enumerate_children] will return a
+    [GFileEnumerator] for each of the children within a directory).
 
     To get the next file's information from a [GFileEnumerator], use
     [Gio.FileEnumerator.next_file] or its asynchronous version,
     [Gio.FileEnumerator.next_files_async]. Note that the asynchronous version
-    will return a list of [Gio.FileInfo] objects, whereas the synchronous will
-    only return the next file in the enumerator.
+    will return a list of
+    {{!Ocgio.File_info.class-type-file_info_t}[Gio.FileInfo]} objects, whereas
+    the synchronous will only return the next file in the enumerator.
 
     The ordering of returned files is unspecified for non-Unix platforms; for
     more information, see [GLib.Dir.read_name]. On Unix, when operating on local
@@ -46,16 +49,18 @@ class file_enumerator : Raw.File_enumerator.t -> file_enumerator_t
 
 (** {1:description Description}
 
-    [GFileEnumerator] allows you to operate on a set of [Gio.File] objects,
-    returning a [Gio.FileInfo] structure for each file enumerated (e.g.
-    [Gio.File.enumerate_children] will return a [GFileEnumerator] for each of
-    the children within a directory).
+    [GFileEnumerator] allows you to operate on a set of
+    {{!Ocgio.File.class-type-file_t}[Gio.File]} objects, returning a
+    {{!Ocgio.File_info.class-type-file_info_t}[Gio.FileInfo]} structure for each
+    file enumerated (e.g. [Gio.File.enumerate_children] will return a
+    [GFileEnumerator] for each of the children within a directory).
 
     To get the next file's information from a [GFileEnumerator], use
     [Gio.FileEnumerator.next_file] or its asynchronous version,
     [Gio.FileEnumerator.next_files_async]. Note that the asynchronous version
-    will return a list of [Gio.FileInfo] objects, whereas the synchronous will
-    only return the next file in the enumerator.
+    will return a list of
+    {{!Ocgio.File_info.class-type-file_info_t}[Gio.FileInfo]} objects, whereas
+    the synchronous will only return the next file in the enumerator.
 
     The ordering of returned files is unspecified for non-Unix platforms; for
     more information, see [GLib.Dir.read_name]. On Unix, when operating on local

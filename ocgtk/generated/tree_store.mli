@@ -1,4 +1,5 @@
-(** A tree-like data structure that can be used with the [Gtk.TreeView].
+(** A tree-like data structure that can be used with the
+    {{!Ocgtk.Tree_view.class-type-tree_view_t}[Gtk.TreeView]}.
 
     Its methods, signals and properties are on {!class-type-tree_store_t}. Its
     full description is under {!section-description}. Its constructors are under
@@ -100,16 +101,25 @@ end
      {{!Ocgtk.Tree_drag_source.class-type-tree_drag_source_t}Ocgtk.Tree_drag_source}\n\
      - {{!Ocgtk.Tree_model.class-type-tree_model_t}Ocgtk.Tree_model}\n\
      - {{!Ocgtk.Tree_sortable.class-type-tree_sortable_t}Ocgtk.Tree_sortable}\n\n\
-     A tree-like data structure that can be used with the [Gtk.TreeView].\n\n\
+     A tree-like data structure that can be used with the \
+     {{!Ocgtk.Tree_view.class-type-tree_view_t}[Gtk.TreeView]}.\n\n\
      The [GtkTreeStore] object is a list model for use with a [GtkTreeView]\n\
-     widget. It implements the [Gtk.TreeModel] interface, and consequently,\n\
+     widget. It implements the \
+     {{!Ocgtk.Tree_model.class-type-tree_model_t}[Gtk.TreeModel]} interface, \
+     and consequently,\n\
      can use all of the methods available there. It also implements the\n\
-     [Gtk.TreeSortable] interface so it can be sorted by the view.\n\
-     Finally, it also implements the tree \\[drag\\][Gtk.TreeDragSource]\n\
-     and \\[drop\\][Gtk.TreeDragDest] interfaces.\n\n\
+     {{!Ocgtk.Tree_sortable.class-type-tree_sortable_t}[Gtk.TreeSortable]} \
+     interface so it can be sorted by the view.\n\
+     Finally, it also implements the tree \
+     \\[drag\\]{{!Ocgtk.Tree_drag_source.class-type-tree_drag_source_t}[Gtk.TreeDragSource]}\n\
+     and \
+     \\[drop\\]{{!Ocgtk.Tree_drag_dest.class-type-tree_drag_dest_t}[Gtk.TreeDragDest]} \
+     interfaces.\n\n\
      [GtkTreeStore] is deprecated since GTK 4.10, and should not be used in \
      newly\n\
-     written code. You should use [Gtk.TreeListModel] for a tree-like model\n\
+     written code. You should use \
+     {{!Ocgtk.Tree_list_model.class-type-tree_list_model_t}[Gtk.TreeListModel]} \
+     for a tree-like model\n\
      object.\n\n\
      {b GtkTreeStore as GtkBuildable}\n\n\
      The GtkTreeStore implementation of the [GtkBuildable] interface allows\n\
@@ -132,15 +142,24 @@ class tree_store : Raw.Tree_store.t -> tree_store_t
 
 [@@@ocaml.text
 "{1:description Description}\n\n\
- A tree-like data structure that can be used with the [Gtk.TreeView].\n\n\
+ A tree-like data structure that can be used with the \
+ {{!Ocgtk.Tree_view.class-type-tree_view_t}[Gtk.TreeView]}.\n\n\
  The [GtkTreeStore] object is a list model for use with a [GtkTreeView]\n\
- widget. It implements the [Gtk.TreeModel] interface, and consequently,\n\
+ widget. It implements the \
+ {{!Ocgtk.Tree_model.class-type-tree_model_t}[Gtk.TreeModel]} interface, and \
+ consequently,\n\
  can use all of the methods available there. It also implements the\n\
- [Gtk.TreeSortable] interface so it can be sorted by the view.\n\
- Finally, it also implements the tree \\[drag\\][Gtk.TreeDragSource]\n\
- and \\[drop\\][Gtk.TreeDragDest] interfaces.\n\n\
+ {{!Ocgtk.Tree_sortable.class-type-tree_sortable_t}[Gtk.TreeSortable]} \
+ interface so it can be sorted by the view.\n\
+ Finally, it also implements the tree \
+ \\[drag\\]{{!Ocgtk.Tree_drag_source.class-type-tree_drag_source_t}[Gtk.TreeDragSource]}\n\
+ and \
+ \\[drop\\]{{!Ocgtk.Tree_drag_dest.class-type-tree_drag_dest_t}[Gtk.TreeDragDest]} \
+ interfaces.\n\n\
  [GtkTreeStore] is deprecated since GTK 4.10, and should not be used in newly\n\
- written code. You should use [Gtk.TreeListModel] for a tree-like model\n\
+ written code. You should use \
+ {{!Ocgtk.Tree_list_model.class-type-tree_list_model_t}[Gtk.TreeListModel]} \
+ for a tree-like model\n\
  object.\n\n\
  {b GtkTreeStore as GtkBuildable}\n\n\
  The GtkTreeStore implementation of the [GtkBuildable] interface allows\n\

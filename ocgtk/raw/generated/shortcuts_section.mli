@@ -7,17 +7,20 @@
     If your application needs multiple sections, you should give each section a
     unique [Gtk.ShortcutsSection:section-name] and a
     [Gtk.ShortcutsSection:title] that can be shown in the section selector of
-    the [Gtk.ShortcutsWindow].
+    the {{!Ocgtk.Raw.Shortcuts_window}[Gtk.ShortcutsWindow]}.
 
     The [Gtk.ShortcutsSection:max-height] property can be used to influence how
     the groups in the section are distributed over pages and columns.
 
-    This widget is only meant to be used with [Gtk.ShortcutsWindow].
+    This widget is only meant to be used with
+    {{!Ocgtk.Raw.Shortcuts_window}[Gtk.ShortcutsWindow]}.
 
     The recommended way to construct a [GtkShortcutsSection] is with
-    [Gtk.Builder], by using the [<child>] tag to populate a
-    [GtkShortcutsSection] with one or more [Gtk.ShortcutsGroup] instances, which
-    in turn contain one or more [Gtk.ShortcutsShortcut] objects.
+    {{!Ocgtk.Raw.Builder}[Gtk.Builder]}, by using the [<child>] tag to populate
+    a [GtkShortcutsSection] with one or more
+    {{!Ocgtk.Raw.Shortcuts_group}[Gtk.ShortcutsGroup]} instances, which in turn
+    contain one or more {{!Ocgtk.Raw.Shortcuts_shortcut}[Gtk.ShortcutsShortcut]}
+    objects.
 
     If you need to add a group programmatically, use
     [Gtk.ShortcutsSection.add_group].
@@ -44,8 +47,8 @@ external add_group : t -> Shortcuts_group.t -> unit
   = "ml_gtk_shortcuts_section_add_group"
 (** Adds a group to the shortcuts section.
 
-    This is the programmatic equivalent to using [Gtk.Builder] and a [<child>]
-    tag to add the child.
+    This is the programmatic equivalent to using
+    {{!Ocgtk.Raw.Builder}[Gtk.Builder]} and a [<child>] tag to add the child.
 
     Adding children with the [GtkBox] API is not appropriate, as
     [GtkShortcutsSection] manages its children internally. *)

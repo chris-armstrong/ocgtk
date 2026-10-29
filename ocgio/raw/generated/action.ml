@@ -18,7 +18,7 @@
 
     [GAction] is merely the interface to the concept of an action, as described
     above. Various implementations of actions exist, including
-    [Gio.SimpleAction].
+    {{!Ocgio.Raw.Simple_action}[Gio.SimpleAction]}.
 
     In all cases, the implementing class is responsible for storing the name of
     the action, the parameter type, the enabled state, the optional state type
@@ -27,7 +27,7 @@
     [Gio.Action.change_state] for type safety and for the state being enabled.
 
     Probably the only useful thing to do with a [GAction] is to put it inside of
-    a [Gio.SimpleActionGroup].
+    a {{!Ocgio.Raw.Simple_action_group}[Gio.SimpleActionGroup]}.
 
     The class built on this module is in {!Ocgio.Action}. *)
 

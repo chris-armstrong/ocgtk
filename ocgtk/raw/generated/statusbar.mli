@@ -2,7 +2,7 @@
 (* Statusbar: Statusbar *)
 
 (** A [GtkStatusbar] widget is usually placed along the bottom of an
-    application's main [Gtk.Window].
+    application's main {{!Ocgtk.Raw.Window}[Gtk.Window]}.
 
     An example GtkStatusbar
 

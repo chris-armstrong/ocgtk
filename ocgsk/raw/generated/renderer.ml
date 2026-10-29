@@ -1,11 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Renderer: Renderer *)
 
-(** Renders a scene graph defined via a tree of [Gsk.RenderNode] instances.
+(** Renders a scene graph defined via a tree of
+    {{!Ocgsk.Raw.Render_node}[Gsk.RenderNode]} instances.
 
     Typically you will use a [GskRenderer] instance to repeatedly call
     [Gsk.Renderer.render] to update the contents of its associated
-    [Gdk.Surface].
+    {{!Ocgdk.Raw.Surface}[Gdk.Surface]}.
 
     It is necessary to realize a [GskRenderer] instance using
     [Gsk.Renderer.realize] before calling [Gsk.Renderer.render], in order to

@@ -20,7 +20,8 @@
     [GMemoryInputStream] is a class for using arbitrary memory chunks as input
     for GIO streaming input operations.
 
-    As of GLib 2.34, [GMemoryInputStream] implements [Gio.PollableInputStream].
+    As of GLib 2.34, [GMemoryInputStream] implements
+    {{!Ocgio.Pollable_input_stream.class-type-pollable_input_stream_t}[Gio.PollableInputStream]}.
 *)
 class type memory_input_stream_t = object
   inherit Input_stream.input_stream_t
@@ -45,7 +46,8 @@ class memory_input_stream : Raw.Memory_input_stream.t -> memory_input_stream_t
     [GMemoryInputStream] is a class for using arbitrary memory chunks as input
     for GIO streaming input operations.
 
-    As of GLib 2.34, [GMemoryInputStream] implements [Gio.PollableInputStream].
+    As of GLib 2.34, [GMemoryInputStream] implements
+    {{!Ocgio.Pollable_input_stream.class-type-pollable_input_stream_t}[Gio.PollableInputStream]}.
 *)
 
 (** {1:constructors Constructors} *)

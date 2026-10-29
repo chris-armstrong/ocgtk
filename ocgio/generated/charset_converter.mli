@@ -1,4 +1,5 @@
-(** [GCharsetConverter] is an implementation of [Gio.Converter] based on
+(** [GCharsetConverter] is an implementation of
+    {{!Ocgio.Converter.class-type-converter_t}[Gio.Converter]} based on
     [GLib.IConv].
 
     Its methods, signals and properties are on
@@ -14,7 +15,8 @@
     - {{!Ocgio.Converter.class-type-converter_t}Ocgio.Converter}
     - {{!Ocgio.Initable.class-type-initable_t}Ocgio.Initable}
 
-    [GCharsetConverter] is an implementation of [Gio.Converter] based on
+    [GCharsetConverter] is an implementation of
+    {{!Ocgio.Converter.class-type-converter_t}[Gio.Converter]} based on
     [GLib.IConv]. *)
 class type charset_converter_t = object
   inherit Converter.converter_t

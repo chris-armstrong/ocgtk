@@ -7,8 +7,10 @@
     own that re-exports it; use that module rather than this one. *)
 
 (** [GSocketAddress] is the equivalent of [struct sockaddr]) and its subtypes in
-    the BSD sockets API. This is an abstract class; use [Gio.InetSocketAddress]
-    for internet sockets, or [Gio.UnixSocketAddress] for UNIX domain sockets.
+    the BSD sockets API. This is an abstract class; use
+    {{!Ocgio.Raw.Inet_socket_address}[Gio.InetSocketAddress]} for internet
+    sockets, or {{!Ocgio.Raw.Unix_socket_address}[Gio.UnixSocketAddress]} for
+    UNIX domain sockets.
 
     The class built on this module is in {!Ocgio.Socket_address}. *)
 module rec Socket_address : sig
@@ -29,11 +31,12 @@ module rec Socket_address : sig
   (* Properties *)
 end
 
-(** [GSocketAddressEnumerator] is an enumerator type for [Gio.SocketAddress]
-    instances. It is returned by enumeration functions such as
-    [Gio.SocketConnectable.enumerate], which returns a
-    [GSocketAddressEnumerator] to list each [Gio.SocketAddress] which could be
-    used to connect to that [Gio.SocketConnectable].
+(** [GSocketAddressEnumerator] is an enumerator type for
+    {{!Ocgio.Raw.Socket_address}[Gio.SocketAddress]} instances. It is returned
+    by enumeration functions such as [Gio.SocketConnectable.enumerate], which
+    returns a [GSocketAddressEnumerator] to list each
+    {{!Ocgio.Raw.Socket_address}[Gio.SocketAddress]} which could be used to
+    connect to that {{!Ocgio.Raw.Socket_connectable}[Gio.SocketConnectable]}.
 
     Enumeration is typically a blocking operation, so the asynchronous methods
     [Gio.SocketAddressEnumerator.next_async] and
@@ -79,8 +82,10 @@ end
 
 (** Objects that describe one or more potential socket endpoints implement
     [GSocketConnectable]. Callers can then use [Gio.SocketConnectable.enumerate]
-    to get a [Gio.SocketAddressEnumerator] to try out each socket address in
-    turn until one succeeds, as shown in the sample code below.
+    to get a
+    {{!Ocgio.Raw.Socket_address_enumerator}[Gio.SocketAddressEnumerator]} to try
+    out each socket address in turn until one succeeds, as shown in the sample
+    code below.
 
     {[
     MyConnectionType *

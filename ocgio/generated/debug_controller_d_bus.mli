@@ -1,5 +1,6 @@
-(** [GDebugControllerDBus] is an implementation of [Gio.DebugController] which
-    exposes debug settings as a D-Bus object.
+(** [GDebugControllerDBus] is an implementation of
+    {{!Ocgio.Debug_controller.class-type-debug_controller_t}[Gio.DebugController]}
+    which exposes debug settings as a D-Bus object.
 
     Its methods, signals and properties are on
     {!class-type-debug_controller_d_bus_t}. Its full description is under
@@ -80,9 +81,11 @@ end
      - \
      {{!Ocgio.Debug_controller.class-type-debug_controller_t}Ocgio.Debug_controller}\n\
      - {{!Ocgio.Initable.class-type-initable_t}Ocgio.Initable}\n\n\
-     [GDebugControllerDBus] is an implementation of [Gio.DebugController]\n\
+     [GDebugControllerDBus] is an implementation of \
+     {{!Ocgio.Debug_controller.class-type-debug_controller_t}[Gio.DebugController]}\n\
      which exposes debug settings as a D-Bus object.\n\n\
-     It is a [Gio.Initable] object, and will register an object at\n\
+     It is a {{!Ocgio.Initable.class-type-initable_t}[Gio.Initable]} object, \
+     and will register an object at\n\
      [/org/gtk/Debugging] on the bus given as\n\
      [Gio.DebugControllerDBus:connection] once it’s initialized. The\n\
      object will be unregistered when the last reference to the\n\
@@ -195,9 +198,11 @@ class debug_controller_d_bus :
 
 [@@@ocaml.text
 "{1:description Description}\n\n\
- [GDebugControllerDBus] is an implementation of [Gio.DebugController]\n\
+ [GDebugControllerDBus] is an implementation of \
+ {{!Ocgio.Debug_controller.class-type-debug_controller_t}[Gio.DebugController]}\n\
  which exposes debug settings as a D-Bus object.\n\n\
- It is a [Gio.Initable] object, and will register an object at\n\
+ It is a {{!Ocgio.Initable.class-type-initable_t}[Gio.Initable]} object, and \
+ will register an object at\n\
  [/org/gtk/Debugging] on the bus given as\n\
  [Gio.DebugControllerDBus:connection] once it’s initialized. The\n\
  object will be unregistered when the last reference to the\n\

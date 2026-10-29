@@ -6,7 +6,8 @@
  [GtkDragSource] can be set up with the necessary\n\
  ingredients for a DND operation ahead of time. This includes\n\
  the source for the data that is being transferred, in the form\n\
- of a [Gdk.ContentProvider], the desired action, and the icon to\n\
+ of a {{!Ocgdk.Raw.Content_provider}[Gdk.ContentProvider]}, the desired \
+ action, and the icon to\n\
  use during the drag operation. After setting it up, the drag\n\
  source must be added to a widget as an event controller, using\n\
  [Gtk.Widget.add_controller].\n\n\

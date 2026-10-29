@@ -11,9 +11,10 @@
     implicitly, as some references to the [GSocketListener] may be held
     internally.
 
-    If you want to implement a network server, also look at [Gio.SocketService]
-    and [Gio.ThreadedSocketService] which are subclasses of [GSocketListener]
-    that make this even easier.
+    If you want to implement a network server, also look at
+    {{!Ocgio.Raw.Socket_service}[Gio.SocketService]} and
+    {{!Ocgio.Raw.Threaded_socket_service}[Gio.ThreadedSocketService]} which are
+    subclasses of [GSocketListener] that make this even easier.
 
     The class built on this module is in {!Ocgio.Socket_listener}. *)
 
@@ -46,8 +47,9 @@ external add_socket :
 (** Adds [socket] to the set of sockets that we try to accept new clients from.
     The socket must be bound to a local address and listened to.
 
-    For parallel calls to [Gio.SocketListener] methods to work, the socket must
-    be in non-blocking mode. (See [Gio.Socket:blocking].)
+    For parallel calls to {{!Ocgio.Raw.Socket_listener}[Gio.SocketListener]}
+    methods to work, the socket must be in non-blocking mode. (See
+    [Gio.Socket:blocking].)
 
     [source_object] will be passed out in the various calls to accept to
     identify this particular source, which is useful if you're listening on
@@ -66,10 +68,11 @@ external add_inet_port :
     socket listening on IPv4 and IPv6 (if supported) on the specified port on
     all interfaces.
 
-    If possible, the [Gio.SocketListener] will listen on both IPv4 and IPv6
-    (listening on the same port on both). If listening on one of the socket
-    families fails, the [Gio.SocketListener] will only listen on the other. If
-    listening on both fails, an error will be returned.
+    If possible, the {{!Ocgio.Raw.Socket_listener}[Gio.SocketListener]} will
+    listen on both IPv4 and IPv6 (listening on the same port on both). If
+    listening on one of the socket families fails, the
+    {{!Ocgio.Raw.Socket_listener}[Gio.SocketListener]} will only listen on the
+    other. If listening on both fails, an error will be returned.
 
     If you need to distinguish whether listening on IPv4 or IPv6 or both was
     successful, connect to [Gio.SocketListener::event].
@@ -92,10 +95,11 @@ external add_any_inet_port :
     This is useful if you need to have a socket for incoming connections but
     don't care about the specific port number.
 
-    If possible, the [Gio.SocketListener] will listen on both IPv4 and IPv6
-    (listening on the same port on both). If listening on one of the socket
-    families fails, the [Gio.SocketListener] will only listen on the other. If
-    listening on both fails, an error will be returned.
+    If possible, the {{!Ocgio.Raw.Socket_listener}[Gio.SocketListener]} will
+    listen on both IPv4 and IPv6 (listening on the same port on both). If
+    listening on one of the socket families fails, the
+    {{!Ocgio.Raw.Socket_listener}[Gio.SocketListener]} will only listen on the
+    other. If listening on both fails, an error will be returned.
 
     If you need to distinguish whether listening on IPv4 or IPv6 or both was
     successful, connect to [Gio.SocketListener::event].

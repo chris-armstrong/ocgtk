@@ -12,7 +12,8 @@
     Creates widgets for the items taken from a [GListModel].
 
     This is one of the core concepts of handling list widgets such as
-    [Gtk.ListView] or [Gtk.GridView].
+    {{!Ocgtk.List_view.class-type-list_view_t}[Gtk.ListView]} or
+    {{!Ocgtk.Grid_view.class-type-grid_view_t}[Gtk.GridView]}.
 
     The [GtkListItemFactory] is tasked with creating widgets for items taken
     from the model when the views need them and updating them as the items
@@ -37,15 +38,17 @@
     hand it to your code to set up a widget for. This list item will provide
     various properties with information about what item to display and provide
     you with some opportunities to configure its behavior. See the
-    [Gtk.ListItem] documentation for further details.
+    {{!Ocgtk.List_item.class-type-list_item_t}[Gtk.ListItem]} documentation for
+    further details.
 
     Various implementations of [GtkListItemFactory] exist to allow you different
     ways to provide those widgets. The most common implementations are
-    [Gtk.BuilderListItemFactory] which takes a [GtkBuilder] .ui file and then
-    creates widgets and manages everything automatically from the information in
-    that file and [Gtk.SignalListItemFactory] which allows you to connect to
-    signals with your own code and retain full control over how the widgets are
-    setup and managed.
+    {{!Ocgtk.Builder_list_item_factory.class-type-builder_list_item_factory_t}[Gtk.BuilderListItemFactory]}
+    which takes a [GtkBuilder] .ui file and then creates widgets and manages
+    everything automatically from the information in that file and
+    {{!Ocgtk.Signal_list_item_factory.class-type-signal_list_item_factory_t}[Gtk.SignalListItemFactory]}
+    which allows you to connect to signals with your own code and retain full
+    control over how the widgets are setup and managed.
 
     A [GtkListItemFactory] is supposed to be final - that means its behavior
     should not change and the first widget created from it should behave the
@@ -70,7 +73,8 @@ class list_item_factory : Raw.List_item_factory.t -> list_item_factory_t
     Creates widgets for the items taken from a [GListModel].
 
     This is one of the core concepts of handling list widgets such as
-    [Gtk.ListView] or [Gtk.GridView].
+    {{!Ocgtk.List_view.class-type-list_view_t}[Gtk.ListView]} or
+    {{!Ocgtk.Grid_view.class-type-grid_view_t}[Gtk.GridView]}.
 
     The [GtkListItemFactory] is tasked with creating widgets for items taken
     from the model when the views need them and updating them as the items
@@ -95,15 +99,17 @@ class list_item_factory : Raw.List_item_factory.t -> list_item_factory_t
     hand it to your code to set up a widget for. This list item will provide
     various properties with information about what item to display and provide
     you with some opportunities to configure its behavior. See the
-    [Gtk.ListItem] documentation for further details.
+    {{!Ocgtk.List_item.class-type-list_item_t}[Gtk.ListItem]} documentation for
+    further details.
 
     Various implementations of [GtkListItemFactory] exist to allow you different
     ways to provide those widgets. The most common implementations are
-    [Gtk.BuilderListItemFactory] which takes a [GtkBuilder] .ui file and then
-    creates widgets and manages everything automatically from the information in
-    that file and [Gtk.SignalListItemFactory] which allows you to connect to
-    signals with your own code and retain full control over how the widgets are
-    setup and managed.
+    {{!Ocgtk.Builder_list_item_factory.class-type-builder_list_item_factory_t}[Gtk.BuilderListItemFactory]}
+    which takes a [GtkBuilder] .ui file and then creates widgets and manages
+    everything automatically from the information in that file and
+    {{!Ocgtk.Signal_list_item_factory.class-type-signal_list_item_factory_t}[Gtk.SignalListItemFactory]}
+    which allows you to connect to signals with your own code and retain full
+    control over how the widgets are setup and managed.
 
     A [GtkListItemFactory] is supposed to be final - that means its behavior
     should not change and the first widget created from it should behave the

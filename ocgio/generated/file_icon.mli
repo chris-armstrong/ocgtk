@@ -17,7 +17,8 @@
     [GFileIcon] specifies an icon by pointing to an image file to be used as
     icon.
 
-    It implements [Gio.LoadableIcon]. *)
+    It implements
+    {{!Ocgio.Loadable_icon.class-type-loadable_icon_t}[Gio.LoadableIcon]}. *)
 class type file_icon_t = object
   inherit Icon.icon_t
   inherit Loadable_icon.loadable_icon_t
@@ -40,7 +41,8 @@ class file_icon : Raw.File_icon.t -> file_icon_t
     [GFileIcon] specifies an icon by pointing to an image file to be used as
     icon.
 
-    It implements [Gio.LoadableIcon]. *)
+    It implements
+    {{!Ocgio.Loadable_icon.class-type-loadable_icon_t}[Gio.LoadableIcon]}. *)
 
 (** {1:constructors Constructors} *)
 

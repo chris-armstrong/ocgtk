@@ -1,4 +1,5 @@
-(** [GSimplePermission] is a trivial implementation of [Gio.Permission] that
+(** [GSimplePermission] is a trivial implementation of
+    {{!Ocgio.Permission.class-type-permission_t}[Gio.Permission]} that
     represents a permission that is either always or never allowed. The value is
     given at construction and doesn’t change.
 
@@ -13,7 +14,8 @@
 
     Inherits from: {{!Ocgio.Permission.class-type-permission_t}Ocgio.Permission}
 
-    [GSimplePermission] is a trivial implementation of [Gio.Permission] that
+    [GSimplePermission] is a trivial implementation of
+    {{!Ocgio.Permission.class-type-permission_t}[Gio.Permission]} that
     represents a permission that is either always or never allowed. The value is
     given at construction and doesn’t change.
 
@@ -32,7 +34,8 @@ class simple_permission : Raw.Simple_permission.t -> simple_permission_t
 
 (** {1:description Description}
 
-    [GSimplePermission] is a trivial implementation of [Gio.Permission] that
+    [GSimplePermission] is a trivial implementation of
+    {{!Ocgio.Permission.class-type-permission_t}[Gio.Permission]} that
     represents a permission that is either always or never allowed. The value is
     given at construction and doesn’t change.
 

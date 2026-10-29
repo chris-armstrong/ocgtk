@@ -9,8 +9,11 @@
     - {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}Ocgio.Socket_connectable}
 
     [GSocketAddress] is the equivalent of [struct sockaddr]) and its subtypes in
-    the BSD sockets API. This is an abstract class; use [Gio.InetSocketAddress]
-    for internet sockets, or [Gio.UnixSocketAddress] for UNIX domain sockets. *)
+    the BSD sockets API. This is an abstract class; use
+    {{!Ocgio.Inet_socket_address.class-type-inet_socket_address_t}[Gio.InetSocketAddress]}
+    for internet sockets, or
+    {{!Ocgio.Unix_socket_address.class-type-unix_socket_address_t}[Gio.UnixSocketAddress]}
+    for UNIX domain sockets. *)
 class type socket_address_t = object
   (** {2:methods Methods} *)
 
@@ -28,11 +31,14 @@ end
 
 (** {b The methods, signals and properties of a [SocketAddressEnumerator].}
 
-    [GSocketAddressEnumerator] is an enumerator type for [Gio.SocketAddress]
+    [GSocketAddressEnumerator] is an enumerator type for
+    {{!Ocgio.Socket_address.class-type-socket_address_t}[Gio.SocketAddress]}
     instances. It is returned by enumeration functions such as
     [Gio.SocketConnectable.enumerate], which returns a
-    [GSocketAddressEnumerator] to list each [Gio.SocketAddress] which could be
-    used to connect to that [Gio.SocketConnectable].
+    [GSocketAddressEnumerator] to list each
+    {{!Ocgio.Socket_address.class-type-socket_address_t}[Gio.SocketAddress]}
+    which could be used to connect to that
+    {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}[Gio.SocketConnectable]}.
 
     Enumeration is typically a blocking operation, so the asynchronous methods
     [Gio.SocketAddressEnumerator.next_async] and
@@ -76,8 +82,10 @@ end
 
     Objects that describe one or more potential socket endpoints implement
     [GSocketConnectable]. Callers can then use [Gio.SocketConnectable.enumerate]
-    to get a [Gio.SocketAddressEnumerator] to try out each socket address in
-    turn until one succeeds, as shown in the sample code below.
+    to get a
+    {{!Ocgio.Socket_address_enumerator.class-type-socket_address_enumerator_t}[Gio.SocketAddressEnumerator]}
+    to try out each socket address in turn until one succeeds, as shown in the
+    sample code below.
 
     {[
     MyConnectionType *

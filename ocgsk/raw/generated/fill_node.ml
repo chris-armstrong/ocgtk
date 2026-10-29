@@ -1,8 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* FillNode: FillNode *)
 
-(** A render node filling the area given by [Gsk.Path] and [Gsk.FillRule] with
-    the child node.
+(** A render node filling the area given by {{!Ocgsk.Raw.Path}[Gsk.Path]} and
+    {{!Ocgsk.Enums.type-fillrule}[Gsk.FillRule]} with the child node.
 
     The class built on this module is in {!Ocgsk.Fill_node}. *)
 

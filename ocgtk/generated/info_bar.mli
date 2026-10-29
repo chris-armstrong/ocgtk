@@ -123,7 +123,8 @@ end
      [GtkInfoBar] can be used to show messages to the user without a dialog.\n\n\
      An example GtkInfoBar\n\n\
      It is often temporarily shown at the top or bottom of a document.\n\
-     In contrast to [Gtk.Dialog], which has an action area at the\n\
+     In contrast to {{!Ocgtk.Dialog.class-type-dialog_t}[Gtk.Dialog]}, which \
+     has an action area at the\n\
      bottom, [GtkInfoBar] has an action area at the side.\n\n\
      The API of [GtkInfoBar] is very similar to [GtkDialog], allowing you\n\
      to add buttons to the action area with [Gtk.InfoBar.add_button]\n\
@@ -131,7 +132,9 @@ end
      can be controlled with [Gtk.InfoBar.set_response_sensitive].\n\n\
      To add widgets to the main content area of a [GtkInfoBar], use\n\
      [Gtk.InfoBar.add_child].\n\n\
-     Similar to [Gtk.MessageDialog], the contents of a [GtkInfoBar]\n\
+     Similar to \
+     {{!Ocgtk.Message_dialog.class-type-message_dialog_t}[Gtk.MessageDialog]}, \
+     the contents of a [GtkInfoBar]\n\
      can by classified as error message, warning, informational message, etc,\n\
      by using [Gtk.InfoBar.set_message_type]. GTK may use the message\n\
      type to determine how the message is displayed.\n\n\
@@ -188,7 +191,8 @@ class info_bar : Raw.Info_bar.t -> info_bar_t
  [GtkInfoBar] can be used to show messages to the user without a dialog.\n\n\
  An example GtkInfoBar\n\n\
  It is often temporarily shown at the top or bottom of a document.\n\
- In contrast to [Gtk.Dialog], which has an action area at the\n\
+ In contrast to {{!Ocgtk.Dialog.class-type-dialog_t}[Gtk.Dialog]}, which has \
+ an action area at the\n\
  bottom, [GtkInfoBar] has an action area at the side.\n\n\
  The API of [GtkInfoBar] is very similar to [GtkDialog], allowing you\n\
  to add buttons to the action area with [Gtk.InfoBar.add_button]\n\
@@ -196,7 +200,9 @@ class info_bar : Raw.Info_bar.t -> info_bar_t
  can be controlled with [Gtk.InfoBar.set_response_sensitive].\n\n\
  To add widgets to the main content area of a [GtkInfoBar], use\n\
  [Gtk.InfoBar.add_child].\n\n\
- Similar to [Gtk.MessageDialog], the contents of a [GtkInfoBar]\n\
+ Similar to \
+ {{!Ocgtk.Message_dialog.class-type-message_dialog_t}[Gtk.MessageDialog]}, the \
+ contents of a [GtkInfoBar]\n\
  can by classified as error message, warning, informational message, etc,\n\
  by using [Gtk.InfoBar.set_message_type]. GTK may use the message\n\
  type to determine how the message is displayed.\n\n\

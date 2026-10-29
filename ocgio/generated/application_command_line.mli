@@ -156,7 +156,9 @@ end
     "{b The methods, signals and properties of a [ApplicationCommandLine].}\n\n\
      [GApplicationCommandLine] represents a command-line invocation of\n\
      an application.\n\n\
-     It is created by [Gio.Application] and emitted\n\
+     It is created by \
+     {{!Ocgio.Application.class-type-application_t}[Gio.Application]} and \
+     emitted\n\
      in the [Gio.Application::command-line] signal and virtual function.\n\n\
      The class contains the list of arguments that the program was invoked\n\
      with. It is also possible to query if the commandline invocation was\n\
@@ -297,7 +299,8 @@ class application_command_line :
 "{1:description Description}\n\n\
  [GApplicationCommandLine] represents a command-line invocation of\n\
  an application.\n\n\
- It is created by [Gio.Application] and emitted\n\
+ It is created by \
+ {{!Ocgio.Application.class-type-application_t}[Gio.Application]} and emitted\n\
  in the [Gio.Application::command-line] signal and virtual function.\n\n\
  The class contains the list of arguments that the program was invoked\n\
  with. It is also possible to query if the commandline invocation was\n\

@@ -14,7 +14,7 @@
     Optionally, it can offer a way to reveal the contents in clear text.
 
     [GtkPasswordEntry] provides only minimal API and should be used with the
-    [Gtk.Editable] API.
+    {{!Ocgtk.Raw.Editable}[Gtk.Editable]} API.
 
     {b CSS Nodes}
 

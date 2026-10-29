@@ -141,8 +141,8 @@ and Layout_manager : sig
   (** Measures the size of the [widget] using [manager], for the given
       [orientation] and size.
 
-      See the [Gtk.Widget] documentation on layout management for more details.
-  *)
+      See the {{!Ocgtk.Raw.Widget}[Gtk.Widget]} documentation on layout
+      management for more details. *)
 
   external layout_changed : t -> unit = "ml_gtk_layout_manager_layout_changed"
   (** Queues a resize on the [GtkWidget] using [manager], if any.
@@ -185,7 +185,8 @@ end
    manager instance using [Gtk.Widget.set_layout_manager].\n\n\
    {b Layout properties}\n\n\
    A layout manager can expose properties for controlling the layout of\n\
-   each child, by creating an object type derived from [Gtk.LayoutChild]\n\
+   each child, by creating an object type derived from \
+   {{!Ocgtk.Raw.Layout_child}[Gtk.LayoutChild]}\n\
    and installing the properties on it as normal [GObject] properties.\n\n\
    Each [GtkLayoutChild] instance storing the layout properties for a\n\
    specific child is created through the [Gtk.LayoutManager.get_layout_child]\n\
@@ -418,7 +419,8 @@ and Widget : sig
       allocation of its parent.
 
       This is false for invisible children, but also for children that have
-      their own surface, such as [Gtk.Popover] instances. *)
+      their own surface, such as {{!Ocgtk.Raw.Popover}[Gtk.Popover]} instances.
+  *)
 
   external set_visible : t -> bool -> unit = "ml_gtk_widget_set_visible"
   (** Sets the visibility state of [widget].
@@ -536,7 +538,8 @@ and Widget : sig
   (** Sets how the widget treats content that is drawn outside the it's content
       area.
 
-      See the definition of [Gtk.Overflow] for details.
+      See the definition of {{!Ocgtk.Enums.type-overflow}[Gtk.Overflow]} for
+      details.
 
       This setting is provided for widget implementations and should not be used
       by application code.
@@ -560,10 +563,10 @@ and Widget : sig
       translucent, since it is ultimatively rendered on that toplevel. The
       opacity value itself is not inherited by child widgets (since that would
       make widgets deeper in the hierarchy progressively more translucent). As a
-      consequence, [Gtk.Popover] instances and other [Gtk.Native] widgets with
-      their own surface will use their own opacity value, and thus by default
-      appear non-translucent, even if they are attached to a toplevel that is
-      translucent. *)
+      consequence, {{!Ocgtk.Raw.Popover}[Gtk.Popover]} instances and other
+      {{!Ocgtk.Raw.Native}[Gtk.Native]} widgets with their own surface will use
+      their own opacity value, and thus by default appear non-translucent, even
+      if they are attached to a toplevel that is translucent. *)
 
   external set_name : t -> string -> unit = "ml_gtk_widget_set_name"
   (** Sets a widgets name.
@@ -571,7 +574,7 @@ and Widget : sig
       Setting a name allows you to refer to the widget from a CSS file. You can
       apply a style to widgets with a particular name in the CSS file. See the
       documentation for the CSS syntax (on the same page as the docs for
-      [Gtk.StyleContext].
+      {{!Ocgtk.Raw.Style_context}[Gtk.StyleContext]}.
 
       Note that the CSS syntax has certain special characters to delimit and
       represent elements in a selector (period, #, >, *...), so using these will
@@ -821,8 +824,9 @@ and Widget : sig
   (** Flags a widget to have its size renegotiated.
 
       This should be called when a widget for some reason has a new size
-      request. For example, when you change the text in a [Gtk.Label], the label
-      queues a resize to ensure there’s enough space for the new text.
+      request. For example, when you change the text in a
+      {{!Ocgtk.Raw.Label}[Gtk.Label]}, the label queues a resize to ensure
+      there’s enough space for the new text.
 
       Note that you cannot call gtk_widget_queue_resize() on a widget from
       inside its implementation of the [Gtk.Widget.size_allocate] virtual
@@ -938,7 +942,8 @@ and Widget : sig
 
       The default [Gtk.Widget::keynav-failed] handler returns false for
       [Gtk.DirectionType.tab-forward] and [Gtk.DirectionType.tab-backward]. For
-      the other values of [Gtk.DirectionType] it returns true.
+      the other values of {{!Ocgtk.Enums.type-directiontype}[Gtk.DirectionType]}
+      it returns true.
 
       Whenever the default handler returns true, it also calls
       [Gtk.Widget.error_bell] to notify the user of the failed keyboard
@@ -946,9 +951,9 @@ and Widget : sig
 
       A use case for providing an own implementation of [::keynav-failed]
       (either by connecting to it or by overriding it) would be a row of
-      [Gtk.Entry] widgets where the user should be able to navigate the entire
-      row with the cursor keys, as e.g. known from user interfaces that require
-      entering license keys. *)
+      {{!Ocgtk.Raw.Entry}[Gtk.Entry]} widgets where the user should be able to
+      navigate the entire row with the cursor keys, as e.g. known from user
+      interfaces that require entering license keys. *)
 
   external is_visible : t -> bool = "ml_gtk_widget_is_visible"
   (** Determines whether the widget and all its parents are marked as visible.
@@ -1021,8 +1026,9 @@ and Widget : sig
     = "ml_gtk_widget_insert_action_group"
   (** Inserts an action group into the widget's actions.
 
-      Children of [widget] that implement [Gtk.Actionable] can then be
-      associated with actions in [group] by setting their “action-name” to
+      Children of [widget] that implement
+      {{!Ocgtk.Raw.Actionable}[Gtk.Actionable]} can then be associated with
+      actions in [group] by setting their “action-name” to
       [prefix].[action-name].
 
       Note that inheritance is defined for individual actions. I.e. even if you
@@ -1175,8 +1181,9 @@ and Widget : sig
       state will be returned, that is, also based on parent insensitivity, even
       if [widget] itself is sensitive.
 
-      Also note that if you are looking for a way to obtain the [Gtk.StateFlags]
-      to pass to a [Gtk.StyleContext] method, you should look at
+      Also note that if you are looking for a way to obtain the
+      {{!Ocgtk.Enums.type-stateflags}[Gtk.StateFlags]} to pass to a
+      {{!Ocgtk.Raw.Style_context}[Gtk.StyleContext]} method, you should look at
       [Gtk.StyleContext.get_state]. *)
 
   external get_size_request : t -> int * int = "ml_gtk_widget_get_size_request"
@@ -1200,8 +1207,8 @@ and Widget : sig
       This is equivalent to calling [Gtk.Widget.get_width] for
       [Gtk.Orientation.horizontal] or [Gtk.Widget.get_height] for
       [Gtk.Orientation.vertical], but can be used when writing
-      orientation-independent code, such as when implementing [Gtk.Orientable]
-      widgets.
+      orientation-independent code, such as when implementing
+      {{!Ocgtk.Raw.Orientable}[Gtk.Orientable]} widgets.
 
       To learn more about widget sizes, see the coordinate system overview. *)
 
@@ -1759,7 +1766,7 @@ and Widget : sig
       the widget.
 
       You will usually want to call this function right after creating any kind
-      of [Gtk.EventController]. *)
+      of {{!Ocgtk.Raw.Event_controller}[Gtk.EventController]}. *)
 
   external activate_default : t -> unit = "ml_gtk_widget_activate_default"
   (** Activates the [default.activate] action for the widget.
@@ -1970,7 +1977,8 @@ end
    The geometry management system will query a widget hierarchy in\n\
    only one orientation at a time. When widgets are initially queried\n\
    for their minimum sizes it is generally done in two initial passes\n\
-   in the [Gtk.SizeRequestMode] chosen by the toplevel.\n\n\
+   in the {{!Ocgtk.Enums.type-sizerequestmode}[Gtk.SizeRequestMode]} chosen by \
+   the toplevel.\n\n\
    For example, when queried in the normal [GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH] \
    mode:\n\n\
    First, the default minimum and natural width for each widget\n\
@@ -2002,7 +2010,8 @@ end
    allocated size then it must support the request in both\n\
    [GtkSizeRequestMode]s even if the widget in question only\n\
    trades sizes in a single orientation.\n\n\
-   For instance, a [Gtk.Label] that does height-for-width word wrapping\n\
+   For instance, a {{!Ocgtk.Raw.Label}[Gtk.Label]} that does height-for-width \
+   word wrapping\n\
    will not expect to have [Gtk.Widget.measure] with an orientation of\n\
    [GTK_ORIENTATION_VERTICAL] called because that call is specific to a\n\
    width-for-height request. In this case the label must return the height\n\
@@ -2058,7 +2067,8 @@ end
    example above.\n\n\
    It will not work to use the wrapper function [Gtk.Widget.measure]\n\
    inside your own [Gtk.Widget.size_allocate] implementation.\n\
-   These return a request adjusted by [Gtk.SizeGroup], the widget's\n\
+   These return a request adjusted by \
+   {{!Ocgtk.Raw.Size_group}[Gtk.SizeGroup]}, the widget's\n\
    align and expand flags, as well as its CSS style.\n\n\
    If a widget used the wrappers inside its virtual method implementations,\n\
    then the adjustments (such as widget margins) would be applied\n\
@@ -2066,7 +2076,8 @@ end
    to do it.\n\n\
    Of course if you are getting the size request for another widget, such\n\
    as a child widget, you must use [Gtk.Widget.measure]; otherwise, you\n\
-   would not properly consider widget margins, [Gtk.SizeGroup], and\n\
+   would not properly consider widget margins, \
+   {{!Ocgtk.Raw.Size_group}[Gtk.SizeGroup]}, and\n\
    so forth.\n\n\
    GTK also supports baseline vertical alignment of widgets. This\n\
    means that widgets are positioned such that the typographical baseline of\n\
@@ -2086,7 +2097,8 @@ end
    The [GtkWidget] implementation of the [GtkBuildable] interface\n\
    supports various custom elements to specify additional aspects of widgets\n\
    that are not directly expressed as properties.\n\n\
-   If the widget uses a [Gtk.LayoutManager], [GtkWidget] supports\n\
+   If the widget uses a {{!Ocgtk.Raw.Layout_manager}[Gtk.LayoutManager]}, \
+   [GtkWidget] supports\n\
    a custom [<layout>] element, used to define layout properties:\n\n\
    {[\n\
    <object class=\"GtkGrid\" id=\"my_grid\">\n\
@@ -2141,7 +2153,7 @@ end
    time using [Gtk.WidgetClass.set_template].\n\n\
    The interface description semantics expected in composite template \
    descriptions\n\
-   is slightly different from regular [Gtk.Builder] XML.\n\n\
+   is slightly different from regular {{!Ocgtk.Raw.Builder}[Gtk.Builder]} XML.\n\n\
    Unlike regular interface descriptions, [Gtk.WidgetClass.set_template]\n\
    will expect a [<template>] tag as a direct child of the toplevel\n\
    [<interface>] tag. The [<template>] tag must specify the “class” attribute\n\

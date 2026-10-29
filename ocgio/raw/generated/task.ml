@@ -4,7 +4,8 @@
 [@@@ocaml.text
 "A [GTask] represents and manages a cancellable ‘task’.\n\n\
  {b Asynchronous operations}\n\n\
- The most common usage of [GTask] is as a [Gio.AsyncResult], to\n\
+ The most common usage of [GTask] is as a \
+ {{!Ocgio.Raw.Async_result}[Gio.AsyncResult]}, to\n\
  manage data during an asynchronous operation. You call\n\
  [Gio.Task.new] in the ‘start’ method, followed by\n\
  [Gio.Task.set_task_data] and the like if you need to keep some\n\
@@ -17,7 +18,8 @@
  [GLib.MainContext.push_thread_default])\n\
  where it was created (waiting until the next iteration of the main\n\
  loop first, if necessary). The caller will pass the [GTask] back to\n\
- the operation’s finish function (as a [Gio.AsyncResult]), and you can\n\
+ the operation’s finish function (as a \
+ {{!Ocgio.Raw.Async_result}[Gio.AsyncResult]}), and you can\n\
  use [Gio.Task.propagate_pointer] or the like to extract the\n\
  return value.\n\n\
  Using [GTask] requires the thread-default [GLib.MainContext] from when\n\
@@ -26,7 +28,8 @@
  If a [GTask] has been constructed and its callback set, it is an error to\n\
  not call [g_task_return_*()] on it. GLib will warn at runtime if this happens\n\
  (since 2.76).\n\n\
- Here is an example for using [GTask] as a [Gio.AsyncResult]:\n\n\
+ Here is an example for using [GTask] as a \
+ {{!Ocgio.Raw.Async_result}[Gio.AsyncResult]}:\n\n\
  {[\n\
  typedef struct {\n\
 \  CakeFrostingType frosting;\n\
@@ -114,7 +117,7 @@
  internally chain together several smaller asynchronous\n\
  operations. [Gio.Task.get_cancellable], [Gio.Task.get_context],\n\
  and [Gio.Task.get_priority] allow you to get back the task’s\n\
- [Gio.Cancellable], [GLib.MainContext], and\n\
+ {{!Ocgio.Raw.Cancellable}[Gio.Cancellable]}, [GLib.MainContext], and\n\
  I/O priority\n\
  when starting a new subtask, so you don’t have to keep track\n\
  of them yourself. [Gio.Task.attach_source] simplifies the case\n\
@@ -301,7 +304,8 @@
  [Gio.Task.run_in_thread_sync] can be used to turn an uncancellable\n\
  operation into a cancellable one. If you call\n\
  [Gio.Task.set_return_on_cancel], passing [true], then if the task’s\n\
- [Gio.Cancellable] is cancelled, it will return control back to the\n\
+ {{!Ocgio.Raw.Cancellable}[Gio.Cancellable]} is cancelled, it will return \
+ control back to the\n\
  caller immediately, while allowing the task thread to continue running in the\n\
  background (and simply discarding its result when it finally does finish).\n\
  Provided that the task thread is careful about how it uses\n\
@@ -388,27 +392,28 @@
 \  return cake;\n\
  }\n\
  ]}\n\n\
- {b Porting from [Gio.SimpleAsyncResult]}\n\n\
- [GTask]’s API attempts to be simpler than [Gio.SimpleAsyncResult]’s\n\
+ {b Porting from {{!Ocgio.Raw.Simple_async_result}[Gio.SimpleAsyncResult]}}\n\n\
+ [GTask]’s API attempts to be simpler than \
+ {{!Ocgio.Raw.Simple_async_result}[Gio.SimpleAsyncResult]}’s\n\
  in several ways:\n\n\
  - You can save task-specific data with [Gio.Task.set_task_data], and\n\
  retrieve it later with [Gio.Task.get_task_data]. This replaces the\n\
  abuse of [Gio.SimpleAsyncResult.set_op_res_gpointer] for the same\n\
- purpose with [Gio.SimpleAsyncResult].\n\
+ purpose with {{!Ocgio.Raw.Simple_async_result}[Gio.SimpleAsyncResult]}.\n\
  - In addition to the task data, [GTask] also keeps track of the\n\
- priority, [Gio.Cancellable],\n\
+ priority, {{!Ocgio.Raw.Cancellable}[Gio.Cancellable]},\n\
  and [GLib.MainContext] associated with the task, so tasks that\n\
  consist of a chain of simpler asynchronous operations will have easy access\n\
  to those values when starting each sub-task.\n\
  - [Gio.Task.return_error_if_cancelled] provides simplified\n\
  handling for cancellation. In addition, cancellation\n\
  overrides any other [GTask] return value by default, like\n\
- [Gio.SimpleAsyncResult] does when\n\
+ {{!Ocgio.Raw.Simple_async_result}[Gio.SimpleAsyncResult]} does when\n\
  [Gio.SimpleAsyncResult.set_check_cancellable] is called.\n\
  (You can use [Gio.Task.set_check_cancellable] to turn off that\n\
  behavior.) On the other hand, [Gio.Task.run_in_thread]\n\
  guarantees that it will always run your\n\
- [task_func], even if the task’s [Gio.Cancellable]\n\
+ [task_func], even if the task’s {{!Ocgio.Raw.Cancellable}[Gio.Cancellable]}\n\
  is already cancelled before the task gets a chance to run;\n\
  you can start your [task_func] with a\n\
  [Gio.Task.return_error_if_cancelled] check if you need the\n\
@@ -421,12 +426,14 @@
  if it needs to be sent to another [GLib.MainContext], or delayed\n\
  until the next iteration of the current [GLib.MainContext].)\n\
  - The ‘finish’ functions for [GTask] based operations are generally\n\
- much simpler than [Gio.SimpleAsyncResult] ones, normally consisting\n\
+ much simpler than {{!Ocgio.Raw.Simple_async_result}[Gio.SimpleAsyncResult]} \
+ ones, normally consisting\n\
  of only a single call to [Gio.Task.propagate_pointer] or the like.\n\
  Since [Gio.Task.propagate_pointer] ‘steals’ the return value from\n\
  the [GTask], it is not necessary to juggle pointers around to\n\
  prevent it from being freed twice.\n\
- - With [Gio.SimpleAsyncResult], it was common to call\n\
+ - With {{!Ocgio.Raw.Simple_async_result}[Gio.SimpleAsyncResult]}, it was \
+ common to call\n\
  [Gio.SimpleAsyncResult.propagate_error] from the\n\
  [_finish()] wrapper function, and have\n\
  virtual method implementations only deal with successful\n\
@@ -437,7 +444,8 @@
  appropriate [g_task_propagate_] function.\n\
  Note that wrapper methods can now use\n\
  [Gio.AsyncResult.legacy_propagate_error] to do old-style\n\
- [Gio.SimpleAsyncResult] error-returning behavior, and\n\
+ {{!Ocgio.Raw.Simple_async_result}[Gio.SimpleAsyncResult]} error-returning \
+ behavior, and\n\
  [Gio.AsyncResult.is_tagged] to check if a result is tagged as\n\
  having come from the [_async()] wrapper\n\
  function (for ‘short-circuit’ results, such as when passing\n\

@@ -23,7 +23,8 @@
     An example GtkIconView
 
     [GtkIconView] provides an alternative view on a [GtkTreeModel]. It displays
-    the model as a grid of icons with labels. Like [Gtk.TreeView], it allows to
+    the model as a grid of icons with labels. Like
+    {{!Ocgtk.Tree_view.class-type-tree_view_t}[Gtk.TreeView]}, it allows to
     select one or multiple items (depending on the selection mode, see
     [Gtk.IconView.set_selection_mode]). In addition to selection with the arrow
     keys, [GtkIconView] supports rubberband selection, which is controlled by
@@ -407,7 +408,8 @@ class icon_view : Raw.Icon_view.t -> icon_view_t
     An example GtkIconView
 
     [GtkIconView] provides an alternative view on a [GtkTreeModel]. It displays
-    the model as a grid of icons with labels. Like [Gtk.TreeView], it allows to
+    the model as a grid of icons with labels. Like
+    {{!Ocgtk.Tree_view.class-type-tree_view_t}[Gtk.TreeView]}, it allows to
     select one or multiple items (depending on the selection mode, see
     [Gtk.IconView.set_selection_mode]). In addition to selection with the arrow
     keys, [GtkIconView] supports rubberband selection, which is controlled by

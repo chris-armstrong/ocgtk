@@ -20,8 +20,8 @@
     ]}
 
     Each [GtkConstraint] is part of a system that will be solved by a
-    [Gtk.ConstraintLayout] in order to allocate and position each child widget
-    or guide.
+    {{!Ocgtk.Constraint_layout.class-type-constraint_layout_t}[Gtk.ConstraintLayout]}
+    in order to allocate and position each child widget or guide.
 
     The source and target, as well as their attributes, of a [GtkConstraint]
     instance are immutable after creation. *)
@@ -93,8 +93,8 @@ class constraint_ : Raw.Constraint.t -> constraint__t
     ]}
 
     Each [GtkConstraint] is part of a system that will be solved by a
-    [Gtk.ConstraintLayout] in order to allocate and position each child widget
-    or guide.
+    {{!Ocgtk.Constraint_layout.class-type-constraint_layout_t}[Gtk.ConstraintLayout]}
+    in order to allocate and position each child widget or guide.
 
     The source and target, as well as their attributes, of a [GtkConstraint]
     instance are immutable after creation. *)

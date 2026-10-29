@@ -4,8 +4,9 @@
 (** Base type for D-Bus interfaces.
 
     The [GDBusInterface] type is the base type for D-Bus interfaces both on the
-    service side (see [Gio.DBusInterfaceSkeleton]) and client side (see
-    [Gio.DBusProxy]).
+    service side (see
+    {{!Ocgio.Raw.D_bus_interface_skeleton}[Gio.DBusInterfaceSkeleton]}) and
+    client side (see {{!Ocgio.Raw.D_bus_proxy}[Gio.DBusProxy]}).
 
     The class built on this module is in {!Ocgio.D_bus_interface}. *)
 

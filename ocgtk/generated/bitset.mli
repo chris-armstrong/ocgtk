@@ -22,10 +22,12 @@
     query metadata about the bitset, such as the minimum or maximum values or
     its size.
 
-    The fastest way to iterate values in a bitset is [Gtk.BitsetIter].
+    The fastest way to iterate values in a bitset is
+    {{!Ocgtk.Bitset_iter.class-type-bitset_iter_t}[Gtk.BitsetIter]}.
 
     The main use case for [GtkBitset] is implementing complex selections for
-    [Gtk.SelectionModel]. *)
+    {{!Ocgtk.Selection_model.class-type-selection_model_t}[Gtk.SelectionModel]}.
+*)
 class type bitset_t = object
   (** {2:methods Methods} *)
 
@@ -187,10 +189,12 @@ class bitset : Raw.Bitset.t -> bitset_t
     query metadata about the bitset, such as the minimum or maximum values or
     its size.
 
-    The fastest way to iterate values in a bitset is [Gtk.BitsetIter].
+    The fastest way to iterate values in a bitset is
+    {{!Ocgtk.Bitset_iter.class-type-bitset_iter_t}[Gtk.BitsetIter]}.
 
     The main use case for [GtkBitset] is implementing complex selections for
-    [Gtk.SelectionModel]. *)
+    {{!Ocgtk.Selection_model.class-type-selection_model_t}[Gtk.SelectionModel]}.
+*)
 
 (** {1:constructors Constructors} *)
 

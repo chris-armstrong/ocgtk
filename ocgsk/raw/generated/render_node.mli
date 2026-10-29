@@ -1,7 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* RenderNode: RenderNode *)
 
-(** The basic block in a scene graph to be rendered using [Gsk.Renderer].
+(** The basic block in a scene graph to be rendered using
+    {{!Ocgsk.Raw.Renderer}[Gsk.Renderer]}.
 
     Each node has a parent, except the top-level node; each node may have
     children nodes.
@@ -10,9 +11,9 @@
     rectangle set when creating it.
 
     Render nodes are meant to be transient; once they have been associated to a
-    [Gsk.Renderer] it's safe to release any reference you have on them. All
-    [Gsk.RenderNode]s are immutable, you can only specify their properties
-    during construction.
+    {{!Ocgsk.Raw.Renderer}[Gsk.Renderer]} it's safe to release any reference you
+    have on them. All {{!Ocgsk.Raw.Render_node}[Gsk.RenderNode]}s are immutable,
+    you can only specify their properties during construction.
 
     The class built on this module is in {!Ocgsk.Render_node}. *)
 
@@ -78,7 +79,8 @@ external draw : t -> Occairo_raw.Context.t -> unit = "ml_gsk_render_node_draw"
 
     Typically, you'll use this function to implement fallback rendering of
     render nodes on an intermediate Cairo context, instead of using the drawing
-    context associated to a [Gdk.Surface]'s rendering buffer.
+    context associated to a {{!Ocgdk.Raw.Surface}[Gdk.Surface]}'s rendering
+    buffer.
 
     For advanced nodes that cannot be supported using Cairo, in particular for
     nodes doing 3D operations, this function may fail. *)

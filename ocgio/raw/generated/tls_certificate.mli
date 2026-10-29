@@ -4,7 +4,8 @@
 (** A certificate used for TLS authentication and encryption. This can represent
     either a certificate only (eg, the certificate received by a client from a
     server), or the combination of a certificate and a private key (which is
-    needed when acting as a [Gio.TlsServerConnection]).
+    needed when acting as a
+    {{!Ocgio.Raw.Tls_server_connection}[Gio.TlsServerConnection]}).
 
     The class built on this module is in {!Ocgio.Tls_certificate}. *)
 

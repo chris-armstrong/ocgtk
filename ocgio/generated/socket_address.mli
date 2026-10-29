@@ -2,8 +2,11 @@
 (* Shim module for SocketAddress from cyclic group Socket_address_and__socket_address_enumerator_and__socket_connectable *)
 
 (** [GSocketAddress] is the equivalent of [struct sockaddr]) and its subtypes in
-    the BSD sockets API. This is an abstract class; use [Gio.InetSocketAddress]
-    for internet sockets, or [Gio.UnixSocketAddress] for UNIX domain sockets.
+    the BSD sockets API. This is an abstract class; use
+    {{!Ocgio.Inet_socket_address.class-type-inet_socket_address_t}[Gio.InetSocketAddress]}
+    for internet sockets, or
+    {{!Ocgio.Unix_socket_address.class-type-unix_socket_address_t}[Gio.UnixSocketAddress]}
+    for UNIX domain sockets.
 
     Its methods, signals and properties are on {!class-type-socket_address_t}.
     Its constructors are under {!section-constructors}. The functions it is
@@ -20,8 +23,11 @@ class type socket_address_t =
     - {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}Ocgio.Socket_connectable}
 
     [GSocketAddress] is the equivalent of [struct sockaddr]) and its subtypes in
-    the BSD sockets API. This is an abstract class; use [Gio.InetSocketAddress]
-    for internet sockets, or [Gio.UnixSocketAddress] for UNIX domain sockets. *)
+    the BSD sockets API. This is an abstract class; use
+    {{!Ocgio.Inet_socket_address.class-type-inet_socket_address_t}[Gio.InetSocketAddress]}
+    for internet sockets, or
+    {{!Ocgio.Unix_socket_address.class-type-unix_socket_address_t}[Gio.UnixSocketAddress]}
+    for UNIX domain sockets. *)
 
 class socket_address : Raw.Socket_address.t -> socket_address_t
 (** Wraps a raw handle of {!Ocgio.Raw.Socket_address.t}. *)

@@ -8,8 +8,9 @@
     [Gdk.ContentProvider.new_for_bytes].
 
     GDK knows how to handle common text and image formats out-of-the-box. See
-    [Gdk.ContentSerializer] and [Gdk.ContentDeserializer] if you want to add
-    support for application-specific data formats.
+    {{!Ocgdk.Raw.Content_serializer}[Gdk.ContentSerializer]} and
+    {{!Ocgdk.Raw.Content_deserializer}[Gdk.ContentDeserializer]} if you want to
+    add support for application-specific data formats.
 
     The class built on this module is in {!Ocgdk.Content_provider}. *)
 

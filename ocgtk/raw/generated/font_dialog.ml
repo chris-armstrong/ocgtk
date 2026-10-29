@@ -9,8 +9,8 @@
     The dialog is shown with the [Gtk.FontDialog.choose_font] function or its
     variants.
 
-    See [Gtk.FontDialogButton] for a convenient control that uses
-    [GtkFontDialog] and presents the results.
+    See {{!Ocgtk.Raw.Font_dialog_button}[Gtk.FontDialogButton]} for a convenient
+    control that uses [GtkFontDialog] and presents the results.
 
     The class built on this module is in {!Ocgtk.Font_dialog}. *)
 

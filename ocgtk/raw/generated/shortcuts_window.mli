@@ -11,10 +11,12 @@
     showing information that is not relevant in the current application context.
 
     The recommended way to construct a [GtkShortcutsWindow] is with
-    [Gtk.Builder], by using the [<child>] tag to populate a [GtkShortcutsWindow]
-    with one or more [Gtk.ShortcutsSection] objects, which contain one or more
-    [Gtk.ShortcutsGroup] instances, which, in turn, contain
-    [Gtk.ShortcutsShortcut] instances.
+    {{!Ocgtk.Raw.Builder}[Gtk.Builder]}, by using the [<child>] tag to populate
+    a [GtkShortcutsWindow] with one or more
+    {{!Ocgtk.Raw.Shortcuts_section}[Gtk.ShortcutsSection]} objects, which
+    contain one or more {{!Ocgtk.Raw.Shortcuts_group}[Gtk.ShortcutsGroup]}
+    instances, which, in turn, contain
+    {{!Ocgtk.Raw.Shortcuts_shortcut}[Gtk.ShortcutsShortcut]} instances.
 
     If you need to add a section programmatically, use
     [Gtk.ShortcutsWindow.add_section] instead of [Gtk.Window.set_child], as the
@@ -77,8 +79,8 @@ external add_section : t -> Shortcuts_section.t -> unit
   = "ml_gtk_shortcuts_window_add_section"
 (** Adds a section to the shortcuts window.
 
-    This is the programmatic equivalent to using [Gtk.Builder] and a [<child>]
-    tag to add the child.
+    This is the programmatic equivalent to using
+    {{!Ocgtk.Raw.Builder}[Gtk.Builder]} and a [<child>] tag to add the child.
 
     Using [Gtk.Window.set_child] is not appropriate as the shortcuts window
     manages its children internally. *)
@@ -103,7 +105,8 @@ external get_view_name : t -> string = "ml_gtk_shortcuts_window_get_view_name"
 (** The view name by which to filter the contents.
 
     This should correspond to the [Gtk.ShortcutsGroup:view] property of some of
-    the [Gtk.ShortcutsGroup] objects that are inside this shortcuts window.
+    the {{!Ocgtk.Raw.Shortcuts_group}[Gtk.ShortcutsGroup]} objects that are
+    inside this shortcuts window.
 
     Set this to [None] to show all groups. *)
 
@@ -112,7 +115,8 @@ external set_view_name : t -> string -> unit
 (** The view name by which to filter the contents.
 
     This should correspond to the [Gtk.ShortcutsGroup:view] property of some of
-    the [Gtk.ShortcutsGroup] objects that are inside this shortcuts window.
+    the {{!Ocgtk.Raw.Shortcuts_group}[Gtk.ShortcutsGroup]} objects that are
+    inside this shortcuts window.
 
     Set this to [None] to show all groups. *)
 

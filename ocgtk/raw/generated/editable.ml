@@ -3,8 +3,9 @@
 
 [@@@ocaml.text
 "Interface for single-line text editing widgets.\n\n\
- Typical examples of editable widgets are [Gtk.Entry] and\n\
- [Gtk.SpinButton]. It contains functions for generically manipulating\n\
+ Typical examples of editable widgets are {{!Ocgtk.Raw.Entry}[Gtk.Entry]} and\n\
+ {{!Ocgtk.Raw.Spin_button}[Gtk.SpinButton]}. It contains functions for \
+ generically manipulating\n\
  an editable widget, a large number of action signals used for key bindings,\n\
  and several signals that an application can connect to modify the behavior\n\
  of a widget.\n\n\
@@ -222,7 +223,7 @@ external get_editable : t -> bool = "ml_gtk_editable_get_editable"
 external get_delegate : t -> t option = "ml_gtk_editable_get_delegate"
 (** Gets the [GtkEditable] that [editable] is delegating its implementation to.
 
-    Typically, the delegate is a [Gtk.Text] widget. *)
+    Typically, the delegate is a {{!Ocgtk.Raw.Text}[Gtk.Text]} widget. *)
 
 external get_chars : t -> int -> int -> string = "ml_gtk_editable_get_chars"
 (** Retrieves a sequence of characters.

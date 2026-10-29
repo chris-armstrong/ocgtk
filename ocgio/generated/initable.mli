@@ -2,7 +2,8 @@
     If an object implements this interface then it must be initialized as the
     first thing after construction, either via [Gio.Initable.init] or
     [Gio.AsyncInitable.init_async] (the latter is only available if it also
-    implements [Gio.AsyncInitable]).
+    implements
+    {{!Ocgio.Async_initable.class-type-async_initable_t}[Gio.AsyncInitable]}).
 
     Its methods, signals and properties are on {!class-type-initable_t}. Its
     full description is under {!section-description}. Its constructors are under
@@ -17,7 +18,8 @@
     If an object implements this interface then it must be initialized as the
     first thing after construction, either via [Gio.Initable.init] or
     [Gio.AsyncInitable.init_async] (the latter is only available if it also
-    implements [Gio.AsyncInitable]).
+    implements
+    {{!Ocgio.Async_initable.class-type-async_initable_t}[Gio.AsyncInitable]}).
 
     If the object is not initialized, or initialization returns with an error,
     then all operations on the object except [g_object_ref()] and
@@ -93,7 +95,8 @@ class initable : Raw.Initable.t -> initable_t
     If an object implements this interface then it must be initialized as the
     first thing after construction, either via [Gio.Initable.init] or
     [Gio.AsyncInitable.init_async] (the latter is only available if it also
-    implements [Gio.AsyncInitable]).
+    implements
+    {{!Ocgio.Async_initable.class-type-async_initable_t}[Gio.AsyncInitable]}).
 
     If the object is not initialized, or initialization returns with an error,
     then all operations on the object except [g_object_ref()] and

@@ -31,7 +31,8 @@
     You should consider using graphics offload for your main widget if it shows
     frequently changing content (such as a video, or a VM display) and you
     provide the content in the form of dmabuf textures (see
-    [Gdk.DmabufTextureBuilder]), in particular if it may be fullscreen.
+    {{!Ocgdk.Dmabuf_texture_builder.class-type-dmabuf_texture_builder_t}[Gdk.DmabufTextureBuilder]}),
+    in particular if it may be fullscreen.
 
     Numerous factors can prohibit graphics offload:
 
@@ -118,7 +119,8 @@ class graphics_offload : Raw.Graphics_offload.t -> graphics_offload_t
     You should consider using graphics offload for your main widget if it shows
     frequently changing content (such as a video, or a VM display) and you
     provide the content in the form of dmabuf textures (see
-    [Gdk.DmabufTextureBuilder]), in particular if it may be fullscreen.
+    {{!Ocgdk.Dmabuf_texture_builder.class-type-dmabuf_texture_builder_t}[Gdk.DmabufTextureBuilder]}),
+    in particular if it may be fullscreen.
 
     Numerous factors can prohibit graphics offload:
 

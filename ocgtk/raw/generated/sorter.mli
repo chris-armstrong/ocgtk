@@ -1,9 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Sorter: Sorter *)
 
-(** Describes sorting criteria for a [Gtk.SortListModel].
+(** Describes sorting criteria for a
+    {{!Ocgtk.Raw.Sort_list_model}[Gtk.SortListModel]}.
 
-    Its primary user is [Gtk.SortListModel]
+    Its primary user is {{!Ocgtk.Raw.Sort_list_model}[Gtk.SortListModel]}
 
     The model will use a sorter to determine the order in which its items should
     appear by calling [Gtk.Sorter.compare] for pairs of items.
@@ -14,9 +15,9 @@
     gtk_sorter_compare() again.
 
     GTK provides various pre-made sorter implementations for common sorting
-    operations. [Gtk.ColumnView] has built-in support for sorting lists via the
-    [Gtk.ColumnViewColumn:sorter] property, where the user can change the
-    sorting by clicking on list headers.
+    operations. {{!Ocgtk.Raw.Column_view}[Gtk.ColumnView]} has built-in support
+    for sorting lists via the [Gtk.ColumnViewColumn:sorter] property, where the
+    user can change the sorting by clicking on list headers.
 
     Of course, in particular for large lists, it is also possible to subclass
     [GtkSorter] and provide one's own sorter.
@@ -32,7 +33,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_sorter_get_type"
 external get_order : t -> Ocgtk_enums.sorterorder = "ml_gtk_sorter_get_order"
 (** Gets the order that [self] conforms to.
 
-    See [Gtk.SorterOrder] for details of the possible return values.
+    See {{!Ocgtk.Enums.type-sorterorder}[Gtk.SorterOrder]} for details of the
+    possible return values.
 
     This function is intended to allow optimizations. *)
 
@@ -61,8 +63,9 @@ external changed : t -> Ocgtk_enums.sorterchange -> unit
     update the sort order via [Gtk.Sorter.compare].
 
     Depending on the [change] parameter, it may be possible to update the sort
-    order without a full resorting. Refer to the [Gtk.SorterChange]
-    documentation for details.
+    order without a full resorting. Refer to the
+    {{!Ocgtk.Enums.type-sorterchange}[Gtk.SorterChange]} documentation for
+    details.
 
     This function is intended for implementers of [GtkSorter] subclasses and
     should not be called from other functions. *)
@@ -77,8 +80,10 @@ val on_changed :
     Users of the sorter should then update the sort order again via
     gtk_sorter_compare().
 
-    [Gtk.SortListModel] handles this signal automatically.
+    {{!Ocgtk.Raw.Sort_list_model}[Gtk.SortListModel]} handles this signal
+    automatically.
 
     Depending on the [change] parameter, it may be possible to update the sort
-    order without a full resorting. Refer to the [Gtk.SorterChange]
-    documentation for details. *)
+    order without a full resorting. Refer to the
+    {{!Ocgtk.Enums.type-sorterchange}[Gtk.SorterChange]} documentation for
+    details. *)

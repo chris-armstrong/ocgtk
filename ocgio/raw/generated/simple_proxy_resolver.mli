@@ -1,9 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SimpleProxyResolver: SimpleProxyResolver *)
 
-(** [GSimpleProxyResolver] is a simple [Gio.ProxyResolver] implementation that
-    handles a single default proxy, multiple URI-scheme-specific proxies, and a
-    list of hosts that proxies should not be used for.
+(** [GSimpleProxyResolver] is a simple
+    {{!Ocgio.Raw.Proxy_resolver}[Gio.ProxyResolver]} implementation that handles
+    a single default proxy, multiple URI-scheme-specific proxies, and a list of
+    hosts that proxies should not be used for.
 
     [GSimpleProxyResolver] is never the default proxy resolver, but it can be
     used as the base class for another proxy resolver implementation, or it can

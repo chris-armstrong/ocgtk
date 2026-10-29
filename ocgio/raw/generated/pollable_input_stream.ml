@@ -1,10 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PollableInputStream: PollableInputStream *)
 
-(** [GPollableInputStream] is implemented by [Gio.InputStream]s that can be
-    polled for readiness to read. This can be used when interfacing with a
-    non-GIO API that expects UNIX-file-descriptor-style asynchronous I/O rather
-    than GIO-style.
+(** [GPollableInputStream] is implemented by
+    {{!Ocgio.Raw.Input_stream}[Gio.InputStream]}s that can be polled for
+    readiness to read. This can be used when interfacing with a non-GIO API that
+    expects UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.
 
     Some classes may implement [GPollableInputStream] but have only certain
     instances of that class be pollable. If [Gio.PollableInputStream.can_poll]

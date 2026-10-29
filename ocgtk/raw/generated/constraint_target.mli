@@ -2,7 +2,7 @@
 (* ConstraintTarget: ConstraintTarget *)
 
 (** Makes it possible to use an object as source or target in a
-    [Gtk.Constraint].
+    {{!Ocgtk.Raw.Constraint}[Gtk.Constraint]}.
 
     Besides [GtkWidget], it is also implemented by [GtkConstraintGuide].
 

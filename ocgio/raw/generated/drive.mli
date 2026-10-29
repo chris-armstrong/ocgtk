@@ -5,11 +5,11 @@
     generally only created for removable hardware or hardware with removable
     media. For example, an optical disc drive, or a USB flash drive.
 
-    [GDrive] is a container class for [Gio.Volume] objects that stem from the
-    same piece of media. As such, [GDrive] abstracts a drive with (or without)
-    removable media and provides operations for querying whether media is
-    available, determining whether media change is automatically detected and
-    ejecting the media.
+    [GDrive] is a container class for {{!Ocgio.Raw.Volume}[Gio.Volume]} objects
+    that stem from the same piece of media. As such, [GDrive] abstracts a drive
+    with (or without) removable media and provides operations for querying
+    whether media is available, determining whether media change is
+    automatically detected and ejecting the media.
 
     If the [GDrive] reports that media isn’t automatically detected, one can
     poll for media; typically one should not do this periodically as a poll for

@@ -24,12 +24,14 @@
     adjustments, and optionally draws a frame around the child.
 
     Widgets with native scrolling support, i.e. those whose classes implement
-    the [Gtk.Scrollable] interface, are added directly. For other types of
-    widget, the class [Gtk.Viewport] acts as an adaptor, giving scrollability to
-    other widgets. [Gtk.ScrolledWindow.set_child] intelligently accounts for
-    whether or not the added child is a [GtkScrollable]. If it isn’t, then it
-    wraps the child in a [GtkViewport]. Therefore, you can just add any child
-    widget and not worry about the details.
+    the {{!Ocgtk.Scrollable.class-type-scrollable_t}[Gtk.Scrollable]} interface,
+    are added directly. For other types of widget, the class
+    {{!Ocgtk.Viewport.class-type-viewport_t}[Gtk.Viewport]} acts as an adaptor,
+    giving scrollability to other widgets. [Gtk.ScrolledWindow.set_child]
+    intelligently accounts for whether or not the added child is a
+    [GtkScrollable]. If it isn’t, then it wraps the child in a [GtkViewport].
+    Therefore, you can just add any child widget and not worry about the
+    details.
 
     If [Gtk.ScrolledWindow.set_child] has added a [GtkViewport] for you, it will
     be automatically removed when you unset the child. Unless
@@ -39,9 +41,10 @@
     widgets around its child. The scroll position of the child, and if
     applicable the scrollbars, is controlled by the
     [Gtk.ScrolledWindow:hadjustment] and [Gtk.ScrolledWindow:vadjustment] that
-    are associated with the [GtkScrolledWindow]. See the docs on [Gtk.Scrollbar]
-    for the details, but note that the “step_increment” and “page_increment”
-    fields are only effective if the policy causes scrollbars to be present.
+    are associated with the [GtkScrolledWindow]. See the docs on
+    {{!Ocgtk.Scrollbar.class-type-scrollbar_t}[Gtk.Scrollbar]} for the details,
+    but note that the “step_increment” and “page_increment” fields are only
+    effective if the policy causes scrollbars to be present.
 
     If a [GtkScrolledWindow] doesn’t behave quite as you would like, or doesn’t
     have exactly the right layout, it’s very possible to set up your own
@@ -347,12 +350,14 @@ class scrolled_window : Raw.Scrolled_window.t -> scrolled_window_t
     adjustments, and optionally draws a frame around the child.
 
     Widgets with native scrolling support, i.e. those whose classes implement
-    the [Gtk.Scrollable] interface, are added directly. For other types of
-    widget, the class [Gtk.Viewport] acts as an adaptor, giving scrollability to
-    other widgets. [Gtk.ScrolledWindow.set_child] intelligently accounts for
-    whether or not the added child is a [GtkScrollable]. If it isn’t, then it
-    wraps the child in a [GtkViewport]. Therefore, you can just add any child
-    widget and not worry about the details.
+    the {{!Ocgtk.Scrollable.class-type-scrollable_t}[Gtk.Scrollable]} interface,
+    are added directly. For other types of widget, the class
+    {{!Ocgtk.Viewport.class-type-viewport_t}[Gtk.Viewport]} acts as an adaptor,
+    giving scrollability to other widgets. [Gtk.ScrolledWindow.set_child]
+    intelligently accounts for whether or not the added child is a
+    [GtkScrollable]. If it isn’t, then it wraps the child in a [GtkViewport].
+    Therefore, you can just add any child widget and not worry about the
+    details.
 
     If [Gtk.ScrolledWindow.set_child] has added a [GtkViewport] for you, it will
     be automatically removed when you unset the child. Unless
@@ -362,9 +367,10 @@ class scrolled_window : Raw.Scrolled_window.t -> scrolled_window_t
     widgets around its child. The scroll position of the child, and if
     applicable the scrollbars, is controlled by the
     [Gtk.ScrolledWindow:hadjustment] and [Gtk.ScrolledWindow:vadjustment] that
-    are associated with the [GtkScrolledWindow]. See the docs on [Gtk.Scrollbar]
-    for the details, but note that the “step_increment” and “page_increment”
-    fields are only effective if the policy causes scrollbars to be present.
+    are associated with the [GtkScrolledWindow]. See the docs on
+    {{!Ocgtk.Scrollbar.class-type-scrollbar_t}[Gtk.Scrollbar]} for the details,
+    but note that the “step_increment” and “page_increment” fields are only
+    effective if the policy causes scrollbars to be present.
 
     If a [GtkScrolledWindow] doesn’t behave quite as you would like, or doesn’t
     have exactly the right layout, it’s very possible to set up your own

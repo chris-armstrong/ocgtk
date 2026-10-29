@@ -4,9 +4,10 @@
    in AST nodes ([Code], [Bold], [Link], [Sym_ref], ...), raw prose stays in
    [Text]. [Doc_render.render] must not make parse-time policy decisions:
    the heading policy (GIR plan §6.6) is chosen per [context] at render
-   time. [Ref] is produced only by the future cross-reference resolver leg;
-   [parse] never emits it. Keeping this line clean is what lets the
-   deferred resolver and upstream-URL legs run as pure AST rewrites. *)
+   time. [Ref] is produced only by [Doc_resolve], a pure rewrite of [Sym_ref]
+   nodes between the two stages; [parse] never emits it. Keeping this line
+   clean is what lets the resolver and the deferred upstream-URL leg run as
+   AST rewrites. *)
 
 (** Threaded from [Doc_parse.parse] to [Doc_render.render_as] by
     [Doc_translate.translate]; see the parse/render split above. *)
@@ -64,7 +65,9 @@ type inline =
       anchor : string option;
     }
   | Param_ref of string
-  | Ref of string
+  | Ref of { path : string; text : string }
+      (** A reference [Doc_resolve] resolved: the odoc reference [path], shown
+          as the code span [text], the endpoint its [Sym_ref] showed. *)
   | C_lit of c_lit
       (** [%TRUE], [%FALSE] or [%NULL], or the same name as a whole code span: a
           C literal the bindings spell differently. *)

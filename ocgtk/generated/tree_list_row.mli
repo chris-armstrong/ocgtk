@@ -17,9 +17,11 @@
     [Gtk.TreeListModel:passthrough] property is not set.
 
     There are various support objects that can make use of [GtkTreeListRow]
-    objects, such as the [Gtk.TreeExpander] widget that allows displaying an
-    icon to expand or collapse a row or [Gtk.TreeListRowSorter] that makes it
-    possible to sort trees properly. *)
+    objects, such as the
+    {{!Ocgtk.Tree_expander.class-type-tree_expander_t}[Gtk.TreeExpander]} widget
+    that allows displaying an icon to expand or collapse a row or
+    {{!Ocgtk.Tree_list_row_sorter.class-type-tree_list_row_sorter_t}[Gtk.TreeListRowSorter]}
+    that makes it possible to sort trees properly. *)
 class type tree_list_row_t = object
   (** {2:methods Methods} *)
 
@@ -102,9 +104,11 @@ class tree_list_row : Raw.Tree_list_row.t -> tree_list_row_t
     [Gtk.TreeListModel:passthrough] property is not set.
 
     There are various support objects that can make use of [GtkTreeListRow]
-    objects, such as the [Gtk.TreeExpander] widget that allows displaying an
-    icon to expand or collapse a row or [Gtk.TreeListRowSorter] that makes it
-    possible to sort trees properly. *)
+    objects, such as the
+    {{!Ocgtk.Tree_expander.class-type-tree_expander_t}[Gtk.TreeExpander]} widget
+    that allows displaying an icon to expand or collapse a row or
+    {{!Ocgtk.Tree_list_row_sorter.class-type-tree_list_row_sorter_t}[Gtk.TreeListRowSorter]}
+    that makes it possible to sort trees properly. *)
 
 (** {1:constructors Constructors} *)
 

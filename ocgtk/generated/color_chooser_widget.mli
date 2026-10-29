@@ -34,8 +34,9 @@
     To change the initially selected color, use [Gtk.ColorChooser.set_rgba]. To
     get the selected color use [Gtk.ColorChooser.get_rgba].
 
-    The [GtkColorChooserWidget] is used in the [Gtk.ColorChooserDialog] to
-    provide a dialog for selecting colors.
+    The [GtkColorChooserWidget] is used in the
+    {{!Ocgtk.Color_chooser_dialog.class-type-color_chooser_dialog_t}[Gtk.ColorChooserDialog]}
+    to provide a dialog for selecting colors.
 
     {b Actions}
 
@@ -95,8 +96,9 @@ class color_chooser_widget :
     To change the initially selected color, use [Gtk.ColorChooser.set_rgba]. To
     get the selected color use [Gtk.ColorChooser.get_rgba].
 
-    The [GtkColorChooserWidget] is used in the [Gtk.ColorChooserDialog] to
-    provide a dialog for selecting colors.
+    The [GtkColorChooserWidget] is used in the
+    {{!Ocgtk.Color_chooser_dialog.class-type-color_chooser_dialog_t}[Gtk.ColorChooserDialog]}
+    to provide a dialog for selecting colors.
 
     {b Actions}
 

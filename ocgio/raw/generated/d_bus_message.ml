@@ -2,7 +2,7 @@
 (* DBusMessage: DBusMessage *)
 
 (** A type for representing D-Bus messages that can be sent or received on a
-    [Gio.DBusConnection].
+    {{!Ocgio.Raw.D_bus_connection}[Gio.DBusConnection]}.
 
     The class built on this module is in {!Ocgio.D_bus_message}. *)
 

@@ -71,6 +71,9 @@
   doc_translate_corpus_tests
   ; Doc_emit — item doc assembly (tags last, comment safety, @since)
   doc_emit_tests
+  ; Doc_resolve / Doc_index — cross-reference links
+  doc_resolve_tests
+  doc_index_tests
   ; Dune library/stub-batch generation (pure unit)
   dune_file_tests
   ; Library layout: module paths, raw.ml, dune stanzas (pure unit)

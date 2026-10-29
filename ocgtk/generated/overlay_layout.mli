@@ -1,4 +1,5 @@
-(** The layout manager used by [Gtk.Overlay].
+(** The layout manager used by
+    {{!Ocgtk.Overlay.class-type-overlay_t}[Gtk.Overlay]}.
 
     Its methods, signals and properties are on {!class-type-overlay_layout_t}.
     Its full description is under {!section-description}. Its constructors are
@@ -12,7 +13,8 @@
     Inherits from:
     {{!Ocgtk.Layout_manager.class-type-layout_manager_t}Ocgtk.Layout_manager}
 
-    The layout manager used by [Gtk.Overlay].
+    The layout manager used by
+    {{!Ocgtk.Overlay.class-type-overlay_t}[Gtk.Overlay]}.
 
     It places widgets as overlays on top of the main child.
 
@@ -32,7 +34,8 @@ class overlay_layout : Raw.Overlay_layout.t -> overlay_layout_t
 
 (** {1:description Description}
 
-    The layout manager used by [Gtk.Overlay].
+    The layout manager used by
+    {{!Ocgtk.Overlay.class-type-overlay_t}[Gtk.Overlay]}.
 
     It places widgets as overlays on top of the main child.
 

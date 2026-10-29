@@ -17,7 +17,9 @@
     (translucency).
 
     In GTK, the main widgets that implement this interface are
-    [Gtk.ColorChooserWidget], [Gtk.ColorChooserDialog] and [Gtk.ColorButton]. *)
+    {{!Ocgtk.Color_chooser_widget.class-type-color_chooser_widget_t}[Gtk.ColorChooserWidget]},
+    {{!Ocgtk.Color_chooser_dialog.class-type-color_chooser_dialog_t}[Gtk.ColorChooserDialog]}
+    and {{!Ocgtk.Color_button.class-type-color_button_t}[Gtk.ColorButton]}. *)
 class type color_chooser_t = object
   (** {2:methods Methods} *)
 
@@ -66,7 +68,9 @@ class color_chooser : Raw.Color_chooser.t -> color_chooser_t
     (translucency).
 
     In GTK, the main widgets that implement this interface are
-    [Gtk.ColorChooserWidget], [Gtk.ColorChooserDialog] and [Gtk.ColorButton]. *)
+    {{!Ocgtk.Color_chooser_widget.class-type-color_chooser_widget_t}[Gtk.ColorChooserWidget]},
+    {{!Ocgtk.Color_chooser_dialog.class-type-color_chooser_dialog_t}[Gtk.ColorChooserDialog]}
+    and {{!Ocgtk.Color_button.class-type-color_button_t}[Gtk.ColorButton]}. *)
 
 (** {1:constructors Constructors} *)
 

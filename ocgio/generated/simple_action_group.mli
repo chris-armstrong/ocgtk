@@ -1,5 +1,7 @@
-(** [GSimpleActionGroup] is a hash table filled with [Gio.Action] objects,
-    implementing the [Gio.ActionGroup] and [Gio.ActionMap] interfaces.
+(** [GSimpleActionGroup] is a hash table filled with
+    {{!Ocgio.Action.class-type-action_t}[Gio.Action]} objects, implementing the
+    {{!Ocgio.Action_group.class-type-action_group_t}[Gio.ActionGroup]} and
+    {{!Ocgio.Action_map.class-type-action_map_t}[Gio.ActionMap]} interfaces.
 
     Its methods, signals and properties are on
     {!class-type-simple_action_group_t}. Its constructors are under
@@ -14,8 +16,10 @@
     - {{!Ocgio.Action_group.class-type-action_group_t}Ocgio.Action_group}
     - {{!Ocgio.Action_map.class-type-action_map_t}Ocgio.Action_map}
 
-    [GSimpleActionGroup] is a hash table filled with [Gio.Action] objects,
-    implementing the [Gio.ActionGroup] and [Gio.ActionMap] interfaces. *)
+    [GSimpleActionGroup] is a hash table filled with
+    {{!Ocgio.Action.class-type-action_t}[Gio.Action]} objects, implementing the
+    {{!Ocgio.Action_group.class-type-action_group_t}[Gio.ActionGroup]} and
+    {{!Ocgio.Action_map.class-type-action_map_t}[Gio.ActionMap]} interfaces. *)
 class type simple_action_group_t = object
   inherit Action_group.action_group_t
   inherit Action_map.action_map_t

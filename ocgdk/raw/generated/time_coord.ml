@@ -4,9 +4,10 @@
 (** Stores a single event in a motion history.
 
     To check whether an axis is present, check whether the corresponding flag
-    from the [Gdk.AxisFlags] enumeration is set in the [flags] To access
-    individual axis values, use the values of the values of the [Gdk.AxisUse]
-    enumerations as indices.
+    from the {{!Ocgdk.Enums.type-axisflags}[Gdk.AxisFlags]} enumeration is set
+    in the [flags] To access individual axis values, use the values of the
+    values of the {{!Ocgdk.Enums.type-axisuse}[Gdk.AxisUse]} enumerations as
+    indices.
 
     The class built on this module is in {!Ocgdk.Time_coord}. *)
 

@@ -15,9 +15,10 @@
     where its standard input and output will be directed, the argument list, the
     environment, and more.
 
-    While the [Gio.Subprocess] class has high level functions covering popular
-    cases, use of this class allows access to more advanced options. It can also
-    be used to launch multiple subprocesses with a similar configuration. *)
+    While the {{!Ocgio.Subprocess.class-type-subprocess_t}[Gio.Subprocess]}
+    class has high level functions covering popular cases, use of this class
+    allows access to more advanced options. It can also be used to launch
+    multiple subprocesses with a similar configuration. *)
 class type subprocess_launcher_t = object
   (** {2:methods Methods} *)
 
@@ -225,9 +226,10 @@ class subprocess_launcher : Raw.Subprocess_launcher.t -> subprocess_launcher_t
     where its standard input and output will be directed, the argument list, the
     environment, and more.
 
-    While the [Gio.Subprocess] class has high level functions covering popular
-    cases, use of this class allows access to more advanced options. It can also
-    be used to launch multiple subprocesses with a similar configuration. *)
+    While the {{!Ocgio.Subprocess.class-type-subprocess_t}[Gio.Subprocess]}
+    class has high level functions covering popular cases, use of this class
+    allows access to more advanced options. It can also be used to launch
+    multiple subprocesses with a similar configuration. *)
 
 (** {1:constructors Constructors} *)
 

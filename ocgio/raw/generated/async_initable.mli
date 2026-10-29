@@ -3,9 +3,9 @@
 
 (** [GAsyncInitable] is an interface for asynchronously initializable objects.
 
-    This is the asynchronous version of [Gio.Initable]; it behaves the same in
-    all ways except that initialization is asynchronous. For more details see
-    the descriptions on [GInitable].
+    This is the asynchronous version of {{!Ocgio.Raw.Initable}[Gio.Initable]};
+    it behaves the same in all ways except that initialization is asynchronous.
+    For more details see the descriptions on [GInitable].
 
     A class may implement both the [GInitable] and [GAsyncInitable] interfaces.
 

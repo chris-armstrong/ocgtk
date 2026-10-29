@@ -4,8 +4,9 @@
 (** [GtkEntryCompletion] is an auxiliary object to provide completion
     functionality for [GtkEntry].
 
-    It implements the [Gtk.CellLayout] interface, to allow the user to add extra
-    cells to the [GtkTreeView] with completion matches.
+    It implements the {{!Ocgtk.Raw.Cell_layout}[Gtk.CellLayout]} interface, to
+    allow the user to add extra cells to the [GtkTreeView] with completion
+    matches.
 
     “Completion functionality” means that when the user modifies the text in the
     entry, [GtkEntryCompletion] checks which rows in the model match the current
@@ -24,7 +25,8 @@
 
     To add completion functionality to an entry, use [Gtk.Entry.set_completion].
 
-    [GtkEntryCompletion] uses a [Gtk.TreeModelFilter] model to represent the
+    [GtkEntryCompletion] uses a
+    {{!Ocgtk.Raw.Tree_model_filter}[Gtk.TreeModelFilter]} model to represent the
     subset of the entire model that is currently matching. While the
     [GtkEntryCompletion] signals [Gtk.EntryCompletion::match-selected] and
     [Gtk.EntryCompletion::cursor-on-match] take the original model and an iter
@@ -187,7 +189,7 @@ external get_cell_area :
 
     If no area is specified when creating the entry completion with
     [Gtk.EntryCompletion.new_with_area], a horizontally oriented
-    [Gtk.CellAreaBox] will be used. *)
+    {{!Ocgtk.Raw.Cell_area_box}[Gtk.CellAreaBox]} will be used. *)
 
 val on_insert_prefix :
   ?after:bool ->

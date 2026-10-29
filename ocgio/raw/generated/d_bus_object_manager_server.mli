@@ -1,12 +1,13 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DBusObjectManagerServer: DBusObjectManagerServer *)
 
-(** [GDBusObjectManagerServer] is used to export [Gio.DBusObject] instances
-    using the standardized [org.freedesktop.DBus.ObjectManager] interface. For
-    example, remote D-Bus clients can get all objects and properties in a single
-    call. Additionally, any change in the object hierarchy is broadcast using
-    signals. This means that D-Bus clients can keep caches up to date by only
-    listening to D-Bus signals.
+(** [GDBusObjectManagerServer] is used to export
+    {{!Ocgio.Raw.D_bus_object}[Gio.DBusObject]} instances using the standardized
+    [org.freedesktop.DBus.ObjectManager] interface. For example, remote D-Bus
+    clients can get all objects and properties in a single call. Additionally,
+    any change in the object hierarchy is broadcast using signals. This means
+    that D-Bus clients can keep caches up to date by only listening to D-Bus
+    signals.
 
     The recommended path to export an object manager at is the path form of the
     well-known name of a D-Bus service, or below. For example, if a D-Bus
@@ -18,9 +19,10 @@
     It is supported, but not recommended, to export an object manager at the
     root path, [/].
 
-    See [Gio.DBusObjectManagerClient] for the client-side code that is intended
-    to be used with [GDBusObjectManagerServer] or any D-Bus object implementing
-    the [org.freedesktop.DBus.ObjectManager] interface.
+    See {{!Ocgio.Raw.D_bus_object_manager_client}[Gio.DBusObjectManagerClient]}
+    for the client-side code that is intended to be used with
+    [GDBusObjectManagerServer] or any D-Bus object implementing the
+    [org.freedesktop.DBus.ObjectManager] interface.
 
     The class built on this module is in {!Ocgio.D_bus_object_manager_server}.
 *)

@@ -10,9 +10,10 @@
     the operation.
 
     [GtkAssistant] handles which buttons to show and to make sensitive based on
-    page sequence knowledge and the [Gtk.AssistantPageType] of each page in
-    addition to state information like the {i completed} and {i committed} page
-    statuses.
+    page sequence knowledge and the
+    {{!Ocgtk.Enums.type-assistantpagetype}[Gtk.AssistantPageType]} of each page
+    in addition to state information like the {i completed} and {i committed}
+    page statuses.
 
     If you have a case that doesn’t quite fit in [GtkAssistant]s way of handling
     buttons, you can use the [GTK_ASSISTANT_PAGE_CUSTOM] page type and handle

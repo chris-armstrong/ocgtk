@@ -2,8 +2,8 @@
 (* SocketControlMessage: SocketControlMessage *)
 
 (** A [GSocketControlMessage] is a special-purpose utility message that can be
-    sent to or received from a [Gio.Socket]. These types of messages are often
-    called ‘ancillary data’.
+    sent to or received from a {{!Ocgio.Raw.Socket}[Gio.Socket]}. These types of
+    messages are often called ‘ancillary data’.
 
     The message can represent some sort of special instruction to or information
     from the socket or can represent a special kind of transfer to the peer (for

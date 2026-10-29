@@ -3,8 +3,9 @@
 
 (** Displays an icon-size spinning animation.
 
-    It is often used as an alternative to a [Gtk.ProgressBar] for displaying
-    indefinite activity, instead of actual progress.
+    It is often used as an alternative to a
+    {{!Ocgtk.Raw.Progress_bar}[Gtk.ProgressBar]} for displaying indefinite
+    activity, instead of actual progress.
 
     An example GtkSpinner
 

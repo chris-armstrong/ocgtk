@@ -16,9 +16,10 @@
     [GDebugController] is an interface to expose control of debugging features
     and debug output.
 
-    It is implemented on Linux using [Gio.DebugControllerDBus], which exposes a
-    D-Bus interface to allow authenticated peers to control debug features in
-    this process.
+    It is implemented on Linux using
+    {{!Ocgio.Debug_controller_d_bus.class-type-debug_controller_d_bus_t}[Gio.DebugControllerDBus]},
+    which exposes a D-Bus interface to allow authenticated peers to control
+    debug features in this process.
 
     Whether debug output is enabled is exposed as
     [Gio.DebugController:debug-enabled]. This controls
@@ -52,9 +53,10 @@ class debug_controller : Raw.Debug_controller.t -> debug_controller_t
     [GDebugController] is an interface to expose control of debugging features
     and debug output.
 
-    It is implemented on Linux using [Gio.DebugControllerDBus], which exposes a
-    D-Bus interface to allow authenticated peers to control debug features in
-    this process.
+    It is implemented on Linux using
+    {{!Ocgio.Debug_controller_d_bus.class-type-debug_controller_d_bus_t}[Gio.DebugControllerDBus]},
+    which exposes a D-Bus interface to allow authenticated peers to control
+    debug features in this process.
 
     Whether debug output is enabled is exposed as
     [Gio.DebugController:debug-enabled]. This controls

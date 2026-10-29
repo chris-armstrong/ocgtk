@@ -4,9 +4,11 @@
 (** A single-line text entry.
 
     [GtkText] is the common implementation of single-line text editing that is
-    shared between [Gtk.Entry], [Gtk.PasswordEntry], [Gtk.SpinButton], and other
-    widgets. In all of these, a [GtkText] instance is used as the delegate for
-    the [Gtk.Editable] implementation.
+    shared between {{!Ocgtk.Raw.Entry}[Gtk.Entry]},
+    {{!Ocgtk.Raw.Password_entry}[Gtk.PasswordEntry]},
+    {{!Ocgtk.Raw.Spin_button}[Gtk.SpinButton]}, and other widgets. In all of
+    these, a [GtkText] instance is used as the delegate for the
+    {{!Ocgtk.Raw.Editable}[Gtk.Editable]} implementation.
 
     A large number of key bindings s supported by default. If the entered text
     is longer than the allocation of the widget, the widget will scroll so that
@@ -19,10 +21,11 @@
     but it can be changed with [Gtk.Text.set_invisible_char].
 
     If you want to add icons or progress display in an entry, look at
-    [Gtk.Entry]. There are other alternatives for more specialized use cases,
-    such as [Gtk.SearchEntry].
+    {{!Ocgtk.Raw.Entry}[Gtk.Entry]}. There are other alternatives for more
+    specialized use cases, such as {{!Ocgtk.Raw.Search_entry}[Gtk.SearchEntry]}.
 
-    If you need multi-line editable text, use [Gtk.TextView].
+    If you need multi-line editable text, use
+    {{!Ocgtk.Raw.Text_view}[Gtk.TextView]}.
 
     {b Shortcuts and Gestures}
 
@@ -333,7 +336,7 @@ external compute_cursor_extents :
 external get_im_module : t -> string = "ml_gtk_text_get_im_module"
 (** Which input method module should be used.
 
-    See [Gtk.IMMulticontext].
+    See {{!Ocgtk.Raw.Im_multicontext}[Gtk.IMMulticontext]}.
 
     Setting this to a non-[None] value overrides the system-wide input method.
     See the [Gtk.Settings:gtk-im-module] setting. *)
@@ -341,7 +344,7 @@ external get_im_module : t -> string = "ml_gtk_text_get_im_module"
 external set_im_module : t -> string -> unit = "ml_gtk_text_set_im_module"
 (** Which input method module should be used.
 
-    See [Gtk.IMMulticontext].
+    See {{!Ocgtk.Raw.Im_multicontext}[Gtk.IMMulticontext]}.
 
     Setting this to a non-[None] value overrides the system-wide input method.
     See the [Gtk.Settings:gtk-im-module] setting. *)

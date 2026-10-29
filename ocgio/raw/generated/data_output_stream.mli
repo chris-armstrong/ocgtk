@@ -1,8 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DataOutputStream: DataOutputStream *)
 
-(** Data output stream implements [Gio.OutputStream] and includes functions for
-    writing data directly to an output stream.
+(** Data output stream implements {{!Ocgio.Raw.Output_stream}[Gio.OutputStream]}
+    and includes functions for writing data directly to an output stream.
 
     The class built on this module is in {!Ocgio.Data_output_stream}. *)
 

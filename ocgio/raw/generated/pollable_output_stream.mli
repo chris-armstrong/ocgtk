@@ -1,10 +1,11 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PollableOutputStream: PollableOutputStream *)
 
-(** [GPollableOutputStream] is implemented by [Gio.OutputStream]s that can be
-    polled for readiness to write. This can be used when interfacing with a
-    non-GIO API that expects UNIX-file-descriptor-style asynchronous I/O rather
-    than GIO-style.
+(** [GPollableOutputStream] is implemented by
+    {{!Ocgio.Raw.Output_stream}[Gio.OutputStream]}s that can be polled for
+    readiness to write. This can be used when interfacing with a non-GIO API
+    that expects UNIX-file-descriptor-style asynchronous I/O rather than
+    GIO-style.
 
     Some classes may implement [GPollableOutputStream] but have only certain
     instances of that class be pollable. If [Gio.PollableOutputStream.can_poll]

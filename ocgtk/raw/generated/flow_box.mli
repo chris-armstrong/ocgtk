@@ -25,7 +25,7 @@
     [GtkFlowBoxChild] widget will automatically be inserted between the box and
     the widget.
 
-    Also see [Gtk.ListBox].
+    Also see {{!Ocgtk.Raw.List_box}[Gtk.ListBox]}.
 
     {b Shortcuts and Gestures}
 

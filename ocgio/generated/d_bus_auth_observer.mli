@@ -1,5 +1,7 @@
 (** [GDBusAuthObserver] provides a mechanism for participating in how a
-    [Gio.DBusServer] (or a [Gio.DBusConnection]) authenticates remote peers.
+    {{!Ocgio.D_bus_server.class-type-d_bus_server_t}[Gio.DBusServer]} (or a
+    {{!Ocgio.D_bus_connection.class-type-d_bus_connection_t}[Gio.DBusConnection]})
+    authenticates remote peers.
 
     Its methods, signals and properties are on
     {!class-type-d_bus_auth_observer_t}. Its full description is under
@@ -46,7 +48,9 @@ end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [DBusAuthObserver].}\n\n\
      [GDBusAuthObserver] provides a mechanism for participating\n\
-     in how a [Gio.DBusServer] (or a [Gio.DBusConnection])\n\
+     in how a \
+     {{!Ocgio.D_bus_server.class-type-d_bus_server_t}[Gio.DBusServer]} (or a \
+     {{!Ocgio.D_bus_connection.class-type-d_bus_connection_t}[Gio.DBusConnection]})\n\
      authenticates remote peers.\n\n\
      Simply instantiate a [GDBusAuthObserver] and connect to the\n\
      signals you are interested in. Note that new signals may be added\n\
@@ -106,7 +110,9 @@ class d_bus_auth_observer : Raw.D_bus_auth_observer.t -> d_bus_auth_observer_t
 [@@@ocaml.text
 "{1:description Description}\n\n\
  [GDBusAuthObserver] provides a mechanism for participating\n\
- in how a [Gio.DBusServer] (or a [Gio.DBusConnection])\n\
+ in how a {{!Ocgio.D_bus_server.class-type-d_bus_server_t}[Gio.DBusServer]} \
+ (or a \
+ {{!Ocgio.D_bus_connection.class-type-d_bus_connection_t}[Gio.DBusConnection]})\n\
  authenticates remote peers.\n\n\
  Simply instantiate a [GDBusAuthObserver] and connect to the\n\
  signals you are interested in. Note that new signals may be added\n\

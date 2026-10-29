@@ -5,12 +5,13 @@
     a network host using a connection oriented socket type.
 
     You create a [GSocketClient] object, set any options you want, and then call
-    a sync or async connect operation, which returns a [Gio.SocketConnection]
-    subclass on success.
+    a sync or async connect operation, which returns a
+    {{!Ocgio.Raw.Socket_connection}[Gio.SocketConnection]} subclass on success.
 
-    The type of the [Gio.SocketConnection] object returned depends on the type
-    of the underlying socket that is in use. For instance, for a TCP/IP
-    connection it will be a [Gio.TcpConnection].
+    The type of the {{!Ocgio.Raw.Socket_connection}[Gio.SocketConnection]}
+    object returned depends on the type of the underlying socket that is in use.
+    For instance, for a TCP/IP connection it will be a
+    {{!Ocgio.Raw.Tcp_connection}[Gio.TcpConnection]}.
 
     As [GSocketClient] is a lightweight object, you don't need to cache it. You
     can just create a new one any time you need one.

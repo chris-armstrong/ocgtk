@@ -11,9 +11,10 @@
 
     Used by list widgets to represent the headers they display.
 
-    [GtkListHeader] objects are managed just like [Gtk.ListItem] objects via
-    their factory, but provide a different set of properties suitable for
-    managing the header instead of individual items. *)
+    [GtkListHeader] objects are managed just like
+    {{!Ocgtk.List_item.class-type-list_item_t}[Gtk.ListItem]} objects via their
+    factory, but provide a different set of properties suitable for managing the
+    header instead of individual items. *)
 class type list_header_t = object
   (** {2:methods Methods} *)
 
@@ -62,9 +63,10 @@ class list_header : Raw.List_header.t -> list_header_t
 
     Used by list widgets to represent the headers they display.
 
-    [GtkListHeader] objects are managed just like [Gtk.ListItem] objects via
-    their factory, but provide a different set of properties suitable for
-    managing the header instead of individual items. *)
+    [GtkListHeader] objects are managed just like
+    {{!Ocgtk.List_item.class-type-list_item_t}[Gtk.ListItem]} objects via their
+    factory, but provide a different set of properties suitable for managing the
+    header instead of individual items. *)
 
 (** {1:constructors Constructors} *)
 

@@ -13,15 +13,20 @@
 
     You will encounter [GdkContentFormats] when interacting with objects
     controlling operations that pass data between different widgets, window or
-    application, like [Gdk.Drag], [Gdk.Drop], [Gdk.Clipboard] or
-    [Gdk.ContentProvider].
+    application, like {{!Ocgdk.Drag.class-type-drag_t}[Gdk.Drag]},
+    {{!Ocgdk.Drop.class-type-drop_t}[Gdk.Drop]},
+    {{!Ocgdk.Clipboard.class-type-clipboard_t}[Gdk.Clipboard]} or
+    {{!Ocgdk.Content_provider.class-type-content_provider_t}[Gdk.ContentProvider]}.
 
     GDK supports content in 2 forms: [GType] and mime type. Using [GTypes] is
     meant only for in-process content transfers. Mime types are meant to be used
     for data passing both in-process and out-of-process. The details of how data
     is passed is described in the documentation of the actual implementations.
-    To transform between the two forms, [Gdk.ContentSerializer] and
-    [Gdk.ContentDeserializer] are used.
+    To transform between the two forms,
+    {{!Ocgdk.Content_serializer.class-type-content_serializer_t}[Gdk.ContentSerializer]}
+    and
+    {{!Ocgdk.Content_deserializer.class-type-content_deserializer_t}[Gdk.ContentDeserializer]}
+    are used.
 
     A [GdkContentFormats] describes a set of possible formats content can be
     exchanged in. It is assumed that this set is ordered. [GTypes] are more
@@ -38,8 +43,9 @@
 
     [GdkContentFormats] is an immutable struct. After creation, you cannot
     change the types it represents. Instead, new [GdkContentFormats] have to be
-    created. The [Gdk.ContentFormatsBuilder] structure is meant to help in this
-    endeavor. *)
+    created. The
+    {{!Ocgdk.Content_formats_builder.class-type-content_formats_builder_t}[Gdk.ContentFormatsBuilder]}
+    structure is meant to help in this endeavor. *)
 class type content_formats_t = object
   (** {2:methods Methods} *)
 
@@ -110,15 +116,20 @@ class content_formats : Raw.Content_formats.t -> content_formats_t
 
     You will encounter [GdkContentFormats] when interacting with objects
     controlling operations that pass data between different widgets, window or
-    application, like [Gdk.Drag], [Gdk.Drop], [Gdk.Clipboard] or
-    [Gdk.ContentProvider].
+    application, like {{!Ocgdk.Drag.class-type-drag_t}[Gdk.Drag]},
+    {{!Ocgdk.Drop.class-type-drop_t}[Gdk.Drop]},
+    {{!Ocgdk.Clipboard.class-type-clipboard_t}[Gdk.Clipboard]} or
+    {{!Ocgdk.Content_provider.class-type-content_provider_t}[Gdk.ContentProvider]}.
 
     GDK supports content in 2 forms: [GType] and mime type. Using [GTypes] is
     meant only for in-process content transfers. Mime types are meant to be used
     for data passing both in-process and out-of-process. The details of how data
     is passed is described in the documentation of the actual implementations.
-    To transform between the two forms, [Gdk.ContentSerializer] and
-    [Gdk.ContentDeserializer] are used.
+    To transform between the two forms,
+    {{!Ocgdk.Content_serializer.class-type-content_serializer_t}[Gdk.ContentSerializer]}
+    and
+    {{!Ocgdk.Content_deserializer.class-type-content_deserializer_t}[Gdk.ContentDeserializer]}
+    are used.
 
     A [GdkContentFormats] describes a set of possible formats content can be
     exchanged in. It is assumed that this set is ordered. [GTypes] are more
@@ -135,8 +146,9 @@ class content_formats : Raw.Content_formats.t -> content_formats_t
 
     [GdkContentFormats] is an immutable struct. After creation, you cannot
     change the types it represents. Instead, new [GdkContentFormats] have to be
-    created. The [Gdk.ContentFormatsBuilder] structure is meant to help in this
-    endeavor. *)
+    created. The
+    {{!Ocgdk.Content_formats_builder.class-type-content_formats_builder_t}[Gdk.ContentFormatsBuilder]}
+    structure is meant to help in this endeavor. *)
 
 (** {1:constructors Constructors} *)
 
@@ -145,7 +157,8 @@ val new_ : string array option -> int -> content_formats_t
 
     The mime types must be valid and different from each other or the behavior
     of the return value is undefined. If you cannot guarantee this, use
-    [Gdk.ContentFormatsBuilder] instead. *)
+    {{!Ocgdk.Content_formats_builder.class-type-content_formats_builder_t}[Gdk.ContentFormatsBuilder]}
+    instead. *)
 
 val new_for_gtype : Gobject.Type.t -> content_formats_t
 (** Creates a new [GdkContentFormats] for a given [GType]. *)

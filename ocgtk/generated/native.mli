@@ -1,4 +1,5 @@
-(** An interface for widgets that have their own [Gdk.Surface].
+(** An interface for widgets that have their own
+    {{!Ocgdk.Surface.class-type-surface_t}[Gdk.Surface]}.
 
     Its methods, signals and properties are on {!class-type-native_t}. Its full
     description is under {!section-description}. Its constructors are under
@@ -12,7 +13,8 @@
     Requires:
     - {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
 
-    An interface for widgets that have their own [Gdk.Surface].
+    An interface for widgets that have their own
+    {{!Ocgdk.Surface.class-type-surface_t}[Gdk.Surface]}.
 
     The obvious example of a [GtkNative] is [GtkWindow].
 
@@ -23,9 +25,10 @@
     also possible to find the [GtkNative] to which a surface belongs, with
     [Gtk.Native.get_for_surface].
 
-    In addition to a [Gdk.Surface], a [GtkNative] also provides a [Gsk.Renderer]
-    for rendering on that surface. To get the renderer, use
-    [Gtk.Native.get_renderer]. *)
+    In addition to a {{!Ocgdk.Surface.class-type-surface_t}[Gdk.Surface]}, a
+    [GtkNative] also provides a
+    {{!Ocgsk.Renderer.class-type-renderer_t}[Gsk.Renderer]} for rendering on
+    that surface. To get the renderer, use [Gtk.Native.get_renderer]. *)
 class type native_t = object
   (** {2:methods Methods} *)
 
@@ -55,7 +58,8 @@ class native : Raw.Native.t -> native_t
 
 (** {1:description Description}
 
-    An interface for widgets that have their own [Gdk.Surface].
+    An interface for widgets that have their own
+    {{!Ocgdk.Surface.class-type-surface_t}[Gdk.Surface]}.
 
     The obvious example of a [GtkNative] is [GtkWindow].
 
@@ -66,9 +70,10 @@ class native : Raw.Native.t -> native_t
     also possible to find the [GtkNative] to which a surface belongs, with
     [Gtk.Native.get_for_surface].
 
-    In addition to a [Gdk.Surface], a [GtkNative] also provides a [Gsk.Renderer]
-    for rendering on that surface. To get the renderer, use
-    [Gtk.Native.get_renderer]. *)
+    In addition to a {{!Ocgdk.Surface.class-type-surface_t}[Gdk.Surface]}, a
+    [GtkNative] also provides a
+    {{!Ocgsk.Renderer.class-type-renderer_t}[Gsk.Renderer]} for rendering on
+    that surface. To get the renderer, use [Gtk.Native.get_renderer]. *)
 
 (** {1:constructors Constructors} *)
 

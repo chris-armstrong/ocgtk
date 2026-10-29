@@ -1,5 +1,5 @@
 (** A type for representing D-Bus messages that can be sent or received on a
-    [Gio.DBusConnection].
+    {{!Ocgio.D_bus_connection.class-type-d_bus_connection_t}[Gio.DBusConnection]}.
 
     Its methods, signals and properties are on {!class-type-d_bus_message_t}.
     Its constructors are under {!section-constructors}. The functions it is
@@ -10,7 +10,8 @@
 (** {b The methods, signals and properties of a [DBusMessage].}
 
     A type for representing D-Bus messages that can be sent or received on a
-    [Gio.DBusConnection]. *)
+    {{!Ocgio.D_bus_connection.class-type-d_bus_connection_t}[Gio.DBusConnection]}.
+*)
 class type d_bus_message_t = object
   (** {2:methods Methods} *)
 

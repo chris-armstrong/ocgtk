@@ -161,6 +161,36 @@ let test_code_block_close_hazard_strip () =
   lacks "hazardous content dropped" out "arr[i]}";
   has_fallback "stripped block counted" `Code_block_stripped fbs
 
+(* ---------- resolved references --------------------------------- *)
+
+let render_member inlines =
+  render_with_fallbacks Member { blocks = [ Para inlines ] }
+
+let test_ref_link () =
+  let out, fbs =
+    render_member
+      [
+        Text "See ";
+        Ref { path = "Ocgtk.Enums.type-orientation"; text = "Gtk.Orientation" };
+        Text ".";
+      ]
+  in
+  has "a resolved reference is a link with code text" out
+    "See {{!Ocgtk.Enums.type-orientation}[Gtk.Orientation]}.";
+  Alcotest.(check int) "no fallback" 0 (List.length fbs)
+
+let test_ref_unbalanced_text () =
+  let out, fbs =
+    render_member [ Ref { path = "Ocgtk.Constants.x"; text = "a]b" } ]
+  in
+  has "link text with ] falls back to escaped prose" out
+    "{{!Ocgtk.Constants.x}a\\]b}";
+  Alcotest.(check bool)
+    "counted as unbalanced inline code" true
+    (List.exists
+       (function Inline_code_unbalanced "a]b" -> true | _ -> false)
+       fbs)
+
 (* ---------- suite ---------------------------------------------- *)
 
 let tests =
@@ -189,4 +219,6 @@ let tests =
       `Quick,
       test_code_block_close_hazard_verbatim );
     ("code block ]}+v} stripped", `Quick, test_code_block_close_hazard_strip);
+    ("resolved reference link", `Quick, test_ref_link);
+    ("resolved reference unbalanced text", `Quick, test_ref_unbalanced_text);
   ]

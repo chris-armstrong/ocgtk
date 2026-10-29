@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DtlsServerConnection: DtlsServerConnection *)
 
-(** [GDtlsServerConnection] is the server-side subclass of [Gio.DtlsConnection],
-    representing a server-side DTLS connection.
+(** [GDtlsServerConnection] is the server-side subclass of
+    {{!Ocgio.Raw.Dtls_connection}[Gio.DtlsConnection]}, representing a
+    server-side DTLS connection.
 
     The class built on this module is in {!Ocgio.Dtls_server_connection}. *)
 

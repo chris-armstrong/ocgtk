@@ -18,8 +18,11 @@
     [Gio.Resolver.lookup_by_name] and their async variants) and SRV (service)
     records ([Gio.Resolver.lookup_service]).
 
-    [Gio.NetworkAddress] and [Gio.NetworkService] provide wrappers around
-    [GResolver] functionality that also implement [Gio.SocketConnectable],
+    {{!Ocgio.Network_address.class-type-network_address_t}[Gio.NetworkAddress]}
+    and
+    {{!Ocgio.Network_service.class-type-network_service_t}[Gio.NetworkService]}
+    provide wrappers around [GResolver] functionality that also implement
+    {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}[Gio.SocketConnectable]},
     making it easy to connect to a remote host/service.
 
     The default resolver (see [Gio.Resolver.get_default]) has a timeout of 30s
@@ -215,8 +218,11 @@ class resolver : Raw.Resolver.t -> resolver_t
     [Gio.Resolver.lookup_by_name] and their async variants) and SRV (service)
     records ([Gio.Resolver.lookup_service]).
 
-    [Gio.NetworkAddress] and [Gio.NetworkService] provide wrappers around
-    [GResolver] functionality that also implement [Gio.SocketConnectable],
+    {{!Ocgio.Network_address.class-type-network_address_t}[Gio.NetworkAddress]}
+    and
+    {{!Ocgio.Network_service.class-type-network_service_t}[Gio.NetworkService]}
+    provide wrappers around [GResolver] functionality that also implement
+    {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}[Gio.SocketConnectable]},
     making it easy to connect to a remote host/service.
 
     The default resolver (see [Gio.Resolver.get_default]) has a timeout of 30s

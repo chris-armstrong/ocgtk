@@ -436,6 +436,7 @@ let create_test_context () =
     current_cycle_classes = [];
     cross_references = StringMap.empty;
     target_library = Raw_library;
+    doc_index = StringMap.empty;
   }
 
 let create_test_context_with_hierarchy () = create_test_context ()

@@ -49,7 +49,9 @@ let emit_one_signal ~ctx ~output_mode ~class_name buf signal =
       match output_mode with
       | Layer1_helpers.Interface ->
           Buffer.add_string buf
-            (Signal_gen.emit_l1_val ~current_class:class_name emission)
+            (Signal_gen.emit_l1_val
+               ~refs:(Doc_resolve.env_of_ctx ctx)
+               ~current_class:class_name emission)
       | Layer1_helpers.Implementation ->
           Buffer.add_string buf
             (Signal_gen.emit_l1_let ~current_class:class_name emission))
@@ -105,8 +107,9 @@ let generate_ml_interface ~ctx ~output_mode ~class_name ~class_doc ~c_type
      comment attaches to the first type, odoc no longer shows it as the
      module's synopsis on parent pages, and ocamlformat keeps it there. *)
   Option.iter (fun doc -> bprintf buf "%s\n\n" (Doc_emit.floating doc))
-  @@ Entity_doc.l1_module ~namespace:ctx.namespace.namespace_name ~class_name
-       ~class_doc;
+  @@ Entity_doc.l1_module
+       ~refs:(Doc_resolve.env_of_ctx ctx)
+       ~class_name ~class_doc;
   generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
     ~constructors ~methods ~properties ?c_symbol_prefix ~base_type ~entity_kind
     ?from_gobject_c_name ~signals ?glib_get_type buf;
@@ -179,8 +182,9 @@ let generate_combined_module_entity ~ctx ~output_mode ~entity
   let doc =
     if is_impl then None
     else
-      Entity_doc.l1_module ~namespace:ctx.namespace.namespace_name ~class_name
-        ~class_doc:entity.doc
+      Entity_doc.l1_module
+        ~refs:(Doc_resolve.env_of_ctx ctx)
+        ~class_name ~class_doc:entity.doc
   in
 
   format_module_declaration buf ~doc module_name is_start;
@@ -232,7 +236,7 @@ let generate_combined_ml_modules ~ctx ~output_mode ~entities
    the short path ([Ocgio_raw.File] for [App_info_cycle_<hash>.File]) that
    other namespaces and [Raw] refer to; the strengthened signature keeps its
    types equal to the combined module's. *)
-let generate_cycle_member_shim ~output_mode ~namespace ~combined_module_name
+let generate_cycle_member_shim ~output_mode ~refs ~combined_module_name
     ~member_name ~member_doc =
   let member =
     combined_module_name ^ "." ^ Utils.module_name_of_class member_name
@@ -244,7 +248,7 @@ let generate_cycle_member_shim ~output_mode ~namespace ~combined_module_name
            which the included signature does not carry, so the shim repeats
            it. *)
         let preamble =
-          Entity_doc.l1_module ~namespace ~class_name:member_name
+          Entity_doc.l1_module ~refs ~class_name:member_name
             ~class_doc:member_doc
           |> Option.fold ~none:"" ~some:(fun doc ->
               Doc_emit.floating doc ^ "\n\n")

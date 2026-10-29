@@ -79,7 +79,7 @@ external set_model : t -> Selection_model.t option -> unit
   = "ml_gtk_grid_view_set_model"
 (** Sets the model to use.
 
-    This must be a [Gtk.SelectionModel]. *)
+    This must be a {{!Ocgtk.Raw.Selection_model}[Gtk.SelectionModel]}. *)
 
 external set_min_columns : t -> int -> unit = "ml_gtk_grid_view_set_min_columns"
 (** Sets the minimum number of columns to use.

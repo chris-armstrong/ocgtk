@@ -6,8 +6,10 @@
  An example GtkPopover\n\n\
  It is primarily meant to provide context-dependent information\n\
  or options. Popovers are attached to a parent widget. The parent widget\n\
- must support popover children, as [Gtk.MenuButton] and\n\
- [Gtk.PopoverMenuBar] do. If you want to make a custom widget that\n\
+ must support popover children, as {{!Ocgtk.Raw.Menu_button}[Gtk.MenuButton]} \
+ and\n\
+ {{!Ocgtk.Raw.Popover_menu_bar}[Gtk.PopoverMenuBar]} do. If you want to make a \
+ custom widget that\n\
  has an attached popover, you need to call [Gtk.Popover.present]\n\
  in your [Gtk.Widget.size_allocate] vfunc, in order to update the\n\
  positioning of the popover.\n\n\
@@ -23,7 +25,8 @@
  tweak its behavior.\n\n\
  {b GtkPopover as menu replacement}\n\n\
  [GtkPopover] is often used to replace menus. The best way to do this\n\
- is to use the [Gtk.PopoverMenu] subclass which supports being\n\
+ is to use the {{!Ocgtk.Raw.Popover_menu}[Gtk.PopoverMenu]} subclass which \
+ supports being\n\
  populated from a [GMenuModel] with [Gtk.PopoverMenu.new_from_model].\n\n\
  {[\n\
  <section>\n\
@@ -61,7 +64,8 @@
  [GtkPopover] has a main node with name [popover], an arrow with name [arrow],\n\
  and another node for the content named [contents]. The [popover] node always\n\
  gets the [.background] style class. It also gets the [.menu] style class\n\
- if the popover is menu-like, e.g. is a [Gtk.PopoverMenu].\n\n\
+ if the popover is menu-like, e.g. is a \
+ {{!Ocgtk.Raw.Popover_menu}[Gtk.PopoverMenu]}.\n\n\
  Particular uses of [GtkPopover], such as touch selection popups or\n\
  magnifiers in [GtkEntry] or [GtkTextView] get style classes like\n\
  [.touch-selection] or [.magnifier] to differentiate from plain popovers.\n\n\
@@ -107,8 +111,8 @@ external set_pointing_to : t -> Ocgdk_raw.Rectangle.t option -> unit
 external set_offset : t -> int -> int -> unit = "ml_gtk_popover_set_offset"
 (** Sets the offset to use when calculating the position of the popover.
 
-    These values are used when preparing the [Gdk.PopupLayout] for positioning
-    the popover. *)
+    These values are used when preparing the
+    {{!Ocgdk.Raw.Popup_layout}[Gdk.PopupLayout]} for positioning the popover. *)
 
 external set_mnemonics_visible : t -> bool -> unit
   = "ml_gtk_popover_set_mnemonics_visible"

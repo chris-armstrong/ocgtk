@@ -170,19 +170,22 @@
  [glib-compile-schemas] expects schema files to have the extension\n\
  [.gschema.override].\n\n\
  {b Delay-apply mode}\n\n\
- By default, values set on a [Gio.Settings] instance immediately start\n\
+ By default, values set on a {{!Ocgio.Raw.Settings}[Gio.Settings]} instance \
+ immediately start\n\
  to be written to the backend (although these writes may not complete by the\n\
  time that [Gio.Settings.set]) returns; see [Gio.Settings.sync]).\n\n\
  In order to allow groups of settings to be changed simultaneously and\n\
  atomically, GSettings also supports a ‘delay-apply’ mode. In this mode,\n\
- updated values are kept locally in the [Gio.Settings] instance until\n\
+ updated values are kept locally in the {{!Ocgio.Raw.Settings}[Gio.Settings]} \
+ instance until\n\
  they are explicitly applied by calling [Gio.Settings.apply].\n\n\
  For example, this could be useful for a preferences dialog where the\n\
  preferences all need to be applied simultaneously when the user clicks \
  ‘Save’.\n\n\
- Switching a [Gio.Settings] instance to ‘delay-apply’ mode is a one-time\n\
+ Switching a {{!Ocgio.Raw.Settings}[Gio.Settings]} instance to ‘delay-apply’ \
+ mode is a one-time\n\
  irreversible operation: from that point onwards, {i all} changes made to that\n\
- [Gio.Settings] have to be explicitly applied by calling\n\
+ {{!Ocgio.Raw.Settings}[Gio.Settings]} have to be explicitly applied by calling\n\
  [Gio.Settings.apply]. The ‘delay-apply’ mode is also propagated to any\n\
  child settings objects subsequently created using\n\
  [Gio.Settings.get_child].\n\n\
@@ -327,8 +330,8 @@ type t = [ `settings | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gio_settings_get_type"
 
 external new_ : string -> t = "ml_g_settings_new"
-(** Creates a new [Gio.Settings] object with the schema specified by
-    [schema_id].
+(** Creates a new {{!Ocgio.Raw.Settings}[Gio.Settings]} object with the schema
+    specified by [schema_id].
 
     It is an error for the schema to not exist: schemas are an essential part of
     a program, as they provide type information. If schemas need to be
@@ -336,14 +339,15 @@ external new_ : string -> t = "ml_g_settings_new"
     [Gio.SettingsSchemaSource.lookup] can be used to test for their existence
     before loading them.
 
-    Signals on the newly created [Gio.Settings] object will be dispatched via
-    the thread-default [GLib.MainContext] in effect at the time of the call to
-    [Gio.Settings.new]. The new [Gio.Settings] will hold a reference on the
-    context. See [GLib.MainContext.push_thread_default]. *)
+    Signals on the newly created {{!Ocgio.Raw.Settings}[Gio.Settings]} object
+    will be dispatched via the thread-default [GLib.MainContext] in effect at
+    the time of the call to [Gio.Settings.new]. The new
+    {{!Ocgio.Raw.Settings}[Gio.Settings]} will hold a reference on the context.
+    See [GLib.MainContext.push_thread_default]. *)
 
 external new_with_path : string -> string -> t = "ml_g_settings_new_with_path"
-(** Creates a new [Gio.Settings] object with the relocatable schema specified by
-    [schema_id] and a given path.
+(** Creates a new {{!Ocgio.Raw.Settings}[Gio.Settings]} object with the
+    relocatable schema specified by [schema_id] and a given path.
 
     You only need to do this if you want to directly create a settings object
     with a schema that doesn’t have a specified path of its own. That’s quite
@@ -578,7 +582,8 @@ external get_int : t -> string -> int = "ml_g_settings_get_int"
     [i] type in the schema for [settings] (see [GLib.VariantType]). *)
 
 external get_has_unapplied : t -> bool = "ml_g_settings_get_has_unapplied"
-(** Returns whether the [Gio.Settings] object has any unapplied changes.
+(** Returns whether the {{!Ocgio.Raw.Settings}[Gio.Settings]} object has any
+    unapplied changes.
 
     This can only be the case if it is in ‘delay-apply’ mode. *)
 
@@ -659,13 +664,15 @@ external get_boolean : t -> string -> bool = "ml_g_settings_get_boolean"
     [b] type in the schema for [settings] (see [GLib.VariantType]). *)
 
 external delay : t -> unit = "ml_g_settings_delay"
-(** Changes the [Gio.Settings] object into ‘delay-apply’ mode.
+(** Changes the {{!Ocgio.Raw.Settings}[Gio.Settings]} object into ‘delay-apply’
+    mode.
 
     In this mode, changes to [settings] are not immediately propagated to the
     backend, but kept locally until [Gio.Settings.apply] is called. *)
 
 external create_action : t -> string -> Action.t = "ml_g_settings_create_action"
-(** Creates a [Gio.Action] corresponding to a given [Gio.Settings] key.
+(** Creates a {{!Ocgio.Raw.Action}[Gio.Action]} corresponding to a given
+    {{!Ocgio.Raw.Settings}[Gio.Settings]} key.
 
     The action has the same name as the key.
 
@@ -733,34 +740,38 @@ external apply : t -> unit = "ml_g_settings_apply"
 (* Properties *)
 
 external get_delay_apply : t -> bool = "ml_g_settings_get_delay_apply"
-(** Whether the [Gio.Settings] object is in ‘delay-apply’ mode. *)
+(** Whether the {{!Ocgio.Raw.Settings}[Gio.Settings]} object is in ‘delay-apply’
+    mode. *)
 
 external get_path : t -> string = "ml_g_settings_get_path"
 (** The path within the backend where the settings are stored. *)
 
 external get_schema : t -> string = "ml_g_settings_get_schema"
 (** The name of the schema that describes the types of keys for this
-    [Gio.Settings] object.
+    {{!Ocgio.Raw.Settings}[Gio.Settings]} object.
 
-    The type of this property is {i not} [Gio.SettingsSchema].
-    [Gio.SettingsSchema] has only existed since version 2.32 and unfortunately
-    this name was used in previous versions to refer to the schema ID rather
-    than the schema itself. Take care to use the [Gio.Settings:settings-schema]
-    property if you wish to pass in a [Gio.SettingsSchema]. *)
+    The type of this property is {i not}
+    {{!Ocgio.Raw.Settings_schema}[Gio.SettingsSchema]}.
+    {{!Ocgio.Raw.Settings_schema}[Gio.SettingsSchema]} has only existed since
+    version 2.32 and unfortunately this name was used in previous versions to
+    refer to the schema ID rather than the schema itself. Take care to use the
+    [Gio.Settings:settings-schema] property if you wish to pass in a
+    {{!Ocgio.Raw.Settings_schema}[Gio.SettingsSchema]}. *)
 
 external get_schema_id : t -> string = "ml_g_settings_get_schema_id"
 (** The name of the schema that describes the types of keys for this
-    [Gio.Settings] object. *)
+    {{!Ocgio.Raw.Settings}[Gio.Settings]} object. *)
 
 external get_settings_schema : t -> Settings_schema.t
   = "ml_g_settings_get_settings_schema"
-(** The [Gio.SettingsSchema] describing the types of keys for this
-    [Gio.Settings] object.
+(** The {{!Ocgio.Raw.Settings_schema}[Gio.SettingsSchema]} describing the types
+    of keys for this {{!Ocgio.Raw.Settings}[Gio.Settings]} object.
 
     Ideally, this property would be called [Gio.Settings:schema].
-    [Gio.SettingsSchema] has only existed since version 2.32, however, and
-    before then the [Gio.Settings:schema] property was used to refer to the ID
-    of the schema rather than the schema itself. Take care. *)
+    {{!Ocgio.Raw.Settings_schema}[Gio.SettingsSchema]} has only existed since
+    version 2.32, however, and before then the [Gio.Settings:schema] property
+    was used to refer to the ID of the schema rather than the schema itself.
+    Take care. *)
 
 let on_changed ?after obj ~callback =
   let closure =

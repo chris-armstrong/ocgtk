@@ -1,5 +1,7 @@
-(** This [Gio.SocketControlMessage] contains a [Gio.Credentials] instance. It
-    may be sent using [Gio.Socket.send_message] and received using
+(** This
+    {{!Ocgio.Socket_control_message.class-type-socket_control_message_t}[Gio.SocketControlMessage]}
+    contains a {{!Ocgio.Credentials.class-type-credentials_t}[Gio.Credentials]}
+    instance. It may be sent using [Gio.Socket.send_message] and received using
     [Gio.Socket.receive_message] over UNIX sockets (ie: sockets in the
     [G_SOCKET_FAMILY_UNIX] family).
 
@@ -16,8 +18,10 @@
     Inherits from:
     {{!Ocgio.Socket_control_message.class-type-socket_control_message_t}Ocgio.Socket_control_message}
 
-    This [Gio.SocketControlMessage] contains a [Gio.Credentials] instance. It
-    may be sent using [Gio.Socket.send_message] and received using
+    This
+    {{!Ocgio.Socket_control_message.class-type-socket_control_message_t}[Gio.SocketControlMessage]}
+    contains a {{!Ocgio.Credentials.class-type-credentials_t}[Gio.Credentials]}
+    instance. It may be sent using [Gio.Socket.send_message] and received using
     [Gio.Socket.receive_message] over UNIX sockets (ie: sockets in the
     [G_SOCKET_FAMILY_UNIX] family).
 
@@ -54,8 +58,10 @@ class unix_credentials_message :
 
 (** {1:description Description}
 
-    This [Gio.SocketControlMessage] contains a [Gio.Credentials] instance. It
-    may be sent using [Gio.Socket.send_message] and received using
+    This
+    {{!Ocgio.Socket_control_message.class-type-socket_control_message_t}[Gio.SocketControlMessage]}
+    contains a {{!Ocgio.Credentials.class-type-credentials_t}[Gio.Credentials]}
+    instance. It may be sent using [Gio.Socket.send_message] and received using
     [Gio.Socket.receive_message] over UNIX sockets (ie: sockets in the
     [G_SOCKET_FAMILY_UNIX] family).
 

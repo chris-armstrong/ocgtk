@@ -11,8 +11,9 @@
 
     [GAsyncInitable] is an interface for asynchronously initializable objects.
 
-    This is the asynchronous version of [Gio.Initable]; it behaves the same in
-    all ways except that initialization is asynchronous. For more details see
+    This is the asynchronous version of
+    {{!Ocgio.Initable.class-type-initable_t}[Gio.Initable]}; it behaves the same
+    in all ways except that initialization is asynchronous. For more details see
     the descriptions on [GInitable].
 
     A class may implement both the [GInitable] and [GAsyncInitable] interfaces.
@@ -134,8 +135,9 @@ class async_initable : Raw.Async_initable.t -> async_initable_t
 
     [GAsyncInitable] is an interface for asynchronously initializable objects.
 
-    This is the asynchronous version of [Gio.Initable]; it behaves the same in
-    all ways except that initialization is asynchronous. For more details see
+    This is the asynchronous version of
+    {{!Ocgio.Initable.class-type-initable_t}[Gio.Initable]}; it behaves the same
+    in all ways except that initialization is asynchronous. For more details see
     the descriptions on [GInitable].
 
     A class may implement both the [GInitable] and [GAsyncInitable] interfaces.

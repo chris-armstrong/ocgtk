@@ -260,8 +260,10 @@ end
    management, provides some basic scriptability and desktop shell integration\n\
    by exporting actions and menus and manages a list of toplevel windows whose\n\
    life-cycle is automatically tied to the life-cycle of your application.\n\n\
-   While [GtkApplication] works fine with plain [Gtk.Window]s,\n\
-   it is recommended to use it together with [Gtk.ApplicationWindow].\n\n\
+   While [GtkApplication] works fine with plain \
+   {{!Ocgtk.Raw.Window}[Gtk.Window]}s,\n\
+   it is recommended to use it together with \
+   {{!Ocgtk.Raw.Application_window}[Gtk.ApplicationWindow]}.\n\n\
    {b Automatic resources}\n\n\
    [GtkApplication] will automatically load menus from the [GtkBuilder]\n\
    resource located at \"gtk/menus.ui\", relative to the application's\n\
@@ -281,9 +283,11 @@ end
    resources. See [Gtk.IconTheme.add_resource_path] for more\n\
    information.\n\n\
    If there is a resource located at [gtk/help-overlay.ui] which\n\
-   defines a [Gtk.ShortcutsWindow] with ID [help_overlay] then\n\
+   defines a {{!Ocgtk.Raw.Shortcuts_window}[Gtk.ShortcutsWindow]} with ID \
+   [help_overlay] then\n\
    [GtkApplication] associates an instance of this shortcuts window with\n\
-   each [Gtk.ApplicationWindow] and sets up the keyboard accelerator\n\
+   each {{!Ocgtk.Raw.Application_window}[Gtk.ApplicationWindow]} and sets up \
+   the keyboard accelerator\n\
    <kbd>Control</kbd>+<kbd>?</kbd> to open it. To create a menu item that\n\
    displays the shortcuts window, associate the item with the action\n\
    [win.show-help-overlay].\n\n\
@@ -320,9 +324,10 @@ end
 
     {b GtkWindow as GtkBuildable}
 
-    The [GtkWindow] implementation of the [Gtk.Buildable] interface supports
-    setting a child as the titlebar by specifying “titlebar” as the “type”
-    attribute of a [<child>] element.
+    The [GtkWindow] implementation of the
+    {{!Ocgtk.Raw.Buildable}[Gtk.Buildable]} interface supports setting a child
+    as the titlebar by specifying “titlebar” as the “type” attribute of a
+    [<child>] element.
 
     {b Shortcuts and Gestures}
 
@@ -473,9 +478,9 @@ and Window : sig
     unit = "ml_gtk_window_set_titlebar"
   (** Sets a custom titlebar for the window.
 
-      A typical widget used here is [Gtk.HeaderBar], as it provides various
-      features expected of a titlebar while allowing the addition of child
-      widgets to it.
+      A typical widget used here is {{!Ocgtk.Raw.Header_bar}[Gtk.HeaderBar]}, as
+      it provides various features expected of a titlebar while allowing the
+      addition of child widgets to it.
 
       If you set a custom titlebar, GTK will do its best to convince the window
       manager not to put its own titlebar on the window. Depending on the
@@ -536,8 +541,8 @@ and Window : sig
     = "ml_gtk_window_set_icon_name"
   (** Sets the icon for the window from a named themed icon.
 
-      See the docs for [Gtk.IconTheme] for more details. On some platforms, the
-      window icon is not used at all.
+      See the docs for {{!Ocgtk.Raw.Icon_theme}[Gtk.IconTheme]} for more
+      details. On some platforms, the window icon is not used at all.
 
       Note that this has nothing to do with the WM_ICON_NAME property which is
       mentioned in the ICCCM. *)

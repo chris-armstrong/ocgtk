@@ -20,7 +20,8 @@
     [Gdk.Surface.set_device_cursor]. Applications will typically use
     higher-level GTK functions such as gtk_widget_set_cursor() instead.
 
-    Cursors are not bound to a given [Gdk.Display], so they can be shared.
+    Cursors are not bound to a given
+    {{!Ocgdk.Display.class-type-display_t}[Gdk.Display]}, so they can be shared.
     However, the appearance of cursors may vary when used on different
     platforms.
 
@@ -36,11 +37,12 @@
     and provide an image to use for the cursor.
 
     To ease work with unsupported cursors, a fallback cursor can be provided. If
-    a [Gdk.Surface] cannot use a cursor because of the reasons mentioned above,
-    it will try the fallback cursor. Fallback cursors can themselves have
-    fallback cursors again, so it is possible to provide a chain of
-    progressively easier to support cursors. If none of the provided cursors can
-    be supported, the default cursor will be the ultimate fallback. *)
+    a {{!Ocgdk.Surface.class-type-surface_t}[Gdk.Surface]} cannot use a cursor
+    because of the reasons mentioned above, it will try the fallback cursor.
+    Fallback cursors can themselves have fallback cursors again, so it is
+    possible to provide a chain of progressively easier to support cursors. If
+    none of the provided cursors can be supported, the default cursor will be
+    the ultimate fallback. *)
 class type cursor_t = object
   (** {2:methods Methods} *)
 
@@ -102,7 +104,8 @@ class cursor : Raw.Cursor.t -> cursor_t
     [Gdk.Surface.set_device_cursor]. Applications will typically use
     higher-level GTK functions such as gtk_widget_set_cursor() instead.
 
-    Cursors are not bound to a given [Gdk.Display], so they can be shared.
+    Cursors are not bound to a given
+    {{!Ocgdk.Display.class-type-display_t}[Gdk.Display]}, so they can be shared.
     However, the appearance of cursors may vary when used on different
     platforms.
 
@@ -118,11 +121,12 @@ class cursor : Raw.Cursor.t -> cursor_t
     and provide an image to use for the cursor.
 
     To ease work with unsupported cursors, a fallback cursor can be provided. If
-    a [Gdk.Surface] cannot use a cursor because of the reasons mentioned above,
-    it will try the fallback cursor. Fallback cursors can themselves have
-    fallback cursors again, so it is possible to provide a chain of
-    progressively easier to support cursors. If none of the provided cursors can
-    be supported, the default cursor will be the ultimate fallback. *)
+    a {{!Ocgdk.Surface.class-type-surface_t}[Gdk.Surface]} cannot use a cursor
+    because of the reasons mentioned above, it will try the fallback cursor.
+    Fallback cursors can themselves have fallback cursors again, so it is
+    possible to provide a chain of progressively easier to support cursors. If
+    none of the provided cursors can be supported, the default cursor will be
+    the ultimate fallback. *)
 
 (** {1:constructors Constructors} *)
 

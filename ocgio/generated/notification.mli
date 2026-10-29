@@ -22,7 +22,8 @@
 
     Since the user may click on a notification while the application is not
     running, applications using [GNotification] should be able to be started as
-    a D-Bus service, using [Gio.Application].
+    a D-Bus service, using
+    {{!Ocgio.Application.class-type-application_t}[Gio.Application]}.
 
     In order for [GNotification] to work, the application must have installed a
     [.desktop] file. For example:
@@ -147,7 +148,8 @@ class notification : Raw.Notification.t -> notification_t
 
     Since the user may click on a notification while the application is not
     running, applications using [GNotification] should be able to be started as
-    a D-Bus service, using [Gio.Application].
+    a D-Bus service, using
+    {{!Ocgio.Application.class-type-application_t}[Gio.Application]}.
 
     In order for [GNotification] to work, the application must have installed a
     [.desktop] file. For example:

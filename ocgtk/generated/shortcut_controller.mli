@@ -19,19 +19,22 @@
     Manages keyboard shortcuts and their activation.
 
     Most common shortcuts are using this controller implicitly, e.g. by adding a
-    mnemonic underline to a [Gtk.Label], or by installing a key binding using
-    [Gtk.WidgetClass.add_binding], or by adding accelerators to global actions
-    using [Gtk.Application.set_accels_for_action].
+    mnemonic underline to a {{!Ocgtk.Label.class-type-label_t}[Gtk.Label]}, or
+    by installing a key binding using [Gtk.WidgetClass.add_binding], or by
+    adding accelerators to global actions using
+    [Gtk.Application.set_accels_for_action].
 
     But it is possible to create your own shortcut controller, and add shortcuts
     to it.
 
-    [GtkShortcutController] implements [Gio.ListModel] for querying the
-    shortcuts that have been added to it.
+    [GtkShortcutController] implements
+    {{!Ocgio.List_model.class-type-list_model_t}[Gio.ListModel]} for querying
+    the shortcuts that have been added to it.
 
     {b GtkShortcutController as GtkBuildable}
 
-    [GtkShortcutController]s can be created in [Gtk.Builder] ui files, to set up
+    [GtkShortcutController]s can be created in
+    {{!Ocgtk.Builder.class-type-builder_t}[Gtk.Builder]} ui files, to set up
     shortcuts in the same place as the widgets.
 
     An example of a UI definition fragment with [GtkShortcutController]:
@@ -52,10 +55,13 @@
       </object>
     ]}
 
-    This example creates a [Gtk.ActivateAction] for triggering the [activate]
-    signal of the [Gtk.Button]. See [Gtk.ShortcutAction.parse_string] for the
-    syntax for other kinds of [Gtk.ShortcutAction]. See
-    [Gtk.ShortcutTrigger.parse_string] to learn more about the syntax for
+    This example creates a
+    {{!Ocgtk.Activate_action.class-type-activate_action_t}[Gtk.ActivateAction]}
+    for triggering the [activate] signal of the
+    {{!Ocgtk.Button.class-type-button_t}[Gtk.Button]}. See
+    [Gtk.ShortcutAction.parse_string] for the syntax for other kinds of
+    {{!Ocgtk.Shortcut_action.class-type-shortcut_action_t}[Gtk.ShortcutAction]}.
+    See [Gtk.ShortcutTrigger.parse_string] to learn more about the syntax for
     triggers. *)
 class type shortcut_controller_t = object
   inherit Event_controller.event_controller_t
@@ -131,19 +137,22 @@ class shortcut_controller : Raw.Shortcut_controller.t -> shortcut_controller_t
     Manages keyboard shortcuts and their activation.
 
     Most common shortcuts are using this controller implicitly, e.g. by adding a
-    mnemonic underline to a [Gtk.Label], or by installing a key binding using
-    [Gtk.WidgetClass.add_binding], or by adding accelerators to global actions
-    using [Gtk.Application.set_accels_for_action].
+    mnemonic underline to a {{!Ocgtk.Label.class-type-label_t}[Gtk.Label]}, or
+    by installing a key binding using [Gtk.WidgetClass.add_binding], or by
+    adding accelerators to global actions using
+    [Gtk.Application.set_accels_for_action].
 
     But it is possible to create your own shortcut controller, and add shortcuts
     to it.
 
-    [GtkShortcutController] implements [Gio.ListModel] for querying the
-    shortcuts that have been added to it.
+    [GtkShortcutController] implements
+    {{!Ocgio.List_model.class-type-list_model_t}[Gio.ListModel]} for querying
+    the shortcuts that have been added to it.
 
     {b GtkShortcutController as GtkBuildable}
 
-    [GtkShortcutController]s can be created in [Gtk.Builder] ui files, to set up
+    [GtkShortcutController]s can be created in
+    {{!Ocgtk.Builder.class-type-builder_t}[Gtk.Builder]} ui files, to set up
     shortcuts in the same place as the widgets.
 
     An example of a UI definition fragment with [GtkShortcutController]:
@@ -164,10 +173,13 @@ class shortcut_controller : Raw.Shortcut_controller.t -> shortcut_controller_t
       </object>
     ]}
 
-    This example creates a [Gtk.ActivateAction] for triggering the [activate]
-    signal of the [Gtk.Button]. See [Gtk.ShortcutAction.parse_string] for the
-    syntax for other kinds of [Gtk.ShortcutAction]. See
-    [Gtk.ShortcutTrigger.parse_string] to learn more about the syntax for
+    This example creates a
+    {{!Ocgtk.Activate_action.class-type-activate_action_t}[Gtk.ActivateAction]}
+    for triggering the [activate] signal of the
+    {{!Ocgtk.Button.class-type-button_t}[Gtk.Button]}. See
+    [Gtk.ShortcutAction.parse_string] for the syntax for other kinds of
+    {{!Ocgtk.Shortcut_action.class-type-shortcut_action_t}[Gtk.ShortcutAction]}.
+    See [Gtk.ShortcutTrigger.parse_string] to learn more about the syntax for
     triggers. *)
 
 (** {1:constructors Constructors} *)

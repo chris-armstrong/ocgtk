@@ -5,7 +5,8 @@
     for GIO streaming output operations.
 
     As of GLib 2.34, [GMemoryOutputStream] trivially implements
-    [Gio.PollableOutputStream]: it always polls as ready.
+    {{!Ocgio.Raw.Pollable_output_stream}[Gio.PollableOutputStream]}: it always
+    polls as ready.
 
     The class built on this module is in {!Ocgio.Memory_output_stream}. *)
 

@@ -331,11 +331,13 @@ end
      </object>\n\
      ]}\n\n\
      Generic containers that can contain an arbitrary number of children,\n\
-     such as [Gtk.Box] instead use the [<child>] element. A [<child>]\n\
+     such as {{!Ocgtk.Box.class-type-box_t}[Gtk.Box]} instead use the \
+     [<child>] element. A [<child>]\n\
      element contains an [<object>] element which describes the child object.\n\
      Most often, child objects are widgets inside a container, but they can\n\
      also be, e.g., actions in an action group, or columns in a tree model.\n\n\
-     Any object type that implements the [Gtk.Buildable] interface can\n\
+     Any object type that implements the \
+     {{!Ocgtk.Buildable.class-type-buildable_t}[Gtk.Buildable]} interface can\n\
      specify how children may be added to it. Since many objects and widgets \
      that\n\
      are included with GTK already implement the [GtkBuildable] interface,\n\
@@ -348,7 +350,8 @@ end
      implementing\n\
      [GtkBuildable] may specify how to handle the [<child>] element is that\n\
      [GtkBuilder] provides special support for adding objects to a\n\
-     [Gio.ListStore] by using the [<child>] element. For instance:\n\n\
+     {{!Ocgio.List_store.class-type-list_store_t}[Gio.ListStore]} by using the \
+     [<child>] element. For instance:\n\n\
      {[\n\
      <object class=\"GListStore\">\n\
     \  <property name=\"item-type\">MyObject</property>\n\
@@ -469,19 +472,25 @@ end
      </interface>\n\
      ]}\n\n\
      {b Using GtkBuildable for extending UI definitions}\n\n\
-     Objects can implement the [Gtk.Buildable] interface to add custom\n\
+     Objects can implement the \
+     {{!Ocgtk.Buildable.class-type-buildable_t}[Gtk.Buildable]} interface to \
+     add custom\n\
      elements and attributes to the XML. Typically, any extension will be\n\
      documented in each type that implements the interface.\n\n\
      {b Menus}\n\n\
      In addition to objects with properties that are created with [<object>] and\n\
      [<property>] elements, [GtkBuilder] also allows to parse XML menu \
      definitions\n\
-     as used by [Gio.Menu] when exporting menu models over D-Bus, and as\n\
-     described in the [Gtk.PopoverMenu] documentation. Menus can be defined\n\
+     as used by {{!Ocgio.Menu.class-type-menu_t}[Gio.Menu]} when exporting \
+     menu models over D-Bus, and as\n\
+     described in the \
+     {{!Ocgtk.Popover_menu.class-type-popover_menu_t}[Gtk.PopoverMenu]} \
+     documentation. Menus can be defined\n\
      as toplevel elements, or as property values for properties of type \
      [GMenuModel].\n\n\
      {b Templates}\n\n\
-     When describing a [Gtk.Widget], you can use the [<template>] tag to\n\
+     When describing a {{!Ocgtk.Widget.class-type-widget_t}[Gtk.Widget]}, you \
+     can use the [<template>] tag to\n\
      describe a UI bound to a specific widget type. GTK will automatically load\n\
      the UI definition when instantiating the type, and bind children and\n\
      signal handlers to instance fields and function symbols.\n\n\
@@ -647,11 +656,13 @@ class builder : Raw.Builder.t -> builder_t
  </object>\n\
  ]}\n\n\
  Generic containers that can contain an arbitrary number of children,\n\
- such as [Gtk.Box] instead use the [<child>] element. A [<child>]\n\
+ such as {{!Ocgtk.Box.class-type-box_t}[Gtk.Box]} instead use the [<child>] \
+ element. A [<child>]\n\
  element contains an [<object>] element which describes the child object.\n\
  Most often, child objects are widgets inside a container, but they can\n\
  also be, e.g., actions in an action group, or columns in a tree model.\n\n\
- Any object type that implements the [Gtk.Buildable] interface can\n\
+ Any object type that implements the \
+ {{!Ocgtk.Buildable.class-type-buildable_t}[Gtk.Buildable]} interface can\n\
  specify how children may be added to it. Since many objects and widgets that\n\
  are included with GTK already implement the [GtkBuildable] interface,\n\
  typically child objects can be added using the [<child>] element without\n\
@@ -662,7 +673,8 @@ class builder : Raw.Builder.t -> builder_t
  A noteworthy special case to the general rule that only objects implementing\n\
  [GtkBuildable] may specify how to handle the [<child>] element is that\n\
  [GtkBuilder] provides special support for adding objects to a\n\
- [Gio.ListStore] by using the [<child>] element. For instance:\n\n\
+ {{!Ocgio.List_store.class-type-list_store_t}[Gio.ListStore]} by using the \
+ [<child>] element. For instance:\n\n\
  {[\n\
  <object class=\"GListStore\">\n\
 \  <property name=\"item-type\">MyObject</property>\n\
@@ -779,18 +791,24 @@ class builder : Raw.Builder.t -> builder_t
  </interface>\n\
  ]}\n\n\
  {b Using GtkBuildable for extending UI definitions}\n\n\
- Objects can implement the [Gtk.Buildable] interface to add custom\n\
+ Objects can implement the \
+ {{!Ocgtk.Buildable.class-type-buildable_t}[Gtk.Buildable]} interface to add \
+ custom\n\
  elements and attributes to the XML. Typically, any extension will be\n\
  documented in each type that implements the interface.\n\n\
  {b Menus}\n\n\
  In addition to objects with properties that are created with [<object>] and\n\
  [<property>] elements, [GtkBuilder] also allows to parse XML menu definitions\n\
- as used by [Gio.Menu] when exporting menu models over D-Bus, and as\n\
- described in the [Gtk.PopoverMenu] documentation. Menus can be defined\n\
+ as used by {{!Ocgio.Menu.class-type-menu_t}[Gio.Menu]} when exporting menu \
+ models over D-Bus, and as\n\
+ described in the \
+ {{!Ocgtk.Popover_menu.class-type-popover_menu_t}[Gtk.PopoverMenu]} \
+ documentation. Menus can be defined\n\
  as toplevel elements, or as property values for properties of type \
  [GMenuModel].\n\n\
  {b Templates}\n\n\
- When describing a [Gtk.Widget], you can use the [<template>] tag to\n\
+ When describing a {{!Ocgtk.Widget.class-type-widget_t}[Gtk.Widget]}, you can \
+ use the [<template>] tag to\n\
  describe a UI bound to a specific widget type. GTK will automatically load\n\
  the UI definition when instantiating the type, and bind children and\n\
  signal handlers to instance fields and function symbols.\n\n\

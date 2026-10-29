@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TextureDownloader: TextureDownloader *)
 
-(** Used to download the contents of a [Gdk.Texture].
+(** Used to download the contents of a {{!Ocgdk.Raw.Texture}[Gdk.Texture]}.
 
     It is intended to be created as a short-term object for a single download,
     but can be used for multiple downloads of different textures or with

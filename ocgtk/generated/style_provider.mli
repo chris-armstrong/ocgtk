@@ -1,4 +1,5 @@
-(** An interface for style information used by [Gtk.StyleContext].
+(** An interface for style information used by
+    {{!Ocgtk.Style_context.class-type-style_context_t}[Gtk.StyleContext]}.
 
     Its methods, signals and properties are on {!class-type-style_provider_t}.
     Its full description is under {!section-description}. Its constructors are
@@ -9,13 +10,14 @@
 
 (** {b The methods, signals and properties of a [StyleProvider].}
 
-    An interface for style information used by [Gtk.StyleContext].
+    An interface for style information used by
+    {{!Ocgtk.Style_context.class-type-style_context_t}[Gtk.StyleContext]}.
 
     See [Gtk.StyleContext.add_provider] and
     [Gtk.StyleContext.add_provider_for_display] for adding [GtkStyleProviders].
 
-    GTK uses the [GtkStyleProvider] implementation for CSS in [Gtk.CssProvider].
-*)
+    GTK uses the [GtkStyleProvider] implementation for CSS in
+    {{!Ocgtk.Css_provider.class-type-css_provider_t}[Gtk.CssProvider]}. *)
 class type style_provider_t = object
   (** {2:signals Signals} *)
 
@@ -32,13 +34,14 @@ class style_provider : Raw.Style_provider.t -> style_provider_t
 
 (** {1:description Description}
 
-    An interface for style information used by [Gtk.StyleContext].
+    An interface for style information used by
+    {{!Ocgtk.Style_context.class-type-style_context_t}[Gtk.StyleContext]}.
 
     See [Gtk.StyleContext.add_provider] and
     [Gtk.StyleContext.add_provider_for_display] for adding [GtkStyleProviders].
 
-    GTK uses the [GtkStyleProvider] implementation for CSS in [Gtk.CssProvider].
-*)
+    GTK uses the [GtkStyleProvider] implementation for CSS in
+    {{!Ocgtk.Css_provider.class-type-css_provider_t}[Gtk.CssProvider]}. *)
 
 (** {1:constructors Constructors} *)
 

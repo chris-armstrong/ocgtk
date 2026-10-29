@@ -4,8 +4,9 @@
 (** An event controller to receive Drag-and-Drop operations, asynchronously.
 
     It is the more complete but also more complex method of handling drop
-    operations compared to [Gtk.DropTarget], and you should only use it if
-    [GtkDropTarget] doesn't provide all the features you need.
+    operations compared to {{!Ocgtk.Raw.Drop_target}[Gtk.DropTarget]}, and you
+    should only use it if [GtkDropTarget] doesn't provide all the features you
+    need.
 
     To use a [GtkDropTargetAsync] to receive drops on a widget, you create a
     [GtkDropTargetAsync] object, configure which data formats and actions you

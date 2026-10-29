@@ -17,7 +17,11 @@ include Class_gen_converter
 include Class_gen_method
 include Class_gen_body
 
+(* Layer 2 docs link to layer 2 targets, whichever library [ctx] is for. *)
+
 (** Helper: Determine if a parameter is a class type and get its Layer 2 type *)
+let l2_refs ctx = Doc_resolve.env_of_ctx (Module_paths.main_library_ctx ctx)
+
 let get_param_layer2_type ~ctx ~current_layer2_module (param : gir_param) =
   match Type_mappings.find_type_mapping_for_gir_type ~ctx param.param_type with
   | Some { layer2_class = Some _; _ } ->
@@ -130,10 +134,7 @@ let generate_constructor_sig ~ctx ~buf ~class_name ~class_type_name
     let ocaml_ctor_name = Utils.ocaml_constructor_name ~class_name:"" ctor in
     let params = collect_constructor_params ~ctx ~current_layer2_module ctor in
     let return_type = calculate_return_type ~class_type_name ctor in
-    let doc =
-      Entity_doc.constructor ~namespace:ctx.namespace.namespace_name ~class_name
-        ctor
-    in
+    let doc = Entity_doc.constructor ~refs:(l2_refs ctx) ~class_name ctor in
     let param_types =
       match params with
       | [] -> "unit -> "
@@ -180,10 +181,10 @@ let doc_around doc ~item =
 let class_heading buf = bprintf buf "%s\n\n" Entity_doc.class_heading
 
 (* The full class doc, between the class and the constructors. *)
-let description buf ~class_name ~class_doc =
+let description buf ~ctx ~class_name ~class_doc =
   Option.iter
     (fun doc -> bprintf buf "\n%s\n" (Doc_emit.floating doc))
-    (Entity_doc.description ~class_name ~class_doc)
+    (Entity_doc.description ~refs:(l2_refs ctx) ~class_name ~class_doc)
 
 (* The context for generating a cyclic group's combined module or one of its
    member modules: the group's members refer to each other through the
@@ -251,13 +252,14 @@ let generate_class_signature ~ctx ~class_name ~class_doc ~c_type ~parent_chain
   let class_type_name = Utils.class_type_name class_name in
   let parent_name = match parent_chain with p :: _ -> Some p | [] -> None in
   let class_type_doc =
-    Entity_doc.class_type ~class_name
+    Entity_doc.class_type ~refs:(l2_refs ctx) ~class_name
       ~inheritance:
         (Class_gen_inheritance.of_entity ~ctx ~entity_kind class_name)
       ~class_doc
   in
 
-  floating_doc buf (Entity_doc.l2_module ~namespace ~class_name ~class_doc);
+  floating_doc buf
+    (Entity_doc.l2_module ~refs:(l2_refs ctx) ~class_name ~class_doc);
   class_heading buf;
 
   (* Class type definition *)
@@ -280,7 +282,7 @@ let generate_class_signature ~ctx ~class_name ~class_doc ~c_type ~parent_chain
        ~item:
          (Fmt.str "class %s : %s.t -> %s\n" class_snake module_names.layer1
             class_type_name));
-  description buf ~class_name ~class_doc;
+  description buf ~ctx ~class_name ~class_doc;
 
   (* Constructor wrappers *)
   constructors_heading buf ~ctx ~entity_kind ~class_name constructors;
@@ -418,7 +420,7 @@ let generate_combined_class_signature ~ctx ~combined_module_name ~entities
           if String.equal e.name class_name then e.doc else None)
     in
     let doc =
-      Entity_doc.class_type ~class_name
+      Entity_doc.class_type ~refs:(l2_refs ctx) ~class_name
         ~inheritance:
           (Class_gen_inheritance.of_entity ~ctx ~entity_kind class_name)
         ~class_doc
@@ -534,12 +536,12 @@ let generate_cyclic_shim_signature ~ctx ~entity ~combined_module_name =
     combined_module_name;
   let entity_kind = Filtering.entity_kind_of_entity entity in
   floating_doc buf
-    (Entity_doc.l2_module ~namespace ~class_name:entity.name
+    (Entity_doc.l2_module ~refs:(l2_refs ctx) ~class_name:entity.name
        ~class_doc:entity.doc);
   class_heading buf;
   bprintf buf "%s\n"
     (doc_around
-       (Entity_doc.class_type ~class_name:entity.name
+       (Entity_doc.class_type ~refs:(l2_refs ctx) ~class_name:entity.name
           ~inheritance:
             (Class_gen_inheritance.of_entity ~ctx ~entity_kind entity.name)
           ~class_doc:entity.doc)
@@ -552,7 +554,7 @@ let generate_cyclic_shim_signature ~ctx ~entity ~combined_module_name =
        ~item:
          (Fmt.str "class %s : %s.t -> %s\n" entity_snake layer1_module_name
             entity_type_name));
-  description buf ~class_name:entity.name ~class_doc:entity.doc;
+  description buf ~ctx ~class_name:entity.name ~class_doc:entity.doc;
 
   (* Constructor wrapper signatures *)
   constructors_heading buf ~ctx ~entity_kind ~class_name:entity.name

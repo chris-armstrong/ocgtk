@@ -25,8 +25,8 @@ external show :
     dialogs with a single button.
 
     If you want to cancel the dialog or if the alert has more than one button,
-    you should use that function instead and provide it with a [Gio.Cancellable]
-    and callback respectively. *)
+    you should use that function instead and provide it with a
+    {{!Ocgio.Raw.Cancellable}[Gio.Cancellable]} and callback respectively. *)
 
 external set_modal : t -> bool -> unit = "ml_gtk_alert_dialog_set_modal"
 (** Sets whether the alert blocks interaction with the parent window while it is

@@ -20,8 +20,9 @@
     frames, and will be used for a long time.
 
     There are various ways to create [GdkTexture] objects from a
-    [GdkPixbuf.Pixbuf], or from bytes stored in memory, a file, or a
-    [Gio.Resource].
+    {{!Ocgdkpixbuf.Pixbuf.class-type-pixbuf_t}[GdkPixbuf.Pixbuf]}, or from bytes
+    stored in memory, a file, or a
+    {{!Ocgio.Resource.class-type-resource_t}[Gio.Resource]}.
 
     The ownership of the pixel data is transferred to the [GdkTexture] instance;
     you can only make a copy of it, via [Gdk.Texture.download].
@@ -122,8 +123,9 @@ class texture : Raw.Texture.t -> texture_t
     frames, and will be used for a long time.
 
     There are various ways to create [GdkTexture] objects from a
-    [GdkPixbuf.Pixbuf], or from bytes stored in memory, a file, or a
-    [Gio.Resource].
+    {{!Ocgdkpixbuf.Pixbuf.class-type-pixbuf_t}[GdkPixbuf.Pixbuf]}, or from bytes
+    stored in memory, a file, or a
+    {{!Ocgio.Resource.class-type-resource_t}[Gio.Resource]}.
 
     The ownership of the pixel data is transferred to the [GdkTexture] instance;
     you can only make a copy of it, via [Gdk.Texture.download].

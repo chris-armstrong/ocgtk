@@ -17,8 +17,10 @@
 
     The dialog is shown with the [Gtk.ColorDialog.choose_rgba] function.
 
-    See [Gtk.ColorDialogButton] for a convenient control that uses
-    [GtkColorDialog] and presents the results. *)
+    See
+    {{!Ocgtk.Color_dialog_button.class-type-color_dialog_button_t}[Gtk.ColorDialogButton]}
+    for a convenient control that uses [GtkColorDialog] and presents the
+    results. *)
 class type color_dialog_t = object
   (** {2:methods Methods} *)
 
@@ -67,8 +69,10 @@ class color_dialog : Raw.Color_dialog.t -> color_dialog_t
 
     The dialog is shown with the [Gtk.ColorDialog.choose_rgba] function.
 
-    See [Gtk.ColorDialogButton] for a convenient control that uses
-    [GtkColorDialog] and presents the results. *)
+    See
+    {{!Ocgtk.Color_dialog_button.class-type-color_dialog_button_t}[Gtk.ColorDialogButton]}
+    for a convenient control that uses [GtkColorDialog] and presents the
+    results. *)
 
 (** {1:constructors Constructors} *)
 

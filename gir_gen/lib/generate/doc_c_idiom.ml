@@ -105,7 +105,7 @@ let ownership_patterns =
 let rec plain_text ins = String.concat "" (List.map inline_text ins)
 
 and inline_text = function
-  | Text s | Code s | Param_ref s | Ref s | C_prim s -> s
+  | Text s | Code s | Param_ref s | Ref { text = s; _ } | C_prim s -> s
   | Bold ins | Italic ins -> plain_text ins
   | Link { text; _ } | Page_ref { text; _ } -> plain_text text
   | Sym_ref { endpoint; _ } -> endpoint

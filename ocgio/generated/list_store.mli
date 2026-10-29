@@ -1,4 +1,5 @@
-(** [GListStore] is a simple implementation of [Gio.ListModel] that stores all
+(** [GListStore] is a simple implementation of
+    {{!Ocgio.List_model.class-type-list_model_t}[Gio.ListModel]} that stores all
     items in memory.
 
     Its methods, signals and properties are on {!class-type-list_store_t}. Its
@@ -13,7 +14,8 @@
     Implements:
     - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
 
-    [GListStore] is a simple implementation of [Gio.ListModel] that stores all
+    [GListStore] is a simple implementation of
+    {{!Ocgio.List_model.class-type-list_model_t}[Gio.ListModel]} that stores all
     items in memory.
 
     It provides insertions, deletions, and lookups in logarithmic time with a
@@ -85,7 +87,8 @@ class list_store : Raw.List_store.t -> list_store_t
 
 (** {1:description Description}
 
-    [GListStore] is a simple implementation of [Gio.ListModel] that stores all
+    [GListStore] is a simple implementation of
+    {{!Ocgio.List_model.class-type-list_model_t}[Gio.ListModel]} that stores all
     items in memory.
 
     It provides insertions, deletions, and lookups in logarithmic time with a

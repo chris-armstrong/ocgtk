@@ -6,7 +6,8 @@
  Possible drop sites get informed about the status of the ongoing drag\n\
  operation with events of type [GDK_DRAG_ENTER], [GDK_DRAG_LEAVE],\n\
  [GDK_DRAG_MOTION] and [GDK_DROP_START]. The [GdkDrop] object can be obtained\n\
- from these [Gdk.Event] types using [Gdk.DNDEvent.get_drop].\n\n\
+ from these {{!Ocgdk.Raw.Event}[Gdk.Event]} types using \
+ [Gdk.DNDEvent.get_drop].\n\n\
  The actual data transfer is initiated from the target side via an async\n\
  read, using one of the [GdkDrop] methods for this purpose:\n\
  [Gdk.Drop.read_async] or [Gdk.Drop.read_value_async].\n\n\
@@ -76,10 +77,10 @@ external get_actions : t -> Ocgdk_enums.dragaction = "ml_gdk_drop_get_actions"
     [GDK_ACTION_ASK] itself will not be included in the actions returned by this
     function.
 
-    This value may change over the lifetime of the [Gdk.Drop] both as a response
-    to source side actions as well as to calls to [Gdk.Drop.status] or
-    [Gdk.Drop.finish]. The source side will not change this value anymore once a
-    drop has started. *)
+    This value may change over the lifetime of the {{!Ocgdk.Raw.Drop}[Gdk.Drop]}
+    both as a response to source side actions as well as to calls to
+    [Gdk.Drop.status] or [Gdk.Drop.finish]. The source side will not change this
+    value anymore once a drop has started. *)
 
 external finish : t -> Ocgdk_enums.dragaction -> unit = "ml_gdk_drop_finish"
 (** Ends the drag operation after a drop.

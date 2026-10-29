@@ -1,11 +1,14 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TcpWrapperConnection: TcpWrapperConnection *)
 
-(** A [GTcpWrapperConnection] can be used to wrap a [Gio.IOStream] that is based
-    on a [Gio.Socket], but which is not actually a [Gio.SocketConnection]. This
-    is used by [Gio.SocketClient] so that it can always return a
-    [Gio.SocketConnection], even when the connection it has actually created is
-    not directly a [Gio.SocketConnection].
+(** A [GTcpWrapperConnection] can be used to wrap a
+    {{!Ocgio.Raw.Io_stream}[Gio.IOStream]} that is based on a
+    {{!Ocgio.Raw.Socket}[Gio.Socket]}, but which is not actually a
+    {{!Ocgio.Raw.Socket_connection}[Gio.SocketConnection]}. This is used by
+    {{!Ocgio.Raw.Socket_client}[Gio.SocketClient]} so that it can always return
+    a {{!Ocgio.Raw.Socket_connection}[Gio.SocketConnection]}, even when the
+    connection it has actually created is not directly a
+    {{!Ocgio.Raw.Socket_connection}[Gio.SocketConnection]}.
 
     The class built on this module is in {!Ocgio.Tcp_wrapper_connection}. *)
 

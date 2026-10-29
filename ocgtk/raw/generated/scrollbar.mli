@@ -6,8 +6,9 @@
     An example GtkScrollbar
 
     Its position and movement are controlled by the adjustment that is passed to
-    or created by [Gtk.Scrollbar.new]. See [Gtk.Adjustment] for more details.
-    The [Gtk.Adjustment:value] field sets the position of the thumb and must be
+    or created by [Gtk.Scrollbar.new]. See
+    {{!Ocgtk.Raw.Adjustment}[Gtk.Adjustment]} for more details. The
+    [Gtk.Adjustment:value] field sets the position of the thumb and must be
     between [Gtk.Adjustment:lower] and [Gtk.Adjustment:upper] -
     [Gtk.Adjustment:page-size]. The [Gtk.Adjustment:page-size] represents the
     size of the visible scrollable area.
@@ -34,9 +35,9 @@
     in 'fine-tuning' mode.
 
     Other style classes that may be added to scrollbars inside
-    [Gtk.ScrolledWindow] include the positional classes (.left, .right, .top,
-    .bottom) and style classes related to overlay scrolling (.overlay-indicator,
-    .dragging, .hovering).
+    {{!Ocgtk.Raw.Scrolled_window}[Gtk.ScrolledWindow]} include the positional
+    classes (.left, .right, .top, .bottom) and style classes related to overlay
+    scrolling (.overlay-indicator, .dragging, .hovering).
 
     {b Accessibility}
 

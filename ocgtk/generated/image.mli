@@ -144,7 +144,9 @@ end
      [Gtk.Image.new_from_resource], and [Gtk.Image.set_from_resource]\n\
      should be used.\n\n\
      [GtkImage] displays its image as an icon, with a size that is determined\n\
-     by the application. See [Gtk.Picture] if you want to show an image\n\
+     by the application. See \
+     {{!Ocgtk.Picture.class-type-picture_t}[Gtk.Picture]} if you want to show \
+     an image\n\
      at is actual size.\n\n\
      {b CSS nodes}\n\n\
      [GtkImage] has a single CSS node with the name [image]. The style classes\n\
@@ -178,7 +180,8 @@ class image : Raw.Image.t -> image_t
  [Gtk.Image.new_from_resource], and [Gtk.Image.set_from_resource]\n\
  should be used.\n\n\
  [GtkImage] displays its image as an icon, with a size that is determined\n\
- by the application. See [Gtk.Picture] if you want to show an image\n\
+ by the application. See {{!Ocgtk.Picture.class-type-picture_t}[Gtk.Picture]} \
+ if you want to show an image\n\
  at is actual size.\n\n\
  {b CSS nodes}\n\n\
  [GtkImage] has a single CSS node with the name [image]. The style classes\n\
@@ -232,10 +235,11 @@ val new_from_paintable : Ocgdk.Paintable.paintable_t option -> image_t
 
     Note that paintables are still subject to the icon size that is set on the
     image. If you want to display a paintable at its intrinsic size, use
-    [Gtk.Picture] instead.
+    {{!Ocgtk.Picture.class-type-picture_t}[Gtk.Picture]} instead.
 
-    If [paintable] is a [Gtk.SymbolicPaintable], then it will be recolored with
-    the symbolic palette from the theme. *)
+    If [paintable] is a
+    {{!Ocgtk.Symbolic_paintable.class-type-symbolic_paintable_t}[Gtk.SymbolicPaintable]},
+    then it will be recolored with the symbolic palette from the theme. *)
 
 val new_from_pixbuf : Ocgdkpixbuf.Pixbuf.pixbuf_t option -> image_t
 (** Creates a new [GtkImage] displaying [pixbuf].

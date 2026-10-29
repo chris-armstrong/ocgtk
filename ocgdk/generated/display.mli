@@ -23,10 +23,12 @@ class type display_t = App_launch_context_cycle_de440b34.display_t
       projectors, etc)
 
     Most of the input device handling has been factored out into separate
-    [Gdk.Seat] objects. Every display has a one or more seats, which can be
-    accessed with [Gdk.Display.get_default_seat] and [Gdk.Display.list_seats].
+    {{!Ocgdk.Seat.class-type-seat_t}[Gdk.Seat]} objects. Every display has a one
+    or more seats, which can be accessed with [Gdk.Display.get_default_seat] and
+    [Gdk.Display.list_seats].
 
-    Output devices are represented by [Gdk.Monitor] objects, which can be
+    Output devices are represented by
+    {{!Ocgdk.Monitor.class-type-monitor_t}[Gdk.Monitor]} objects, which can be
     accessed with [Gdk.Display.get_monitor_at_surface] and similar APIs. *)
 
 class display : Raw.Display.t -> display_t
@@ -44,10 +46,12 @@ class display : Raw.Display.t -> display_t
       projectors, etc)
 
     Most of the input device handling has been factored out into separate
-    [Gdk.Seat] objects. Every display has a one or more seats, which can be
-    accessed with [Gdk.Display.get_default_seat] and [Gdk.Display.list_seats].
+    {{!Ocgdk.Seat.class-type-seat_t}[Gdk.Seat]} objects. Every display has a one
+    or more seats, which can be accessed with [Gdk.Display.get_default_seat] and
+    [Gdk.Display.list_seats].
 
-    Output devices are represented by [Gdk.Monitor] objects, which can be
+    Output devices are represented by
+    {{!Ocgdk.Monitor.class-type-monitor_t}[Gdk.Monitor]} objects, which can be
     accessed with [Gdk.Display.get_monitor_at_surface] and similar APIs. *)
 
 (** {1:constructors Constructors} *)

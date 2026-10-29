@@ -24,7 +24,7 @@
    | [Page_ref]          | bare text (link dropped)                          | yes            |
    | [Sym_ref]           | [[endpoint]] code span                            | yes            |
    | [Param_ref]         | [[name]] code span                                | —              |
-   | [Ref]               | [{!path}] (unreachable in practice)               | —              |
+   | [Ref]               | [{{!path}[text]}] (prose link text if [text] contains []]) | yes  |
    | [C_lit]             | [[true]], [[false]], [[None]]; a null "on error" from a [Throws] item is "an [[Error]] result" | — |
    | [C_prim]            | [[ocaml type]] from the primitive type table; [gpointer] as the word "pointer" | — |
    | [Para]              | paragraph (blank line separated)                  | —              |

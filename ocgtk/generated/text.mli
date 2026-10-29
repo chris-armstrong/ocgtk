@@ -21,9 +21,11 @@
     A single-line text entry.
 
     [GtkText] is the common implementation of single-line text editing that is
-    shared between [Gtk.Entry], [Gtk.PasswordEntry], [Gtk.SpinButton], and other
+    shared between {{!Ocgtk.Entry.class-type-entry_t}[Gtk.Entry]},
+    {{!Ocgtk.Password_entry.class-type-password_entry_t}[Gtk.PasswordEntry]},
+    {{!Ocgtk.Spin_button.class-type-spin_button_t}[Gtk.SpinButton]}, and other
     widgets. In all of these, a [GtkText] instance is used as the delegate for
-    the [Gtk.Editable] implementation.
+    the {{!Ocgtk.Editable.class-type-editable_t}[Gtk.Editable]} implementation.
 
     A large number of key bindings s supported by default. If the entered text
     is longer than the allocation of the widget, the widget will scroll so that
@@ -36,10 +38,12 @@
     but it can be changed with [Gtk.Text.set_invisible_char].
 
     If you want to add icons or progress display in an entry, look at
-    [Gtk.Entry]. There are other alternatives for more specialized use cases,
-    such as [Gtk.SearchEntry].
+    {{!Ocgtk.Entry.class-type-entry_t}[Gtk.Entry]}. There are other alternatives
+    for more specialized use cases, such as
+    {{!Ocgtk.Search_entry.class-type-search_entry_t}[Gtk.SearchEntry]}.
 
-    If you need multi-line editable text, use [Gtk.TextView].
+    If you need multi-line editable text, use
+    {{!Ocgtk.Text_view.class-type-text_view_t}[Gtk.TextView]}.
 
     {b Shortcuts and Gestures}
 
@@ -469,9 +473,11 @@ class text : Raw.Text.t -> text_t
     A single-line text entry.
 
     [GtkText] is the common implementation of single-line text editing that is
-    shared between [Gtk.Entry], [Gtk.PasswordEntry], [Gtk.SpinButton], and other
+    shared between {{!Ocgtk.Entry.class-type-entry_t}[Gtk.Entry]},
+    {{!Ocgtk.Password_entry.class-type-password_entry_t}[Gtk.PasswordEntry]},
+    {{!Ocgtk.Spin_button.class-type-spin_button_t}[Gtk.SpinButton]}, and other
     widgets. In all of these, a [GtkText] instance is used as the delegate for
-    the [Gtk.Editable] implementation.
+    the {{!Ocgtk.Editable.class-type-editable_t}[Gtk.Editable]} implementation.
 
     A large number of key bindings s supported by default. If the entered text
     is longer than the allocation of the widget, the widget will scroll so that
@@ -484,10 +490,12 @@ class text : Raw.Text.t -> text_t
     but it can be changed with [Gtk.Text.set_invisible_char].
 
     If you want to add icons or progress display in an entry, look at
-    [Gtk.Entry]. There are other alternatives for more specialized use cases,
-    such as [Gtk.SearchEntry].
+    {{!Ocgtk.Entry.class-type-entry_t}[Gtk.Entry]}. There are other alternatives
+    for more specialized use cases, such as
+    {{!Ocgtk.Search_entry.class-type-search_entry_t}[Gtk.SearchEntry]}.
 
-    If you need multi-line editable text, use [Gtk.TextView].
+    If you need multi-line editable text, use
+    {{!Ocgtk.Text_view.class-type-text_view_t}[Gtk.TextView]}.
 
     {b Shortcuts and Gestures}
 

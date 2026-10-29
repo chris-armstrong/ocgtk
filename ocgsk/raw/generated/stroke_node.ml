@@ -2,7 +2,8 @@
 (* StrokeNode: StrokeNode *)
 
 (** A render node that will fill the area determined by stroking the the given
-    [Gsk.Path] using the [Gsk.Stroke] attributes.
+    {{!Ocgsk.Raw.Path}[Gsk.Path]} using the {{!Ocgsk.Raw.Stroke}[Gsk.Stroke]}
+    attributes.
 
     The class built on this module is in {!Ocgsk.Stroke_node}. *)
 

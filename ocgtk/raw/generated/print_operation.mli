@@ -12,14 +12,16 @@
  The typical way to use the high-level printing API is to create\n\
  a [GtkPrintOperation] object with [Gtk.PrintOperation.new]\n\
  when the user selects to print. Then you set some properties on it,\n\
- e.g. the page size, any [Gtk.PrintSettings] from previous print\n\
+ e.g. the page size, any {{!Ocgtk.Raw.Print_settings}[Gtk.PrintSettings]} from \
+ previous print\n\
  operations, the number of pages, the current page, etc.\n\n\
  Then you start the print operation by calling [Gtk.PrintOperation.run].\n\
  It will then show a dialog, let the user select a printer and options.\n\
  When the user finished the dialog, various signals will be emitted on\n\
  the [GtkPrintOperation], the main one being\n\
  [Gtk.PrintOperation::draw-page], which you are supposed to handle\n\
- and render the page on the provided [Gtk.PrintContext] using Cairo.\n\n\
+ and render the page on the provided \
+ {{!Ocgtk.Raw.Print_context}[Gtk.PrintContext]} using Cairo.\n\n\
  {b The high-level printing API}\n\n\
  {[\n\
  static GtkPrintSettings *settings = NULL;\n\n\
@@ -345,8 +347,9 @@ val on_begin_print :
     before the actual rendering starts.
 
     A typical use for ::begin-print is to use the parameters from the
-    [Gtk.PrintContext] and paginate the document accordingly, and then set the
-    number of pages with [Gtk.PrintOperation.set_n_pages]. *)
+    {{!Ocgtk.Raw.Print_context}[Gtk.PrintContext]} and paginate the document
+    accordingly, and then set the number of pages with
+    [Gtk.PrintOperation.set_n_pages]. *)
 
 val on_custom_widget_apply :
   ?after:bool ->
@@ -504,8 +507,9 @@ val on_status_changed :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 (** Emitted at between the various phases of the print operation.
 
-    See [Gtk.PrintStatus] for the phases that are being discriminated. Use
-    [Gtk.PrintOperation.get_status] to find out the current status. *)
+    See {{!Ocgtk.Enums.type-printstatus}[Gtk.PrintStatus]} for the phases that
+    are being discriminated. Use [Gtk.PrintOperation.get_status] to find out the
+    current status. *)
 
 val on_update_custom_widget :
   ?after:bool ->

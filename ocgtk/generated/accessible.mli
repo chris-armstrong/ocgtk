@@ -17,9 +17,12 @@ class type accessible_t = At_context_and__accessible.accessible_t
 
     Every accessible implementation has:
 
-    - a “role”, represented by a value of the [Gtk.AccessibleRole] enumeration
-    - “attributes”, represented by a set of [Gtk.AccessibleState],
-      [Gtk.AccessibleProperty] and [Gtk.AccessibleRelation] values
+    - a “role”, represented by a value of the
+      {{!Ocgtk.Enums.type-accessiblerole}[Gtk.AccessibleRole]} enumeration
+    - “attributes”, represented by a set of
+      {{!Ocgtk.Enums.type-accessiblestate}[Gtk.AccessibleState]},
+      {{!Ocgtk.Enums.type-accessibleproperty}[Gtk.AccessibleProperty]} and
+      {{!Ocgtk.Enums.type-accessiblerelation}[Gtk.AccessibleRelation]} values
 
     The role cannot be changed after instantiating a [GtkAccessible]
     implementation.
@@ -53,9 +56,12 @@ class accessible : Raw.Accessible.t -> accessible_t
 
     Every accessible implementation has:
 
-    - a “role”, represented by a value of the [Gtk.AccessibleRole] enumeration
-    - “attributes”, represented by a set of [Gtk.AccessibleState],
-      [Gtk.AccessibleProperty] and [Gtk.AccessibleRelation] values
+    - a “role”, represented by a value of the
+      {{!Ocgtk.Enums.type-accessiblerole}[Gtk.AccessibleRole]} enumeration
+    - “attributes”, represented by a set of
+      {{!Ocgtk.Enums.type-accessiblestate}[Gtk.AccessibleState]},
+      {{!Ocgtk.Enums.type-accessibleproperty}[Gtk.AccessibleProperty]} and
+      {{!Ocgtk.Enums.type-accessiblerelation}[Gtk.AccessibleRelation]} values
 
     The role cannot be changed after instantiating a [GtkAccessible]
     implementation.

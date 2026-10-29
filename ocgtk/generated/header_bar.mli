@@ -148,7 +148,8 @@ end
      represents\n\
      the title.\n\n\
      Each of the boxes contains a [windowcontrols] subnode, see\n\
-     [Gtk.WindowControls] for details, as well as other children.\n\n\
+     {{!Ocgtk.Window_controls.class-type-window_controls_t}[Gtk.WindowControls]} \
+     for details, as well as other children.\n\n\
      {b Accessibility}\n\n\
      [GtkHeaderBar] uses the [Gtk.AccessibleRole.group] role."]
 
@@ -211,7 +212,8 @@ class header_bar : Raw.Header_bar.t -> header_bar_t
  the start and end of the header bar, as well as a center node that represents\n\
  the title.\n\n\
  Each of the boxes contains a [windowcontrols] subnode, see\n\
- [Gtk.WindowControls] for details, as well as other children.\n\n\
+ {{!Ocgtk.Window_controls.class-type-window_controls_t}[Gtk.WindowControls]} \
+ for details, as well as other children.\n\n\
  {b Accessibility}\n\n\
  [GtkHeaderBar] uses the [Gtk.AccessibleRole.group] role."]
 

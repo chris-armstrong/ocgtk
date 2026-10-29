@@ -1,7 +1,8 @@
 (** A certificate used for TLS authentication and encryption. This can represent
     either a certificate only (eg, the certificate received by a client from a
     server), or the combination of a certificate and a private key (which is
-    needed when acting as a [Gio.TlsServerConnection]).
+    needed when acting as a
+    {{!Ocgio.Tls_server_connection.class-type-tls_server_connection_t}[Gio.TlsServerConnection]}).
 
     Its methods, signals and properties are on {!class-type-tls_certificate_t}.
     Its constructors are under {!section-constructors}. The functions it is
@@ -14,7 +15,9 @@
     A certificate used for TLS authentication and encryption. This can represent
     either a certificate only (eg, the certificate received by a client from a
     server), or the combination of a certificate and a private key (which is
-    needed when acting as a [Gio.TlsServerConnection]). *)
+    needed when acting as a
+    {{!Ocgio.Tls_server_connection.class-type-tls_server_connection_t}[Gio.TlsServerConnection]}).
+*)
 class type tls_certificate_t = object
   (** {2:methods Methods} *)
 

@@ -1,4 +1,6 @@
-(** A [Gio.InetSocketAddress] representing a connection via a proxy server.
+(** A
+    {{!Ocgio.Inet_socket_address.class-type-inet_socket_address_t}[Gio.InetSocketAddress]}
+    representing a connection via a proxy server.
 
     Its methods, signals and properties are on {!class-type-proxy_address_t}.
     Its constructors are under {!section-constructors}. The functions it is
@@ -14,7 +16,9 @@
     Implements:
     - {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}Ocgio.Socket_connectable}
 
-    A [Gio.InetSocketAddress] representing a connection via a proxy server. *)
+    A
+    {{!Ocgio.Inet_socket_address.class-type-inet_socket_address_t}[Gio.InetSocketAddress]}
+    representing a connection via a proxy server. *)
 class type proxy_address_t = object
   inherit Inet_socket_address.inet_socket_address_t
 

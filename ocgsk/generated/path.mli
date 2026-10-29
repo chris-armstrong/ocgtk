@@ -20,8 +20,9 @@ class type path_t = Path_and__path_measure_and__path_point.path_t
 
     [GskPath] is an immutable, opaque, reference-counted struct. After creation,
     you cannot change the types it represents. Instead, new [GskPath] objects
-    have to be created. The [Gsk.PathBuilder] structure is meant to help in this
-    endeavor.
+    have to be created. The
+    {{!Ocgsk.Path_builder.class-type-path_builder_t}[Gsk.PathBuilder]} structure
+    is meant to help in this endeavor.
 
     Conceptually, a path consists of zero or more contours (continuous,
     connected curves), each of which may or may not be closed. Contours are
@@ -41,8 +42,9 @@ class path : Raw.Path.t -> path_t
 
     [GskPath] is an immutable, opaque, reference-counted struct. After creation,
     you cannot change the types it represents. Instead, new [GskPath] objects
-    have to be created. The [Gsk.PathBuilder] structure is meant to help in this
-    endeavor.
+    have to be created. The
+    {{!Ocgsk.Path_builder.class-type-path_builder_t}[Gsk.PathBuilder]} structure
+    is meant to help in this endeavor.
 
     Conceptually, a path consists of zero or more contours (continuous,
     connected curves), each of which may or may not be closed. Contours are

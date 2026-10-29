@@ -2,15 +2,20 @@
 (* TreeStore: TreeStore *)
 
 [@@@ocaml.text
-"A tree-like data structure that can be used with the [Gtk.TreeView].\n\n\
+"A tree-like data structure that can be used with the \
+ {{!Ocgtk.Raw.Tree_view}[Gtk.TreeView]}.\n\n\
  The [GtkTreeStore] object is a list model for use with a [GtkTreeView]\n\
- widget. It implements the [Gtk.TreeModel] interface, and consequently,\n\
+ widget. It implements the {{!Ocgtk.Raw.Tree_model}[Gtk.TreeModel]} interface, \
+ and consequently,\n\
  can use all of the methods available there. It also implements the\n\
- [Gtk.TreeSortable] interface so it can be sorted by the view.\n\
- Finally, it also implements the tree \\[drag\\][Gtk.TreeDragSource]\n\
- and \\[drop\\][Gtk.TreeDragDest] interfaces.\n\n\
+ {{!Ocgtk.Raw.Tree_sortable}[Gtk.TreeSortable]} interface so it can be sorted \
+ by the view.\n\
+ Finally, it also implements the tree \
+ \\[drag\\]{{!Ocgtk.Raw.Tree_drag_source}[Gtk.TreeDragSource]}\n\
+ and \\[drop\\]{{!Ocgtk.Raw.Tree_drag_dest}[Gtk.TreeDragDest]} interfaces.\n\n\
  [GtkTreeStore] is deprecated since GTK 4.10, and should not be used in newly\n\
- written code. You should use [Gtk.TreeListModel] for a tree-like model\n\
+ written code. You should use \
+ {{!Ocgtk.Raw.Tree_list_model}[Gtk.TreeListModel]} for a tree-like model\n\
  object.\n\n\
  {b GtkTreeStore as GtkBuildable}\n\n\
  The GtkTreeStore implementation of the [GtkBuildable] interface allows\n\

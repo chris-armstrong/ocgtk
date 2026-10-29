@@ -10,7 +10,8 @@
  There is a fallback icon theme, named [hicolor], where applications\n\
  should install their icons, but additional icon themes can be installed\n\
  as operating system vendors and users choose.\n\n\
- In many cases, named themes are used indirectly, via [Gtk.Image]\n\
+ In many cases, named themes are used indirectly, via \
+ {{!Ocgtk.Raw.Image}[Gtk.Image]}\n\
  rather than directly, but looking up icons directly is also simple. The\n\
  [GtkIconTheme] object acts as a database of all the icons in the current\n\
  theme. You can create new [GtkIconTheme] objects, but it’s much more\n\

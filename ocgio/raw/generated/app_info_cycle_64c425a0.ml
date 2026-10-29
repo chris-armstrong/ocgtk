@@ -141,29 +141,29 @@ module rec App_info : sig
   (** Gets the commandline with which the application will be started. *)
 
   external equal : t -> t -> bool = "ml_g_app_info_equal"
-  (** Checks if two [Gio.AppInfo]s are equal.
+  (** Checks if two {{!Ocgio.Raw.App_info}[Gio.AppInfo]}s are equal.
 
       Note that the check {i may not} compare each individual field, and only
       does an identity check. In case detecting changes in the contents is
       needed, program code must additionally compare relevant fields. *)
 
   external dup : t -> t = "ml_g_app_info_dup"
-  (** Creates a duplicate of a [Gio.AppInfo]. *)
+  (** Creates a duplicate of a {{!Ocgio.Raw.App_info}[Gio.AppInfo]}. *)
 
   external delete : t -> bool = "ml_g_app_info_delete"
-  (** Tries to delete a [Gio.AppInfo].
+  (** Tries to delete a {{!Ocgio.Raw.App_info}[Gio.AppInfo]}.
 
       On some platforms, there may be a difference between user-defined
-      [Gio.AppInfo]s which can be deleted, and system-wide ones which cannot.
-      See [Gio.AppInfo.can_delete]. *)
+      {{!Ocgio.Raw.App_info}[Gio.AppInfo]}s which can be deleted, and
+      system-wide ones which cannot. See [Gio.AppInfo.can_delete]. *)
 
   external can_remove_supports_type : t -> bool
     = "ml_g_app_info_can_remove_supports_type"
   (** Checks if a supported content type can be removed from an application. *)
 
   external can_delete : t -> bool = "ml_g_app_info_can_delete"
-  (** Obtains the information whether the [Gio.AppInfo] can be deleted. See
-      [Gio.AppInfo.delete]. *)
+  (** Obtains the information whether the {{!Ocgio.Raw.App_info}[Gio.AppInfo]}
+      can be deleted. See [Gio.AppInfo.delete]. *)
 
   external add_supports_type : t -> string -> (bool, GError.t) result
     = "ml_g_app_info_add_supports_type"
@@ -309,29 +309,29 @@ end = struct
   (** Gets the commandline with which the application will be started. *)
 
   external equal : t -> t -> bool = "ml_g_app_info_equal"
-  (** Checks if two [Gio.AppInfo]s are equal.
+  (** Checks if two {{!Ocgio.Raw.App_info}[Gio.AppInfo]}s are equal.
 
       Note that the check {i may not} compare each individual field, and only
       does an identity check. In case detecting changes in the contents is
       needed, program code must additionally compare relevant fields. *)
 
   external dup : t -> t = "ml_g_app_info_dup"
-  (** Creates a duplicate of a [Gio.AppInfo]. *)
+  (** Creates a duplicate of a {{!Ocgio.Raw.App_info}[Gio.AppInfo]}. *)
 
   external delete : t -> bool = "ml_g_app_info_delete"
-  (** Tries to delete a [Gio.AppInfo].
+  (** Tries to delete a {{!Ocgio.Raw.App_info}[Gio.AppInfo]}.
 
       On some platforms, there may be a difference between user-defined
-      [Gio.AppInfo]s which can be deleted, and system-wide ones which cannot.
-      See [Gio.AppInfo.can_delete]. *)
+      {{!Ocgio.Raw.App_info}[Gio.AppInfo]}s which can be deleted, and
+      system-wide ones which cannot. See [Gio.AppInfo.can_delete]. *)
 
   external can_remove_supports_type : t -> bool
     = "ml_g_app_info_can_remove_supports_type"
   (** Checks if a supported content type can be removed from an application. *)
 
   external can_delete : t -> bool = "ml_g_app_info_can_delete"
-  (** Obtains the information whether the [Gio.AppInfo] can be deleted. See
-      [Gio.AppInfo.delete]. *)
+  (** Obtains the information whether the {{!Ocgio.Raw.App_info}[Gio.AppInfo]}
+      can be deleted. See [Gio.AppInfo.delete]. *)
 
   external add_supports_type : t -> string -> (bool, GError.t) result
     = "ml_g_app_info_add_supports_type"
@@ -408,8 +408,9 @@ and App_launch_context : sig
     callback:(startup_notify_id:string -> unit) ->
     Gobject.Signal.handler_id
   (** The [Gio.AppLaunchContext::launch-failed] signal is emitted when a
-      [Gio.AppInfo] launch fails. The startup notification id is provided, so
-      that the launcher can cancel the startup notification.
+      {{!Ocgio.Raw.App_info}[Gio.AppInfo]} launch fails. The startup
+      notification id is provided, so that the launcher can cancel the startup
+      notification.
 
       Because a launch operation may involve spawning multiple instances of the
       target application, you should expect this signal to be emitted multiple
@@ -421,10 +422,11 @@ and App_launch_context : sig
     callback:(info:App_info.t -> platform_data:Gvariant.t -> unit) ->
     Gobject.Signal.handler_id
   (** The [Gio.AppLaunchContext::launch-started] signal is emitted when a
-      [Gio.AppInfo] is about to be launched. If non-null the [platform_data] is
-      an GVariant dictionary mapping strings to variants (ie [a{sv}]), which
-      contains additional, platform-specific data about this launch. On UNIX, at
-      least the [startup-notification-id] keys will be present.
+      {{!Ocgio.Raw.App_info}[Gio.AppInfo]} is about to be launched. If non-null
+      the [platform_data] is an GVariant dictionary mapping strings to variants
+      (ie [a{sv}]), which contains additional, platform-specific data about this
+      launch. On UNIX, at least the [startup-notification-id] keys will be
+      present.
 
       The value of the [startup-notification-id] key (type [s]) is a startup
       notification ID corresponding to the format from the
@@ -446,7 +448,7 @@ and App_launch_context : sig
     callback:(info:App_info.t -> platform_data:Gvariant.t -> unit) ->
     Gobject.Signal.handler_id
   (** The [Gio.AppLaunchContext::launched] signal is emitted when a
-      [Gio.AppInfo] is successfully launched.
+      {{!Ocgio.Raw.App_info}[Gio.AppInfo]} is successfully launched.
 
       Because a launch operation may involve spawning multiple instances of the
       target application, you should expect this signal to be emitted multiple
@@ -1141,7 +1143,8 @@ and File : sig
     (File_info.t, GError.t) result = "ml_g_file_query_info"
   [@@ocaml.doc
     "Gets the requested information about specified [file].\n\n\
-    \  The result is a [Gio.FileInfo] object that contains key-value\n\
+    \  The result is a {{!Ocgio.Raw.File_info}[Gio.FileInfo]} object that \
+     contains key-value\n\
     \  attributes (such as the type or size of the file).\n\n\
     \  The [attributes] value is a string that specifies the file\n\
     \  attributes that should be gathered. It is not an error if\n\
@@ -1150,20 +1153,25 @@ and File : sig
      file\n\
     \  is inaccessible (due to being in a folder with restrictive \
      permissions), for\n\
-    \  example, you can expect the returned [Gio.FileInfo] to have very few\n\
+    \  example, you can expect the returned \
+     {{!Ocgio.Raw.File_info}[Gio.FileInfo]} to have very few\n\
     \  attributes set. You should check whether an attribute is set using\n\
     \  [Gio.FileInfo.has_attribute] before trying to retrieve its value.\n\n\
     \  It is guaranteed that if any of the following attributes are listed in\n\
-    \  [attributes], they will always be set in the returned [Gio.FileInfo],\n\
+    \  [attributes], they will always be set in the returned \
+     {{!Ocgio.Raw.File_info}[Gio.FileInfo]},\n\
     \  even if the user doesn’t have permissions to access the file:\n\n\
-    \  - [Gio.FILE_ATTRIBUTE_STANDARD_NAME]\n\
-    \  - [Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME]\n\n\
+    \  - \
+     {{!Ocgio.Constants.file_attribute_standard_name}[Gio.FILE_ATTRIBUTE_STANDARD_NAME]}\n\
+    \  - \
+     {{!Ocgio.Constants.file_attribute_standard_display_name}[Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME]}\n\n\
     \  [attributes] should be a comma-separated list of attributes or attribute\n\
     \  wildcards. The wildcard [\"*\"] means all attributes, and a wildcard like\n\
     \  [\"standard::*\"] means all attributes in the standard namespace.\n\
     \  An example attribute query might be [\"standard::*,owner::user\"].\n\
     \  The standard attributes are available as defines, like\n\
-    \  [Gio.FILE_ATTRIBUTE_STANDARD_NAME].\n\n\
+    \  \
+     {{!Ocgio.Constants.file_attribute_standard_name}[Gio.FILE_ATTRIBUTE_STANDARD_NAME]}.\n\n\
     \  If [cancellable] is not [None], then the operation can be cancelled\n\
     \  by triggering the cancellable object from another thread. If the\n\
     \  operation was cancelled, the error [Gio.IOErrorEnum.CANCELLED] will be\n\
@@ -2156,7 +2164,8 @@ end = struct
     (File_info.t, GError.t) result = "ml_g_file_query_info"
   [@@ocaml.doc
     "Gets the requested information about specified [file].\n\n\
-    \  The result is a [Gio.FileInfo] object that contains key-value\n\
+    \  The result is a {{!Ocgio.Raw.File_info}[Gio.FileInfo]} object that \
+     contains key-value\n\
     \  attributes (such as the type or size of the file).\n\n\
     \  The [attributes] value is a string that specifies the file\n\
     \  attributes that should be gathered. It is not an error if\n\
@@ -2165,20 +2174,25 @@ end = struct
      file\n\
     \  is inaccessible (due to being in a folder with restrictive \
      permissions), for\n\
-    \  example, you can expect the returned [Gio.FileInfo] to have very few\n\
+    \  example, you can expect the returned \
+     {{!Ocgio.Raw.File_info}[Gio.FileInfo]} to have very few\n\
     \  attributes set. You should check whether an attribute is set using\n\
     \  [Gio.FileInfo.has_attribute] before trying to retrieve its value.\n\n\
     \  It is guaranteed that if any of the following attributes are listed in\n\
-    \  [attributes], they will always be set in the returned [Gio.FileInfo],\n\
+    \  [attributes], they will always be set in the returned \
+     {{!Ocgio.Raw.File_info}[Gio.FileInfo]},\n\
     \  even if the user doesn’t have permissions to access the file:\n\n\
-    \  - [Gio.FILE_ATTRIBUTE_STANDARD_NAME]\n\
-    \  - [Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME]\n\n\
+    \  - \
+     {{!Ocgio.Constants.file_attribute_standard_name}[Gio.FILE_ATTRIBUTE_STANDARD_NAME]}\n\
+    \  - \
+     {{!Ocgio.Constants.file_attribute_standard_display_name}[Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME]}\n\n\
     \  [attributes] should be a comma-separated list of attributes or attribute\n\
     \  wildcards. The wildcard [\"*\"] means all attributes, and a wildcard like\n\
     \  [\"standard::*\"] means all attributes in the standard namespace.\n\
     \  An example attribute query might be [\"standard::*,owner::user\"].\n\
     \  The standard attributes are available as defines, like\n\
-    \  [Gio.FILE_ATTRIBUTE_STANDARD_NAME].\n\n\
+    \  \
+     {{!Ocgio.Constants.file_attribute_standard_name}[Gio.FILE_ATTRIBUTE_STANDARD_NAME]}.\n\n\
     \  If [cancellable] is not [None], then the operation can be cancelled\n\
     \  by triggering the cancellable object from another thread. If the\n\
     \  operation was cancelled, the error [Gio.IOErrorEnum.CANCELLED] will be\n\

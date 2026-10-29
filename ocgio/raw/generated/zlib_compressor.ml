@@ -1,8 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ZlibCompressor: ZlibCompressor *)
 
-(** [GZlibCompressor] is an implementation of [Gio.Converter] that compresses
-    data using zlib.
+(** [GZlibCompressor] is an implementation of
+    {{!Ocgio.Raw.Converter}[Gio.Converter]} that compresses data using zlib.
 
     The class built on this module is in {!Ocgio.Zlib_compressor}. *)
 

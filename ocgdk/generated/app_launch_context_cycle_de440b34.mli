@@ -114,7 +114,8 @@ end
 
     To make text or image data available in a clipboard, use
     [Gdk.Clipboard.set_text] or [Gdk.Clipboard.set_texture]. For other data, you
-    can use [Gdk.Clipboard.set_content], which takes a [Gdk.ContentProvider]
+    can use [Gdk.Clipboard.set_content], which takes a
+    {{!Ocgdk.Content_provider.class-type-content_provider_t}[Gdk.ContentProvider]}
     object.
 
     To read textual or image data from a clipboard, use
@@ -203,8 +204,8 @@ end
 
     Represents an input device, such as a keyboard, mouse or touchpad.
 
-    See the [Gdk.Seat] documentation for more information about the various
-    kinds of devices, and their relationships. *)
+    See the {{!Ocgdk.Seat.class-type-seat_t}[Gdk.Seat]} documentation for more
+    information about the various kinds of devices, and their relationships. *)
 and device_t = object
   (** {2:signals Signals} *)
 
@@ -358,10 +359,12 @@ end
       projectors, etc)
 
     Most of the input device handling has been factored out into separate
-    [Gdk.Seat] objects. Every display has a one or more seats, which can be
-    accessed with [Gdk.Display.get_default_seat] and [Gdk.Display.list_seats].
+    {{!Ocgdk.Seat.class-type-seat_t}[Gdk.Seat]} objects. Every display has a one
+    or more seats, which can be accessed with [Gdk.Display.get_default_seat] and
+    [Gdk.Display.list_seats].
 
-    Output devices are represented by [Gdk.Monitor] objects, which can be
+    Output devices are represented by
+    {{!Ocgdk.Monitor.class-type-monitor_t}[Gdk.Monitor]} objects, which can be
     accessed with [Gdk.Display.get_monitor_at_surface] and similar APIs. *)
 and display_t = object
   (** {2:signals Signals} *)
@@ -587,8 +590,10 @@ end
     Base class for objects implementing different rendering methods.
 
     [GdkDrawContext] is the base object used by contexts implementing different
-    rendering methods, such as [Gdk.CairoContext] or [Gdk.GLContext]. It
-    provides shared functionality between those contexts.
+    rendering methods, such as
+    {{!Ocgdk.Cairo_context.class-type-cairo_context_t}[Gdk.CairoContext]} or
+    {{!Ocgdk.Gl_context.class-type-gl_context_t}[Gdk.GLContext]}. It provides
+    shared functionality between those contexts.
 
     You will always interact with one of those subclasses.
 
@@ -1077,10 +1082,12 @@ end
     It’s a low-level object, used to implement high-level objects such as
     GtkWindow.
 
-    The surfaces you see in practice are either [Gdk.Toplevel] or [Gdk.Popup],
-    and those interfaces provide much of the required API to interact with these
-    surfaces. Other, more specialized surface types exist, but you will rarely
-    interact with them directly. *)
+    The surfaces you see in practice are either
+    {{!Ocgdk.Toplevel.class-type-toplevel_t}[Gdk.Toplevel]} or
+    {{!Ocgdk.Popup.class-type-popup_t}[Gdk.Popup]}, and those interfaces provide
+    much of the required API to interact with these surfaces. Other, more
+    specialized surface types exist, but you will rarely interact with them
+    directly. *)
 and surface_t = object
   (** {2:signals Signals} *)
 
