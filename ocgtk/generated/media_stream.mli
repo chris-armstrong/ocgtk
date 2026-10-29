@@ -101,7 +101,7 @@ class type media_stream_t = object
   (** Checks if a stream may be seekable.
 
       This is meant to be a hint. Streams may not allow seeking even if this
-      function returns [TRUE]. However, if this function returns [FALSE],
+      function returns [true]. However, if this function returns [false],
       streams are guaranteed to not be seekable and user interfaces may hide
       controls that allow seeking.
 
@@ -212,7 +212,7 @@ class type media_stream_t = object
 
       Note that the arguments are hints. If the stream implementation cannot
       determine the correct values, it is better to err on the side of caution
-      and return [TRUE]. User interfaces will use those values to determine what
+      and return [true]. User interfaces will use those values to determine what
       controls to show.
 
       This function may not be called again until the stream has been reset via

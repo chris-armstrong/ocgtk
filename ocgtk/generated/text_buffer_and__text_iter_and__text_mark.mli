@@ -82,7 +82,7 @@ class type text_buffer_t = object
   (** Adds the mark at position [where].
 
       The mark must not be added to another buffer, and if its name is not
-      [NULL] then there must not be another mark in the buffer with the same
+      [None] then there must not be another mark in the buffer with the same
       name.
 
       Emits the [Gtk.TextBuffer::mark-set] signal as notification of the mark's
@@ -171,11 +171,11 @@ class type text_buffer_t = object
   method create_mark : string option -> Raw.Text_iter.t -> bool -> text_mark_t
   (** Creates a mark at position [where].
 
-      If [mark_name] is [NULL], the mark is anonymous; otherwise, the mark can
+      If [mark_name] is [None], the mark is anonymous; otherwise, the mark can
       be retrieved by name using [Gtk.TextBuffer.get_mark]. If a mark has left
       gravity, and text is inserted at the mark’s current location, the mark
       will be moved to the left of the newly-inserted text. If the mark has
-      right gravity ([left_gravity] = [FALSE]), the mark will end up on the
+      right gravity ([left_gravity] = [false]), the mark will end up on the
       right of newly-inserted text. The standard left-to-right cursor is a mark
       with right gravity (when you type, the cursor stays on the right side of
       the text you’re typing).
@@ -233,7 +233,7 @@ class type text_buffer_t = object
   (** Deletes the range between the “insert” and “selection_bound” marks, that
       is, the currently-selected text.
 
-      If [interactive] is [TRUE], the editability of the selection will be
+      If [interactive] is [true], the editability of the selection will be
       considered (users can’t delete uneditable text). *)
 
   method end_irreversible_action : unit -> unit
@@ -291,7 +291,7 @@ class type text_buffer_t = object
       This value is cached, so the function is very fast. *)
 
   method get_mark : string -> text_mark_t option
-  (** Returns the mark named [name] in buffer [buffer], or [NULL] if no such
+  (** Returns the mark named [name] in buffer [buffer], or [None] if no such
       mark exists in the buffer. *)
 
   method get_max_undo_levels : unit -> int
@@ -303,7 +303,7 @@ class type text_buffer_t = object
 
   method get_modified : unit -> bool
   (** Indicates whether the buffer has been modified since the last call to
-      [Gtk.TextBuffer.set_modified] set the modification flag to [FALSE].
+      [Gtk.TextBuffer.set_modified] set the modification flag to [false].
 
       Used for example to enable a “save” function in a text editor. *)
 
@@ -332,7 +332,7 @@ class type text_buffer_t = object
   (** Returns the text in the range \[[start],[end]).
 
       Excludes undisplayed text (text marked with tags that set the invisibility
-      attribute) if [include_hidden_chars] is [FALSE]. The returned string
+      attribute) if [include_hidden_chars] is [false]. The returned string
       includes a 0xFFFC character whenever the buffer contains embedded images,
       so byte and character indexes into the returned string do correspond to
       byte and character indexes into the buffer. Contrast with
@@ -347,7 +347,7 @@ class type text_buffer_t = object
   (** Returns the text in the range \[[start],[end]).
 
       Excludes undisplayed text (text marked with tags that set the invisibility
-      attribute) if [include_hidden_chars] is [FALSE]. Does not include
+      attribute) if [include_hidden_chars] is [false]. Does not include
       characters representing embedded images, so byte and character indexes
       into the returned string do not correspond to byte and character indexes
       into the buffer. Contrast with [Gtk.TextBuffer.get_slice]. *)
@@ -462,7 +462,7 @@ class type text_buffer_t = object
     Ocgdk.Clipboard.clipboard_t -> Raw.Text_iter.t option -> bool -> unit
   (** Pastes the contents of a clipboard.
 
-      If [override_location] is [NULL], the pasted text will be inserted at the
+      If [override_location] is [None], the pasted text will be inserted at the
       cursor position, or the buffer selection will be replaced if the selection
       is non-empty.
 
@@ -602,8 +602,8 @@ and text_iter_t = object
   method backward_char : unit -> bool
   (** Moves backward by one character offset.
 
-      Returns [TRUE] if movement was possible; if [iter] was the first in the
-      buffer (character offset 0), this function returns [FALSE] for convenience
+      Returns [true] if movement was possible; if [iter] was the first in the
+      buffer (character offset 0), this function returns [false] for convenience
       when writing loops. *)
 
   method backward_chars : int -> bool
@@ -614,8 +614,8 @@ and text_iter_t = object
 
       The return value indicates whether the iterator moved onto a
       dereferenceable position; if the iterator didn’t move, or moved onto the
-      end iterator, then [FALSE] is returned. If [count] is 0, the function does
-      nothing and returns [FALSE]. *)
+      end iterator, then [false] is returned. If [count] is 0, the function does
+      nothing and returns [false]. *)
 
   method backward_cursor_position : unit -> bool
   (** Like [Gtk.TextIter.forward_cursor_position], but moves backward. *)
@@ -628,10 +628,10 @@ and text_iter_t = object
   method backward_line : unit -> bool
   (** Moves [iter] to the start of the previous line.
 
-      Returns [TRUE] if [iter] could be moved; i.e. if [iter] was at character
-      offset 0, this function returns [FALSE]. Therefore, if [iter] was already
+      Returns [true] if [iter] could be moved; i.e. if [iter] was at character
+      offset 0, this function returns [false]. Therefore, if [iter] was already
       on line 0, but not at the start of the line, [iter] is snapped to the
-      start of the line and the function returns [TRUE]. (Note that this implies
+      start of the line and the function returns [true]. (Note that this implies
       that in a loop calling this function, the line number may not change on
       every iteration, if your first iteration is on line 0.) *)
 
@@ -643,8 +643,8 @@ and text_iter_t = object
 
       The return value indicates whether the iterator moved onto a
       dereferenceable position; if the iterator didn’t move, or moved onto the
-      end iterator, then [FALSE] is returned. If [count] is 0, the function does
-      nothing and returns [FALSE]. If [count] is negative, moves forward by 0 -
+      end iterator, then [false] is returned. If [count] is 0, the function does
+      nothing and returns [false]. If [count] is negative, moves forward by 0 -
       [count] lines. *)
 
   method backward_sentence_start : unit -> bool
@@ -663,9 +663,9 @@ and text_iter_t = object
 
   method backward_to_tag_toggle : Text_tag.text_tag_t option -> bool
   (** Moves backward to the next toggle (on or off) of the [tag], or to the next
-      toggle of any tag if [tag] is [NULL].
+      toggle of any tag if [tag] is [None].
 
-      If no matching tag toggles are found, returns [FALSE], otherwise [TRUE].
+      If no matching tag toggles are found, returns [false], otherwise [true].
       Does not return toggles located at [iter], only toggles before [iter].
       Sets [iter] to the location of the toggle, or the start of the buffer if
       no toggle is found. *)
@@ -683,10 +683,10 @@ and text_iter_t = object
   method backward_visible_line : unit -> bool
   (** Moves [iter] to the start of the previous visible line.
 
-      Returns [TRUE] if [iter] could be moved; i.e. if [iter] was at character
-      offset 0, this function returns [FALSE]. Therefore if [iter] was already
+      Returns [true] if [iter] could be moved; i.e. if [iter] was at character
+      offset 0, this function returns [false]. Therefore if [iter] was already
       on line 0, but not at the start of the line, [iter] is snapped to the
-      start of the line and the function returns [TRUE]. (Note that this implies
+      start of the line and the function returns [true]. (Note that this implies
       that in a loop calling this function, the line number may not change on
       every iteration, if your first iteration is on line 0.) *)
 
@@ -698,8 +698,8 @@ and text_iter_t = object
 
       The return value indicates whether the iterator moved onto a
       dereferenceable position; if the iterator didn’t move, or moved onto the
-      end iterator, then [FALSE] is returned. If [count] is 0, the function does
-      nothing and returns [FALSE]. If [count] is negative, moves forward by 0 -
+      end iterator, then [false] is returned. If [count] is 0, the function does
+      nothing and returns [false]. If [count] is negative, moves forward by 0 -
       [count] lines. *)
 
   method backward_visible_word_start : unit -> bool
@@ -757,7 +757,7 @@ and text_iter_t = object
       [Gtk.TextIter.can_insert] to handle this case. *)
 
   method ends_line : unit -> bool
-  (** Returns [TRUE] if [iter] points to the start of the paragraph delimiter
+  (** Returns [true] if [iter] points to the start of the paragraph delimiter
       characters for a line.
 
       Delimiters will be either a newline, a carriage return, a carriage return
@@ -775,15 +775,15 @@ and text_iter_t = object
       nearly any language. *)
 
   method ends_tag : Text_tag.text_tag_t option -> bool
-  (** Returns [TRUE] if [tag] is toggled off at exactly this point.
+  (** Returns [true] if [tag] is toggled off at exactly this point.
 
-      If [tag] is [NULL], returns [TRUE] if any tag is toggled off at this
+      If [tag] is [None], returns [true] if any tag is toggled off at this
       point.
 
-      Note that if this function returns [TRUE], it means that [iter] is at the
+      Note that if this function returns [true], it means that [iter] is at the
       end of the tagged range, but that the character at [iter] is outside the
       tagged range. In other words, unlike [Gtk.TextIter.starts_tag], if this
-      function returns [TRUE], [Gtk.TextIter.has_tag] will return [FALSE] for
+      function returns [true], [Gtk.TextIter.has_tag] will return [false] for
       the same parameters. *)
 
   method ends_word : unit -> bool
@@ -807,7 +807,7 @@ and text_iter_t = object
       function may actually move onto an image instead of a character, if you
       have images in your buffer. If [iter] is the end iterator or one character
       before it, [iter] will now point at the end iterator, and this function
-      returns [FALSE] for convenience when writing loops. *)
+      returns [false] for convenience when writing loops. *)
 
   method forward_chars : int -> bool
   (** Moves [count] characters if possible.
@@ -818,7 +818,7 @@ and text_iter_t = object
       The return value indicates whether the new position of [iter] is different
       from its original position, and dereferenceable (the last iterator in the
       buffer is not dereferenceable). If [count] is 0, the function does nothing
-      and returns [FALSE]. *)
+      and returns [false]. *)
 
   method forward_cursor_position : unit -> bool
   [@@ocaml.doc
@@ -845,8 +845,8 @@ and text_iter_t = object
 
       If the iter is already on the last line of the buffer, moves the iter to
       the end of the current line. If after the operation, the iter is at the
-      end of the buffer and not dereferenceable, returns [FALSE]. Otherwise,
-      returns [TRUE]. *)
+      end of the buffer and not dereferenceable, returns [false]. Otherwise,
+      returns [true]. *)
 
   method forward_lines : int -> bool
   (** Moves [count] lines forward, if possible.
@@ -856,8 +856,8 @@ and text_iter_t = object
 
       The return value indicates whether the iterator moved onto a
       dereferenceable position; if the iterator didn’t move, or moved onto the
-      end iterator, then [FALSE] is returned. If [count] is 0, the function does
-      nothing and returns [FALSE]. If [count] is negative, moves backward by 0 -
+      end iterator, then [false] is returned. If [count] is 0, the function does
+      nothing and returns [false]. If [count] is negative, moves backward by 0 -
       [count] lines. *)
 
   method forward_sentence_end : unit -> bool
@@ -890,13 +890,13 @@ and text_iter_t = object
       If the iterator is already at the paragraph delimiter characters, moves to
       the paragraph delimiter characters for the next line. If [iter] is on the
       last line in the buffer, which does not end in paragraph delimiters, moves
-      to the end iterator (end of the last line), and returns [FALSE]. *)
+      to the end iterator (end of the last line), and returns [false]. *)
 
   method forward_to_tag_toggle : Text_tag.text_tag_t option -> bool
   (** Moves forward to the next toggle (on or off) of the [tag], or to the next
-      toggle of any tag if [tag] is [NULL].
+      toggle of any tag if [tag] is [None].
 
-      If no matching tag toggles are found, returns [FALSE], otherwise [TRUE].
+      If no matching tag toggles are found, returns [false], otherwise [true].
       Does not return toggles located at [iter], only toggles after [iter]. Sets
       [iter] to the location of the toggle, or to the end of the buffer if no
       toggle is found. *)
@@ -914,7 +914,7 @@ and text_iter_t = object
   method forward_visible_line : unit -> bool
   (** Moves [iter] to the start of the next visible line.
 
-      Returns [TRUE] if there was a next line to move to, and [FALSE] if [iter]
+      Returns [true] if there was a next line to move to, and [false] if [iter]
       was simply moved to the end of the buffer and is now not dereferenceable,
       or if [iter] was already at the end of the buffer. *)
 
@@ -926,8 +926,8 @@ and text_iter_t = object
 
       The return value indicates whether the iterator moved onto a
       dereferenceable position; if the iterator didn’t move, or moved onto the
-      end iterator, then [FALSE] is returned. If [count] is 0, the function does
-      nothing and returns [FALSE]. If [count] is negative, moves backward by 0 -
+      end iterator, then [false] is returned. If [count] is 0, the function does
+      nothing and returns [false]. If [count] is negative, moves backward by 0 -
       [count] lines. *)
 
   method forward_visible_word_end : unit -> bool
@@ -978,7 +978,7 @@ and text_iter_t = object
   method get_child_anchor : unit -> Text_child_anchor.text_child_anchor_t option
   (** If the location at [iter] contains a child anchor, the anchor is returned.
 
-      Otherwise, [NULL] is returned. *)
+      Otherwise, [None] is returned. *)
 
   method get_language : unit -> Ocpango.Language.language_t
   (** Returns the language in effect at [iter].
@@ -1023,7 +1023,7 @@ and text_iter_t = object
   method get_paintable : unit -> Ocgdk.Paintable.paintable_t option
   (** If the element at [iter] is a paintable, the paintable is returned.
 
-      Otherwise, [NULL] is returned. *)
+      Otherwise, [None] is returned. *)
 
   method get_slice : Raw.Text_iter.t -> string
   (** Returns the text in the given range.
@@ -1056,7 +1056,7 @@ and text_iter_t = object
   method get_toggled_tags : bool -> Text_tag.text_tag_t list
   (** Returns a list of [GtkTextTag] that are toggled on or off at this point.
 
-      If [toggled_on] is [TRUE], the list contains tags that are toggled on. If
+      If [toggled_on] is [true], the list contains tags that are toggled on. If
       a tag is toggled on at [iter], then some non-empty range of characters
       following [iter] has that tag applied to it. If a tag is toggled off, then
       some non-empty range following [iter] does not have the tag applied to it.
@@ -1087,7 +1087,7 @@ and text_iter_t = object
       “invisible” attribute turned on has been applied to it. *)
 
   method has_tag : Text_tag.text_tag_t -> bool
-  (** Returns [TRUE] if [iter] points to a character that is part of a range
+  (** Returns [true] if [iter] points to a character that is part of a range
       tagged with [tag].
 
       See also [Gtk.TextIter.starts_tag] and [Gtk.TextIter.ends_tag]. *)
@@ -1112,8 +1112,8 @@ and text_iter_t = object
       Word breaks are determined by Pango and should be correct for nearly any
       language.
 
-      Note that if [Gtk.TextIter.starts_word] returns [TRUE], then this function
-      returns [TRUE] too, since [iter] points to the first character of the
+      Note that if [Gtk.TextIter.starts_word] returns [true], then this function
+      returns [true] too, since [iter] points to the first character of the
       word. *)
 
   method is_cursor_position : unit -> bool
@@ -1123,14 +1123,14 @@ and text_iter_t = object
       [Pango.break] for details on what a cursor position is. *)
 
   method is_end : unit -> bool
-  (** Returns [TRUE] if [iter] is the end iterator.
+  (** Returns [true] if [iter] is the end iterator.
 
       This means it is one past the last dereferenceable iterator in the buffer.
       [Gtk.TextIter.is_end] is the most efficient way to check whether an
       iterator is the end iterator. *)
 
   method is_start : unit -> bool
-  (** Returns [TRUE] if [iter] is the first iterator in the buffer. *)
+  (** Returns [true] if [iter] is the first iterator in the buffer. *)
 
   method order : Raw.Text_iter.t -> unit
   (** Swaps the value of [first] and [second] if [second] comes before [first]
@@ -1178,7 +1178,7 @@ and text_iter_t = object
       offset. *)
 
   method starts_line : unit -> bool
-  (** Returns [TRUE] if [iter] begins a paragraph.
+  (** Returns [true] if [iter] begins a paragraph.
 
       This is the case if [Gtk.TextIter.get_line_offset] would return 0. However
       this function is potentially more efficient than
@@ -1192,14 +1192,14 @@ and text_iter_t = object
       nearly any language. *)
 
   method starts_tag : Text_tag.text_tag_t option -> bool
-  (** Returns [TRUE] if [tag] is toggled on at exactly this point.
+  (** Returns [true] if [tag] is toggled on at exactly this point.
 
-      If [tag] is [NULL], returns [TRUE] if any tag is toggled on at this point.
+      If [tag] is [None], returns [true] if any tag is toggled on at this point.
 
-      Note that if this function returns [TRUE], it means that [iter] is at the
+      Note that if this function returns [true], it means that [iter] is at the
       beginning of the tagged range, and that the character at [iter] is inside
       the tagged range. In other words, unlike [Gtk.TextIter.ends_tag], if this
-      function returns [TRUE], [Gtk.TextIter.has_tag] will also return [TRUE]
+      function returns [true], [Gtk.TextIter.has_tag] will also return [true]
       for the same parameters. *)
 
   method starts_word : unit -> bool
@@ -1258,10 +1258,10 @@ and text_mark_t = object
   method get_buffer : unit -> text_buffer_t option
   (** Gets the buffer this mark is located inside.
 
-      Returns [NULL] if the mark is deleted. *)
+      Returns [None] if the mark is deleted. *)
 
   method get_deleted : unit -> bool
-  (** Returns [TRUE] if the mark has been removed from its buffer.
+  (** Returns [true] if the mark has been removed from its buffer.
 
       See [Gtk.TextBuffer.add_mark] for a way to add it to a buffer again. *)
 
@@ -1271,10 +1271,10 @@ and text_mark_t = object
   method get_name : unit -> string option
   (** Returns the mark name.
 
-      Returns [NULL] for anonymous marks. *)
+      Returns [None] for anonymous marks. *)
 
   method get_visible : unit -> bool
-  (** Returns [TRUE] if the mark is visible.
+  (** Returns [true] if the mark is visible.
 
       A cursor is displayed for visible marks. *)
 
@@ -1308,11 +1308,11 @@ val new_ : Text_tag_table.text_tag_table_t option -> text_buffer_t
 val new_ : string option -> bool -> text_mark_t
 (** Creates a text mark.
 
-    Add it to a buffer using [Gtk.TextBuffer.add_mark]. If [name] is [NULL], the
+    Add it to a buffer using [Gtk.TextBuffer.add_mark]. If [name] is [None], the
     mark is anonymous; otherwise, the mark can be retrieved by name using
     [Gtk.TextBuffer.get_mark]. If a mark has left gravity, and text is inserted
     at the mark’s current location, the mark will be moved to the left of the
     newly-inserted text. If the mark has right gravity ([left_gravity] =
-    [FALSE]), the mark will end up on the right of newly-inserted text. The
+    [false]), the mark will end up on the right of newly-inserted text. The
     standard left-to-right cursor is a mark with right gravity (when you type,
     the cursor stays on the right side of the text you’re typing). *)

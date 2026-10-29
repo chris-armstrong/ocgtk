@@ -28,14 +28,14 @@ class type tls_certificate_t = object
 
       If [cert] is valid, [G_TLS_CERTIFICATE_NO_FLAGS] is returned.
 
-      If [identity] is not [NULL], [cert]'s name(s) will be compared against it,
+      If [identity] is not [None], [cert]'s name(s) will be compared against it,
       and [G_TLS_CERTIFICATE_BAD_IDENTITY] will be set in the return value if it
-      does not match. If [identity] is [NULL], that bit will never be set in the
+      does not match. If [identity] is [None], that bit will never be set in the
       return value.
 
-      If [trusted_ca] is not [NULL], then [cert] (or one of the certificates in
+      If [trusted_ca] is not [None], then [cert] (or one of the certificates in
       its chain) must be signed by it, or else [G_TLS_CERTIFICATE_UNKNOWN_CA]
-      will be set in the return value. If [trusted_ca] is [NULL], that bit will
+      will be set in the return value. If [trusted_ca] is [None], that bit will
       never be set in the return value.
 
       GLib guarantees that if certificate verification fails, at least one error
@@ -65,7 +65,7 @@ class type tls_certificate_t = object
        #11} objects containing an X.509 certificate and optionally a private
       key.
 
-      If [NULL], the certificate is either not backed by PKCS #11 or the
+      If [None], the certificate is either not backed by PKCS #11 or the
       [GTlsBackend] does not support PKCS #11. *)
 
   method private_key_pem : string
@@ -82,7 +82,7 @@ class type tls_certificate_t = object
      can be set when constructing a key (for example, from a file).\n\
      Since GLib 2.70, it is now also readable; however, be aware that if\n\
      the private key is backed by a PKCS #11 URI - for example, if it\n\
-     is stored on a smartcard - then this property will be [NULL]. If so,\n\
+     is stored on a smartcard - then this property will be [None]. If so,\n\
      the private key must be referenced via its PKCS #11 URI,\n\
      [GTlsCertificate:private]-key-pkcs11-uri. You must check both\n\
      properties to see if the certificate really has a private key.\n\

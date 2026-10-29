@@ -34,7 +34,7 @@ class type switch_t = object
       To implement delayed state change, applications can connect to this
       signal, initiate the change of the underlying state, and call
       [Gtk.Switch.set_state] when the underlying state change is complete. The
-      signal handler should return [TRUE] to prevent the default handler from
+      signal handler should return [true] to prevent the default handler from
       running. *)
 
   (** {2:methods Methods} *)

@@ -20,10 +20,10 @@ class type settings_schema_source_t = object
       useful to authors of plugin management systems or to those who want to
       introspect the content of schemas.
 
-      If the schema isn't found directly in [source] and [recursive] is [TRUE]
+      If the schema isn't found directly in [source] and [recursive] is [true]
       then the parent sources will also be checked.
 
-      If the schema isn't found, [NULL] is returned. *)
+      If the schema isn't found, [None] is returned. *)
 
   method ref : unit -> Raw.Settings_schema_source.t
   (** Increase the reference count of [source], returning a new reference. *)
@@ -54,19 +54,19 @@ val new_from_directory :
     The directory should contain a file called [gschemas.compiled] as produced
     by the \[glib-compile-schemas\]\[glib-compile-schemas\] tool.
 
-    If [trusted] is [TRUE] then [gschemas.compiled] is trusted not to be
+    If [trusted] is [true] then [gschemas.compiled] is trusted not to be
     corrupted. This assumption has a performance advantage, but can result in
     crashes or inconsistent behaviour in the case of a corrupted file.
-    Generally, you should set [trusted] to [TRUE] for files installed by the
-    system and to [FALSE] for files in the home directory.
+    Generally, you should set [trusted] to [true] for files installed by the
+    system and to [false] for files in the home directory.
 
     In either case, an empty file or some types of corruption in the file will
     result in [G_FILE_ERROR_INVAL] being returned.
 
-    If [parent] is non-[NULL] then there are two effects.
+    If [parent] is non-[None] then there are two effects.
 
     First, if g_settings_schema_source_lookup() is called with the [recursive]
-    flag set to [TRUE] and the schema can not be found in the source, the lookup
+    flag set to [true] and the schema can not be found in the source, the lookup
     will recurse to the parent.
 
     Second, any references to other schemas specified within this source (ie:

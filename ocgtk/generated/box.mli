@@ -80,7 +80,7 @@ class type box_t = object
 
       The child is added after [sibling] in the list of [box] children.
 
-      If [sibling] is [NULL], the [child] is placed at the beginning. *)
+      If [sibling] is [None], the [child] is placed at the beginning. *)
 
   method prepend : Widget.widget_t -> unit
   (** Adds a child at the beginning. *)
@@ -97,7 +97,7 @@ class type box_t = object
       The child is moved to the position after [sibling] in the list of [box]
       children.
 
-      If [sibling] is [NULL], the child is placed at the beginning. *)
+      If [sibling] is [None], the child is placed at the beginning. *)
 
   method set_baseline_child : int -> unit
   (** Sets the baseline child of a box.

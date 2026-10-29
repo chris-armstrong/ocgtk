@@ -24,7 +24,7 @@ class type tooltip_t =
     image, or you want the tooltip to have different contents per [GtkTreeView]
     row or cell, you will have to do a little more work:
 
-    - Set the [Gtk.Widget:has-tooltip] property to [TRUE]. This will make GTK
+    - Set the [Gtk.Widget:has-tooltip] property to [true]. This will make GTK
       monitor the widget for motion and related events which are needed to
       determine when and where to show a tooltip.
 
@@ -36,8 +36,8 @@ class type tooltip_t =
       for setting the tooltip’s markup, setting an image from a named icon, or
       even putting in a custom widget.
 
-    - Return [TRUE] from your ::query-tooltip handler. This causes the tooltip
-      to be show. If you return [FALSE], it will not be shown. *)
+    - Return [true] from your ::query-tooltip handler. This causes the tooltip
+      to be show. If you return [false], it will not be shown. *)
 
 class tooltip : Raw.Tooltip.t -> tooltip_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Tooltip.t}. *)
@@ -53,7 +53,7 @@ class tooltip : Raw.Tooltip.t -> tooltip_t
     image, or you want the tooltip to have different contents per [GtkTreeView]
     row or cell, you will have to do a little more work:
 
-    - Set the [Gtk.Widget:has-tooltip] property to [TRUE]. This will make GTK
+    - Set the [Gtk.Widget:has-tooltip] property to [true]. This will make GTK
       monitor the widget for motion and related events which are needed to
       determine when and where to show a tooltip.
 
@@ -65,8 +65,8 @@ class tooltip : Raw.Tooltip.t -> tooltip_t
       for setting the tooltip’s markup, setting an image from a named icon, or
       even putting in a custom widget.
 
-    - Return [TRUE] from your ::query-tooltip handler. This causes the tooltip
-      to be show. If you return [FALSE], it will not be shown. *)
+    - Return [true] from your ::query-tooltip handler. This causes the tooltip
+      to be show. If you return [false], it will not be shown. *)
 
 (** {1:constructors Constructors} *)
 

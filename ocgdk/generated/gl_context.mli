@@ -26,7 +26,7 @@ class type gl_context_t = App_launch_context_cycle_de440b34.gl_context_t
      in the draw function of your widget to draw them. Then GDK will handle\n\
      the integration of your rendering with that of other widgets.\n\n\
      Support for [GdkGLContext] is platform-specific and context creation\n\
-     can fail, returning [NULL] context.\n\n\
+     can fail, returning [None] context.\n\n\
      A [GdkGLContext] has to be made \"current\" in order to start using\n\
      it, otherwise any OpenGL call will be ignored.\n\n\
      {b Creating a new OpenGL context}\n\n\
@@ -70,7 +70,7 @@ class gl_context : Raw.Gl_context.t -> gl_context_t
  in the draw function of your widget to draw them. Then GDK will handle\n\
  the integration of your rendering with that of other widgets.\n\n\
  Support for [GdkGLContext] is platform-specific and context creation\n\
- can fail, returning [NULL] context.\n\n\
+ can fail, returning [None] context.\n\n\
  A [GdkGLContext] has to be made \"current\" in order to start using\n\
  it, otherwise any OpenGL call will be ignored.\n\n\
  {b Creating a new OpenGL context}\n\n\

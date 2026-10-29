@@ -47,7 +47,7 @@ external new_from_bytes : Glib_bytes.t -> (t, GError.t) result
     The file format is detected automatically. The supported formats are PNG,
     JPEG and TIFF, though more formats might be available.
 
-    If [NULL] is returned, then [error] will be set.
+    If [None] is returned, then [error] will be set.
 
     This function is threadsafe, so that you can e.g. use GTask and
     [Gio.Task.run_in_thread] to avoid blocking the main thread while loading a
@@ -64,7 +64,7 @@ external new_from_file : Ocgio_raw.File.t -> (t, GError.t) result
     The file format is detected automatically. The supported formats are PNG,
     JPEG and TIFF, though more formats might be available.
 
-    If [NULL] is returned, then [error] will be set.
+    If [None] is returned, then [error] will be set.
 
     This function is threadsafe, so that you can e.g. use GTask and
     [Gio.Task.run_in_thread] to avoid blocking the main thread while loading a
@@ -81,7 +81,7 @@ external new_from_filename : string -> (t, GError.t) result
     The file format is detected automatically. The supported formats are PNG,
     JPEG and TIFF, though more formats might be available.
 
-    If [NULL] is returned, then [error] will be set.
+    If [None] is returned, then [error] will be set.
 
     This function is threadsafe, so that you can e.g. use GTask and
     [Gio.Task.run_in_thread] to avoid blocking the main thread while loading a

@@ -84,10 +84,10 @@ external set_autoplay : t -> bool -> unit = "ml_gtk_video_set_autoplay"
 
 external get_media_stream : t -> Media_stream.t option
   = "ml_gtk_video_get_media_stream"
-(** Gets the media stream managed by [self] or [NULL] if none. *)
+(** Gets the media stream managed by [self] or [None] if none. *)
 
 external get_loop : t -> bool = "ml_gtk_video_get_loop"
-(** Returns [TRUE] if videos have been set to loop. *)
+(** Returns [true] if videos have been set to loop. *)
 
 external get_graphics_offload : t -> Ocgtk_enums.graphicsoffloadenabled
   = "ml_gtk_video_get_graphics_offload"
@@ -96,9 +96,9 @@ external get_graphics_offload : t -> Ocgtk_enums.graphicsoffloadenabled
     See [Gtk.GraphicsOffload] for more information on graphics offload. *)
 
 external get_file : t -> Ocgio_raw.File.t option = "ml_gtk_video_get_file"
-(** Gets the file played by [self] or [NULL] if not playing back a file. *)
+(** Gets the file played by [self] or [None] if not playing back a file. *)
 
 external get_autoplay : t -> bool = "ml_gtk_video_get_autoplay"
-(** Returns [TRUE] if videos have been set to loop. *)
+(** Returns [true] if videos have been set to loop. *)
 
 (* Properties *)

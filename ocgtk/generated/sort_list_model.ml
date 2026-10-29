@@ -10,7 +10,7 @@ class type sort_list_model_t = object
       See [Gtk.SortListModel.set_incremental]. *)
 
   method get_model : unit -> Ocgio.List_model.list_model_t option
-  (** Gets the model currently sorted or [NULL] if none. *)
+  (** Gets the model currently sorted or [None] if none. *)
 
   method get_pending : unit -> int
   (** Estimates progress of an ongoing sorting operation.
@@ -28,7 +28,7 @@ class type sort_list_model_t = object
       ]}
 
       If no sort operation is ongoing - in particular when
-      [Gtk.SortListModel:incremental] is [FALSE] - this function returns 0. *)
+      [Gtk.SortListModel:incremental] is [false] - this function returns 0. *)
 
   method get_section_sorter : unit -> Sorter.sorter_t option
   (** Gets the section sorter that is used to sort items of [self] into

@@ -36,28 +36,28 @@
     the requested name. In this case, [GDBusObjectManagerClient] object
     construction still succeeds but there will be no object proxies (e.g.
     [Gio.DBusObjectManager.get_objects] returns the empty list) and the
-    [Gio.DBusObjectManagerClient:name-owner] property is [NULL].
+    [Gio.DBusObjectManagerClient:name-owner] property is [None].
 
     The owner of the requested name can come and go (for example consider a
     system service being restarted) – [GDBusObjectManagerClient] handles this
     case too; simply connect to the [GObject.Object::notify] signal to watch for
     changes on the [Gio.DBusObjectManagerClient:name-owner] property. When the
     name owner vanishes, the behavior is that
-    [Gio.DBusObjectManagerClient:name-owner] is set to [NULL] (this includes
+    [Gio.DBusObjectManagerClient:name-owner] is set to [None] (this includes
     emission of the [GObject.Object::notify] signal) and then
     [Gio.DBusObjectManager::object-removed] signals are synthesized for all
     currently existing object proxies. Since
-    [Gio.DBusObjectManagerClient:name-owner] is [NULL] when this happens, you
+    [Gio.DBusObjectManagerClient:name-owner] is [None] when this happens, you
     can use this information to disambiguate a synthesized signal from a genuine
     signal caused by object removal on the remote [Gio.DBusObjectManager].
     Similarly, when a new name owner appears,
     [Gio.DBusObjectManager::object-added] signals are synthesized while
-    [Gio.DBusObjectManagerClient:name-owner] is still [NULL]. Only when all
+    [Gio.DBusObjectManagerClient:name-owner] is still [None]. Only when all
     object proxies have been added, the [Gio.DBusObjectManagerClient:name-owner]
     is set to the new name owner (this includes emission of the
     [GObject.Object::notify] signal). Furthermore, you are guaranteed that
     [Gio.DBusObjectManagerClient:name-owner] will alternate between a name owner
-    (e.g. [:1.42]) and [NULL] even in the case where the name of interest is
+    (e.g. [:1.42]) and [None] even in the case where the name of interest is
     atomically replaced
 
     Ultimately, [GDBusObjectManagerClient] is used to obtain [Gio.DBusProxy]
@@ -120,11 +120,11 @@ class type d_bus_object_manager_client_t = object
   (** Gets the flags that [manager] was constructed with. *)
 
   method get_name : unit -> string
-  (** Gets the name that [manager] is for, or [NULL] if not a message bus
+  (** Gets the name that [manager] is for, or [None] if not a message bus
       connection. *)
 
   method get_name_owner : unit -> string option
-  (** The unique name that owns the name that [manager] is for or [NULL] if
+  (** The unique name that owns the name that [manager] is for or [None] if
       no-one currently owns that name. You can connect to the [GObject::notify]
       signal to track changes to the [GDBusObjectManagerClient:name]-owner
       property. *)
@@ -165,28 +165,28 @@ class d_bus_object_manager_client :
     the requested name. In this case, [GDBusObjectManagerClient] object
     construction still succeeds but there will be no object proxies (e.g.
     [Gio.DBusObjectManager.get_objects] returns the empty list) and the
-    [Gio.DBusObjectManagerClient:name-owner] property is [NULL].
+    [Gio.DBusObjectManagerClient:name-owner] property is [None].
 
     The owner of the requested name can come and go (for example consider a
     system service being restarted) – [GDBusObjectManagerClient] handles this
     case too; simply connect to the [GObject.Object::notify] signal to watch for
     changes on the [Gio.DBusObjectManagerClient:name-owner] property. When the
     name owner vanishes, the behavior is that
-    [Gio.DBusObjectManagerClient:name-owner] is set to [NULL] (this includes
+    [Gio.DBusObjectManagerClient:name-owner] is set to [None] (this includes
     emission of the [GObject.Object::notify] signal) and then
     [Gio.DBusObjectManager::object-removed] signals are synthesized for all
     currently existing object proxies. Since
-    [Gio.DBusObjectManagerClient:name-owner] is [NULL] when this happens, you
+    [Gio.DBusObjectManagerClient:name-owner] is [None] when this happens, you
     can use this information to disambiguate a synthesized signal from a genuine
     signal caused by object removal on the remote [Gio.DBusObjectManager].
     Similarly, when a new name owner appears,
     [Gio.DBusObjectManager::object-added] signals are synthesized while
-    [Gio.DBusObjectManagerClient:name-owner] is still [NULL]. Only when all
+    [Gio.DBusObjectManagerClient:name-owner] is still [None]. Only when all
     object proxies have been added, the [Gio.DBusObjectManagerClient:name-owner]
     is set to the new name owner (this includes emission of the
     [GObject.Object::notify] signal). Furthermore, you are guaranteed that
     [Gio.DBusObjectManagerClient:name-owner] will alternate between a name owner
-    (e.g. [:1.42]) and [NULL] even in the case where the name of interest is
+    (e.g. [:1.42]) and [None] even in the case where the name of interest is
     atomically replaced
 
     Ultimately, [GDBusObjectManagerClient] is used to obtain [Gio.DBusProxy]

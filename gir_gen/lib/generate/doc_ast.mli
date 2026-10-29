@@ -12,6 +12,14 @@
     [Doc_translate.translate]; see the parse/render split above. *)
 type context = Entity | Member
 
+(** What the item a doc is attached to returns, as far as the doc's C idioms
+    care: [Throws] items return [(_, GError.t) result], so a null return "on
+    error" is an [Error] result instead. *)
+type ret_shape = Plain | Throws
+
+val ret_shape_of_throws : bool -> ret_shape
+(** [Throws] for an item GIR marks [throws="1"]. *)
+
 type sym_kind =
   | Class
   | Iface
@@ -32,6 +40,17 @@ type sym_kind =
   | Type_kind
 [@@deriving eq]
 
+type c_lit =
+  | True
+  | False
+  | Null
+  | Null_on_error of string
+      (** A null literal followed by an error phrase ([" on error"],
+          [" if an error occurred"], ...); the phrase is the payload. Separate
+          from [Null] because a throwing item reports the error as an [Error]
+          result, not as a null return. *)
+[@@deriving eq]
+
 type inline =
   | Text of string
   | Code of string
@@ -46,6 +65,12 @@ type inline =
     }
   | Param_ref of string
   | Ref of string
+  | C_lit of c_lit
+      (** [%TRUE], [%FALSE] or [%NULL], or the same name as a whole code span: a
+          C literal the bindings spell differently. *)
+  | C_prim of string
+      (** A [#gint]-style C primitive type sigil, holding the C name. [parse]
+          produces it only for names [Doc_c_idiom.ocaml_of_c_prim] knows. *)
 [@@deriving eq]
 
 type block =
@@ -89,6 +114,9 @@ type fallback =
       *)
   | Quote_stripped
       (** [> blockquote] marker stripped, content kept as plain prose. *)
+  | Ownership_stripped of string
+      (** A sentence telling C callers how to free a value, dropped; the payload
+          names the matching pattern. *)
 [@@deriving eq]
 
 val equal_inline : inline -> inline -> bool

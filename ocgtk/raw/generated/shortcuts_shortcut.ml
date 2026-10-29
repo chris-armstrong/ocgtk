@@ -122,11 +122,11 @@ external set_icon : t -> Ocgio_raw.Icon.t -> unit
     For the other predefined gesture types, GTK provides an icon on its own. *)
 
 external get_icon_set : t -> bool = "ml_gtk_shortcuts_shortcut_get_icon_set"
-(** [TRUE] if an icon has been set. *)
+(** [true] if an icon has been set. *)
 
 external set_icon_set : t -> bool -> unit
   = "ml_gtk_shortcuts_shortcut_set_icon_set"
-(** [TRUE] if an icon has been set. *)
+(** [true] if an icon has been set. *)
 
 external get_shortcut_type : t -> Ocgtk_enums.shortcuttype
   = "ml_gtk_shortcuts_shortcut_get_shortcut_type"
@@ -153,11 +153,11 @@ external set_subtitle : t -> string -> unit
 
 external get_subtitle_set : t -> bool
   = "ml_gtk_shortcuts_shortcut_get_subtitle_set"
-(** [TRUE] if a subtitle has been set. *)
+(** [true] if a subtitle has been set. *)
 
 external set_subtitle_set : t -> bool -> unit
   = "ml_gtk_shortcuts_shortcut_set_subtitle_set"
-(** [TRUE] if a subtitle has been set. *)
+(** [true] if a subtitle has been set. *)
 
 external get_title : t -> string = "ml_gtk_shortcuts_shortcut_get_title"
 (** The textual description for the shortcut or gesture represented by this

@@ -13,7 +13,7 @@ class type d_bus_server_t = object
       any), was authenticated.
 
       If you want to accept the connection, take a reference to the [connection]
-      object and return [TRUE]. When you are done with the connection call
+      object and return [true]. When you are done with the connection call
       g_dbus_connection_close() and give up your reference. Note that the other
       peer may disconnect at any time - a typical thing to do when accepting a
       connection is to listen to the [GDBusConnection::closed] signal.
@@ -61,7 +61,7 @@ class type d_bus_server_t = object
 
   method authentication_observer : D_bus_auth_observer.d_bus_auth_observer_t
   (** A [GDBusAuthObserver] object to assist in the authentication process or
-      [NULL]. *)
+      [None]. *)
 
   (** {2:conversions Conversions} *)
 

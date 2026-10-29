@@ -42,7 +42,7 @@ external new_sync :
 
     To have control over the available authentication mechanisms and the users
     that are authorized to connect, it is strongly recommended to provide a
-    non-[NULL] [GDBusAuthObserver].
+    non-[None] [GDBusAuthObserver].
 
     Connect to the [GDBusServer::new]-connection signal to handle incoming
     connections.
@@ -90,7 +90,7 @@ external get_address : t -> string = "ml_g_d_bus_server_get_address"
 external get_authentication_observer : t -> D_bus_auth_observer.t
   = "ml_g_d_bus_server_get_authentication_observer"
 (** A [GDBusAuthObserver] object to assist in the authentication process or
-    [NULL]. *)
+    [None]. *)
 
 let on_new_connection ?after obj ~callback =
   let closure =

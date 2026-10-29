@@ -101,7 +101,7 @@ class type paned_t = object
   method set_end_child : Widget.widget_t option -> unit
   (** Sets the end child of [paned] to [child].
 
-      If [child] is [NULL], the existing child will be removed. *)
+      If [child] is [None], the existing child will be removed. *)
 
   method set_position : int -> unit
   (** Sets the position of the divider between the two panes. *)
@@ -121,7 +121,7 @@ class type paned_t = object
   method set_start_child : Widget.widget_t option -> unit
   (** Sets the start child of [paned] to [child].
 
-      If [child] is [NULL], the existing child will be removed. *)
+      If [child] is [None], the existing child will be removed. *)
 
   method set_wide_handle : bool -> unit
   (** Sets whether the separator should be wide. *)

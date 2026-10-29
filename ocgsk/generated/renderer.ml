@@ -4,7 +4,7 @@ class type renderer_t = object
   method get_surface : unit -> Ocgdk.Surface.surface_t option
   (** Retrieves the surface that the renderer is associated with.
 
-      If the renderer has not been realized yet, [NULL] will be returned. *)
+      If the renderer has not been realized yet, [None] will be returned. *)
 
   method is_realized : unit -> bool
   (** Checks whether the renderer is realized or not. *)
@@ -12,7 +12,7 @@ class type renderer_t = object
   method realize : Ocgdk.Surface.surface_t option -> (bool, GError.t) result
   (** Creates the resources needed by the renderer.
 
-      Since GTK 4.6, the surface may be [NULL], which allows using renderers
+      Since GTK 4.6, the surface may be [None], which allows using renderers
       without having to create a surface. Since GTK 4.14, it is recommended to
       use [Gsk.Renderer.realize_for_display] for this case.
 

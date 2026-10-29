@@ -195,8 +195,8 @@ external evaluate :
     [Gtk.Expression.get_value_type].
 
     It is possible that expressions cannot be evaluated - for example when the
-    expression references objects that have been destroyed or set to [NULL]. In
-    that case [value] will remain empty and [FALSE] will be returned. *)
+    expression references objects that have been destroyed or set to [None]. In
+    that case [value] will remain empty and [false] will be returned. *)
 
 external bind :
   t ->

@@ -41,7 +41,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_frame_get_type"
 external new_ : string option -> t = "ml_gtk_frame_new"
 (** Creates a new [GtkFrame], with optional label [label].
 
-    If [label] is [NULL], the label is omitted. *)
+    If [label] is [None], the label is omitted. *)
 
 (* Methods *)
 
@@ -89,7 +89,7 @@ external get_label_align : t -> float = "ml_gtk_frame_get_label_align"
 external get_label : t -> string option = "ml_gtk_frame_get_label"
 (** Returns the frame labels text.
 
-    If the frame's label widget is not a [GtkLabel], [NULL] is returned. *)
+    If the frame's label widget is not a [GtkLabel], [None] is returned. *)
 
 external get_child :
   t ->

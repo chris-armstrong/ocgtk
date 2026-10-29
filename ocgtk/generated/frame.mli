@@ -18,7 +18,7 @@ class type frame_t = object
   method get_label : unit -> string option
   (** Returns the frame labels text.
 
-      If the frame's label widget is not a [GtkLabel], [NULL] is returned. *)
+      If the frame's label widget is not a [GtkLabel], [None] is returned. *)
 
   method get_label_align : unit -> float
   (** Retrieves the X alignment of the frame’s label. *)
@@ -129,4 +129,4 @@ class frame : Raw.Frame.t -> frame_t
 val new_ : string option -> frame_t
 (** Creates a new [GtkFrame], with optional label [label].
 
-    If [label] is [NULL], the label is omitted. *)
+    If [label] is [None], the label is omitted. *)

@@ -63,7 +63,7 @@ external get_actions : t -> Ocgdk_enums.dragaction = "ml_gdk_drag_get_actions"
 external drop_done : t -> bool -> unit = "ml_gdk_drag_drop_done"
 (** Informs GDK that the drop ended.
 
-    Passing [FALSE] for [success] may trigger a drag cancellation animation.
+    Passing [false] for [success] may trigger a drag cancellation animation.
 
     This function is called by the drag source, and should be the last call
     before dropping the reference to the [drag].

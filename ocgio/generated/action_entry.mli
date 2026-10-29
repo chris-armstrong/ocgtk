@@ -15,7 +15,7 @@
 
     The order of the items in the structure are intended to reflect frequency of
     use. It is permissible to use an incomplete initialiser in order to leave
-    some of the later values as [NULL]. All values after [name] are optional.
+    some of the later values as [None]. All values after [name] are optional.
     Additional optional fields may be added in the future.
 
     See [Gio.ActionMap.add_action_entries] for an example. *)
@@ -35,7 +35,7 @@ class action_entry : Raw.Action_entry.t -> action_entry_t
 
     The order of the items in the structure are intended to reflect frequency of
     use. It is permissible to use an incomplete initialiser in order to leave
-    some of the later values as [NULL]. All values after [name] are optional.
+    some of the later values as [None]. All values after [name] are optional.
     Additional optional fields may be added in the future.
 
     See [Gio.ActionMap.add_action_entries] for an example. *)

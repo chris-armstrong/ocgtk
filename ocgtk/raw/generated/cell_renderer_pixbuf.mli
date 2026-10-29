@@ -10,10 +10,10 @@
 
     To support the tree view, [GtkCellRendererPixbuf] also supports rendering
     two alternative pixbufs, when the [GtkCellRenderer:is-expander] property is
-    [TRUE]. If the [GtkCellRenderer:is-expanded property] is [TRUE] and the
+    [true]. If the [GtkCellRenderer:is-expanded property] is [true] and the
     [GtkCellRendererPixbuf:pixbuf-expander-open] property is set to a pixbuf, it
     renders that pixbuf, if the [GtkCellRenderer:is-expanded] property is
-    [FALSE] and the [GtkCellRendererPixbuf:pixbuf-expander-closed] property is
+    [false] and the [GtkCellRendererPixbuf:pixbuf-expander-closed] property is
     set to a pixbuf, it renders that one.
 
     The class built on this module is in {!Ocgtk.Cell_renderer_pixbuf}. *)

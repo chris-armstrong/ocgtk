@@ -22,5 +22,5 @@ external new_ : string -> int -> t = "ml_pango_script_iter_new"
 external next : t -> bool = "ml_pango_script_iter_next"
 (** Advances a [PangoScriptIter] to the next range.
 
-    If [iter] is already at the end, it is left unchanged and [FALSE] is
+    If [iter] is already at the end, it is left unchanged and [false] is
     returned. *)

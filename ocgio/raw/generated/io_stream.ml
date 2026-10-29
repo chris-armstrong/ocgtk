@@ -60,7 +60,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_io_stream_get_type"
 external set_pending : t -> (bool, GError.t) result
   = "ml_g_io_stream_set_pending"
 (** Sets [stream] to have actions pending. If the pending flag is already set or
-    [stream] is closed, it will return [FALSE] and set [error]. *)
+    [stream] is closed, it will return [false] and set [error]. *)
 
 external is_closed : t -> bool = "ml_g_io_stream_is_closed"
 (** Checks if a stream is closed. *)

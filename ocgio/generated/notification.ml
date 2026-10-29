@@ -17,7 +17,7 @@ class type notification_t = object
     "Adds a button to [notification] that activates [action] when clicked.\n\
      [action] must be an application-wide action (it must start with \
      \"app.\").\n\n\
-     If [target] is non-[NULL], [action] will be activated with [target] as\n\
+     If [target] is non-[None], [action] will be activated with [target] as\n\
      its parameter."]
 
   method set_body : string option -> unit
@@ -51,7 +51,7 @@ class type notification_t = object
     "Sets the default action of [notification] to [action]. This action is\n\
      activated when the notification is clicked on. It must be an\n\
      application-wide action (start with \"app.\").\n\n\
-     If [target] is non-[NULL], [action] will be activated with [target] as\n\
+     If [target] is non-[None], [action] will be activated with [target] as\n\
      its parameter. If [target] is floating, it will be consumed.\n\n\
      When no default action is set, the application that the notification\n\
      was sent on is activated."]

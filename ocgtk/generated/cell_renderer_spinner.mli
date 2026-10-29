@@ -20,7 +20,7 @@
     actual progress.
 
     To start the animation in a cell, set the [GtkCellRendererSpinner:active]
-    property to [TRUE] and increment the [GtkCellRendererSpinner:pulse] property
+    property to [true] and increment the [GtkCellRendererSpinner:pulse] property
     at regular intervals. The usual way to set the cell renderer properties for
     each cell is to bind them to columns in your tree model using e.g.
     gtk_tree_view_column_add_attribute(). *)
@@ -77,7 +77,7 @@ class cell_renderer_spinner :
     actual progress.
 
     To start the animation in a cell, set the [GtkCellRendererSpinner:active]
-    property to [TRUE] and increment the [GtkCellRendererSpinner:pulse] property
+    property to [true] and increment the [GtkCellRendererSpinner:pulse] property
     at regular intervals. The usual way to set the cell renderer properties for
     each cell is to bind them to columns in your tree model using e.g.
     gtk_tree_view_column_add_attribute(). *)

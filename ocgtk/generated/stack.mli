@@ -31,7 +31,7 @@ class type stack_t = object
   method get_child_by_name : string -> Widget.widget_t option
   (** Finds the child with the name given as the argument.
 
-      Returns [NULL] if there is no child with this name. *)
+      Returns [None] if there is no child with this name. *)
 
   method get_hhomogeneous : unit -> bool
   (** Gets whether [stack] is horizontally homogeneous. *)
@@ -68,12 +68,12 @@ class type stack_t = object
   method get_visible_child : unit -> Widget.widget_t option
   (** Gets the currently visible child of [stack].
 
-      Returns [NULL] if there are no visible children. *)
+      Returns [None] if there are no visible children. *)
 
   method get_visible_child_name : unit -> string option
   (** Returns the name of the currently visible child of [stack].
 
-      Returns [NULL] if there is no visible child. *)
+      Returns [None] if there is no visible child. *)
 
   method remove : Widget.widget_t -> unit
   (** Removes a child widget from [stack]. *)
@@ -89,7 +89,7 @@ class type stack_t = object
   (** Sets whether or not [stack] will interpolate its size when changing the
       visible child.
 
-      If the [Gtk.Stack:interpolate-size] property is set to [TRUE], [stack]
+      If the [Gtk.Stack:interpolate-size] property is set to [true], [stack]
       will interpolate its size between the current one and the one it'll take
       after changing the visible child, according to the set transition
       duration. *)

@@ -39,7 +39,7 @@ external change_action_state_full :
    it allows for provision of \"platform data\" to be sent along with the\n\
    state change request.  This typically contains details such as the\n\
    user interaction timestamp or startup notification information.\n\n\
-   [platform_data] must be non-[NULL] and must have the type\n\
+   [platform_data] must be non-[None] and must have the type\n\
    [G_VARIANT_TYPE_VARDICT].  If it is floating, it will be consumed."]
 
 external activate_action_full :
@@ -51,5 +51,5 @@ external activate_action_full :
    allows for provision of \"platform data\" to be sent along with the\n\
    activation request.  This typically contains details such as the user\n\
    interaction timestamp or startup notification information.\n\n\
-   [platform_data] must be non-[NULL] and must have the type\n\
+   [platform_data] must be non-[None] and must have the type\n\
    [G_VARIANT_TYPE_VARDICT].  If it is floating, it will be consumed."]

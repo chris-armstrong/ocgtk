@@ -43,19 +43,19 @@ class type paper_size_t = object
   (** Gets the name of the [GtkPaperSize]. *)
 
   method get_ppd_name : unit -> string
-  (** Gets the PPD name of the [GtkPaperSize], which may be [NULL]. *)
+  (** Gets the PPD name of the [GtkPaperSize], which may be [None]. *)
 
   method get_width : Enums.unit -> float
   (** Gets the paper width of the [GtkPaperSize], in units of [unit]. *)
 
   method is_custom : unit -> bool
-  (** Returns [TRUE] if [size] is not a standard paper size. *)
+  (** Returns [true] if [size] is not a standard paper size. *)
 
   method is_equal : Raw.Paper_size.t -> bool
   (** Compares two [GtkPaperSize] objects. *)
 
   method is_ipp : unit -> bool
-  (** Returns [TRUE] if [size] is an IPP standard paper size. *)
+  (** Returns [true] if [size] is an IPP standard paper size. *)
 
   method set_size : float -> float -> Enums.unit -> unit
   (** Changes the dimensions of a [size] to [width] x [height]. *)
@@ -88,7 +88,7 @@ class paper_size : Raw.Paper_size.t -> paper_size_t
 val new_ : string option -> paper_size_t
 (** Creates a new [GtkPaperSize] object by parsing a PWG 5101.1-2002 paper name.
 
-    If [name] is [NULL], the default paper size is returned, see
+    If [name] is [None], the default paper size is returned, see
     [Gtk.PaperSize.get_default]. *)
 
 val new_custom :

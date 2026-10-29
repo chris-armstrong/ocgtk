@@ -38,12 +38,12 @@ class type message_dialog_t = object
   (** The secondary text of the message dialog. *)
 
   method secondary_use_markup : bool
-  (** [TRUE] if the secondary text of the dialog includes Pango markup.
+  (** [true] if the secondary text of the dialog includes Pango markup.
 
       See [Pango.parse_markup]. *)
 
   method set_secondary_use_markup : bool -> unit
-  (** [TRUE] if the secondary text of the dialog includes Pango markup.
+  (** [true] if the secondary text of the dialog includes Pango markup.
 
       See [Pango.parse_markup]. *)
 
@@ -58,12 +58,12 @@ class type message_dialog_t = object
       If the dialog has a secondary text, this will appear as the title. *)
 
   method use_markup : bool
-  (** [TRUE] if the primary text of the dialog includes Pango markup.
+  (** [true] if the primary text of the dialog includes Pango markup.
 
       See [Pango.parse_markup]. *)
 
   method set_use_markup : bool -> unit
-  (** [TRUE] if the primary text of the dialog includes Pango markup.
+  (** [true] if the primary text of the dialog includes Pango markup.
 
       See [Pango.parse_markup]. *)
 

@@ -77,7 +77,7 @@ class type password_entry_t = object
   (** Sets whether the entry should have a clickable icon to reveal the
       contents.
 
-      Setting this to [FALSE] also hides the text again. *)
+      Setting this to [false] also hides the text again. *)
 
   (** {2:properties Properties} *)
 

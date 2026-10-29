@@ -19,7 +19,7 @@
     default, the content of the entry is replaced by the text column of the
     model, but this can be overridden by connecting to the
     [Gtk.EntryCompletion::match-selected] signal and updating the entry in the
-    signal handler. Note that you should return [TRUE] from the signal handler
+    signal handler. Note that you should return [true] from the signal handler
     to suppress the default behaviour.
 
     To add completion functionality to an entry, use [Gtk.Entry.set_completion].
@@ -74,7 +74,7 @@ external set_popup_single_match : t -> bool -> unit
 (** Sets whether the completion popup window will appear even if there is only a
     single match.
 
-    You may want to set this to [FALSE] if you are using
+    You may want to set this to [false] if you are using
     [Gtk.EntryCompletion:inline-completion]. *)
 
 external set_popup_set_width : t -> bool -> unit
@@ -91,7 +91,7 @@ external set_model : t -> Tree_model.t option -> unit
 (** Sets the model for a [GtkEntryCompletion].
 
     If [completion] already has a model set, it will remove it before setting
-    the new model. If model is [NULL], then it will unset the model. *)
+    the new model. If model is [None], then it will unset the model. *)
 
 external set_minimum_key_length : t -> int -> unit
   = "ml_gtk_entry_completion_set_minimum_key_length"
@@ -136,7 +136,7 @@ external get_model : t -> Tree_model.t option
   = "ml_gtk_entry_completion_get_model"
 (** Returns the model the [GtkEntryCompletion] is using as data source.
 
-    Returns [NULL] if the model is unset. *)
+    Returns [None] if the model is unset. *)
 
 external get_minimum_key_length : t -> int
   = "ml_gtk_entry_completion_get_minimum_key_length"
@@ -144,7 +144,7 @@ external get_minimum_key_length : t -> int
 
 external get_inline_selection : t -> bool
   = "ml_gtk_entry_completion_get_inline_selection"
-(** Returns [TRUE] if inline-selection mode is turned on. *)
+(** Returns [true] if inline-selection mode is turned on. *)
 
 external get_inline_completion : t -> bool
   = "ml_gtk_entry_completion_get_inline_completion"
@@ -161,14 +161,14 @@ external get_entry :
 external get_completion_prefix : t -> string option
   = "ml_gtk_entry_completion_get_completion_prefix"
 (** Get the original text entered by the user that triggered the completion or
-    [NULL] if there’s no completion ongoing. *)
+    [None] if there’s no completion ongoing. *)
 
 external compute_prefix : t -> string -> string option
   = "ml_gtk_entry_completion_compute_prefix"
 (** Computes the common prefix that is shared by all rows in [completion] that
     start with [key].
 
-    If no row matches [key], [NULL] will be returned. Note that a text column
+    If no row matches [key], [None] will be returned. Note that a text column
     must have been set for this function to work, see
     [Gtk.EntryCompletion.set_text_column] for details. *)
 

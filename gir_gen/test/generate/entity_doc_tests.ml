@@ -140,6 +140,20 @@ let test_constructor_gir_doc_wins () =
     (Entity_doc.constructor ~namespace:"Gtk" ~class_name:"Button"
        (ctor ~ctor_doc:"Creates a labelled button." ()))
 
+let test_constructor_null_on_error_throwing () =
+  check_text "a throwing constructor's error is its Error result"
+    "(** Reads the settings. Returns them, or an [Error] result. *)"
+    (Entity_doc.constructor ~namespace:"Gtk" ~class_name:"Button"
+       (Type_factory.make_gir_constructor ~ctor_name:"new_from_file"
+          ~c_identifier:"gtk_button_new_from_file" ~throws:true
+          ~ctor_doc:"Reads the settings. Returns them, or %NULL on error." ()))
+
+let test_constructor_null_on_error_plain () =
+  check_text "a non-throwing constructor keeps the null"
+    "(** Returns them, or [None] on error. *)"
+    (Entity_doc.constructor ~namespace:"Gtk" ~class_name:"Button"
+       (ctor ~ctor_doc:"Returns them, or %NULL on error." ()))
+
 let label_property ?prop_doc () =
   Type_factory.make_gir_property ~prop_name:"label"
     ~prop_type:(Type_factory.make_gir_type ~name:"utf8" ~c_type:"gchar*" ())
@@ -388,6 +402,12 @@ let tests =
       `Quick,
       test_constructor_fallback_without_upstream_site );
     ("constructor GIR doc wins", `Quick, test_constructor_gir_doc_wins);
+    ( "constructor null on error, throwing",
+      `Quick,
+      test_constructor_null_on_error_throwing );
+    ( "constructor null on error, plain",
+      `Quick,
+      test_constructor_null_on_error_plain );
     ( "property GIR doc on both accessors",
       `Quick,
       test_property_gir_doc_on_both_accessors );

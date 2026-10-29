@@ -26,14 +26,14 @@ external get_start_point : t -> bool * float * float
   = "ml_gtk_gesture_drag_get_start_point"
 (** Gets the point where the drag started.
 
-    If the [gesture] is active, this function returns [TRUE] and fills in [x]
+    If the [gesture] is active, this function returns [true] and fills in [x]
     and [y] with the drag start coordinates, in widget-relative coordinates. *)
 
 external get_offset : t -> bool * float * float
   = "ml_gtk_gesture_drag_get_offset"
 (** Gets the offset from the start point.
 
-    If the [gesture] is active, this function returns [TRUE] and fills in [x]
+    If the [gesture] is active, this function returns [true] and fills in [x]
     and [y] with the coordinates of the current point, as an offset to the
     starting drag point. *)
 

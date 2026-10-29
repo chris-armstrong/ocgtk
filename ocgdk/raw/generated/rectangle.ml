@@ -41,7 +41,7 @@ external intersect : t -> t -> bool * t = "ml_gdk_rectangle_intersect"
     It is allowed for [dest] to be the same as either [src1] or [src2]. If the
     rectangles do not intersect, [dest]’s width and height is set to 0 and its x
     and y values are undefined. If you are only interested in whether the
-    rectangles intersect, but not in the intersecting area itself, pass [NULL]
+    rectangles intersect, but not in the intersecting area itself, pass [None]
     for [dest]. *)
 
 external equal : t -> t -> bool = "ml_gdk_rectangle_equal"
@@ -49,4 +49,4 @@ external equal : t -> t -> bool = "ml_gdk_rectangle_equal"
 
 external contains_point : t -> int -> int -> bool
   = "ml_gdk_rectangle_contains_point"
-(** Returns [TRUE] if [rect] contains the point described by [x] and [y]. *)
+(** Returns [true] if [rect] contains the point described by [x] and [y]. *)

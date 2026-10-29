@@ -20,7 +20,7 @@ class type grid_t = object
   (** Adds a widget to the grid.
 
       The widget is placed next to [sibling], on the side determined by [side].
-      When [sibling] is [NULL], the widget is placed in row (for left or right
+      When [sibling] is [None], the widget is placed in row (for left or right
       placement) or column 0 (for top or bottom placement), at the end indicated
       by [side].
 

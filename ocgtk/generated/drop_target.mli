@@ -19,16 +19,16 @@ class type drop_target_t = object
     Gobject.Signal.handler_id
   (** Emitted on the drop site when a drop operation is about to begin.
 
-      If the drop is not accepted, [FALSE] will be returned and the drop target
-      will ignore the drop. If [TRUE] is returned, the drop is accepted for now
+      If the drop is not accepted, [false] will be returned and the drop target
+      will ignore the drop. If [true] is returned, the drop is accepted for now
       but may be rejected later via a call to [Gtk.DropTarget.reject] or
-      ultimately by returning [FALSE] from a [Gtk.DropTarget::drop] handler.
+      ultimately by returning [false] from a [Gtk.DropTarget::drop] handler.
 
       The default handler for this signal decides whether to accept the drop
       based on the formats provided by the [drop].
 
       If the decision whether the drop will be accepted or rejected depends on
-      the data, this function should return [TRUE], the [Gtk.DropTarget:preload]
+      the data, this function should return [true], the [Gtk.DropTarget:preload]
       property should be set and the value should be inspected via the
       ::notify:value signal, calling [Gtk.DropTarget.reject] if required. *)
 
@@ -40,10 +40,10 @@ class type drop_target_t = object
   (** Emitted on the drop site when the user drops the data onto the widget.
 
       The signal handler must determine whether the pointer position is in a
-      drop zone or not. If it is not in a drop zone, it returns [FALSE] and no
+      drop zone or not. If it is not in a drop zone, it returns [false] and no
       further processing is necessary.
 
-      Otherwise, the handler returns [TRUE]. In this case, this handler will
+      Otherwise, the handler returns [true]. In this case, this handler will
       accept the drop. The handler is responsible for using the given [value]
       and performing the drop operation. *)
 
@@ -77,17 +77,17 @@ class type drop_target_t = object
   method get_current_drop : unit -> Ocgdk.Drop.drop_t option
   (** Gets the currently handled drop operation.
 
-      If no drop operation is going on, [NULL] is returned. *)
+      If no drop operation is going on, [None] is returned. *)
 
   method get_drop : unit -> Ocgdk.Drop.drop_t option
   (** Gets the currently handled drop operation.
 
-      If no drop operation is going on, [NULL] is returned. *)
+      If no drop operation is going on, [None] is returned. *)
 
   method get_formats : unit -> Ocgdk.Content_formats.content_formats_t option
   (** Gets the data formats that this drop target accepts.
 
-      If the result is [NULL], all formats are expected to be supported. *)
+      If the result is [None], all formats are expected to be supported. *)
 
   method get_preload : unit -> bool
   (** Gets whether data should be preloaded on hover. *)
@@ -99,7 +99,7 @@ class type drop_target_t = object
   (** Rejects the ongoing drop operation.
 
       If no drop operation is ongoing, i.e when [Gtk.DropTarget:current-drop] is
-      [NULL], this function does nothing.
+      [None], this function does nothing.
 
       This function should be used when delaying the decision on whether to
       accept a drag or not until after reading the data. *)

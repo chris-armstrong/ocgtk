@@ -146,7 +146,7 @@ class type label_t = object
   method get_tabs : unit -> Ocpango.Tab_array.tab_array_t option
   (** Gets the tab stops for the label.
 
-      The returned array will be [NULL] if “standard” (8-space) tabs are used.
+      The returned array will be [None] if “standard” (8-space) tabs are used.
   *)
 
   method get_text : unit -> string

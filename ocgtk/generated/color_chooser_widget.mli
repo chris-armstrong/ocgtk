@@ -55,13 +55,13 @@ class type color_chooser_widget_t = object
   (** {2:properties Properties} *)
 
   method show_editor : bool
-  (** [TRUE] when the color chooser is showing the single-color editor.
+  (** [true] when the color chooser is showing the single-color editor.
 
       It can be set to switch the color chooser into single-color editing mode.
   *)
 
   method set_show_editor : bool -> unit
-  (** [TRUE] when the color chooser is showing the single-color editor.
+  (** [true] when the color chooser is showing the single-color editor.
 
       It can be set to switch the color chooser into single-color editing mode.
   *)

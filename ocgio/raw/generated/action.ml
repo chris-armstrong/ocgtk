@@ -5,7 +5,7 @@
 
     The main interface to an action is that it can be activated with
     [Gio.Action.activate]. This results in the 'activate' signal being emitted.
-    An activation has a [GVariant] parameter (which may be [NULL]). The correct
+    An activation has a [GVariant] parameter (which may be [None]). The correct
     type for the parameter is determined by a static parameter type (which is
     given at construction time).
 
@@ -50,13 +50,13 @@ external get_state_type : t -> Gvariant_type.t option
     [GLib.Variant] of the same type.
 
     If the action is not stateful (e.g. created with [Gio.SimpleAction.new])
-    then this function will return [NULL]. In that case, [Gio.Action.get_state]
-    will return [NULL] and you must not call [Gio.Action.change_state]. *)
+    then this function will return [None]. In that case, [Gio.Action.get_state]
+    will return [None] and you must not call [Gio.Action.change_state]. *)
 
 external get_state_hint : t -> Gvariant.t option = "ml_g_action_get_state_hint"
 (** Requests a hint about the valid range of values for the state of [action].
 
-    If [NULL] is returned it either means that the action is not stateful or
+    If [None] is returned it either means that the action is not stateful or
     that there is no hint about the valid range of values for the state of the
     action.
 
@@ -69,17 +69,17 @@ external get_state_hint : t -> Gvariant.t option = "ml_g_action_get_state_hint"
     state value outside of the hinted range and setting a value within the range
     may fail.
 
-    The return value (if non-[NULL]) should be freed with [GLib.Variant.unref]
+    The return value (if non-[None]) should be freed with [GLib.Variant.unref]
     when it is no longer required. *)
 
 external get_state : t -> Gvariant.t option = "ml_g_action_get_state"
 (** Queries the current state of [action].
 
-    If the action is not stateful then [NULL] will be returned. If the action is
+    If the action is not stateful then [None] will be returned. If the action is
     stateful then the type of the return value is the type given by
     [Gio.Action.get_state_type].
 
-    The return value (if non-[NULL]) should be freed with [GLib.Variant.unref]
+    The return value (if non-[None]) should be freed with [GLib.Variant.unref]
     when it is no longer required. *)
 
 external get_parameter_type : t -> Gvariant_type.t option
@@ -90,8 +90,8 @@ external get_parameter_type : t -> Gvariant_type.t option
     When activating the action using [Gio.Action.activate], the [GLib.Variant]
     given to that function must be of the type returned by this function.
 
-    In the case that this function returns [NULL], you must not give any
-    [GLib.Variant], but [NULL] instead. *)
+    In the case that this function returns [None], you must not give any
+    [GLib.Variant], but [None] instead. *)
 
 external get_name : t -> string = "ml_g_action_get_name"
 (** Queries the name of [action]. *)
@@ -118,8 +118,8 @@ external activate : t -> Gvariant.t option -> unit = "ml_g_action_activate"
 (** Activates the action.
 
     [parameter] must be the correct type of parameter for the action (ie: the
-    parameter type given at construction time). If the parameter type was [NULL]
-    then [parameter] must also be [NULL].
+    parameter type given at construction time). If the parameter type was [None]
+    then [parameter] must also be [None].
 
     If the [parameter] [GLib.Variant] is floating, it is consumed. *)
 

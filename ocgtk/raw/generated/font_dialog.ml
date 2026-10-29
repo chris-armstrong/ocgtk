@@ -38,7 +38,7 @@ external set_font_map : t -> Ocpango_raw.Font_map.t option -> unit
   = "ml_gtk_font_dialog_set_font_map"
 (** Sets the fontmap from which fonts are selected.
 
-    If [fontmap] is [NULL], the default fontmap is used. *)
+    If [fontmap] is [None], the default fontmap is used. *)
 
 external set_filter : t -> Filter.t option -> unit
   = "ml_gtk_font_dialog_set_filter"
@@ -61,7 +61,7 @@ external get_language : t -> Ocpango_raw.Language.t option
 
 external get_font_map : t -> Ocpango_raw.Font_map.t option
   = "ml_gtk_font_dialog_get_font_map"
-(** Returns the fontmap from which fonts are selected, or [NULL] for the default
+(** Returns the fontmap from which fonts are selected, or [None] for the default
     fontmap. *)
 
 external get_filter : t -> Filter.t option = "ml_gtk_font_dialog_get_filter"

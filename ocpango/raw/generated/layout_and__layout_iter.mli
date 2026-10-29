@@ -54,8 +54,8 @@ module rec Layout : sig
       (the position will be clamped inside the layout). If the X position is not
       within the layout, then the start or the end of the line is chosen as
       described for [Pango.LayoutLine.x_to_index]. If either the X or Y
-      positions were not inside the layout, then the function returns [FALSE];
-      on an exact hit, it returns [TRUE]. *)
+      positions were not inside the layout, then the function returns [false];
+      on an exact hit, it returns [true]. *)
 
   external write_to_file :
     t -> Ocpango_enums.layoutserializeflags -> string -> (bool, GError.t) result
@@ -103,7 +103,7 @@ module rec Layout : sig
       [PangoLayout] will place content at the next tab position whenever it
       meets a Tab character (U+0009).
 
-      By default, tabs are every 8 spaces. If [tabs] is [NULL], the default tabs
+      By default, tabs are every 8 spaces. If [tabs] is [None], the default tabs
       are reinstated. [tabs] is copied into the layout; you must free your copy
       of [tabs] yourself.
 
@@ -132,12 +132,12 @@ module rec Layout : sig
     = "ml_pango_layout_set_single_paragraph_mode"
   (** Sets the single paragraph mode of [layout].
 
-      If [setting] is [TRUE], do not treat newlines and similar characters as
+      If [setting] is [true], do not treat newlines and similar characters as
       paragraph separators; instead, keep all text in a single paragraph, and
       display a glyph for paragraph separator characters. Used when you want to
       allow editing of newlines on a single text line.
 
-      The default value is [FALSE]. *)
+      The default value is [false]. *)
 
   external set_markup_with_accel : t -> string -> int -> int -> int
     = "ml_pango_layout_set_markup_with_accel"
@@ -192,7 +192,7 @@ module rec Layout : sig
       This only has an effect if [Pango.Layout.set_justify] has been called as
       well.
 
-      The default value is [FALSE]. *)
+      The default value is [false]. *)
 
   external set_justify : t -> bool -> unit = "ml_pango_layout_set_justify"
   (** Sets whether each complete line should be stretched to fill the entire
@@ -208,7 +208,7 @@ module rec Layout : sig
       Note that tabs and justification conflict with each other: Justification
       will move content away from its tab-aligned positions.
 
-      The default value is [FALSE].
+      The default value is [false].
 
       Also see [Pango.Layout.set_justify_last_line]. *)
 
@@ -284,7 +284,7 @@ module rec Layout : sig
       have left-to-right layout. Paragraphs with only neutral characters get
       their direction from the surrounding paragraphs.
 
-      When [FALSE], the choice between left-to-right and right-to-left layout is
+      When [false], the choice between left-to-right and right-to-left layout is
       done according to the base direction of the layout's [PangoContext]. (See
       [Pango.Context.set_base_dir]).
 
@@ -337,13 +337,13 @@ module rec Layout : sig
   external is_wrapped : t -> bool = "ml_pango_layout_is_wrapped"
   (** Queries whether the layout had to wrap any paragraphs.
 
-      This returns [TRUE] if a positive width is set on [layout], and there are
+      This returns [true] if a positive width is set on [layout], and there are
       paragraphs exceeding the layout width that have to be wrapped. *)
 
   external is_ellipsized : t -> bool = "ml_pango_layout_is_ellipsized"
   (** Queries whether the layout had to ellipsize any paragraphs.
 
-      This returns [TRUE] if the ellipsization mode for [layout] is not
+      This returns [true] if the ellipsization mode for [layout] is not
       [PANGO_ELLIPSIZE_NONE], a positive width is set on [layout], and there are
       paragraphs exceeding that width that have to be ellipsized. *)
 
@@ -390,7 +390,7 @@ module rec Layout : sig
   (** Gets the current [PangoTabArray] used by this layout.
 
       If no [PangoTabArray] has been set, then the default tabs are in use and
-      [NULL] is returned. Default tabs are every 8 spaces.
+      [None] is returned. Default tabs are every 8 spaces.
 
       The return value should be freed with [Pango.TabArray.free]. *)
 
@@ -642,22 +642,22 @@ and Layout_iter : sig
   external next_run : t -> bool = "ml_pango_layout_iter_next_run"
   (** Moves [iter] forward to the next run in visual order.
 
-      If [iter] was already at the end of the layout, returns [FALSE]. *)
+      If [iter] was already at the end of the layout, returns [false]. *)
 
   external next_line : t -> bool = "ml_pango_layout_iter_next_line"
   (** Moves [iter] forward to the start of the next line.
 
-      If [iter] is already on the last line, returns [FALSE]. *)
+      If [iter] is already on the last line, returns [false]. *)
 
   external next_cluster : t -> bool = "ml_pango_layout_iter_next_cluster"
   (** Moves [iter] forward to the next cluster in visual order.
 
-      If [iter] was already at the end of the layout, returns [FALSE]. *)
+      If [iter] was already at the end of the layout, returns [false]. *)
 
   external next_char : t -> bool = "ml_pango_layout_iter_next_char"
   (** Moves [iter] forward to the next character in visual order.
 
-      If [iter] was already at the end of the layout, returns [FALSE]. *)
+      If [iter] was already at the end of the layout, returns [false]. *)
 
   external get_run_extents : t -> Rectangle.t * Rectangle.t
     = "ml_pango_layout_iter_get_run_extents"
@@ -724,7 +724,7 @@ and Layout_iter : sig
 
       Note that iterating forward by char moves in visual order, not logical
       order, so indexes may not be sequential. Also, the index may be equal to
-      the length of the text in the layout, if on the [NULL] run (see
+      the length of the text in the layout, if on the [None] run (see
       [Pango.LayoutIter.get_run]). *)
 
   external get_cluster_extents : t -> Rectangle.t * Rectangle.t

@@ -86,13 +86,13 @@ external set_title_widget :
   unit = "ml_gtk_header_bar_set_title_widget"
 (** Sets the title for the header bar.
 
-    When set to [NULL], the headerbar will display the title of the window it is
+    When set to [None], the headerbar will display the title of the window it is
     contained in.
 
     The title should help a user identify the current view. To achieve the same
     style as the builtin title, use the “title” style class.
 
-    You should set the title widget to [NULL], for the window title label to be
+    You should set the title widget to [None], for the window title label to be
     visible again. *)
 
 external set_show_title_buttons : t -> bool -> unit

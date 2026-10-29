@@ -21,7 +21,7 @@ module rec Application : sig
 
       Note that commandline arguments are not passed to [Gtk.init].
 
-      If [application_id] is not [NULL], then it must be valid. See
+      If [application_id] is not [None], then it must be valid. See
       [Gio.Application.id_is_valid].
 
       If no application ID is given then some features (most notably application
@@ -76,7 +76,7 @@ module rec Application : sig
   (** Remove a window from the application.
 
       If the window belongs to the application then this call is equivalent to
-      setting the [Gtk.Window:application] property of the window to [NULL].
+      setting the [Gtk.Window:application] property of the window to [None].
 
       The application may stop running as a result of a call to this function,
       if the window was the last window of the application. *)
@@ -170,7 +170,7 @@ module rec Application : sig
       cases where the actions never appear in the same context.
 
       In case there are no actions for a given accelerator, an empty array is
-      returned. [NULL] is never returned.
+      returned. [None] is never returned.
 
       It is a programmer error to pass an invalid accelerator string.
 
@@ -266,7 +266,7 @@ end = struct
 
       Note that commandline arguments are not passed to [Gtk.init].
 
-      If [application_id] is not [NULL], then it must be valid. See
+      If [application_id] is not [None], then it must be valid. See
       [Gio.Application.id_is_valid].
 
       If no application ID is given then some features (most notably application
@@ -321,7 +321,7 @@ end = struct
   (** Remove a window from the application.
 
       If the window belongs to the application then this call is equivalent to
-      setting the [Gtk.Window:application] property of the window to [NULL].
+      setting the [Gtk.Window:application] property of the window to [None].
 
       The application may stop running as a result of a call to this function,
       if the window was the last window of the application. *)
@@ -415,7 +415,7 @@ end = struct
       cases where the actions never appear in the same context.
 
       In case there are no actions for a given accelerator, an empty array is
-      returned. [NULL] is never returned.
+      returned. [None] is never returned.
 
       It is a programmer error to pass an invalid accelerator string.
 
@@ -569,7 +569,7 @@ and Window : sig
       window. [Gtk.Dialog.new_with_buttons] and other convenience functions in
       GTK will sometimes call this function on your behalf.
 
-      Passing [NULL] for [parent] unsets the current transient window.
+      Passing [None] for [parent] unsets the current transient window.
 
       On Windows, this function puts the child window on top of the parent, much
       as the window manager would have done on X. *)
@@ -602,7 +602,7 @@ and Window : sig
       they may have open. A good title might include the application name and
       current document filename, for example.
 
-      Passing [NULL] does the same as setting the title to an empty string. *)
+      Passing [None] does the same as setting the title to an empty string. *)
 
   external set_startup_id : t -> string -> unit = "ml_gtk_window_set_startup_id"
   (** Sets the startup notification ID.
@@ -684,7 +684,7 @@ and Window : sig
   (** Sets the focus widget.
 
       If [focus] is not the current focus widget, and is focusable, sets it as
-      the focus widget for the window. If [focus] is [NULL], unsets the focus
+      the focus widget for the window. If [focus] is [None], unsets the focus
       widget for this window. To set the focus to a particular widget in the
       toplevel, it is usually more convenient to use [Gtk.Widget.grab_focus]
       instead of this function. *)
@@ -789,7 +789,7 @@ and Window : sig
 
       Normally, the connection between the application and the window will
       remain until the window is destroyed, but you can explicitly remove it by
-      setting the [application] to [NULL].
+      setting the [application] to [None].
 
       This is equivalent to calling [Gtk.Application.remove_window] and/or
       [Gtk.Application.add_window] on the old/new applications as relevant. *)
@@ -880,7 +880,7 @@ and Window : sig
 
       The active toplevel is the window receiving keystrokes.
 
-      The return value is [TRUE] if the window is active toplevel itself. You
+      The return value is [true] if the window is active toplevel itself. You
       might use this function if you wanted to draw a widget differently in an
       active window from a widget in an inactive window. *)
 
@@ -1160,7 +1160,7 @@ end = struct
       window. [Gtk.Dialog.new_with_buttons] and other convenience functions in
       GTK will sometimes call this function on your behalf.
 
-      Passing [NULL] for [parent] unsets the current transient window.
+      Passing [None] for [parent] unsets the current transient window.
 
       On Windows, this function puts the child window on top of the parent, much
       as the window manager would have done on X. *)
@@ -1193,7 +1193,7 @@ end = struct
       they may have open. A good title might include the application name and
       current document filename, for example.
 
-      Passing [NULL] does the same as setting the title to an empty string. *)
+      Passing [None] does the same as setting the title to an empty string. *)
 
   external set_startup_id : t -> string -> unit = "ml_gtk_window_set_startup_id"
   (** Sets the startup notification ID.
@@ -1275,7 +1275,7 @@ end = struct
   (** Sets the focus widget.
 
       If [focus] is not the current focus widget, and is focusable, sets it as
-      the focus widget for the window. If [focus] is [NULL], unsets the focus
+      the focus widget for the window. If [focus] is [None], unsets the focus
       widget for this window. To set the focus to a particular widget in the
       toplevel, it is usually more convenient to use [Gtk.Widget.grab_focus]
       instead of this function. *)
@@ -1380,7 +1380,7 @@ end = struct
 
       Normally, the connection between the application and the window will
       remain until the window is destroyed, but you can explicitly remove it by
-      setting the [application] to [NULL].
+      setting the [application] to [None].
 
       This is equivalent to calling [Gtk.Application.remove_window] and/or
       [Gtk.Application.add_window] on the old/new applications as relevant. *)
@@ -1471,7 +1471,7 @@ end = struct
 
       The active toplevel is the window receiving keystrokes.
 
-      The return value is [TRUE] if the window is active toplevel itself. You
+      The return value is [true] if the window is active toplevel itself. You
       might use this function if you wanted to draw a widget differently in an
       active window from a widget in an inactive window. *)
 

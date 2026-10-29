@@ -56,7 +56,7 @@ external new_ : string -> t = "ml_gtk_editable_label_new"
 external stop_editing : t -> bool -> unit = "ml_gtk_editable_label_stop_editing"
 (** Switches the label out of “editing mode”.
 
-    If [commit] is [TRUE], the resulting text is kept as the [Gtk.Editable:text]
+    If [commit] is [true], the resulting text is kept as the [Gtk.Editable:text]
     property value, otherwise the resulting text is discarded and the label will
     keep its previous [Gtk.Editable:text] property value. *)
 

@@ -63,13 +63,13 @@ class type header_bar_t = object
   method set_title_widget : Widget.widget_t option -> unit
   (** Sets the title for the header bar.
 
-      When set to [NULL], the headerbar will display the title of the window it
+      When set to [None], the headerbar will display the title of the window it
       is contained in.
 
       The title should help a user identify the current view. To achieve the
       same style as the builtin title, use the “title” style class.
 
-      You should set the title widget to [NULL], for the window title label to
+      You should set the title widget to [None], for the window title label to
       be visible again. *)
 
   method set_use_native_controls : bool -> unit

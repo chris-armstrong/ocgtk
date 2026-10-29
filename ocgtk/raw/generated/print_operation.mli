@@ -65,7 +65,7 @@ external new_ : unit -> t = "ml_gtk_print_operation_new"
 
 external set_use_full_page : t -> bool -> unit
   = "ml_gtk_print_operation_set_use_full_page"
-(** If [full_page] is [TRUE], the transformation for the cairo context obtained
+(** If [full_page] is [true], the transformation for the cairo context obtained
     from [GtkPrintContext] puts the origin at the top left corner of the page.
 
     This may not be the top left corner of the sheet, depending on page
@@ -80,7 +80,7 @@ external set_unit : t -> Ocgtk_enums.unit -> unit
 
 external set_track_print_status : t -> bool -> unit
   = "ml_gtk_print_operation_set_track_print_status"
-(** If track_status is [TRUE], the print operation will try to continue report
+(** If track_status is [true], the print operation will try to continue report
     on the status of the print job in the printer queues and printer.
 
     This can allow your application to show things like “out of paper” issues,
@@ -95,7 +95,7 @@ external set_support_selection : t -> bool -> unit
 
 external set_show_progress : t -> bool -> unit
   = "ml_gtk_print_operation_set_show_progress"
-(** If [show_progress] is [TRUE], the print operation will show a progress
+(** If [show_progress] is [true], the print operation will show a progress
     dialog during the print operation. *)
 
 external set_print_settings : t -> Print_settings.t option -> unit
@@ -279,7 +279,7 @@ external get_print_settings : t -> Print_settings.t option
   = "ml_gtk_print_operation_get_print_settings"
 (** Returns the current print settings.
 
-    Note that the return value is [NULL] until either
+    Note that the return value is [None] until either
     [Gtk.PrintOperation.set_print_settings] or [Gtk.PrintOperation.run] have
     been called. *)
 
@@ -377,7 +377,7 @@ val on_done_ :
     [Gtk.PrintOperation.get_error] for more information.
 
     If you enabled print status tracking then [Gtk.PrintOperation.is_finished]
-    may still return [FALSE] after the ::done signal was emitted. *)
+    may still return [false] after the ::done signal was emitted. *)
 
 val on_draw_page :
   ?after:bool ->
@@ -452,12 +452,12 @@ val on_paginate :
 (** Emitted after the ::begin-print signal, but before the actual rendering
     starts.
 
-    It keeps getting emitted until a connected signal handler returns [TRUE].
+    It keeps getting emitted until a connected signal handler returns [true].
 
     The ::paginate signal is intended to be used for paginating a document in
     small chunks, to avoid blocking the user interface for a long time. The
     signal handler should update the number of pages using
-    [Gtk.PrintOperation.set_n_pages], and return [TRUE] if the document has been
+    [Gtk.PrintOperation.set_n_pages], and return [true] if the document has been
     completely paginated.
 
     If you don't need to do pagination in chunks, you can simply do it all in
@@ -477,7 +477,7 @@ val on_preview :
     The default handler for this signal uses an external viewer application to
     preview.
 
-    To implement a custom print preview, an application must return [TRUE] from
+    To implement a custom print preview, an application must return [true] from
     its handler for this signal. In order to use the provided [context] for the
     preview implementation, it must be given a suitable cairo context with
     [Gtk.PrintContext.set_cairo_context].

@@ -50,7 +50,7 @@ class type shortcuts_window_t = object
       This should correspond to the [Gtk.ShortcutsGroup:view] property of some
       of the [Gtk.ShortcutsGroup] objects that are inside this shortcuts window.
 
-      Set this to [NULL] to show all groups. *)
+      Set this to [None] to show all groups. *)
 
   method set_view_name : string -> unit
   (** The view name by which to filter the contents.
@@ -58,7 +58,7 @@ class type shortcuts_window_t = object
       This should correspond to the [Gtk.ShortcutsGroup:view] property of some
       of the [Gtk.ShortcutsGroup] objects that are inside this shortcuts window.
 
-      Set this to [NULL] to show all groups. *)
+      Set this to [None] to show all groups. *)
 
   (** {2:conversions Conversions} *)
 

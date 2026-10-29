@@ -43,7 +43,7 @@ class type shortcut_action_t = object
 
       Activation of an action can fail for various reasons. If the action is not
       supported by the [widget], if the [args] don't match the action or if the
-      activation otherwise had no effect, [FALSE] will be returned. *)
+      activation otherwise had no effect, [false] will be returned. *)
 
   method to_string : unit -> string
   (** Prints the given action into a human-readable string.
@@ -90,7 +90,7 @@ class shortcut_action : Raw.Shortcut_action.t -> shortcut_action_t
 val parse_string : string -> shortcut_action_t
 (** Tries to parse the given string into an action.
 
-    On success, the parsed action is returned. When parsing failed, [NULL] is
+    On success, the parsed action is returned. When parsing failed, [None] is
     returned.
 
     The accepted strings are:

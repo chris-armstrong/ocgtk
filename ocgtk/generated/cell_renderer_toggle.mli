@@ -54,8 +54,8 @@ class type cell_renderer_toggle_t = object
   (** Activates or deactivates a cell renderer. *)
 
   method set_radio : bool -> unit
-  (** If [radio] is [TRUE], the cell renderer renders a radio toggle (i.e. a
-      toggle in a group of mutually-exclusive toggles). If [FALSE], it renders a
+  (** If [radio] is [true], the cell renderer renders a radio toggle (i.e. a
+      toggle in a group of mutually-exclusive toggles). If [false], it renders a
       check toggle (a standalone boolean option). This can be set globally for
       the cell renderer, or changed just before rendering each cell in the model
       (for [GtkTreeView], you set up a per-row setting using [GtkTreeViewColumn]

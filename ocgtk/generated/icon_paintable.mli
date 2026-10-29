@@ -27,7 +27,7 @@ class type icon_paintable_t = object
   method get_file : unit -> Ocgio.File.file_t option
   (** Gets the [GFile] that was used to load the icon.
 
-      Returns [NULL] if the icon was not loaded from a file. *)
+      Returns [None] if the icon was not loaded from a file. *)
 
   method get_icon_name : unit -> string option
   [@@ocaml.doc
@@ -37,7 +37,7 @@ class type icon_paintable_t = object
      gtk_icon_theme_lookup_icon() or the always-available\n\
      \"image-missing\". The icon chosen is returned by this function.\n\n\
      If the icon was created without an icon theme, this function\n\
-     returns [NULL]."]
+     returns [None]."]
 
   method is_symbolic : unit -> bool
   (** Checks if the icon is symbolic or not.

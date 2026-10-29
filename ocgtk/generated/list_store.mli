@@ -27,12 +27,12 @@ class type list_store_t = object
 
   method move_after : Raw.Tree_iter.t -> Raw.Tree_iter.t option -> unit
   (** Moves [iter] in [store] to the position after [position]. Note that this
-      function only works with unsorted stores. If [position] is [NULL], [iter]
+      function only works with unsorted stores. If [position] is [None], [iter]
       will be moved to the start of the list. *)
 
   method move_before : Raw.Tree_iter.t -> Raw.Tree_iter.t option -> unit
   (** Moves [iter] in [store] to the position before [position]. Note that this
-      function only works with unsorted stores. If [position] is [NULL], [iter]
+      function only works with unsorted stores. If [position] is [None], [iter]
       will be moved to the end of the list. *)
 
   method remove : Raw.Tree_iter.t -> bool

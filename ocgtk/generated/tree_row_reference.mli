@@ -21,11 +21,11 @@ class type tree_row_reference_t = object
   (** Returns the model that the row reference is monitoring. *)
 
   method get_path : unit -> Raw.Tree_path.t option
-  (** Returns a path that the row reference currently points to, or [NULL] if
+  (** Returns a path that the row reference currently points to, or [None] if
       the path pointed to is no longer valid. *)
 
   method valid : unit -> bool
-  (** Returns [TRUE] if the [reference] is non-[NULL] and refers to a current
+  (** Returns [true] if the [reference] is non-[None] and refers to a current
       valid path. *)
 
   (** {2:conversions Conversions} *)
@@ -44,7 +44,7 @@ val new_ : Tree_model.tree_model_t -> Raw.Tree_path.t -> tree_row_reference_t
     This reference will keep pointing to the node pointed to by [path], so long
     as it exists. Any changes that occur on [model] are propagated, and the path
     is updated appropriately. If [path] isn’t a valid path in [model], then
-    [NULL] is returned. *)
+    [None] is returned. *)
 
 val new_proxy :
   [ `object_ ] Gobject.obj ->
@@ -56,7 +56,7 @@ val new_proxy :
     Creates a row reference based on [path].
 
     This reference will keep pointing to the node pointed to by [path], so long
-    as it exists. If [path] isn’t a valid path in [model], then [NULL] is
+    as it exists. If [path] isn’t a valid path in [model], then [None] is
     returned. However, unlike references created with
     gtk_tree_row_reference_new(), it does not listen to the model for changes.
     The creator of the row reference must do this explicitly using

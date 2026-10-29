@@ -29,7 +29,7 @@ external set_start_widget :
   unit = "ml_gtk_center_layout_set_start_widget"
 (** Sets the new start widget of [self].
 
-    To remove the existing start widget, pass [NULL]. *)
+    To remove the existing start widget, pass [None]. *)
 
 external set_shrink_center_last : t -> bool -> unit
   = "ml_gtk_center_layout_set_shrink_center_last"
@@ -39,7 +39,7 @@ external set_shrink_center_last : t -> bool -> unit
     widths, the start and end widgets start shrinking and the center child keeps
     natural width until they reach minimum width.
 
-    If set to [FALSE], start and end widgets keep natural width and the center
+    If set to [false], start and end widgets keep natural width and the center
     widget starts shrinking instead. *)
 
 external set_orientation : t -> Ocgtk_enums.orientation -> unit
@@ -55,7 +55,7 @@ external set_end_widget :
   unit = "ml_gtk_center_layout_set_end_widget"
 (** Sets the new end widget of [self].
 
-    To remove the existing center widget, pass [NULL]. *)
+    To remove the existing center widget, pass [None]. *)
 
 external set_center_widget :
   t ->
@@ -66,7 +66,7 @@ external set_center_widget :
   unit = "ml_gtk_center_layout_set_center_widget"
 (** Sets the new center widget of [self].
 
-    To remove the existing center widget, pass [NULL]. *)
+    To remove the existing center widget, pass [None]. *)
 
 external set_baseline_position : t -> Ocgtk_enums.baselineposition -> unit
   = "ml_gtk_center_layout_set_baseline_position"

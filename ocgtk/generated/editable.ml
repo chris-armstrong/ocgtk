@@ -159,7 +159,7 @@ class type editable_t = object
 
       This results in an additional copy of text changes and are not stored in
       secure memory. As such, undo is forcefully disabled when
-      [Gtk.Text:visibility] is set to [FALSE]. *)
+      [Gtk.Text:visibility] is set to [false]. *)
 
   method set_max_width_chars : int -> unit
   (** Sets the desired maximum width in characters of [editable]. *)

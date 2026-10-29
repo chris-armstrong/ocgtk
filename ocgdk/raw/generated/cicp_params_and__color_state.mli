@@ -76,7 +76,7 @@ module rec Cicp_params : sig
   (** Creates a new [GdkColorState] object for the cicp parameters in [self].
 
       Note that this may fail if the cicp parameters in [self] are not supported
-      by GTK. In that case, [NULL] is returned, and [error] is set with an error
+      by GTK. In that case, [None] is returned, and [error] is set with an error
       message that can be presented to the user. *)
 
   (* Properties *)
@@ -120,5 +120,5 @@ and Color_state : sig
   (** Create a [Gdk.CicpParams] representing the colorstate.
 
       It is not guaranteed that every [GdkColorState] can be represented with
-      Cicp parameters. If that is the case, this function returns [NULL]. *)
+      Cicp parameters. If that is the case, this function returns [None]. *)
 end

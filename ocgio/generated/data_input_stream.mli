@@ -45,7 +45,7 @@ class type data_input_stream_t = object
       g_data_input_stream_get_byte_order() and
       g_data_input_stream_set_byte_order().
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 
@@ -57,7 +57,7 @@ class type data_input_stream_t = object
       g_data_input_stream_get_byte_order() and
       g_data_input_stream_set_byte_order().
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 
@@ -77,7 +77,7 @@ class type data_input_stream_t = object
       g_data_input_stream_get_byte_order() and
       g_data_input_stream_set_byte_order().
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 
@@ -88,7 +88,7 @@ class type data_input_stream_t = object
       In order to get the correct byte order for this read operation, see
       g_data_input_stream_get_byte_order().
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 

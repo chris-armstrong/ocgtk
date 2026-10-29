@@ -25,7 +25,7 @@ class type proxy_resolver_t = object
   method is_supported : unit -> bool
   (** Checks if [resolver] can be used on this system. (This is used internally;
       g_proxy_resolver_get_default() will only return a proxy resolver that
-      returns [TRUE] for this method.) *)
+      returns [true] for this method.) *)
 
   method lookup :
     string ->

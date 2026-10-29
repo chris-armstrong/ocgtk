@@ -39,7 +39,7 @@ external writev_all_finish :
     g_output_stream_writev_all_async().
 
     As a special exception to the normal conventions for functions that use
-    [GError], if this function returns [FALSE] (and sets [error]) then
+    [GError], if this function returns [false] (and sets [error]) then
     [bytes_written] will be set to the number of bytes that were successfully
     written before the error was encountered. This functionality is only
     available from C. If you need it from another language then you must write
@@ -57,14 +57,14 @@ external writev_all :
     This function is similar to g_output_stream_writev(), except it tries to
     write as many bytes as requested, only stopping on an error.
 
-    On a successful write of all [n_vectors] vectors, [TRUE] is returned, and
+    On a successful write of all [n_vectors] vectors, [true] is returned, and
     [bytes_written] is set to the sum of all the sizes of [vectors].
 
-    If there is an error during the operation [FALSE] is returned and [error] is
+    If there is an error during the operation [false] is returned and [error] is
     set to indicate the error status.
 
     As a special exception to the normal conventions for functions that use
-    [GError], if this function returns [FALSE] (and sets [error]) then
+    [GError], if this function returns [false] (and sets [error]) then
     [bytes_written] will be set to the number of bytes that were successfully
     written before the error was encountered. This functionality is only
     available from C. If you need it from another language then you must write
@@ -92,7 +92,7 @@ external writev :
     occurs; 0 is never returned (unless [n_vectors] is 0 or the sum of all bytes
     in [vectors] is 0).
 
-    If [cancellable] is not [NULL], then the operation can be cancelled by
+    If [cancellable] is not [None], then the operation can be cancelled by
     triggering the cancellable object from another thread. If the operation was
     cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. If an
     operation was partially finished when the operation was cancelled the
@@ -132,7 +132,7 @@ external write_all_finish :
     g_output_stream_write_all_async().
 
     As a special exception to the normal conventions for functions that use
-    [GError], if this function returns [FALSE] (and sets [error]) then
+    [GError], if this function returns [false] (and sets [error]) then
     [bytes_written] will be set to the number of bytes that were successfully
     written before the error was encountered. This functionality is only
     available from C. If you need it from another language then you must write
@@ -153,7 +153,7 @@ external splice :
 external set_pending : t -> (bool, GError.t) result
   = "ml_g_output_stream_set_pending"
 (** Sets [stream] to have actions pending. If the pending flag is already set or
-    [stream] is closed, it will return [FALSE] and set [error]. *)
+    [stream] is closed, it will return [false] and set [error]. *)
 
 external is_closing : t -> bool = "ml_g_output_stream_is_closing"
 (** Checks if an output stream is being closed. This can be used inside e.g. a
@@ -178,7 +178,7 @@ external flush : t -> Cancellable.t option -> (bool, GError.t) result
 
     This function is optional for inherited classes.
 
-    If [cancellable] is not [NULL], then the operation can be cancelled by
+    If [cancellable] is not [None], then the operation can be cancelled by
     triggering the cancellable object from another thread. If the operation was
     cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 
@@ -211,7 +211,7 @@ external close : t -> Cancellable.t option -> (bool, GError.t) result
     important to check and report the error to the user, otherwise there might
     be a loss of data as all data might not be written.
 
-    If [cancellable] is not [NULL], then the operation can be cancelled by
+    If [cancellable] is not [None], then the operation can be cancelled by
     triggering the cancellable object from another thread. If the operation was
     cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. Cancelling a
     close will still leave the stream closed, but there some streams can use a

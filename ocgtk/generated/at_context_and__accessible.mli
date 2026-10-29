@@ -86,7 +86,7 @@ and accessible_t = object
   method get_accessible_parent : unit -> accessible_t option
   (** Retrieves the accessible parent for an accessible object.
 
-      This function returns [NULL] for top level widgets. *)
+      This function returns [None] for top level widgets. *)
 
   method get_accessible_role : unit -> Enums.accessiblerole
   (** Retrieves the accessible role of an accessible object. *)

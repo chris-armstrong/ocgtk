@@ -80,7 +80,7 @@ external get_item : t -> [ `object_ ] Gobject.obj option
   = "ml_gtk_column_view_row_get_item"
 (** Gets the model item that associated with [self].
 
-    If [self] is unbound, this function returns [NULL]. *)
+    If [self] is unbound, this function returns [None]. *)
 
 external get_focusable : t -> bool = "ml_gtk_column_view_row_get_focusable"
 (** Checks if a row item has been set to be focusable via

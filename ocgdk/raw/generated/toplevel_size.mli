@@ -27,7 +27,7 @@ external set_shadow_width : t -> int -> int -> int -> int -> unit
     any.
 
     Shadow width should only be set if [Gtk.Display.supports_shadow_width] is
-    [TRUE]. *)
+    [true]. *)
 
 external set_min_size : t -> int -> int -> unit
   = "ml_gdk_toplevel_size_set_min_size"

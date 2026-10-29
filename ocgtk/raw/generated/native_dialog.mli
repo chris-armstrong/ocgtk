@@ -43,7 +43,7 @@ external set_transient_for :
     This allows window managers to e.g. keep the dialog on top of the main
     window, or center the dialog over the main window.
 
-    Passing [NULL] for [parent] unsets the current transient window. *)
+    Passing [None] for [parent] unsets the current transient window. *)
 
 external set_title : t -> string -> unit = "ml_gtk_native_dialog_set_title"
 (** Sets the title of the [GtkNativeDialog.] *)

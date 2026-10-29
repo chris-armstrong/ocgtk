@@ -179,7 +179,7 @@ class type combo_box_t = object
       it.
 
       If the [Gtk.ComboBox:id-column] property of [combo_box] is not set, or if
-      no row is active, or if the active row has a [NULL] ID value, then [NULL]
+      no row is active, or if the active row has a [None] ID value, then [None]
       is returned. *)
 
   method get_button_sensitivity : unit -> Enums.sensitivitytype
@@ -236,17 +236,17 @@ class type combo_box_t = object
   (** Changes the active row of [combo_box] to the one that has an ID equal to
       [active_id].
 
-      If [active_id] is [NULL], the active row is unset. Rows having a [NULL] ID
+      If [active_id] is [None], the active row is unset. Rows having a [None] ID
       string cannot be made active by this function.
 
       If the [Gtk.ComboBox:id-column] property of [combo_box] is unset or if no
-      row has the given ID then the function does nothing and returns [FALSE].
+      row has the given ID then the function does nothing and returns [false].
   *)
 
   method set_active_iter : Raw.Tree_iter.t option -> unit
   (** Sets the current active item to be the one referenced by [iter].
 
-      If [iter] is [NULL], the active item is unset. *)
+      If [iter] is [None], the active item is unset. *)
 
   method set_button_sensitivity : Enums.sensitivitytype -> unit
   (** Sets whether the dropdown button of the combo box should update its
@@ -265,7 +265,7 @@ class type combo_box_t = object
       [G_TYPE_STRING].
 
       This is only relevant if [combo_box] has been created with
-      [Gtk.ComboBox:has-entry] as [TRUE]. *)
+      [Gtk.ComboBox:has-entry] as [true]. *)
 
   method set_id_column : int -> unit
   (** Sets the model column which [combo_box] should use to get string IDs for
@@ -277,7 +277,7 @@ class type combo_box_t = object
   method set_model : Tree_model.tree_model_t option -> unit
   (** Sets the model used by [combo_box] to be [model].
 
-      Will unset a previously set model (if applicable). If model is [NULL],
+      Will unset a previously set model (if applicable). If model is [None],
       then it will unset the model.
 
       Note that this function does not clear the cell renderers, you have to
@@ -287,7 +287,7 @@ class type combo_box_t = object
   method set_popup_fixed_width : bool -> unit
   (** Specifies whether the popup’s width should be a fixed width.
 
-      If [fixed] is [TRUE], the popup's width is set to match the allocated
+      If [fixed] is [true], the popup's width is set to match the allocated
       width of the combo box. *)
 
   (** {2:properties Properties} *)

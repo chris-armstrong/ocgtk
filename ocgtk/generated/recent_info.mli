@@ -46,7 +46,7 @@ class type recent_info_t = object
   method get_private_hint : unit -> bool
   (** Gets the value of the “private” flag.
 
-      Resources in the recently used list that have this flag set to [TRUE]
+      Resources in the recently used list that have this flag set to [true]
       should only be displayed by the applications that have registered them. *)
 
   method get_short_name : unit -> string

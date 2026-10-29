@@ -205,7 +205,7 @@ class type cell_area_t = object
   method stop_editing : bool -> unit
   (** Explicitly stops the editing of the currently edited cell.
 
-      If [canceled] is [TRUE], the currently edited cell renderer will emit the
+      If [canceled] is [true], the currently edited cell renderer will emit the
       ::editing-canceled signal, otherwise the the ::editing-done signal will be
       emitted on the current edit widget.
 
@@ -617,23 +617,23 @@ and cell_layout_t = object
 
   method get_area : unit -> cell_area_t option
   (** Returns the underlying [GtkCellArea] which might be [cell_layout] if
-      called on a [GtkCellArea] or might be [NULL] if no [GtkCellArea] is used
+      called on a [GtkCellArea] or might be [None] if no [GtkCellArea] is used
       by [cell_layout]. *)
 
   method get_cells : unit -> Cell_renderer.cell_renderer_t list
   (** Returns the cell renderers which have been added to [cell_layout]. *)
 
   method pack_end : Cell_renderer.cell_renderer_t -> bool -> unit
-  (** Adds the [cell] to the end of [cell_layout]. If [expand] is [FALSE], then
+  (** Adds the [cell] to the end of [cell_layout]. If [expand] is [false], then
       the [cell] is allocated no more space than it needs. Any unused space is
-      divided evenly between cells for which [expand] is [TRUE].
+      divided evenly between cells for which [expand] is [true].
 
       Note that reusing the same cell renderer is not supported. *)
 
   method pack_start : Cell_renderer.cell_renderer_t -> bool -> unit
   (** Packs the [cell] into the beginning of [cell_layout]. If [expand] is
-      [FALSE], then the [cell] is allocated no more space than it needs. Any
-      unused space is divided evenly between cells for which [expand] is [TRUE].
+      [false], then the [cell] is allocated no more space than it needs. Any
+      unused space is divided evenly between cells for which [expand] is [true].
 
       Note that reusing the same cell renderer is not supported. *)
 

@@ -180,13 +180,13 @@ external prepend : t -> Tree_iter.t = "ml_gtk_list_store_prepend"
 external move_before : t -> Tree_iter.t -> Tree_iter.t option -> unit
   = "ml_gtk_list_store_move_before"
 (** Moves [iter] in [store] to the position before [position]. Note that this
-    function only works with unsorted stores. If [position] is [NULL], [iter]
+    function only works with unsorted stores. If [position] is [None], [iter]
     will be moved to the end of the list. *)
 
 external move_after : t -> Tree_iter.t -> Tree_iter.t option -> unit
   = "ml_gtk_list_store_move_after"
 (** Moves [iter] in [store] to the position after [position]. Note that this
-    function only works with unsorted stores. If [position] is [NULL], [iter]
+    function only works with unsorted stores. If [position] is [None], [iter]
     will be moved to the start of the list. *)
 
 external iter_is_valid : t -> Tree_iter.t -> bool
@@ -205,7 +205,7 @@ external insert_with_valuesv :
 
 external insert_before : t -> Tree_iter.t option -> Tree_iter.t
   = "ml_gtk_list_store_insert_before"
-(** Inserts a new row before [sibling]. If [sibling] is [NULL], then the row
+(** Inserts a new row before [sibling]. If [sibling] is [None], then the row
     will be appended to the end of the list. [iter] will be changed to point to
     this new row. The row will be empty after this function is called. To fill
     in values, you need to call gtk_list_store_set() or
@@ -213,7 +213,7 @@ external insert_before : t -> Tree_iter.t option -> Tree_iter.t
 
 external insert_after : t -> Tree_iter.t option -> Tree_iter.t
   = "ml_gtk_list_store_insert_after"
-(** Inserts a new row after [sibling]. If [sibling] is [NULL], then the row will
+(** Inserts a new row after [sibling]. If [sibling] is [None], then the row will
     be prepended to the beginning of the list. [iter] will be changed to point
     to this new row. The row will be empty after this function is called. To
     fill in values, you need to call gtk_list_store_set() or

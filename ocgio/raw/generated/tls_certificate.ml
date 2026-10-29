@@ -20,14 +20,14 @@ external new_from_file : string -> (t, GError.t) result
     g_tls_certificate_new_from_pkcs12() otherwise it is loaded by
     g_tls_certificate_new_from_pem(). See those functions for exact details.
 
-    If [file] cannot be read or parsed, the function will return [NULL] and set
+    If [file] cannot be read or parsed, the function will return [None] and set
     [error]. *)
 
 external new_from_file_with_password : string -> string -> (t, GError.t) result
   = "ml_g_tls_certificate_new_from_file_with_password"
 (** Creates a [GTlsCertificate] from the data in [file].
 
-    If [file] cannot be read or parsed, the function will return [NULL] and set
+    If [file] cannot be read or parsed, the function will return [None] and set
     [error].
 
     Any unknown file types will error with [G_IO_ERROR_NOT_SUPPORTED]. Currently
@@ -46,7 +46,7 @@ external new_from_files : string -> string -> (t, GError.t) result
     cannot be verified, the first certificate in the file will still be
     returned.
 
-    If either file cannot be read or parsed, the function will return [NULL] and
+    If either file cannot be read or parsed, the function will return [None] and
     set [error]. Otherwise, this behaves like g_tls_certificate_new_from_pem().
 *)
 
@@ -115,14 +115,14 @@ external verify :
 
     If [cert] is valid, [G_TLS_CERTIFICATE_NO_FLAGS] is returned.
 
-    If [identity] is not [NULL], [cert]'s name(s) will be compared against it,
+    If [identity] is not [None], [cert]'s name(s) will be compared against it,
     and [G_TLS_CERTIFICATE_BAD_IDENTITY] will be set in the return value if it
-    does not match. If [identity] is [NULL], that bit will never be set in the
+    does not match. If [identity] is [None], that bit will never be set in the
     return value.
 
-    If [trusted_ca] is not [NULL], then [cert] (or one of the certificates in
+    If [trusted_ca] is not [None], then [cert] (or one of the certificates in
     its chain) must be signed by it, or else [G_TLS_CERTIFICATE_UNKNOWN_CA] will
-    be set in the return value. If [trusted_ca] is [NULL], that bit will never
+    be set in the return value. If [trusted_ca] is [None], that bit will never
     be set in the return value.
 
     GLib guarantees that if certificate verification fails, at least one error
@@ -170,7 +170,7 @@ external get_pkcs11_uri : t -> string = "ml_g_tls_certificate_get_pkcs11_uri"
     {{:https://docs.oasis-open.org/pkcs11/pkcs11-base/v3.0/os/pkcs11-base-v3.0-os.html}PKCS
      #11} objects containing an X.509 certificate and optionally a private key.
 
-    If [NULL], the certificate is either not backed by PKCS #11 or the
+    If [None], the certificate is either not backed by PKCS #11 or the
     [GTlsBackend] does not support PKCS #11. *)
 
 external get_private_key_pem : t -> string
@@ -188,7 +188,7 @@ external get_private_key_pem : t -> string
    can be set when constructing a key (for example, from a file).\n\
    Since GLib 2.70, it is now also readable; however, be aware that if\n\
    the private key is backed by a PKCS #11 URI - for example, if it\n\
-   is stored on a smartcard - then this property will be [NULL]. If so,\n\
+   is stored on a smartcard - then this property will be [None]. If so,\n\
    the private key must be referenced via its PKCS #11 URI,\n\
    [GTlsCertificate:private]-key-pkcs11-uri. You must check both\n\
    properties to see if the certificate really has a private key.\n\

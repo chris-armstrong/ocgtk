@@ -59,7 +59,7 @@ class type bitset_t = object
       will be emptied in that case. *)
 
   method equals : Raw.Bitset.t -> bool
-  (** Returns [TRUE] if [self] and [other] contain the same values. *)
+  (** Returns [true] if [self] and [other] contain the same values. *)
 
   method get_maximum : unit -> int
   (** Returns the largest value in [self].
@@ -135,7 +135,7 @@ class type bitset_t = object
   method shift_right : int -> unit
   (** Shifts all values in [self] to the right by [amount].
 
-      Values that end up too large to be held in a #guint are discarded. *)
+      Values that end up too large to be held in a [int] are discarded. *)
 
   method splice : int -> int -> int -> unit
   [@@ocaml.doc

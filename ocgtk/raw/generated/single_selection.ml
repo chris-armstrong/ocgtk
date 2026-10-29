@@ -29,17 +29,17 @@ external set_selected : t -> int -> unit
     the [Gtk.SingleSelection:autoselect] property: If it is set, no change will
     occur and the old item will stay selected. If it is unset, the selection
     will be unset and no item will be selected. This also applies if
-    [Gtk.SingleSelection:can-unselect] is set to [FALSE]. *)
+    [Gtk.SingleSelection:can-unselect] is set to [false]. *)
 
 external set_model : t -> Ocgio_raw.List_model.t option -> unit
   = "ml_gtk_single_selection_set_model"
 (** Sets the model that [self] should wrap.
 
-    If [model] is [NULL], [self] will be empty. *)
+    If [model] is [None], [self] will be empty. *)
 
 external set_can_unselect : t -> bool -> unit
   = "ml_gtk_single_selection_set_can_unselect"
-(** If [TRUE], unselecting the current item via
+(** If [true], unselecting the current item via
     gtk_selection_model_unselect_item() is supported.
 
     Note that setting [Gtk.SingleSelection:autoselect] will cause unselecting to
@@ -49,7 +49,7 @@ external set_autoselect : t -> bool -> unit
   = "ml_gtk_single_selection_set_autoselect"
 (** Enables or disables autoselect.
 
-    If [autoselect] is [TRUE], [self] will enforce that an item is always
+    If [autoselect] is [true], [self] will enforce that an item is always
     selected. It will select a new item when the currently selected item is
     deleted and it will disallow unselecting the current item. *)
 
@@ -57,7 +57,7 @@ external get_selected_item : t -> [ `object_ ] Gobject.obj option
   = "ml_gtk_single_selection_get_selected_item"
 (** Gets the selected item.
 
-    If no item is selected, [NULL] is returned. *)
+    If no item is selected, [None] is returned. *)
 
 external get_selected : t -> int = "ml_gtk_single_selection_get_selected"
 (** Gets the position of the selected item.
@@ -70,7 +70,7 @@ external get_model : t -> Ocgio_raw.List_model.t option
 
 external get_can_unselect : t -> bool
   = "ml_gtk_single_selection_get_can_unselect"
-(** If [TRUE], gtk_selection_model_unselect_item() is supported and allows
+(** If [true], gtk_selection_model_unselect_item() is supported and allows
     unselecting the selected item. *)
 
 external get_autoselect : t -> bool = "ml_gtk_single_selection_get_autoselect"

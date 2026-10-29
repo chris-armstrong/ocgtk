@@ -30,7 +30,7 @@ external get_velocity : t -> bool * float * float
   = "ml_gtk_gesture_swipe_get_velocity"
 (** Gets the current velocity.
 
-    If the gesture is recognized, this function returns [TRUE] and fills in
+    If the gesture is recognized, this function returns [true] and fills in
     [velocity_x] and [velocity_y] with the recorded velocity, as per the last
     events processed. *)
 

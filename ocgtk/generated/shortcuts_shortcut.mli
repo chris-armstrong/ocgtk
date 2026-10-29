@@ -121,10 +121,10 @@ class type shortcuts_shortcut_t = object
   *)
 
   method icon_set : bool
-  (** [TRUE] if an icon has been set. *)
+  (** [true] if an icon has been set. *)
 
   method set_icon_set : bool -> unit
-  (** [TRUE] if an icon has been set. *)
+  (** [true] if an icon has been set. *)
 
   method shortcut_type : Enums.shortcuttype
   (** The type of shortcut that is represented. *)
@@ -147,10 +147,10 @@ class type shortcuts_shortcut_t = object
       provides a subtitle on its own. *)
 
   method subtitle_set : bool
-  (** [TRUE] if a subtitle has been set. *)
+  (** [true] if a subtitle has been set. *)
 
   method set_subtitle_set : bool -> unit
-  (** [TRUE] if a subtitle has been set. *)
+  (** [true] if a subtitle has been set. *)
 
   method title : string
   (** The textual description for the shortcut or gesture represented by this

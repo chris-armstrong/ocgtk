@@ -27,7 +27,7 @@ external new_from_string : string -> t = "ml_gtk_tree_path_new_from_string"
     [path] is expected to be a colon separated list of numbers. For example, the
     string “10:4:0” would create a path of depth 3 pointing to the 11th child of
     the root node, the 5th child of that 11th child, and the 1st child of that
-    5th child. If an invalid path string is passed in, [NULL] is returned. *)
+    5th child. If an invalid path string is passed in, [None] is returned. *)
 
 (* Methods *)
 
@@ -39,7 +39,7 @@ external to_string : t -> string option = "ml_gtk_tree_path_to_string"
 
     This string is a “:” separated list of numbers. For example, “4:10:0:3”
     would be an acceptable return value for this string. If the path has depth
-    0, [NULL] is returned. *)
+    0, [None] is returned. *)
 
 external prev : t -> bool = "ml_gtk_tree_path_prev"
 (** Moves the [path] to point to the previous node at the current depth, if it
@@ -54,10 +54,10 @@ external next : t -> unit = "ml_gtk_tree_path_next"
 (** Moves the [path] to point to the next node at the current depth. *)
 
 external is_descendant : t -> t -> bool = "ml_gtk_tree_path_is_descendant"
-(** Returns [TRUE] if [path] is a descendant of [ancestor]. *)
+(** Returns [true] if [path] is a descendant of [ancestor]. *)
 
 external is_ancestor : t -> t -> bool = "ml_gtk_tree_path_is_ancestor"
-(** Returns [TRUE] if [descendant] is a descendant of [path]. *)
+(** Returns [true] if [descendant] is a descendant of [path]. *)
 
 external get_indices_with_depth : t -> int array option * int
   = "ml_gtk_tree_path_get_indices_with_depth"

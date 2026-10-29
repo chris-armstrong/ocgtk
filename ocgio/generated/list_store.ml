@@ -34,7 +34,7 @@ class type list_store_t = object
   method splice : int -> int -> [ `object_ ] Gobject.obj array -> int -> unit
   (** Changes [store] by removing [n_removals] items and adding [n_additions]
       items to it. [additions] must contain [n_additions] items of type
-      [GListStore:item]-type. [NULL] is not permitted.
+      [GListStore:item]-type. [None] is not permitted.
 
       This function is more efficient than g_list_store_insert() and
       g_list_store_remove(), because it only emits [GListModel::items]-changed

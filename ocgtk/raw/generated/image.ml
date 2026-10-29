@@ -43,7 +43,7 @@ external new_from_file : string -> t = "ml_gtk_image_new_from_file"
 (** Creates a new [GtkImage] displaying the file [filename].
 
     If the file isn’t found or can’t be loaded, the resulting [GtkImage] will
-    display a “broken image” icon. This function never returns [NULL], it always
+    display a “broken image” icon. This function never returns [None], it always
     returns a valid [GtkImage] widget.
 
     If you need to detect failures to load the file, use an image loading
@@ -105,7 +105,7 @@ external new_from_resource : string -> t = "ml_gtk_image_new_from_resource"
 (** Creates a new [GtkImage] displaying the resource file [resource_path].
 
     If the file isn’t found or can’t be loaded, the resulting [GtkImage] will
-    display a “broken image” icon. This function never returns [NULL], it always
+    display a “broken image” icon. This function never returns [None], it always
     returns a valid [GtkImage] widget.
 
     If you need to detect failures to load the file, use an image loading

@@ -37,7 +37,7 @@ external is_expandable : t -> bool = "ml_gtk_tree_list_row_is_expandable"
     with [Gtk.TreeListRow.get_expanded].
 
     If a row is expandable never changes until the row is removed from its model
-    at which point it will forever return [FALSE]. *)
+    at which point it will forever return [false]. *)
 
 external get_position : t -> int = "ml_gtk_tree_list_row_get_position"
 (** Returns the position in the [GtkTreeListModel] that [self] occupies at the
@@ -48,10 +48,10 @@ external get_parent : t -> t option = "ml_gtk_tree_list_row_get_parent"
 
     That is the row that would need to be collapsed to make this row disappear.
 
-    If [self] is a row corresponding to the root model, [NULL] is returned.
+    If [self] is a row corresponding to the root model, [None] is returned.
 
     The value returned by this function never changes until the row is removed
-    from its model at which point it will forever return [NULL]. *)
+    from its model at which point it will forever return [None]. *)
 
 external get_item : t -> [ `object_ ] Gobject.obj option
   = "ml_gtk_tree_list_row_get_item"
@@ -81,6 +81,6 @@ external get_children : t -> Ocgio_raw.List_model.t option
 external get_child_row : t -> int -> t option
   = "ml_gtk_tree_list_row_get_child_row"
 (** If [self] is not expanded or [position] is greater than the number of
-    children, [NULL] is returned. *)
+    children, [None] is returned. *)
 
 (* Properties *)

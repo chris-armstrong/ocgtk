@@ -53,7 +53,7 @@ class type buffered_input_stream_t = object
       If [count] is -1 then the attempted read size is equal to the number of
       bytes that are required to fill the buffer.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [Gio.IOErrorEnum.CANCELLED] will be returned. If
       an operation was partially finished when the operation was cancelled the
@@ -80,7 +80,7 @@ class type buffered_input_stream_t = object
       On success, the byte read from the stream is returned. On end of stream
       [-1] is returned but it's not an exceptional error and [error] is not set.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [Gio.IOErrorEnum.CANCELLED] will be returned. If
       an operation was partially finished when the operation was cancelled the

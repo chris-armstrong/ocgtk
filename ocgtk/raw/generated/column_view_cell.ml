@@ -12,10 +12,10 @@
 
     + The unbound stage where the listitem is not currently connected to an item
       in the list. In that case, the [Gtk.ColumnViewCell:item] property is set
-      to [NULL].
+      to [None].
 
     + The bound stage where the listitem references an item from the list. The
-      [Gtk.ColumnViewCell:item] property is not [NULL].
+      [Gtk.ColumnViewCell:item] property is not [None].
 
     The class built on this module is in {!Ocgtk.Column_view_cell}. *)
 
@@ -65,7 +65,7 @@ external get_item : t -> [ `object_ ] Gobject.obj option
   = "ml_gtk_column_view_cell_get_item"
 (** Gets the model item that associated with [self].
 
-    If [self] is unbound, this function returns [NULL]. *)
+    If [self] is unbound, this function returns [None]. *)
 
 external get_focusable : t -> bool = "ml_gtk_column_view_cell_get_focusable"
 (** Checks if a list item has been set to be focusable via
@@ -77,7 +77,7 @@ external get_child :
   .Widget
   .t
   option = "ml_gtk_column_view_cell_get_child"
-(** Gets the child previously set via gtk_column_view_cell_set_child() or [NULL]
+(** Gets the child previously set via gtk_column_view_cell_set_child() or [None]
     if none was set. *)
 
 (* Properties *)

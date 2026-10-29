@@ -92,7 +92,7 @@ external unset_invisible_char : t -> unit = "ml_gtk_entry_unset_invisible_char"
 external set_visibility : t -> bool -> unit = "ml_gtk_entry_set_visibility"
 (** Sets whether the contents of the entry are visible or not.
 
-    When visibility is set to [FALSE], characters are displayed as the invisible
+    When visibility is set to [false], characters are displayed as the invisible
     char, and will also appear that way when the text in the entry widget is
     copied elsewhere.
 
@@ -102,7 +102,7 @@ external set_visibility : t -> bool -> unit = "ml_gtk_entry_set_visibility"
     Note that you probably want to set [Gtk.Entry:input-purpose] to
     [GTK_INPUT_PURPOSE_PASSWORD] or [GTK_INPUT_PURPOSE_PIN] to inform input
     methods about the purpose of this entry, in addition to setting visibility
-    to [FALSE]. *)
+    to [false]. *)
 
 external set_tabs : t -> Ocpango_raw.Tab_array.t option -> unit
   = "ml_gtk_entry_set_tabs"
@@ -180,16 +180,16 @@ external set_icon_tooltip_text :
 (** Sets [tooltip] as the contents of the tooltip for the icon at the specified
     position.
 
-    Use [NULL] for [tooltip] to remove an existing tooltip.
+    Use [None] for [tooltip] to remove an existing tooltip.
 
     See also [Gtk.Widget.set_tooltip_text] and
     [Gtk.Entry.set_icon_tooltip_markup].
 
     If you unset the widget tooltip via [Gtk.Widget.set_tooltip_text] or
     [Gtk.Widget.set_tooltip_markup], this sets [Gtk.Widget:has-tooltip] to
-    [FALSE], which suppresses icon tooltips too. You can resolve this by then
+    [false], which suppresses icon tooltips too. You can resolve this by then
     calling [Gtk.Widget.set_has_tooltip] to set [Gtk.Widget:has-tooltip] back to
-    [TRUE], or setting at least one non-empty tooltip on any icon achieves the
+    [true], or setting at least one non-empty tooltip on any icon achieves the
     same result. *)
 
 external set_icon_tooltip_markup :
@@ -200,7 +200,7 @@ external set_icon_tooltip_markup :
 
     [tooltip] is assumed to be marked up with Pango Markup.
 
-    Use [NULL] for [tooltip] to remove an existing tooltip.
+    Use [None] for [tooltip] to remove an existing tooltip.
 
     See also [Gtk.Widget.set_tooltip_markup] and
     [Gtk.Entry.set_icon_tooltip_text]. *)
@@ -214,7 +214,7 @@ external set_icon_from_paintable :
   = "ml_gtk_entry_set_icon_from_paintable"
 (** Sets the icon shown in the specified position using a [GdkPaintable].
 
-    If [paintable] is [NULL], no icon will be shown in the specified position.
+    If [paintable] is [None], no icon will be shown in the specified position.
 *)
 
 external set_icon_from_icon_name :
@@ -226,7 +226,7 @@ external set_icon_from_icon_name :
     If the icon name isn’t known, a “broken image” icon will be displayed
     instead.
 
-    If [icon_name] is [NULL], no icon will be shown in the specified position.
+    If [icon_name] is [None], no icon will be shown in the specified position.
 *)
 
 external set_icon_from_gicon :
@@ -237,7 +237,7 @@ external set_icon_from_gicon :
 
     If the icon isn’t known, a “broken image” icon will be displayed instead.
 
-    If [icon] is [NULL], no icon will be shown in the specified position. *)
+    If [icon] is [None], no icon will be shown in the specified position. *)
 
 external set_icon_drag_source :
   t ->
@@ -268,7 +268,7 @@ external set_completion : t -> Entry_completion.t option -> unit
 
     All further configuration of the completion mechanism is done on
     [completion] using the [GtkEntryCompletion] API. Completion is disabled if
-    [completion] is set to [NULL]. *)
+    [completion] is set to [None]. *)
 
 external set_buffer : t -> Entry_buffer.t -> unit = "ml_gtk_entry_set_buffer"
 (** Set the [GtkEntryBuffer] object which holds the text for this widget. *)
@@ -412,13 +412,13 @@ external get_icon_paintable :
   = "ml_gtk_entry_get_icon_paintable"
 (** Retrieves the [GdkPaintable] used for the icon.
 
-    If no [GdkPaintable] was used for the icon, [NULL] is returned. *)
+    If no [GdkPaintable] was used for the icon, [None] is returned. *)
 
 external get_icon_name : t -> Ocgtk_enums.entryiconposition -> string option
   = "ml_gtk_entry_get_icon_name"
 (** Retrieves the icon name used for the icon.
 
-    [NULL] is returned if there is no icon or if the icon was set by some other
+    [None] is returned if there is no icon or if the icon was set by some other
     method (e.g., by [GdkPaintable] or gicon). *)
 
 external get_icon_gicon :
@@ -426,7 +426,7 @@ external get_icon_gicon :
   = "ml_gtk_entry_get_icon_gicon"
 (** Retrieves the [GIcon] used for the icon.
 
-    [NULL] will be returned if there is no icon or if the icon was set by some
+    [None] will be returned if there is no icon or if the icon was set by some
     other method (e.g., by [GdkPaintable] or icon name). *)
 
 external get_icon_at_pos : t -> int -> int -> int
@@ -504,7 +504,7 @@ external get_im_module : t -> string = "ml_gtk_entry_get_im_module"
 
     See [Gtk.IMContext].
 
-    Setting this to a non-[NULL] value overrides the system-wide IM module
+    Setting this to a non-[None] value overrides the system-wide IM module
     setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)
 
 external set_im_module : t -> string -> unit = "ml_gtk_entry_set_im_module"
@@ -512,7 +512,7 @@ external set_im_module : t -> string -> unit = "ml_gtk_entry_set_im_module"
 
     See [Gtk.IMContext].
 
-    Setting this to a non-[NULL] value overrides the system-wide IM module
+    Setting this to a non-[None] value overrides the system-wide IM module
     setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)
 
 external get_invisible_char_set : t -> bool
@@ -789,11 +789,11 @@ external set_show_emoji_icon : t -> bool -> unit
 
 external get_truncate_multiline : t -> bool
   = "ml_gtk_entry_get_truncate_multiline"
-(** When [TRUE], pasted multi-line text is truncated to the first line. *)
+(** When [true], pasted multi-line text is truncated to the first line. *)
 
 external set_truncate_multiline : t -> bool -> unit
   = "ml_gtk_entry_set_truncate_multiline"
-(** When [TRUE], pasted multi-line text is truncated to the first line. *)
+(** When [true], pasted multi-line text is truncated to the first line. *)
 
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

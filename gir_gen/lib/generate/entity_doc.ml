@@ -213,6 +213,7 @@ let constructor ~namespace ~class_name (ctor : Types.gir_constructor) =
           c_function)
   in
   Doc_emit.item_doc ~indent:""
+    ~ret_shape:(Doc_translate.ret_shape_of_throws ctor.throws)
     ~fallback:(Fmt.str "Create a new [%s]. Wraps %s." class_name wrapped)
     ~context:Doc_translate.Member ctor.ctor_doc
 

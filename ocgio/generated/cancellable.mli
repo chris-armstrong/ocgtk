@@ -81,7 +81,7 @@ class type cancellable_t = object
       a thread other than the one running the operation that was passed the
       [cancellable].
 
-      If [cancellable] is [NULL], this function returns immediately for
+      If [cancellable] is [None], this function returns immediately for
       convenience.
 
       The convention within GIO is that cancelling an asynchronous operation
@@ -104,7 +104,7 @@ class type cancellable_t = object
       the cancellable operation is finished and the signal handler is removed.
       See [GCancellable::cancelled] for details on how to use this.
 
-      If [cancellable] is [NULL] or [handler_id] is [0] this function does
+      If [cancellable] is [None] or [handler_id] is [0] this function does
       nothing. *)
 
   method get_fd : unit -> int

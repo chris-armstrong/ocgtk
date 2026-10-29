@@ -49,12 +49,12 @@ external new_with_model : Tree_model.t -> t = "ml_gtk_icon_view_new_with_model"
 external unset_model_drag_source : t -> unit
   = "ml_gtk_icon_view_unset_model_drag_source"
 (** Undoes the effect of gtk_icon_view_enable_model_drag_source(). Calling this
-    method sets [GtkIconView]:reorderable to [FALSE]. *)
+    method sets [GtkIconView]:reorderable to [false]. *)
 
 external unset_model_drag_dest : t -> unit
   = "ml_gtk_icon_view_unset_model_drag_dest"
 (** Undoes the effect of gtk_icon_view_enable_model_drag_dest(). Calling this
-    method sets [GtkIconView]:reorderable to [FALSE]. *)
+    method sets [GtkIconView]:reorderable to [false]. *)
 
 external unselect_path : t -> Tree_path.t -> unit
   = "ml_gtk_icon_view_unselect_path"
@@ -81,7 +81,7 @@ external set_tooltip_column : t -> int -> unit
     [column] should be set to the column in [icon_view]’s model containing the
     tooltip texts, or -1 to disable this feature.
 
-    When enabled, [GtkWidget:has-tooltip] will be set to [TRUE] and [icon_view]
+    When enabled, [GtkWidget:has-tooltip] will be set to [true] and [icon_view]
     will connect a [GtkWidget::query-tooltip] signal handler.
 
     Note that the signal handler sets the text with gtk_tooltip_set_markup(), so
@@ -120,7 +120,7 @@ external set_reorderable : t -> bool -> unit
   = "ml_gtk_icon_view_set_reorderable"
 (** This function is a convenience function to allow you to reorder models that
     support the [GtkTreeDragSourceIface] and the [GtkTreeDragDestIface]. Both
-    [GtkTreeStore] and [GtkListStore] support these. If [reorderable] is [TRUE],
+    [GtkTreeStore] and [GtkListStore] support these. If [reorderable] is [true],
     then the user can reorder the model by dragging and dropping rows. The
     developer can listen to these changes by connecting to the model's
     row_inserted and row_deleted signals. The reordering is implemented by
@@ -139,7 +139,7 @@ external set_pixbuf_column : t -> int -> unit
 external set_model : t -> Tree_model.t option -> unit
   = "ml_gtk_icon_view_set_model"
 (** Sets the model for a [GtkIconView]. If the [icon_view] already has a model
-    set, it will remove it before setting the new model. If [model] is [NULL],
+    set, it will remove it before setting the new model. If [model] is [None],
     then it will unset the old model. *)
 
 external set_markup_column : t -> int -> unit
@@ -177,8 +177,8 @@ external set_cursor : t -> Tree_path.t -> Cell_renderer.t option -> bool -> unit
   = "ml_gtk_icon_view_set_cursor"
 (** Sets the current keyboard focus to be at [path], and selects it. This is
     useful when you want to focus the user’s attention on a particular item. If
-    [cell] is not [NULL], then focus is given to the cell specified by it.
-    Additionally, if [start_editing] is [TRUE], then editing should be started
+    [cell] is not [None], then focus is given to the cell specified by it.
+    Additionally, if [start_editing] is [true], then editing should be started
     in the specified cell.
 
     This function is often followed by [gtk_widget_grab_focus (icon_view)] in
@@ -215,7 +215,7 @@ external scroll_to_path : t -> Tree_path.t -> bool -> float -> float -> unit
     means left/top alignment, 1.0 means right/bottom alignment, 0.5 means
     center.
 
-    If [use_align] is [FALSE], then the alignment arguments are ignored, and the
+    If [use_align] is [false], then the alignment arguments are ignored, and the
     tree does the minimum amount of work to scroll the item onto the screen.
     This means that the item will be scrolled to the edge closest to its current
     position. If the item is currently visible on the screen, nothing is done.
@@ -226,8 +226,8 @@ external scroll_to_path : t -> Tree_path.t -> bool -> float -> float -> unit
 
 external path_is_selected : t -> Tree_path.t -> bool
   = "ml_gtk_icon_view_path_is_selected"
-(** Returns [TRUE] if the icon pointed to by [path] is currently selected. If
-    [path] does not point to a valid location, [FALSE] is returned. *)
+(** Returns [true] if the icon pointed to by [path] is currently selected. If
+    [path] does not point to a valid location, [false] is returned. *)
 
 external item_activated : t -> Tree_path.t -> unit
   = "ml_gtk_icon_view_item_activated"
@@ -253,8 +253,6 @@ external get_selected_items : t -> Tree_path.t list
     planning on modifying the model after calling this function, you may want to
     convert the returned list into a list of [GtkTreeRowReferences]. To do this,
     you can use gtk_tree_row_reference_new().
-
-    To free the return value, use [g_list_free_full]:
 
     {[
     GtkWidget *icon_view = gtk_icon_view_new ();
@@ -282,7 +280,7 @@ external get_path_at_pos : t -> int -> int -> Tree_path.t option
 (** Gets the path for the icon at the given position. *)
 
 external get_model : t -> Tree_model.t option = "ml_gtk_icon_view_get_model"
-(** Returns the model the [GtkIconView] is based on. Returns [NULL] if the model
+(** Returns the model the [GtkIconView] is based on. Returns [None] if the model
     is unset. *)
 
 external get_markup_column : t -> int = "ml_gtk_icon_view_get_markup_column"
@@ -322,7 +320,7 @@ external get_cell_rect :
   t -> Tree_path.t -> Cell_renderer.t option -> bool * Ocgdk_raw.Rectangle.t
   = "ml_gtk_icon_view_get_cell_rect"
 (** Fills the bounding rectangle in widget coordinates for the cell specified by
-    [path] and [cell]. If [cell] is [NULL] the main cell area is used.
+    [path] and [cell]. If [cell] is [None] the main cell area is used.
 
     This function is only valid if [icon_view] is realized. *)
 
@@ -337,13 +335,13 @@ external enable_model_drag_source :
   Ocgdk_enums.dragaction ->
   unit = "ml_gtk_icon_view_enable_model_drag_source"
 (** Turns [icon_view] into a drag source for automatic DND. Calling this method
-    sets [GtkIconView]:reorderable to [FALSE]. *)
+    sets [GtkIconView]:reorderable to [false]. *)
 
 external enable_model_drag_dest :
   t -> Ocgdk_raw.Content_formats.t -> Ocgdk_enums.dragaction -> unit
   = "ml_gtk_icon_view_enable_model_drag_dest"
 (** Turns [icon_view] into a drop destination for automatic DND. Calling this
-    method sets [GtkIconView]:reorderable to [FALSE]. *)
+    method sets [GtkIconView]:reorderable to [false]. *)
 
 external create_drag_icon : t -> Tree_path.t -> Ocgdk_raw.Paintable.t option
   = "ml_gtk_icon_view_create_drag_icon"

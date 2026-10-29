@@ -161,9 +161,9 @@ val new_ :
 (** Creates a new [GtkPadController] that will associate events from [pad] to
     actions.
 
-    A [NULL] pad may be provided so the controller manages all pad devices
-    generically, it is discouraged to mix [GtkPadController] objects with [NULL]
-    and non-[NULL] [pad] argument on the same toplevel window, as execution
+    A [None] pad may be provided so the controller manages all pad devices
+    generically, it is discouraged to mix [GtkPadController] objects with [None]
+    and non-[None] [pad] argument on the same toplevel window, as execution
     order is not guaranteed.
 
     The [GtkPadController] is created with no mapped actions. In order to map

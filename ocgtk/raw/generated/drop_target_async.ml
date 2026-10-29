@@ -66,7 +66,7 @@ external get_formats : t -> Ocgdk_raw.Content_formats.t option
   = "ml_gtk_drop_target_async_get_formats"
 (** Gets the data formats that this drop target accepts.
 
-    If the result is [NULL], all formats are expected to be supported. *)
+    If the result is [None], all formats are expected to be supported. *)
 
 external get_actions : t -> Ocgdk_enums.dragaction
   = "ml_gtk_drop_target_async_get_actions"

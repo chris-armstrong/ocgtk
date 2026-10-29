@@ -21,7 +21,7 @@ class type font_map_t = object
       fontmaps of existing threads are not changed. Default fontmaps of any new
       threads will still be created using [PangoCairo.FontMap.new].
 
-      A value of [NULL] for [fontmap] will cause the current default font map to
+      A value of [None] for [fontmap] will cause the current default font map to
       be released and a new default font map to be created on demand, using
       [PangoCairo.FontMap.new]. *)
 

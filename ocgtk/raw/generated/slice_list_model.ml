@@ -50,7 +50,7 @@ external get_offset : t -> int = "ml_gtk_slice_list_model_get_offset"
 
 external get_model : t -> Ocgio_raw.List_model.t option
   = "ml_gtk_slice_list_model_get_model"
-(** Gets the model that is currently being used or [NULL] if none. *)
+(** Gets the model that is currently being used or [None] if none. *)
 
 (* Properties *)
 

@@ -8,7 +8,7 @@
  Enumeration will start automatically when the\n\
  [Gtk.DirectoryList:file] property is set.\n\n\
  While the [GtkDirectoryList] is being filled, the\n\
- [Gtk.DirectoryList:loading] property will be set to [TRUE]. You can\n\
+ [Gtk.DirectoryList:loading] property will be set to [true]. You can\n\
  listen to that property if you want to show information like a [GtkSpinner]\n\
  or a \"Loading...\" text.\n\n\
  If loading fails at any point, the [Gtk.DirectoryList:error]\n\
@@ -62,17 +62,17 @@ external set_file : t -> Ocgio_raw.File.t option -> unit
   = "ml_gtk_directory_list_set_file"
 (** Sets the [file] to be enumerated and starts the enumeration.
 
-    If [file] is [NULL], the result will be an empty list. *)
+    If [file] is [None], the result will be an empty list. *)
 
 external set_attributes : t -> string option -> unit
   = "ml_gtk_directory_list_set_attributes"
 (** Sets the [attributes] to be enumerated and starts the enumeration.
 
-    If [attributes] is [NULL], the list of file infos will still be created, it
+    If [attributes] is [None], the list of file infos will still be created, it
     will just not contain any extra attributes. *)
 
 external is_loading : t -> bool = "ml_gtk_directory_list_is_loading"
-(** Returns [TRUE] if the children enumeration is currently in progress.
+(** Returns [true] if the children enumeration is currently in progress.
 
     Files will be added to [self] from time to time while loading is going on.
     The order in which are added is undefined and may change in between runs. *)

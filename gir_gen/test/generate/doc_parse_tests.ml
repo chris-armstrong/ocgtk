@@ -77,7 +77,7 @@ let test_legacy_sigils () =
   in
   has "#Type degrades to [Type]" out "[GtkWidget]";
   has "%CONST degrades to [CONST]" out "[GDK_KEY_a]";
-  has "%TRUE kept" out "[TRUE]";
+  has "%TRUE is the OCaml literal" out "[true]";
   has_fallback "sigils counted as degraded" `Sym_ref_degraded fbs
 
 let test_sigil_guards () =

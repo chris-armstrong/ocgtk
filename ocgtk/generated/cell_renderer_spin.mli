@@ -34,11 +34,11 @@ class type cell_renderer_spin_t = object
 
   method adjustment : Adjustment.adjustment_t
   (** The adjustment that holds the value of the spinbutton. This must be
-      non-[NULL] for the cell renderer to be editable. *)
+      non-[None] for the cell renderer to be editable. *)
 
   method set_adjustment : Adjustment.adjustment_t -> unit
   (** The adjustment that holds the value of the spinbutton. This must be
-      non-[NULL] for the cell renderer to be editable. *)
+      non-[None] for the cell renderer to be editable. *)
 
   method climb_rate : float
   (** The acceleration rate when you hold down a button. *)

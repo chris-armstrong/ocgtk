@@ -58,14 +58,14 @@ external get_gtk_alternative_sort_arrows : t -> bool
 (** Controls the direction of the sort indicators in sorted list and tree views.
 
     By default an arrow pointing down means the column is sorted in ascending
-    order. When set to [TRUE], this order will be inverted. *)
+    order. When set to [true], this order will be inverted. *)
 
 external set_gtk_alternative_sort_arrows : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_alternative_sort_arrows"
 (** Controls the direction of the sort indicators in sorted list and tree views.
 
     By default an arrow pointing down means the column is sorted in ascending
-    order. When set to [TRUE], this order will be inverted. *)
+    order. When set to [true], this order will be inverted. *)
 
 external get_gtk_application_prefer_dark_theme : t -> bool
   = "ml_gtk_settings_get_gtk_application_prefer_dark_theme"
@@ -136,7 +136,7 @@ external get_gtk_cursor_blink_timeout : t -> int
     The timer is reset after each user interaction.
 
     Setting this to zero has the same effect as setting
-    [Gtk.Settings:gtk-cursor-blink] to [FALSE]. *)
+    [Gtk.Settings:gtk-cursor-blink] to [false]. *)
 
 external set_gtk_cursor_blink_timeout : t -> int -> unit
   = "ml_gtk_settings_set_gtk_cursor_blink_timeout"
@@ -145,19 +145,19 @@ external set_gtk_cursor_blink_timeout : t -> int -> unit
     The timer is reset after each user interaction.
 
     Setting this to zero has the same effect as setting
-    [Gtk.Settings:gtk-cursor-blink] to [FALSE]. *)
+    [Gtk.Settings:gtk-cursor-blink] to [false]. *)
 
 external get_gtk_cursor_theme_name : t -> string
   = "ml_gtk_settings_get_gtk_cursor_theme_name"
 (** Name of the cursor theme to use.
 
-    Use [NULL] to use the default theme. *)
+    Use [None] to use the default theme. *)
 
 external set_gtk_cursor_theme_name : t -> string -> unit
   = "ml_gtk_settings_set_gtk_cursor_theme_name"
 (** Name of the cursor theme to use.
 
-    Use [NULL] to use the default theme. *)
+    Use [None] to use the default theme. *)
 
 external get_gtk_cursor_theme_size : t -> int
   = "ml_gtk_settings_get_gtk_cursor_theme_size"
@@ -348,7 +348,7 @@ external set_gtk_entry_select_on_focus : t -> bool -> unit
 (** Whether to select the contents of an entry when it is focused. *)
 
 external get_gtk_error_bell : t -> bool = "ml_gtk_settings_get_gtk_error_bell"
-(** When [TRUE], keyboard navigation and other input-related errors will cause a
+(** When [true], keyboard navigation and other input-related errors will cause a
     beep.
 
     Since the error bell is implemented using gdk_surface_beep(), the windowing
@@ -357,7 +357,7 @@ external get_gtk_error_bell : t -> bool = "ml_gtk_settings_get_gtk_error_bell"
 
 external set_gtk_error_bell : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_error_bell"
-(** When [TRUE], keyboard navigation and other input-related errors will cause a
+(** When [true], keyboard navigation and other input-related errors will cause a
     beep.
 
     Since the error bell is implemented using gdk_surface_beep(), the windowing
@@ -527,23 +527,23 @@ external get_gtk_overlay_scrolling : t -> bool
   = "ml_gtk_settings_get_gtk_overlay_scrolling"
 (** Whether scrolled windows may use overlaid scrolling indicators.
 
-    If this is set to [FALSE], scrolled windows will have permanent scrollbars.
+    If this is set to [false], scrolled windows will have permanent scrollbars.
 *)
 
 external set_gtk_overlay_scrolling : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_overlay_scrolling"
 (** Whether scrolled windows may use overlaid scrolling indicators.
 
-    If this is set to [FALSE], scrolled windows will have permanent scrollbars.
+    If this is set to [false], scrolled windows will have permanent scrollbars.
 *)
 
 external get_gtk_primary_button_warps_slider : t -> bool
   = "ml_gtk_settings_get_gtk_primary_button_warps_slider"
-(** If the value of this setting is [TRUE], clicking the primary button in a
+(** If the value of this setting is [true], clicking the primary button in a
     [GtkRange] trough will move the slider, and hence set the range’s value, to
     the point that you clicked.
 
-    If it is [FALSE], a primary click will cause the slider/value to move by the
+    If it is [false], a primary click will cause the slider/value to move by the
     range’s page-size towards the point clicked.
 
     Whichever action you choose for the primary button, the other action will be
@@ -552,11 +552,11 @@ external get_gtk_primary_button_warps_slider : t -> bool
 
 external set_gtk_primary_button_warps_slider : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_primary_button_warps_slider"
-(** If the value of this setting is [TRUE], clicking the primary button in a
+(** If the value of this setting is [true], clicking the primary button in a
     [GtkRange] trough will move the slider, and hence set the range’s value, to
     the point that you clicked.
 
-    If it is [FALSE], a primary click will cause the slider/value to move by the
+    If it is [false], a primary click will cause the slider/value to move by the
     range’s page-size towards the point clicked.
 
     Whichever action you choose for the primary button, the other action will be
@@ -608,14 +608,14 @@ external get_gtk_recent_files_enabled : t -> bool
 (** Whether GTK should keep track of items inside the recently used resources
     list.
 
-    If set to [FALSE], the list will always be empty. *)
+    If set to [false], the list will always be empty. *)
 
 external set_gtk_recent_files_enabled : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_recent_files_enabled"
 (** Whether GTK should keep track of items inside the recently used resources
     list.
 
-    If set to [FALSE], the list will always be empty. *)
+    If set to [false], the list will always be empty. *)
 
 external get_gtk_recent_files_max_age : t -> int
   = "ml_gtk_settings_get_gtk_recent_files_max_age"
@@ -635,42 +635,42 @@ external set_gtk_recent_files_max_age : t -> int -> unit
 
 external get_gtk_shell_shows_app_menu : t -> bool
   = "ml_gtk_settings_get_gtk_shell_shows_app_menu"
-(** Set to [TRUE] if the desktop environment is displaying the app menu, [FALSE]
+(** Set to [true] if the desktop environment is displaying the app menu, [false]
     if the app should display it itself. *)
 
 external set_gtk_shell_shows_app_menu : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_shell_shows_app_menu"
-(** Set to [TRUE] if the desktop environment is displaying the app menu, [FALSE]
+(** Set to [true] if the desktop environment is displaying the app menu, [false]
     if the app should display it itself. *)
 
 external get_gtk_shell_shows_desktop : t -> bool
   = "ml_gtk_settings_get_gtk_shell_shows_desktop"
-(** Set to [TRUE] if the desktop environment is displaying the desktop folder,
-    [FALSE] if not. *)
+(** Set to [true] if the desktop environment is displaying the desktop folder,
+    [false] if not. *)
 
 external set_gtk_shell_shows_desktop : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_shell_shows_desktop"
-(** Set to [TRUE] if the desktop environment is displaying the desktop folder,
-    [FALSE] if not. *)
+(** Set to [true] if the desktop environment is displaying the desktop folder,
+    [false] if not. *)
 
 external get_gtk_shell_shows_menubar : t -> bool
   = "ml_gtk_settings_get_gtk_shell_shows_menubar"
-(** Set to [TRUE] if the desktop environment is displaying the menubar, [FALSE]
+(** Set to [true] if the desktop environment is displaying the menubar, [false]
     if the app should display it itself. *)
 
 external set_gtk_shell_shows_menubar : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_shell_shows_menubar"
-(** Set to [TRUE] if the desktop environment is displaying the menubar, [FALSE]
+(** Set to [true] if the desktop environment is displaying the menubar, [false]
     if the app should display it itself. *)
 
 external get_gtk_show_status_shapes : t -> bool
   = "ml_gtk_settings_get_gtk_show_status_shapes"
-(** When [TRUE], widgets like switches include shapes to indicate their on/off
+(** When [true], widgets like switches include shapes to indicate their on/off
     state. *)
 
 external set_gtk_show_status_shapes : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_show_status_shapes"
-(** When [TRUE], widgets like switches include shapes to indicate their on/off
+(** When [true], widgets like switches include shapes to indicate their on/off
     state. *)
 
 external get_gtk_sound_theme_name : t -> string

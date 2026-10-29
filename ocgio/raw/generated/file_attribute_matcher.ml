@@ -56,13 +56,13 @@ external matches_only : t -> string -> bool
   = "ml_g_file_attribute_matcher_matches_only"
 [@@ocaml.doc
   "Checks if an attribute matcher only matches a given attribute. Always\n\
-   returns [FALSE] if \"*\" was used when creating the matcher."]
+   returns [false] if \"*\" was used when creating the matcher."]
 
 external matches : t -> string -> bool = "ml_g_file_attribute_matcher_matches"
 [@@ocaml.doc
   "Checks if an attribute will be matched by an attribute matcher. If\n\
    the matcher was created with the \"*\" matching string, this function\n\
-   will always return [TRUE]."]
+   will always return [true]."]
 
 external enumerate_next : t -> string option
   = "ml_g_file_attribute_matcher_enumerate_next"
@@ -72,7 +72,7 @@ external enumerate_namespace : t -> string -> bool
   = "ml_g_file_attribute_matcher_enumerate_namespace"
 [@@ocaml.doc
   "Checks if the matcher will match all of the keys in a given namespace.\n\
-   This will always return [TRUE] if a wildcard character is in use (e.g. if\n\
+   This will always return [true] if a wildcard character is in use (e.g. if\n\
    matcher was created with \"standard::{i \" and [ns] is \"standard\", or if \
    matcher was created\n\
    using \"}\" and namespace is anything.)\n\n\

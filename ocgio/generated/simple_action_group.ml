@@ -15,7 +15,7 @@ class type simple_action_group_t = object
   method lookup : string -> Action.action_t
   (** Looks up the action with the name [action_name] in the group.
 
-      If no such action exists, returns [NULL]. *)
+      If no such action exists, returns [None]. *)
 
   method remove : string -> unit
   (** Removes the named action from the action group.

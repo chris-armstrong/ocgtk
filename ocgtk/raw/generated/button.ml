@@ -123,14 +123,14 @@ external get_label : t -> string option = "ml_gtk_button_get_label"
 (** Fetches the text from the label of the button.
 
     If the label text has not been set with [Gtk.Button.set_label] the return
-    value will be [NULL]. This will be the case if you create an empty button
+    value will be [None]. This will be the case if you create an empty button
     with [Gtk.Button.new] to use as a container. *)
 
 external get_icon_name : t -> string option = "ml_gtk_button_get_icon_name"
 (** Returns the icon name of the button.
 
     If the icon name has not been set with [Gtk.Button.set_icon_name] the return
-    value will be [NULL]. This will be the case if you create an empty button
+    value will be [None]. This will be the case if you create an empty button
     with [Gtk.Button.new] to use as a container. *)
 
 external get_has_frame : t -> bool = "ml_gtk_button_get_has_frame"

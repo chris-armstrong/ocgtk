@@ -18,7 +18,7 @@ class type d_bus_object_skeleton_t = object
       [GDBusInterfaceSkeleton::g]-authorize-method signal, except that it is for
       the enclosing object.
 
-      The default class handler just returns [TRUE]. *)
+      The default class handler just returns [true]. *)
 
   (** {2:methods Methods} *)
 

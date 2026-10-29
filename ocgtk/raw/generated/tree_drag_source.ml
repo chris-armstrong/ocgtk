@@ -29,6 +29,6 @@ external drag_data_get : t -> Tree_path.t -> Ocgdk_raw.Content_provider.t option
 external drag_data_delete : t -> Tree_path.t -> bool
   = "ml_gtk_tree_drag_source_drag_data_delete"
 (** Asks the [GtkTreeDragSource] to delete the row at [path], because it was
-    moved somewhere else via drag-and-drop. Returns [FALSE] if the deletion
+    moved somewhere else via drag-and-drop. Returns [false] if the deletion
     fails because [path] no longer exists, or for some model-specific reason.
     Should robustly handle a [path] no longer found in the model! *)

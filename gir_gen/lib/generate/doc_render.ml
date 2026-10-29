@@ -25,7 +25,36 @@ let emit_code_span buf content =
   Buffer.add_string buf content;
   Buffer.add_char buf ']'
 
-let rec render_inline ins buf fbs =
+(* A null return "on error" from a throwing item is its [Error] result: the
+   bindings return [(_, GError.t) result] and never a null value for it. *)
+let render_c_lit ~ret_shape buf lit =
+  match (lit, ret_shape) with
+  | True, _ -> emit_code_span buf "true"
+  | False, _ -> emit_code_span buf "false"
+  | Null, _ -> emit_code_span buf "None"
+  | Null_on_error _, Throws ->
+      Buffer.add_string buf "an ";
+      emit_code_span buf "Error";
+      Buffer.add_string buf " result"
+  | Null_on_error phrase, Plain ->
+      emit_code_span buf "None";
+      escape_prose buf phrase
+
+(* [parse] only builds [C_prim] for names with a reading; one without is
+   degraded like any other unresolved sigil. *)
+let render_c_prim buf name fbs =
+  match Doc_c_idiom.ocaml_of_c_prim name with
+  | Some (Ocaml_type ty) ->
+      emit_code_span buf ty;
+      fbs
+  | Some Pointer ->
+      escape_prose buf "pointer";
+      fbs
+  | None ->
+      emit_code_span buf name;
+      Sym_ref_degraded name :: fbs
+
+let rec render_inline ~ret_shape ins buf fbs =
   List.fold_left
     (fun fbs' inl ->
       match inl with
@@ -40,12 +69,13 @@ let rec render_inline ins buf fbs =
           else (
             emit_code_span buf s;
             fbs')
-      | Bold inner -> wrap buf "{b " "}" inner fbs'
-      | Italic inner -> wrap buf "{i " "}" inner fbs'
-      | Link { text; url } -> wrap buf ("{{:" ^ url ^ "}") "}" text fbs'
+      | Bold inner -> wrap ~ret_shape buf "{b " "}" inner fbs'
+      | Italic inner -> wrap ~ret_shape buf "{i " "}" inner fbs'
+      | Link { text; url } ->
+          wrap ~ret_shape buf ("{{:" ^ url ^ "}") "}" text fbs'
       | Page_ref { text; path; anchor = _ } ->
           (* degraded to bare text *)
-          let f = render_inline text buf fbs' in
+          let f = render_inline ~ret_shape text buf fbs' in
           Page_ref_degraded path :: f
       | Sym_ref { endpoint; kind = _; anchor = _ } ->
           (* degraded to a code span *)
@@ -59,16 +89,20 @@ let rec render_inline ins buf fbs =
           Buffer.add_string buf "{!";
           Buffer.add_string buf path;
           Buffer.add_char buf '}';
-          fbs')
+          fbs'
+      | C_lit lit ->
+          render_c_lit ~ret_shape buf lit;
+          fbs'
+      | C_prim name -> render_c_prim buf name fbs')
     fbs ins
 
 (* [prefix ... suffix], with [inner] rendered (recursively) in between —
    shared by every "markup wrapped around nested inline content" case:
    [Bold], [Italic] and [Link] here, and the heading policy in
    [render_with_fallbacks] below. *)
-and wrap buf prefix suffix inner fbs =
+and wrap ~ret_shape buf prefix suffix inner fbs =
   Buffer.add_string buf prefix;
-  let f = render_inline inner buf fbs in
+  let f = render_inline ~ret_shape inner buf fbs in
   Buffer.add_string buf suffix;
   f
 
@@ -117,7 +151,8 @@ let render_code_block buf content : fallback list =
       [ Code_block_verbatim content ]
   | true, true -> [ Code_block_stripped content ]
 
-let render_with_fallbacks ctx (t : t) : string * fallback list =
+let render_with_fallbacks ?(ret_shape = Plain) ctx (t : t) :
+    string * fallback list =
   (* Entity heading normalisation: the doc's shallowest markdown level maps
      to {1}, deeper levels keep their offsets, capped at {5}. *)
   let shallowest =
@@ -133,20 +168,20 @@ let render_with_fallbacks ctx (t : t) : string * fallback list =
     let buf = Buffer.create 64 in
     let fbs =
       match blk with
-      | Para ins -> render_inline ins buf []
+      | Para ins -> render_inline ~ret_shape ins buf []
       | Heading (lvl, ins) -> (
           match ctx with
           | Entity ->
               let level = Int.min (lvl - shift) 5 in
-              wrap buf (Printf.sprintf "{%d " level) "}" ins []
-          | Member -> wrap buf "{b " "}" ins [])
+              wrap ~ret_shape buf (Printf.sprintf "{%d " level) "}" ins []
+          | Member -> wrap ~ret_shape buf "{b " "}" ins [])
       | List (ordered, items) ->
           let prefix = if ordered then "+ " else "- " in
           let fbs =
             List.fold_left
               (fun fbs item ->
                 Buffer.add_string buf prefix;
-                let f = render_inline item buf fbs in
+                let f = render_inline ~ret_shape item buf fbs in
                 Buffer.add_char buf '\n';
                 f)
               [] items
@@ -173,7 +208,7 @@ let render_with_fallbacks ctx (t : t) : string * fallback list =
   in
   (neutralise_comment_hazards output, fbs)
 
-let render_as ctx t = fst (render_with_fallbacks ctx t)
+let render_as ?ret_shape ctx t = fst (render_with_fallbacks ?ret_shape ctx t)
 
 (* [render] is the [Entity] policy: module comments are the canonical
    attachment point in the emission inventory. *)

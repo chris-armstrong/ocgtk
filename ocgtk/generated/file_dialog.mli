@@ -88,14 +88,14 @@ class type file_dialog_t = object
   method set_accept_label : string option -> unit
   (** Sets the label shown on the file chooser's accept button.
 
-      Leaving the accept label unset or setting it as [NULL] will fall back to a
+      Leaving the accept label unset or setting it as [None] will fall back to a
       default label, depending on what API is used to launch the file dialog. *)
 
   method set_default_filter : File_filter.file_filter_t option -> unit
   (** Sets the filter that will be selected by default in the file chooser
       dialog.
 
-      If set to [NULL], the first item in [Gtk.FileDialog:filters] will be used
+      If set to [None], the first item in [Gtk.FileDialog:filters] will be used
       as the default filter. If that list is empty, the dialog will be
       unfiltered. *)
 

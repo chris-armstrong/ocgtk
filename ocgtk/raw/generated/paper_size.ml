@@ -20,7 +20,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_paper_size_get_type"
 external new_ : string option -> t = "ml_gtk_paper_size_new"
 (** Creates a new [GtkPaperSize] object by parsing a PWG 5101.1-2002 paper name.
 
-    If [name] is [NULL], the default paper size is returned, see
+    If [name] is [None], the default paper size is returned, see
     [Gtk.PaperSize.get_default]. *)
 
 external new_custom :
@@ -60,20 +60,20 @@ external set_size : t -> float -> float -> Ocgtk_enums.unit -> unit
 (** Changes the dimensions of a [size] to [width] x [height]. *)
 
 external is_ipp : t -> bool = "ml_gtk_paper_size_is_ipp"
-(** Returns [TRUE] if [size] is an IPP standard paper size. *)
+(** Returns [true] if [size] is an IPP standard paper size. *)
 
 external is_equal : t -> t -> bool = "ml_gtk_paper_size_is_equal"
 (** Compares two [GtkPaperSize] objects. *)
 
 external is_custom : t -> bool = "ml_gtk_paper_size_is_custom"
-(** Returns [TRUE] if [size] is not a standard paper size. *)
+(** Returns [true] if [size] is not a standard paper size. *)
 
 external get_width : t -> Ocgtk_enums.unit -> float
   = "ml_gtk_paper_size_get_width"
 (** Gets the paper width of the [GtkPaperSize], in units of [unit]. *)
 
 external get_ppd_name : t -> string = "ml_gtk_paper_size_get_ppd_name"
-(** Gets the PPD name of the [GtkPaperSize], which may be [NULL]. *)
+(** Gets the PPD name of the [GtkPaperSize], which may be [None]. *)
 
 external get_name : t -> string = "ml_gtk_paper_size_get_name"
 (** Gets the name of the [GtkPaperSize]. *)

@@ -27,7 +27,7 @@ class type directory_list_t = object
       changes. *)
 
   method is_loading : unit -> bool
-  (** Returns [TRUE] if the children enumeration is currently in progress.
+  (** Returns [true] if the children enumeration is currently in progress.
 
       Files will be added to [self] from time to time while loading is going on.
       The order in which are added is undefined and may change in between runs.
@@ -36,13 +36,13 @@ class type directory_list_t = object
   method set_attributes : string option -> unit
   (** Sets the [attributes] to be enumerated and starts the enumeration.
 
-      If [attributes] is [NULL], the list of file infos will still be created,
+      If [attributes] is [None], the list of file infos will still be created,
       it will just not contain any extra attributes. *)
 
   method set_file : Ocgio.File.file_t option -> unit
   (** Sets the [file] to be enumerated and starts the enumeration.
 
-      If [file] is [NULL], the result will be an empty list. *)
+      If [file] is [None], the result will be an empty list. *)
 
   method set_io_priority : int -> unit
   (** Sets the IO priority to use while loading directories.

@@ -3,7 +3,7 @@ class type tree_list_row_t = object
 
   method get_child_row : int -> tree_list_row_t option
   (** If [self] is not expanded or [position] is greater than the number of
-      children, [NULL] is returned. *)
+      children, [None] is returned. *)
 
   method get_children : unit -> Ocgio.List_model.list_model_t option
   (** If the row is expanded, gets the model holding the children of [self].
@@ -34,10 +34,10 @@ class type tree_list_row_t = object
       That is the row that would need to be collapsed to make this row
       disappear.
 
-      If [self] is a row corresponding to the root model, [NULL] is returned.
+      If [self] is a row corresponding to the root model, [None] is returned.
 
       The value returned by this function never changes until the row is removed
-      from its model at which point it will forever return [NULL]. *)
+      from its model at which point it will forever return [None]. *)
 
   method get_position : unit -> int
   (** Returns the position in the [GtkTreeListModel] that [self] occupies at the
@@ -50,7 +50,7 @@ class type tree_list_row_t = object
       with [Gtk.TreeListRow.get_expanded].
 
       If a row is expandable never changes until the row is removed from its
-      model at which point it will forever return [FALSE]. *)
+      model at which point it will forever return [false]. *)
 
   method set_expanded : bool -> unit
   (** Expands or collapses a row.

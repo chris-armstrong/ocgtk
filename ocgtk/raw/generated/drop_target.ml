@@ -91,7 +91,7 @@ external reject : t -> unit = "ml_gtk_drop_target_reject"
 (** Rejects the ongoing drop operation.
 
     If no drop operation is ongoing, i.e when [Gtk.DropTarget:current-drop] is
-    [NULL], this function does nothing.
+    [None], this function does nothing.
 
     This function should be used when delaying the decision on whether to accept
     a drag or not until after reading the data. *)
@@ -107,24 +107,24 @@ external get_gtypes : t -> Gobject.Type.t array option * Gsize.t
   = "ml_gtk_drop_target_get_gtypes"
 (** Gets the list of supported [GType]s that can be dropped on the target.
 
-    If no types have been set, [NULL] will be returned. *)
+    If no types have been set, [None] will be returned. *)
 
 external get_formats : t -> Ocgdk_raw.Content_formats.t option
   = "ml_gtk_drop_target_get_formats"
 (** Gets the data formats that this drop target accepts.
 
-    If the result is [NULL], all formats are expected to be supported. *)
+    If the result is [None], all formats are expected to be supported. *)
 
 external get_drop : t -> Ocgdk_raw.Drop.t option = "ml_gtk_drop_target_get_drop"
 (** Gets the currently handled drop operation.
 
-    If no drop operation is going on, [NULL] is returned. *)
+    If no drop operation is going on, [None] is returned. *)
 
 external get_current_drop : t -> Ocgdk_raw.Drop.t option
   = "ml_gtk_drop_target_get_current_drop"
 (** Gets the currently handled drop operation.
 
-    If no drop operation is going on, [NULL] is returned. *)
+    If no drop operation is going on, [None] is returned. *)
 
 external get_actions : t -> Ocgdk_enums.dragaction
   = "ml_gtk_drop_target_get_actions"

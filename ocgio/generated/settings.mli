@@ -276,7 +276,7 @@ class type settings_t = object
       The user value of a key is the last value that was set by the user.
 
       After calling [Gio.Settings.reset] this function should always return
-      [NULL] (assuming something is not wrong with the system configuration).
+      [None] (assuming something is not wrong with the system configuration).
 
       It is possible that [Gio.Settings.get_value] will return a different value
       than this function. This can happen in the case that the user set a value
@@ -408,7 +408,7 @@ class type settings_t = object
   (** Sets [key] in [settings] to [value].
 
       A convenience variant of [Gio.Settings.set] for string arrays. If [value]
-      is [NULL], then [key] is set to be the empty array.
+      is [None], then [key] is set to be the empty array.
 
       It is a programmer error to give a [key] that isn’t specified as having an
       [as] type in the schema for [settings] (see [GLib.VariantType]). *)

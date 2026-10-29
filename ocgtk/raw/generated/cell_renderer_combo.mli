@@ -39,12 +39,12 @@ external new_ : unit -> t = "ml_gtk_cell_renderer_combo_new"
 (* Properties *)
 
 external get_has_entry : t -> bool = "ml_gtk_cell_renderer_combo_get_has_entry"
-(** If [TRUE], the cell renderer will include an entry and allow to enter values
+(** If [true], the cell renderer will include an entry and allow to enter values
     other than the ones in the popup list. *)
 
 external set_has_entry : t -> bool -> unit
   = "ml_gtk_cell_renderer_combo_set_has_entry"
-(** If [TRUE], the cell renderer will include an entry and allow to enter values
+(** If [true], the cell renderer will include an entry and allow to enter values
     other than the ones in the popup list. *)
 
 external get_model : t -> Tree_model.t = "ml_gtk_cell_renderer_combo_get_model"

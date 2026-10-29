@@ -53,7 +53,7 @@ external has_map : t -> bool = "ml_gtk_map_list_model_has_map"
 
 external get_model : t -> Ocgio_raw.List_model.t option
   = "ml_gtk_map_list_model_get_model"
-(** Gets the model that is currently being mapped or [NULL] if none. *)
+(** Gets the model that is currently being mapped or [None] if none. *)
 
 (* Properties *)
 

@@ -209,7 +209,7 @@ class type pixbuf_t = object
       1.0, saturation is reduced (the image turns toward grayscale); if greater
       than 1.0, saturation is increased (the image gets more vivid colors).
 
-      If [pixelate] is [TRUE], then pixels are faded in a checkerboard pattern
+      If [pixelate] is [true], then pixels are faded in a checkerboard pattern
       to create a pixelated image. *)
 
   method save_to_streamv :
@@ -236,7 +236,7 @@ class type pixbuf_t = object
     "Vector version of [gdk_pixbuf_save()].\n\n\
      Saves pixbuf to a file in [type], which is currently \"jpeg\", \"png\", \
      \"tiff\", \"ico\" or \"bmp\".\n\n\
-     If [error] is set, [FALSE] will be returned.\n\n\
+     If [error] is set, [false] will be returned.\n\n\
      See [GdkPixbuf.Pixbuf.save] for more details."]
 
   method scale :
@@ -289,7 +289,7 @@ class type pixbuf_t = object
   (** Attaches a key/value pair as an option to a [GdkPixbuf].
 
       If [key] already exists in the list of options attached to the [pixbuf],
-      the new value is ignored and [FALSE] is returned. *)
+      the new value is ignored and [false] is returned. *)
 
   (** {2:properties Properties} *)
 
@@ -319,7 +319,7 @@ end
      called when the data buffer needs to be freed; this will happen when\n\
      a [GdkPixbuf] is finalized by the reference counting functions. If\n\
      you have a chunk of static data compiled into your application, you\n\
-     can pass in [NULL] as the destroy notification function so that the\n\
+     can pass in [None] as the destroy notification function so that the\n\
      data will not be freed.\n\n\
      The [GdkPixbuf.Pixbuf.new] constructor function can be used\n\
      as a convenience to create a pixbuf with an empty buffer; this is\n\
@@ -335,10 +335,7 @@ end
      {b Reference counting}\n\n\
      [GdkPixbuf] structures are reference counted. This means that an\n\
      application can share a single pixbuf among many parts of the\n\
-     code. When a piece of the program needs to use a pixbuf, it should\n\
-     acquire a reference to it by calling [g_object_ref()]; when it no\n\
-     longer needs the pixbuf, it should release the reference it acquired\n\
-     by calling [g_object_unref()]. The resources associated with a\n\
+     code. The resources associated with a\n\
      [GdkPixbuf] will be freed when its reference count drops to zero.\n\
      Newly-created [GdkPixbuf] instances start with a reference count\n\
      of one.\n\n\
@@ -429,7 +426,7 @@ class pixbuf : Raw.Pixbuf.t -> pixbuf_t
  called when the data buffer needs to be freed; this will happen when\n\
  a [GdkPixbuf] is finalized by the reference counting functions. If\n\
  you have a chunk of static data compiled into your application, you\n\
- can pass in [NULL] as the destroy notification function so that the\n\
+ can pass in [None] as the destroy notification function so that the\n\
  data will not be freed.\n\n\
  The [GdkPixbuf.Pixbuf.new] constructor function can be used\n\
  as a convenience to create a pixbuf with an empty buffer; this is\n\
@@ -445,10 +442,7 @@ class pixbuf : Raw.Pixbuf.t -> pixbuf_t
  {b Reference counting}\n\n\
  [GdkPixbuf] structures are reference counted. This means that an\n\
  application can share a single pixbuf among many parts of the\n\
- code. When a piece of the program needs to use a pixbuf, it should\n\
- acquire a reference to it by calling [g_object_ref()]; when it no\n\
- longer needs the pixbuf, it should release the reference it acquired\n\
- by calling [g_object_unref()]. The resources associated with a\n\
+ code. The resources associated with a\n\
  [GdkPixbuf] will be freed when its reference count drops to zero.\n\
  Newly-created [GdkPixbuf] instances start with a reference count\n\
  of one.\n\n\
@@ -525,7 +519,7 @@ class pixbuf : Raw.Pixbuf.t -> pixbuf_t
 val new_ : Enums.colorspace -> bool -> int -> int -> int -> pixbuf_t
 (** Creates a new [GdkPixbuf] structure and allocates a buffer for it.
 
-    If the allocation of the buffer failed, this function will return [NULL].
+    If the allocation of the buffer failed, this function will return [None].
 
     The buffer has an optimal rowstride. Note that the buffer is not cleared;
     you will have to fill it completely yourself. *)
@@ -551,7 +545,7 @@ val new_from_file : string -> (pixbuf_t, GError.t) result
 
     The file format is detected automatically.
 
-    If [NULL] is returned, then [error] will be set. Possible errors are:
+    If [None] is returned, then [error] will be set. Possible errors are:
 
     - the file could not be opened
     - there is no loader for the file's format
@@ -566,7 +560,7 @@ val new_from_file_at_scale :
 
     The file format is detected automatically.
 
-    If [NULL] is returned, then [error] will be set. Possible errors are:
+    If [None] is returned, then [error] will be set. Possible errors are:
 
     - the file could not be opened
     - there is no loader for the file's format
@@ -590,7 +584,7 @@ val new_from_file_at_size : string -> int -> int -> (pixbuf_t, GError.t) result
 
     The file format is detected automatically.
 
-    If [NULL] is returned, then [error] will be set. Possible errors are:
+    If [None] is returned, then [error] will be set. Possible errors are:
 
     - the file could not be opened
     - there is no loader for the file's format
@@ -608,14 +602,14 @@ val new_from_file_at_size : string -> int -> int -> (pixbuf_t, GError.t) result
 val new_from_resource : string -> (pixbuf_t, GError.t) result
 (** Creates a new pixbuf by loading an image from an resource.
 
-    The file format is detected automatically. If [NULL] is returned, then
+    The file format is detected automatically. If [None] is returned, then
     [error] will be set. *)
 
 val new_from_resource_at_scale :
   string -> int -> int -> bool -> (pixbuf_t, GError.t) result
 (** Creates a new pixbuf by loading an image from an resource.
 
-    The file format is detected automatically. If [NULL] is returned, then
+    The file format is detected automatically. If [None] is returned, then
     [error] will be set.
 
     The image will be scaled to fit in the requested size, optionally preserving
@@ -635,7 +629,7 @@ val new_from_stream :
 
     The file format is detected automatically.
 
-    If [NULL] is returned, then [error] will be set.
+    If [None] is returned, then [error] will be set.
 
     The [cancellable] can be used to abort the operation from another thread. If
     the operation was cancelled, the error [G_IO_ERROR_CANCELLED] will be
@@ -653,7 +647,7 @@ val new_from_stream_at_scale :
   (pixbuf_t, GError.t) result
 (** Creates a new pixbuf by loading an image from an input stream.
 
-    The file format is detected automatically. If [NULL] is returned, then
+    The file format is detected automatically. If [None] is returned, then
     [error] will be set. The [cancellable] can be used to abort the operation
     from another thread. If the operation was cancelled, the error
     [G_IO_ERROR_CANCELLED] will be returned. Other possible errors are in the

@@ -35,7 +35,7 @@
 
     Properties of [GLib.Variant] types are not currently supported.
 
-    If the property is boolean-valued then the action will have a [NULL]
+    If the property is boolean-valued then the action will have a [None]
     parameter type, and activating the action (with no parameter) will toggle
     the value of the property.
 
@@ -76,7 +76,7 @@ class type property_action_t = object
       g_action_change_state() have no effect. *)
 
   method invert_boolean : bool
-  (** If [TRUE], the state of the action will be the negation of the property
+  (** If [true], the state of the action will be the negation of the property
       value, provided the property is boolean. *)
 
   method name : string
@@ -88,10 +88,10 @@ class type property_action_t = object
   *)
 
   method state : Gvariant.t
-  (** The state of the action, or [NULL] if the action is stateless. *)
+  (** The state of the action, or [None] if the action is stateless. *)
 
   method state_type : Gvariant_type.t
-  (** The [GVariantType] of the state that the action has, or [NULL] if the
+  (** The [GVariantType] of the state that the action has, or [None] if the
       action is stateless. *)
 
   (** {2:conversions Conversions} *)
@@ -126,7 +126,7 @@ class property_action : Raw.Property_action.t -> property_action_t
 
     Properties of [GLib.Variant] types are not currently supported.
 
-    If the property is boolean-valued then the action will have a [NULL]
+    If the property is boolean-valued then the action will have a [None]
     parameter type, and activating the action (with no parameter) will toggle
     the value of the property.
 

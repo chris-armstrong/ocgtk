@@ -20,7 +20,7 @@ class type toplevel_size_t = object
       any.
 
       Shadow width should only be set if [Gtk.Display.supports_shadow_width] is
-      [TRUE]. *)
+      [true]. *)
 
   method set_size : int -> int -> unit
   (** Sets the size the toplevel prefers to be resized to.

@@ -111,7 +111,7 @@ external set_interpolate_size : t -> bool -> unit
 (** Sets whether or not [stack] will interpolate its size when changing the
     visible child.
 
-    If the [Gtk.Stack:interpolate-size] property is set to [TRUE], [stack] will
+    If the [Gtk.Stack:interpolate-size] property is set to [true], [stack] will
     interpolate its size between the current one and the one it'll take after
     changing the visible child, according to the set transition duration. *)
 
@@ -134,7 +134,7 @@ external get_visible_child_name : t -> string option
   = "ml_gtk_stack_get_visible_child_name"
 (** Returns the name of the currently visible child of [stack].
 
-    Returns [NULL] if there is no visible child. *)
+    Returns [None] if there is no visible child. *)
 
 external get_visible_child :
   t ->
@@ -144,7 +144,7 @@ external get_visible_child :
   option = "ml_gtk_stack_get_visible_child"
 (** Gets the currently visible child of [stack].
 
-    Returns [NULL] if there are no visible children. *)
+    Returns [None] if there are no visible children. *)
 
 external get_vhomogeneous : t -> bool = "ml_gtk_stack_get_vhomogeneous"
 (** Gets whether [stack] is vertically homogeneous. *)
@@ -195,7 +195,7 @@ external get_child_by_name :
   option = "ml_gtk_stack_get_child_by_name"
 (** Finds the child with the name given as the argument.
 
-    Returns [NULL] if there is no child with this name. *)
+    Returns [None] if there is no child with this name. *)
 
 external add_titled :
   t ->

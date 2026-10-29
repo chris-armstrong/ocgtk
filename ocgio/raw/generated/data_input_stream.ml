@@ -90,7 +90,7 @@ external read_uint64 : t -> Cancellable.t option -> (UInt64.t, GError.t) result
     In order to get the correct byte order for this read operation, see
     g_data_input_stream_get_byte_order().
 
-    If [cancellable] is not [NULL], then the operation can be cancelled by
+    If [cancellable] is not [None], then the operation can be cancelled by
     triggering the cancellable object from another thread. If the operation was
     cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 
@@ -102,7 +102,7 @@ external read_uint32 : t -> Cancellable.t option -> (UInt32.t, GError.t) result
     g_data_input_stream_get_byte_order() and
     g_data_input_stream_set_byte_order().
 
-    If [cancellable] is not [NULL], then the operation can be cancelled by
+    If [cancellable] is not [None], then the operation can be cancelled by
     triggering the cancellable object from another thread. If the operation was
     cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 
@@ -119,7 +119,7 @@ external read_line_utf8 :
   = "ml_g_data_input_stream_read_line_utf8"
 (** Reads a UTF-8 encoded line from the data input stream.
 
-    If [cancellable] is not [NULL], then the operation can be cancelled by
+    If [cancellable] is not [None], then the operation can be cancelled by
     triggering the cancellable object from another thread. If the operation was
     cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 
@@ -137,7 +137,7 @@ external read_int64 : t -> Cancellable.t option -> (int64, GError.t) result
     g_data_input_stream_get_byte_order() and
     g_data_input_stream_set_byte_order().
 
-    If [cancellable] is not [NULL], then the operation can be cancelled by
+    If [cancellable] is not [None], then the operation can be cancelled by
     triggering the cancellable object from another thread. If the operation was
     cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 
@@ -149,7 +149,7 @@ external read_int32 : t -> Cancellable.t option -> (Int32.t, GError.t) result
     g_data_input_stream_get_byte_order() and
     g_data_input_stream_set_byte_order().
 
-    If [cancellable] is not [NULL], then the operation can be cancelled by
+    If [cancellable] is not [None], then the operation can be cancelled by
     triggering the cancellable object from another thread. If the operation was
     cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 

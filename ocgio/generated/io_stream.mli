@@ -116,7 +116,7 @@ class type io_stream_t = object
 
   method set_pending : unit -> (bool, GError.t) result
   (** Sets [stream] to have actions pending. If the pending flag is already set
-      or [stream] is closed, it will return [FALSE] and set [error]. *)
+      or [stream] is closed, it will return [false] and set [error]. *)
 
   (** {2:conversions Conversions} *)
 

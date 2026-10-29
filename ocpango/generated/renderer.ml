@@ -47,7 +47,7 @@ class type renderer_t = object
       Note that [text] is the start of the text for layout, which is then
       indexed by [glyph_item->item->offset].
 
-      If [text] is [NULL], this simply calls [Pango.Renderer.draw_glyphs].
+      If [text] is [None], this simply calls [Pango.Renderer.draw_glyphs].
 
       The default implementation of this method simply falls back to
       [Pango.Renderer.draw_glyphs]. *)

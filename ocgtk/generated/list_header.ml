@@ -2,7 +2,7 @@ class type list_header_t = object
   (** {2:methods Methods} *)
 
   method get_child : unit -> Widget.widget_t option
-  (** Gets the child previously set via gtk_list_header_set_child() or [NULL] if
+  (** Gets the child previously set via gtk_list_header_set_child() or [None] if
       none was set. *)
 
   method get_end : unit -> int
@@ -15,7 +15,7 @@ class type list_header_t = object
   (** Gets the model item at the start of the section. This is the item that
       occupies the list model at position [Gtk.ListHeader:start].
 
-      If [self] is unbound, this function returns [NULL]. *)
+      If [self] is unbound, this function returns [None]. *)
 
   method get_n_items : unit -> int
   (** Gets the the number of items in the section.

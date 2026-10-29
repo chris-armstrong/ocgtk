@@ -27,7 +27,7 @@ external new_signal : string -> string -> string -> t
 external to_gerror : t -> (bool, GError.t) result
   = "ml_g_dbus_message_to_gerror"
 (** If [message] is not of type [G_DBUS_MESSAGE_TYPE_ERROR] does nothing and
-    returns [FALSE].
+    returns [false].
 
     Otherwise this method encodes the error in [message] as a [GError] using
     g_dbus_error_set_dbus_error() using the information in the
@@ -38,7 +38,7 @@ external set_unix_fd_list : t -> Unix_fd_list.t option -> unit
   = "ml_g_dbus_message_set_unix_fd_list"
 (** Sets the UNIX file descriptors associated with [message]. As a side-effect
     the [G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS] header field is set to the
-    number of fds in [fd_list] (or cleared if [fd_list] is [NULL]).
+    number of fds in [fd_list] (or cleared if [fd_list] is [None]).
 
     This method is only available on UNIX.
 
@@ -120,7 +120,7 @@ external set_byte_order : t -> Ocgio_enums.dbusmessagebyteorder -> unit
 external set_body : t -> Gvariant.t -> unit = "ml_g_dbus_message_set_body"
 (** Sets the body [message]. As a side-effect the
     [G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE] header field is set to the type
-    string of [body] (or cleared if [body] is [NULL]).
+    string of [body] (or cleared if [body] is [None]).
 
     If [body] is floating, [message] assumes ownership of [body]. *)
 
@@ -187,7 +187,7 @@ external get_signature : t -> string = "ml_g_dbus_message_get_signature"
 (** Convenience getter for the [G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE] header
     field.
 
-    This will always be non-[NULL], but may be an empty string. *)
+    This will always be non-[None], but may be an empty string. *)
 
 external get_serial : t -> UInt32.t = "ml_g_dbus_message_get_serial"
 (** Gets the serial for [message]. *)

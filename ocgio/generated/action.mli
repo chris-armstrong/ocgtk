@@ -13,7 +13,7 @@
 
     The main interface to an action is that it can be activated with
     [Gio.Action.activate]. This results in the 'activate' signal being emitted.
-    An activation has a [GVariant] parameter (which may be [NULL]). The correct
+    An activation has a [GVariant] parameter (which may be [None]). The correct
     type for the parameter is determined by a static parameter type (which is
     given at construction time).
 
@@ -44,7 +44,7 @@ class type action_t = object
 
       [parameter] must be the correct type of parameter for the action (ie: the
       parameter type given at construction time). If the parameter type was
-      [NULL] then [parameter] must also be [NULL].
+      [None] then [parameter] must also be [None].
 
       If the [parameter] [GLib.Variant] is floating, it is consumed. *)
 
@@ -76,23 +76,23 @@ class type action_t = object
       When activating the action using [Gio.Action.activate], the [GLib.Variant]
       given to that function must be of the type returned by this function.
 
-      In the case that this function returns [NULL], you must not give any
-      [GLib.Variant], but [NULL] instead. *)
+      In the case that this function returns [None], you must not give any
+      [GLib.Variant], but [None] instead. *)
 
   method get_state : unit -> Gvariant.t option
   (** Queries the current state of [action].
 
-      If the action is not stateful then [NULL] will be returned. If the action
+      If the action is not stateful then [None] will be returned. If the action
       is stateful then the type of the return value is the type given by
       [Gio.Action.get_state_type].
 
-      The return value (if non-[NULL]) should be freed with [GLib.Variant.unref]
+      The return value (if non-[None]) should be freed with [GLib.Variant.unref]
       when it is no longer required. *)
 
   method get_state_hint : unit -> Gvariant.t option
   (** Requests a hint about the valid range of values for the state of [action].
 
-      If [NULL] is returned it either means that the action is not stateful or
+      If [None] is returned it either means that the action is not stateful or
       that there is no hint about the valid range of values for the state of the
       action.
 
@@ -105,7 +105,7 @@ class type action_t = object
       a state value outside of the hinted range and setting a value within the
       range may fail.
 
-      The return value (if non-[NULL]) should be freed with [GLib.Variant.unref]
+      The return value (if non-[None]) should be freed with [GLib.Variant.unref]
       when it is no longer required. *)
 
   method get_state_type : unit -> Gvariant_type.t option
@@ -119,8 +119,8 @@ class type action_t = object
       [GLib.Variant] of the same type.
 
       If the action is not stateful (e.g. created with [Gio.SimpleAction.new])
-      then this function will return [NULL]. In that case,
-      [Gio.Action.get_state] will return [NULL] and you must not call
+      then this function will return [None]. In that case,
+      [Gio.Action.get_state] will return [None] and you must not call
       [Gio.Action.change_state]. *)
 
   (** {2:conversions Conversions} *)
@@ -137,7 +137,7 @@ class action : Raw.Action.t -> action_t
 
     The main interface to an action is that it can be activated with
     [Gio.Action.activate]. This results in the 'activate' signal being emitted.
-    An activation has a [GVariant] parameter (which may be [NULL]). The correct
+    An activation has a [GVariant] parameter (which may be [None]). The correct
     type for the parameter is determined by a static parameter type (which is
     given at construction time).
 

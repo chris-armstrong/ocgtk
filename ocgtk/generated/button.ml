@@ -34,14 +34,14 @@ class type button_t = object
   (** Returns the icon name of the button.
 
       If the icon name has not been set with [Gtk.Button.set_icon_name] the
-      return value will be [NULL]. This will be the case if you create an empty
+      return value will be [None]. This will be the case if you create an empty
       button with [Gtk.Button.new] to use as a container. *)
 
   method get_label : unit -> string option
   (** Fetches the text from the label of the button.
 
       If the label text has not been set with [Gtk.Button.set_label] the return
-      value will be [NULL]. This will be the case if you create an empty button
+      value will be [None]. This will be the case if you create an empty button
       with [Gtk.Button.new] to use as a container. *)
 
   method get_use_underline : unit -> bool

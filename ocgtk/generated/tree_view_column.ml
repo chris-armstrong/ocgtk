@@ -11,7 +11,7 @@ class type tree_view_column_t = object
   (** {2:methods Methods} *)
 
   method cell_is_visible : unit -> bool
-  (** Returns [TRUE] if any of the cells packed into the [tree_column] are
+  (** Returns [true] if any of the cells packed into the [tree_column] are
       visible. For this to be meaningful, you must first initialize the cells
       with gtk_tree_view_column_cell_set_cell_data() *)
 
@@ -38,10 +38,10 @@ class type tree_view_column_t = object
   (** Returns the button used in the treeview column header *)
 
   method get_clickable : unit -> bool
-  (** Returns [TRUE] if the user can click on the header for the column. *)
+  (** Returns [true] if the user can click on the header for the column. *)
 
   method get_expand : unit -> bool
-  (** Returns [TRUE] if the column expands to fill available space. *)
+  (** Returns [true] if the column expands to fill available space. *)
 
   method get_fixed_width : unit -> int
   (** Gets the fixed width of the column. This may not be the actual displayed
@@ -56,10 +56,10 @@ class type tree_view_column_t = object
       minimum width is set. *)
 
   method get_reorderable : unit -> bool
-  (** Returns [TRUE] if the [tree_column] can be reordered by the user. *)
+  (** Returns [true] if the [tree_column] can be reordered by the user. *)
 
   method get_resizable : unit -> bool
-  (** Returns [TRUE] if the [tree_column] can be resized by the end user. *)
+  (** Returns [true] if the [tree_column] can be resized by the end user. *)
 
   method get_sizing : unit -> Enums.treeviewcolumnsizing
   (** Returns the current type of [tree_column]. *)
@@ -84,16 +84,16 @@ class type tree_view_column_t = object
 
   method get_tree_view : unit -> Widget.widget_t option
   (** Returns the [GtkTreeView] wherein [tree_column] has been inserted. If
-      [column] is currently not inserted in any tree view, [NULL] is returned.
+      [column] is currently not inserted in any tree view, [None] is returned.
   *)
 
   method get_visible : unit -> bool
-  (** Returns [TRUE] if [tree_column] is visible. *)
+  (** Returns [true] if [tree_column] is visible. *)
 
   method get_widget : unit -> Widget.widget_t option
   (** Returns the [GtkWidget] in the button on the column header.
 
-      If a custom widget has not been set then [NULL] is returned. *)
+      If a custom widget has not been set then [None] is returned. *)
 
   method get_width : unit -> int
   (** Returns the current size of [tree_column] in pixels. *)
@@ -111,14 +111,14 @@ class type tree_view_column_t = object
       0.5 for center, 1.0 for right. *)
 
   method set_clickable : bool -> unit
-  (** Sets the header to be active if [clickable] is [TRUE]. When the header is
+  (** Sets the header to be active if [clickable] is [true]. When the header is
       active, then it can take keyboard focus, and can be clicked. *)
 
   method set_expand : bool -> unit
   (** Sets the column to take available extra space. This space is shared
-      equally amongst all columns that have the expand set to [TRUE]. If no
+      equally amongst all columns that have the expand set to [true]. If no
       column has this option set, then the last column gets all extra space. By
-      default, every column is created with this [FALSE].
+      default, every column is created with this [false].
 
       Along with “fixed-width”, the “expand” property changes when the column is
       resized by the user. *)
@@ -147,14 +147,14 @@ class type tree_view_column_t = object
       the minimum width is unset. *)
 
   method set_reorderable : bool -> unit
-  (** If [reorderable] is [TRUE], then the column can be reordered by the end
+  (** If [reorderable] is [true], then the column can be reordered by the end
       user dragging the header. *)
 
   method set_resizable : bool -> unit
-  (** If [resizable] is [TRUE], then the user can explicitly resize the column
+  (** If [resizable] is [true], then the user can explicitly resize the column
       by grabbing the outer edge of the column button.
 
-      If resizable is [TRUE] and sizing mode of the column is
+      If resizable is [true] and sizing mode of the column is
       [GTK_TREE_VIEW_COLUMN_AUTOSIZE], then the sizing mode is changed to
       [GTK_TREE_VIEW_COLUMN_GROW_ONLY]. *)
 
@@ -167,7 +167,7 @@ class type tree_view_column_t = object
       clickable. *)
 
   method set_sort_indicator : bool -> unit
-  (** Call this function with a [setting] of [TRUE] to display an arrow in the
+  (** Call this function with a [setting] of [true] to display an arrow in the
       header button indicating the column is sorted. Call
       gtk_tree_view_column_set_sort_order() to change the direction of the
       arrow. *)
@@ -198,7 +198,7 @@ class type tree_view_column_t = object
   (** Sets the visibility of [tree_column]. *)
 
   method set_widget : Widget.widget_t option -> unit
-  (** Sets the widget in the header to be [widget]. If widget is [NULL], then
+  (** Sets the widget in the header to be [widget]. If widget is [None], then
       the header button is set with a [GtkLabel] set to the title of
       [tree_column]. *)
 

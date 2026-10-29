@@ -15,7 +15,7 @@
     or packets in one go. You generally pass in an array of [GOutputVectors] and
     the operation will use all the buffers as if they were one buffer.
 
-    If [address] is [NULL] then the message is sent to the default receiver (as
+    If [address] is [None] then the message is sent to the default receiver (as
     previously set by g_socket_connect()). *)
 class type output_message_t = object
   (** {2:conversions Conversions} *)
@@ -32,7 +32,7 @@ class output_message : Raw.Output_message.t -> output_message_t
     or packets in one go. You generally pass in an array of [GOutputVectors] and
     the operation will use all the buffers as if they were one buffer.
 
-    If [address] is [NULL] then the message is sent to the default receiver (as
+    If [address] is [None] then the message is sent to the default receiver (as
     previously set by g_socket_connect()). *)
 
 (** {1:constructors Constructors} *)

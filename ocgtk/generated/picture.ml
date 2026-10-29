@@ -6,7 +6,7 @@ class type picture_t = object
   method get_alternative_text : unit -> string option
   (** Gets the alternative textual description of the picture.
 
-      The returned string will be [NULL] if the picture cannot be described
+      The returned string will be [None] if the picture cannot be described
       textually. *)
 
   method get_can_shrink : unit -> bool
@@ -21,7 +21,7 @@ class type picture_t = object
   (** Gets the [GFile] currently displayed if [self] is displaying a file.
 
       If [self] is not displaying a file, for example when
-      [Gtk.Picture.set_paintable] was used, then [NULL] is returned. *)
+      [Gtk.Picture.set_paintable] was used, then [None] is returned. *)
 
   method get_keep_aspect_ratio : unit -> bool
   (** Returns whether the [GtkPicture] preserves its contents aspect ratio. *)
@@ -34,10 +34,10 @@ class type picture_t = object
     "Sets an alternative textual description for the picture contents.\n\n\
      It is equivalent to the \"alt\" attribute for images on websites.\n\n\
      This text will be made available to accessibility tools.\n\n\
-     If the picture cannot be described textually, set this property to [NULL]."]
+     If the picture cannot be described textually, set this property to [None]."]
 
   method set_can_shrink : bool -> unit
-  (** If set to [TRUE], the [self] can be made smaller than its contents.
+  (** If set to [true], the [self] can be made smaller than its contents.
 
       The contents will then be scaled down when rendering.
 
@@ -74,19 +74,19 @@ class type picture_t = object
       [Gtk.Image.set_from_paintable]. *)
 
   method set_keep_aspect_ratio : bool -> unit
-  (** If set to [TRUE], the [self] will render its contents according to their
+  (** If set to [true], the [self] will render its contents according to their
       aspect ratio.
 
       That means that empty space may show up at the top/bottom or left/right of
       [self].
 
-      If set to [FALSE] or if the contents provide no aspect ratio, the contents
+      If set to [false] or if the contents provide no aspect ratio, the contents
       will be stretched over the picture's whole area. *)
 
   method set_paintable : Ocgdk.Paintable.paintable_t option -> unit
   (** Makes [self] display the given [paintable].
 
-      If [paintable] is [NULL], nothing will be displayed.
+      If [paintable] is [None], nothing will be displayed.
 
       See [Gtk.Picture.new_for_paintable] for details. *)
 

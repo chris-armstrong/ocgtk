@@ -181,7 +181,7 @@ class type column_view_t = object
   (** Sets the factory to use for populating the [Gtk.ListHeader] objects used
       in section headers.
 
-      If this factory is set to [NULL], the list will not show section headers.
+      If this factory is set to [None], the list will not show section headers.
   *)
 
   method set_model : Selection_model.selection_model_t option -> unit
@@ -259,7 +259,7 @@ and column_view_column_t = object
   method get_column_view : unit -> column_view_t option
   (** Gets the column view that's currently displaying this column.
 
-      If [self] has not been added to a column view yet, [NULL] is returned. *)
+      If [self] has not been added to a column view yet, [None] is returned. *)
 
   method get_expand : unit -> bool
   (** Returns whether this column should expand. *)

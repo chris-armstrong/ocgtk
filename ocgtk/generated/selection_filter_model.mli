@@ -19,7 +19,7 @@ class type selection_filter_model_t = object
   (** {2:methods Methods} *)
 
   method get_model : unit -> Selection_model.selection_model_t option
-  (** Gets the model currently filtered or [NULL] if none. *)
+  (** Gets the model currently filtered or [None] if none. *)
 
   method set_model : Selection_model.selection_model_t option -> unit
   (** Sets the model to be filtered.

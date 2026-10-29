@@ -22,10 +22,10 @@
 
     + The unbound stage where the listitem is not currently connected to an item
       in the list. In that case, the [Gtk.ColumnViewCell:item] property is set
-      to [NULL].
+      to [None].
 
     + The bound stage where the listitem references an item from the list. The
-      [Gtk.ColumnViewCell:item] property is not [NULL]. *)
+      [Gtk.ColumnViewCell:item] property is not [None]. *)
 class type column_view_cell_t = object
   inherit List_item.list_item_t
 
@@ -50,10 +50,10 @@ class column_view_cell : Raw.Column_view_cell.t -> column_view_cell_t
 
     + The unbound stage where the listitem is not currently connected to an item
       in the list. In that case, the [Gtk.ColumnViewCell:item] property is set
-      to [NULL].
+      to [None].
 
     + The bound stage where the listitem references an item from the list. The
-      [Gtk.ColumnViewCell:item] property is not [NULL]. *)
+      [Gtk.ColumnViewCell:item] property is not [None]. *)
 
 (** {1:constructors Constructors} *)
 

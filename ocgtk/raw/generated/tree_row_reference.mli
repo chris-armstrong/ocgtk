@@ -18,7 +18,7 @@ external new_ : Tree_model.t -> Tree_path.t -> t
     This reference will keep pointing to the node pointed to by [path], so long
     as it exists. Any changes that occur on [model] are propagated, and the path
     is updated appropriately. If [path] isn’t a valid path in [model], then
-    [NULL] is returned. *)
+    [None] is returned. *)
 
 external new_proxy :
   [ `object_ ] Gobject.obj -> Tree_model.t -> Tree_path.t -> t
@@ -28,7 +28,7 @@ external new_proxy :
     Creates a row reference based on [path].
 
     This reference will keep pointing to the node pointed to by [path], so long
-    as it exists. If [path] isn’t a valid path in [model], then [NULL] is
+    as it exists. If [path] isn’t a valid path in [model], then [None] is
     returned. However, unlike references created with
     gtk_tree_row_reference_new(), it does not listen to the model for changes.
     The creator of the row reference must do this explicitly using
@@ -49,12 +49,12 @@ external new_proxy :
 (* Methods *)
 
 external valid : t -> bool = "ml_gtk_tree_row_reference_valid"
-(** Returns [TRUE] if the [reference] is non-[NULL] and refers to a current
+(** Returns [true] if the [reference] is non-[None] and refers to a current
     valid path. *)
 
 external get_path : t -> Tree_path.t option
   = "ml_gtk_tree_row_reference_get_path"
-(** Returns a path that the row reference currently points to, or [NULL] if the
+(** Returns a path that the row reference currently points to, or [None] if the
     path pointed to is no longer valid. *)
 
 external get_model : t -> Tree_model.t = "ml_gtk_tree_row_reference_get_model"

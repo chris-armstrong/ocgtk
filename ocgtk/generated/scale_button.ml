@@ -34,7 +34,7 @@ class type scale_button_t = object
   method get_active : unit -> bool
   (** Queries a [GtkScaleButton] and returns its current state.
 
-      Returns [TRUE] if the scale button is pressed in and [FALSE] if it is
+      Returns [true] if the scale button is pressed in and [false] if it is
       raised. *)
 
   method get_adjustment : unit -> Adjustment.adjustment_t

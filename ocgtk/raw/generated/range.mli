@@ -185,7 +185,7 @@ val on_change_value :
 
     It allows an application to determine the type of scroll event that occurred
     and the resultant new value. The application can handle the event itself and
-    return [TRUE] to prevent further processing. Or, by returning [FALSE], it
+    return [true] to prevent further processing. Or, by returning [false], it
     can pass the event to other handlers until the default GTK handler is
     reached.
 

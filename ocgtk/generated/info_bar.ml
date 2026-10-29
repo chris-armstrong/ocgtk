@@ -92,7 +92,7 @@ class type info_bar_t = object
       transition.
 
       Note: this does not show or hide [info_bar] in the [Gtk.Widget:visible]
-      sense, so revealing has no effect if [Gtk.Widget:visible] is [FALSE]. *)
+      sense, so revealing has no effect if [Gtk.Widget:visible] is [false]. *)
 
   method set_show_close_button : bool -> unit
   (** If true, a standard close button is shown.

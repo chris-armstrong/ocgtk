@@ -27,7 +27,7 @@ class type pixbuf_format_t = object
       See gdk_pixbuf_format_set_disabled(). *)
 
   method is_save_option_supported : string -> bool
-  (** Returns [TRUE] if the save option specified by [option_key] is supported
+  (** Returns [true] if the save option specified by [option_key] is supported
       when saving a pixbuf using the module implementing [format].
 
       See gdk_pixbuf_save() for more information about option keys. *)

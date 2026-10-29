@@ -36,7 +36,7 @@ external set_widget :
   .t
   option ->
   unit = "ml_gtk_tree_view_column_set_widget"
-(** Sets the widget in the header to be [widget]. If widget is [NULL], then the
+(** Sets the widget in the header to be [widget]. If widget is [None], then the
     header button is set with a [GtkLabel] set to the title of [tree_column]. *)
 
 external set_visible : t -> bool -> unit = "ml_gtk_tree_view_column_set_visible"
@@ -67,7 +67,7 @@ external set_sort_order : t -> Ocgtk_enums.sorttype -> unit
 
 external set_sort_indicator : t -> bool -> unit
   = "ml_gtk_tree_view_column_set_sort_indicator"
-(** Call this function with a [setting] of [TRUE] to display an arrow in the
+(** Call this function with a [setting] of [true] to display an arrow in the
     header button indicating the column is sorted. Call
     gtk_tree_view_column_set_sort_order() to change the direction of the arrow.
 *)
@@ -83,16 +83,16 @@ external set_sizing : t -> Ocgtk_enums.treeviewcolumnsizing -> unit
 
 external set_resizable : t -> bool -> unit
   = "ml_gtk_tree_view_column_set_resizable"
-(** If [resizable] is [TRUE], then the user can explicitly resize the column by
+(** If [resizable] is [true], then the user can explicitly resize the column by
     grabbing the outer edge of the column button.
 
-    If resizable is [TRUE] and sizing mode of the column is
+    If resizable is [true] and sizing mode of the column is
     [GTK_TREE_VIEW_COLUMN_AUTOSIZE], then the sizing mode is changed to
     [GTK_TREE_VIEW_COLUMN_GROW_ONLY]. *)
 
 external set_reorderable : t -> bool -> unit
   = "ml_gtk_tree_view_column_set_reorderable"
-(** If [reorderable] is [TRUE], then the column can be reordered by the end user
+(** If [reorderable] is [true], then the column can be reordered by the end user
     dragging the header. *)
 
 external set_min_width : t -> int -> unit
@@ -123,16 +123,16 @@ external set_fixed_width : t -> int -> unit
 
 external set_expand : t -> bool -> unit = "ml_gtk_tree_view_column_set_expand"
 (** Sets the column to take available extra space. This space is shared equally
-    amongst all columns that have the expand set to [TRUE]. If no column has
+    amongst all columns that have the expand set to [true]. If no column has
     this option set, then the last column gets all extra space. By default,
-    every column is created with this [FALSE].
+    every column is created with this [false].
 
     Along with “fixed-width”, the “expand” property changes when the column is
     resized by the user. *)
 
 external set_clickable : t -> bool -> unit
   = "ml_gtk_tree_view_column_set_clickable"
-(** Sets the header to be active if [clickable] is [TRUE]. When the header is
+(** Sets the header to be active if [clickable] is [true]. When the header is
     active, then it can take keyboard focus, and can be clicked. *)
 
 external set_alignment : t -> float -> unit
@@ -147,15 +147,15 @@ external queue_resize : t -> unit = "ml_gtk_tree_view_column_queue_resize"
 
 external pack_start : t -> Cell_renderer.t -> bool -> unit
   = "ml_gtk_tree_view_column_pack_start"
-(** Packs the [cell] into the beginning of the column. If [expand] is [FALSE],
+(** Packs the [cell] into the beginning of the column. If [expand] is [false],
     then the [cell] is allocated no more space than it needs. Any unused space
-    is divided evenly between cells for which [expand] is [TRUE]. *)
+    is divided evenly between cells for which [expand] is [true]. *)
 
 external pack_end : t -> Cell_renderer.t -> bool -> unit
   = "ml_gtk_tree_view_column_pack_end"
-(** Adds the [cell] to end of the column. If [expand] is [FALSE], then the
+(** Adds the [cell] to end of the column. If [expand] is [false], then the
     [cell] is allocated no more space than it needs. Any unused space is divided
-    evenly between cells for which [expand] is [TRUE]. *)
+    evenly between cells for which [expand] is [true]. *)
 
 external get_x_offset : t -> int = "ml_gtk_tree_view_column_get_x_offset"
 (** Returns the current X offset of [tree_column] in pixels. *)
@@ -171,10 +171,10 @@ external get_widget :
   option = "ml_gtk_tree_view_column_get_widget"
 (** Returns the [GtkWidget] in the button on the column header.
 
-    If a custom widget has not been set then [NULL] is returned. *)
+    If a custom widget has not been set then [None] is returned. *)
 
 external get_visible : t -> bool = "ml_gtk_tree_view_column_get_visible"
-(** Returns [TRUE] if [tree_column] is visible. *)
+(** Returns [true] if [tree_column] is visible. *)
 
 external get_tree_view :
   t ->
@@ -183,7 +183,7 @@ external get_tree_view :
   .t
   option = "ml_gtk_tree_view_column_get_tree_view"
 (** Returns the [GtkTreeView] wherein [tree_column] has been inserted. If
-    [column] is currently not inserted in any tree view, [NULL] is returned. *)
+    [column] is currently not inserted in any tree view, [None] is returned. *)
 
 external get_title : t -> string = "ml_gtk_tree_view_column_get_title"
 (** Returns the title of the widget. *)
@@ -211,10 +211,10 @@ external get_sizing : t -> Ocgtk_enums.treeviewcolumnsizing
 (** Returns the current type of [tree_column]. *)
 
 external get_resizable : t -> bool = "ml_gtk_tree_view_column_get_resizable"
-(** Returns [TRUE] if the [tree_column] can be resized by the end user. *)
+(** Returns [true] if the [tree_column] can be resized by the end user. *)
 
 external get_reorderable : t -> bool = "ml_gtk_tree_view_column_get_reorderable"
-(** Returns [TRUE] if the [tree_column] can be reordered by the user. *)
+(** Returns [true] if the [tree_column] can be reordered by the user. *)
 
 external get_min_width : t -> int = "ml_gtk_tree_view_column_get_min_width"
 (** Returns the minimum width in pixels of the [tree_column], or -1 if no
@@ -229,10 +229,10 @@ external get_fixed_width : t -> int = "ml_gtk_tree_view_column_get_fixed_width"
     width of the column; for that, use gtk_tree_view_column_get_width(). *)
 
 external get_expand : t -> bool = "ml_gtk_tree_view_column_get_expand"
-(** Returns [TRUE] if the column expands to fill available space. *)
+(** Returns [true] if the column expands to fill available space. *)
 
 external get_clickable : t -> bool = "ml_gtk_tree_view_column_get_clickable"
-(** Returns [TRUE] if the user can click on the header for the column. *)
+(** Returns [true] if the user can click on the header for the column. *)
 
 external get_button :
   t ->
@@ -271,7 +271,7 @@ external cell_set_cell_data :
     renderer. This is used primarily by the [GtkTreeView]. *)
 
 external cell_is_visible : t -> bool = "ml_gtk_tree_view_column_cell_is_visible"
-(** Returns [TRUE] if any of the cells packed into the [tree_column] are
+(** Returns [true] if any of the cells packed into the [tree_column] are
     visible. For this to be meaningful, you must first initialize the cells with
     gtk_tree_view_column_cell_set_cell_data() *)
 
@@ -285,7 +285,7 @@ external cell_get_position : t -> Cell_renderer.t -> bool * int * int
 (** Obtains the horizontal position and size of a cell in a column.
 
     If the cell is not found in the column, [start_pos] and [width] are not
-    changed and [FALSE] is returned. *)
+    changed and [false] is returned. *)
 
 external add_attribute : t -> Cell_renderer.t -> string -> int -> unit
   = "ml_gtk_tree_view_column_add_attribute"

@@ -4,7 +4,7 @@ class type widget_paintable_t = object
   (** {2:methods Methods} *)
 
   method get_widget : unit -> Widget.widget_t option
-  (** Returns the widget that is observed or [NULL] if none. *)
+  (** Returns the widget that is observed or [None] if none. *)
 
   method set_widget : Widget.widget_t option -> unit
   (** Sets the widget that should be observed. *)

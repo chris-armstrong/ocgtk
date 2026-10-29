@@ -11,9 +11,9 @@ class type initable_t = object
       construction, either with this function or g_async_initable_init_async().
 
       Implementations may also support cancellation. If [cancellable] is not
-      [NULL], then initialization can be cancelled by triggering the cancellable
+      [None], then initialization can be cancelled by triggering the cancellable
       object from another thread. If the operation was cancelled, the error
-      [G_IO_ERROR_CANCELLED] will be returned. If [cancellable] is not [NULL]
+      [G_IO_ERROR_CANCELLED] will be returned. If [cancellable] is not [None]
       and the object doesn't support cancellable initialization the error
       [G_IO_ERROR_NOT_SUPPORTED] will be returned.
 

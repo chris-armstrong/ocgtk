@@ -288,7 +288,7 @@ type fileattributetype =
   | `UINT64  (** an unsigned 8-byte/64-bit integer. *)
   | `INT64  (** a signed 8-byte/64-bit integer. *)
   | `OBJECT  (** a [GObject]. *)
-  | `STRINGV  (** a [NULL] terminated char **. Since 2.22 *) ]
+  | `STRINGV  (** a null terminated char **. Since 2.22 *) ]
 (** The data types for file attributes. *)
 
 val fileattributetype_of_int : int -> fileattributetype

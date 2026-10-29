@@ -51,7 +51,7 @@ external lookup_action : t -> string -> Action.t option
   = "ml_g_action_map_lookup_action"
 (** Looks up the action with the name [action_name] in [action_map].
 
-    If no such action exists, returns [NULL]. *)
+    If no such action exists, returns [None]. *)
 
 external add_action : t -> Action.t -> unit = "ml_g_action_map_add_action"
 (** Adds an action to the [action_map].

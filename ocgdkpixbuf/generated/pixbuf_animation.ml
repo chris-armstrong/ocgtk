@@ -15,7 +15,7 @@ class type pixbuf_animation_t = object
       something more sophisticated depending on the file format.
 
       If an animation hasn't loaded any frames yet, this function will return
-      [NULL]. *)
+      [None]. *)
 
   method get_width : unit -> int
   (** Queries the width of the bounding box of a pixbuf animation. *)
@@ -25,7 +25,7 @@ class type pixbuf_animation_t = object
 
       If you load a file with gdk_pixbuf_animation_new_from_file() and it turns
       out to be a plain, unanimated image, then this function will return
-      [TRUE]. Use gdk_pixbuf_animation_get_static_image() to retrieve the image.
+      [true]. Use gdk_pixbuf_animation_get_static_image() to retrieve the image.
   *)
 
   (** {2:conversions Conversions} *)

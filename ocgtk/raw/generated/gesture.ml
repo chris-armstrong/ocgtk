@@ -5,7 +5,7 @@
 "The base class for gesture recognition.\n\n\
  Although [GtkGesture] is quite generalized to serve as a base for\n\
  multi-touch gestures, it is suitable to implement single-touch and\n\
- pointer-based gestures (using the special [NULL] [GdkEventSequence]\n\
+ pointer-based gestures (using the special [None] [GdkEventSequence]\n\
  value for these).\n\n\
  The number of touches that a [GtkGesture] need to be recognized is\n\
  controlled by the [Gtk.Gesture:n-points] property, if a\n\
@@ -172,22 +172,22 @@ external set_sequence_state :
     group's global state when the second gesture processes the event. *)
 
 external is_recognized : t -> bool = "ml_gtk_gesture_is_recognized"
-(** Returns [TRUE] if the gesture is currently recognized.
+(** Returns [true] if the gesture is currently recognized.
 
     A gesture is recognized if there are as many interacting touch sequences as
     required by [gesture]. *)
 
 external is_grouped_with : t -> t -> bool = "ml_gtk_gesture_is_grouped_with"
-(** Returns [TRUE] if both gestures pertain to the same group. *)
+(** Returns [true] if both gestures pertain to the same group. *)
 
 external is_active : t -> bool = "ml_gtk_gesture_is_active"
-(** Returns [TRUE] if the gesture is currently active.
+(** Returns [true] if the gesture is currently active.
 
     A gesture is active while there are touch sequences interacting with it. *)
 
 external handles_sequence : t -> Ocgdk_raw.Event_sequence.t option -> bool
   = "ml_gtk_gesture_handles_sequence"
-(** Returns [TRUE] if [gesture] is currently handling events corresponding to
+(** Returns [true] if [gesture] is currently handling events corresponding to
     [sequence]. *)
 
 external group : t -> t -> unit = "ml_gtk_gesture_group"
@@ -219,7 +219,7 @@ external get_sequence_state :
 external get_point :
   t -> Ocgdk_raw.Event_sequence.t option -> bool * float * float
   = "ml_gtk_gesture_get_point"
-(** If [sequence] is currently being interpreted by [gesture], returns [TRUE]
+(** If [sequence] is currently being interpreted by [gesture], returns [true]
     and fills in [x] and [y] with the last coordinates stored for that event
     sequence.
 
@@ -245,23 +245,23 @@ external get_device : t -> Ocgdk_raw.Device.t option
   = "ml_gtk_gesture_get_device"
 (** Returns the logical [GdkDevice] that is currently operating on [gesture].
 
-    This returns [NULL] if the gesture is not being interacted. *)
+    This returns [None] if the gesture is not being interacted. *)
 
 external get_bounding_box_center : t -> bool * float * float
   = "ml_gtk_gesture_get_bounding_box_center"
 (** If there are touch sequences being currently handled by [gesture], returns
-    [TRUE] and fills in [x] and [y] with the center of the bounding box
+    [true] and fills in [x] and [y] with the center of the bounding box
     containing all active touches.
 
-    Otherwise, [FALSE] will be returned. *)
+    Otherwise, [false] will be returned. *)
 
 external get_bounding_box : t -> bool * Ocgdk_raw.Rectangle.t
   = "ml_gtk_gesture_get_bounding_box"
 (** If there are touch sequences being currently handled by [gesture], returns
-    [TRUE] and fills in [rect] with the bounding box containing all active
+    [true] and fills in [rect] with the bounding box containing all active
     touches.
 
-    Otherwise, [FALSE] will be returned.
+    Otherwise, [false] will be returned.
 
     Note: This function will yield unexpected results on touchpad gestures.
     Since there is no correlation between physical and pixel distances, these

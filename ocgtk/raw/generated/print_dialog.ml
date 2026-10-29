@@ -60,7 +60,7 @@ external print_finish :
 (** Finishes the [Gtk.PrintDialog.print] call and returns the results.
 
     If the call was successful, the content to be printed should be written to
-    the returned output stream. Otherwise, [NULL] is returned.
+    the returned output stream. Otherwise, [None] is returned.
 
     The overall results of the print operation will be returned in the
     [Gio.OutputStream.close] call, so if you are interested in the results, you

@@ -68,7 +68,7 @@ external set_use_underline : t -> bool -> unit
   = "ml_gtk_check_button_set_use_underline"
 (** Sets whether underlines in the label indicate mnemonics.
 
-    If [setting] is [TRUE], an underscore character in [self]'s label indicates
+    If [setting] is [true], an underscore character in [self]'s label indicates
     a mnemonic accelerator key. This behavior is similar to
     [Gtk.Label:use-underline]. *)
 
@@ -76,7 +76,7 @@ external set_label : t -> string option -> unit
   = "ml_gtk_check_button_set_label"
 (** Sets the text of [self].
 
-    If [Gtk.CheckButton:use-underline] is [TRUE], an underscore in [label] is
+    If [Gtk.CheckButton:use-underline] is [true], an underscore in [label] is
     interpreted as mnemonic indicator, see [Gtk.CheckButton.set_use_underline]
     for details on this behavior. *)
 
@@ -125,7 +125,7 @@ external get_use_underline : t -> bool = "ml_gtk_check_button_get_use_underline"
 (** Returns whether underlines in the label indicate mnemonics. *)
 
 external get_label : t -> string option = "ml_gtk_check_button_get_label"
-(** Returns the label of the check button or [NULL] if [CheckButton:child] is
+(** Returns the label of the check button or [None] if [CheckButton:child] is
     set. *)
 
 external get_inconsistent : t -> bool = "ml_gtk_check_button_get_inconsistent"
@@ -137,7 +137,7 @@ external get_child :
   .Widget
   .t
   option = "ml_gtk_check_button_get_child"
-(** Gets the child widget of [button] or [NULL] if [CheckButton:label] is set.
+(** Gets the child widget of [button] or [None] if [CheckButton:label] is set.
 *)
 
 external get_active : t -> bool = "ml_gtk_check_button_get_active"

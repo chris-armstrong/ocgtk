@@ -71,7 +71,7 @@ external newv :
   = "ml_g_subprocess_newv"
 (** Create a new process with the given flags and argument list.
 
-    The argument list is expected to be [NULL]-terminated. *)
+    The argument list is expected to be null-terminated. *)
 
 (* Methods *)
 
@@ -117,7 +117,7 @@ external get_term_sig : t -> int = "ml_g_subprocess_get_term_sig"
     This is equivalent to the system WTERMSIG macro.
 
     It is an error to call this function before g_subprocess_wait() and unless
-    g_subprocess_get_if_signaled() returned [TRUE]. *)
+    g_subprocess_get_if_signaled() returned [true]. *)
 
 external get_successful : t -> bool = "ml_g_subprocess_get_successful"
 [@@ocaml.doc
@@ -133,7 +133,7 @@ external get_stdout_pipe : t -> Input_stream.t option
     [subprocess].
 
     The process must have been created with [G_SUBPROCESS_FLAGS_STDOUT_PIPE],
-    otherwise [NULL] will be returned. *)
+    otherwise [None] will be returned. *)
 
 external get_stdin_pipe : t -> Output_stream.t option
   = "ml_g_subprocess_get_stdin_pipe"
@@ -141,7 +141,7 @@ external get_stdin_pipe : t -> Output_stream.t option
     stdin of [subprocess].
 
     The process must have been created with [G_SUBPROCESS_FLAGS_STDIN_PIPE] and
-    not [G_SUBPROCESS_FLAGS_STDIN_INHERIT], otherwise [NULL] will be returned.
+    not [G_SUBPROCESS_FLAGS_STDIN_INHERIT], otherwise [None] will be returned.
 *)
 
 external get_stderr_pipe : t -> Input_stream.t option
@@ -150,7 +150,7 @@ external get_stderr_pipe : t -> Input_stream.t option
     [subprocess].
 
     The process must have been created with [G_SUBPROCESS_FLAGS_STDERR_PIPE],
-    otherwise [NULL] will be returned. *)
+    otherwise [None] will be returned. *)
 
 external get_status : t -> int = "ml_g_subprocess_get_status"
 (** Gets the raw status code of the process, as from waitpid().
@@ -185,7 +185,7 @@ external get_if_exited : t -> bool = "ml_g_subprocess_get_if_exited"
 external get_identifier : t -> string option = "ml_g_subprocess_get_identifier"
 (** On UNIX, returns the process ID as a decimal string. On Windows, returns the
     result of GetProcessId() also as a string. If the subprocess has terminated,
-    this will return [NULL]. *)
+    this will return [None]. *)
 
 external get_exit_status : t -> int = "ml_g_subprocess_get_exit_status"
 (** Check the exit status of the subprocess, given that it exited normally. This
@@ -194,7 +194,7 @@ external get_exit_status : t -> int = "ml_g_subprocess_get_exit_status"
     This is equivalent to the system WEXITSTATUS macro.
 
     It is an error to call this function before g_subprocess_wait() and unless
-    g_subprocess_get_if_exited() returned [TRUE]. *)
+    g_subprocess_get_if_exited() returned [true]. *)
 
 external force_exit : t -> unit = "ml_g_subprocess_force_exit"
 (** Use an operating-system specific method to attempt an immediate, forceful

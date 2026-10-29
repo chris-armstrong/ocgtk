@@ -18,7 +18,7 @@ class type column_view_row_t = object
   method get_item : unit -> [ `object_ ] Gobject.obj option
   (** Gets the model item that associated with [self].
 
-      If [self] is unbound, this function returns [NULL]. *)
+      If [self] is unbound, this function returns [None]. *)
 
   method get_position : unit -> int
   (** Gets the position in the model that [self] currently displays.

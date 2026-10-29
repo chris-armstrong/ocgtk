@@ -38,7 +38,7 @@ val new_ :
 (** Creates an expression that looks up a property.
 
     The object to use is found by evaluating the [expression], or using the
-    [this] argument when [expression] is [NULL].
+    [this] argument when [expression] is [None].
 
     If the resulting object conforms to [this_type], its property named
     [property_name] will be queried. Otherwise, this expression's evaluation

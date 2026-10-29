@@ -24,11 +24,11 @@ class type tree_selection_t = object
   (** Returns the tree view associated with [selection]. *)
 
   method iter_is_selected : Raw.Tree_iter.t -> bool
-  (** Returns [TRUE] if the row at [iter] is currently selected. *)
+  (** Returns [true] if the row at [iter] is currently selected. *)
 
   method path_is_selected : Raw.Tree_path.t -> bool
-  (** Returns [TRUE] if the row pointed to by [path] is currently selected. If
-      [path] does not point to a valid location, [FALSE] is returned *)
+  (** Returns [true] if the row pointed to by [path] is currently selected. If
+      [path] does not point to a valid location, [false] is returned *)
 
   method select_all : unit -> unit
   (** Selects all the nodes. [selection] must be set to [GTK_SELECTION_MULTIPLE]
@@ -153,7 +153,7 @@ and tree_view_t = object
   method enable_model_drag_dest :
     Ocgdk.Content_formats.content_formats_t -> Ocgdk.Enums.dragaction -> unit
   (** Turns [tree_view] into a drop destination for automatic DND. Calling this
-      method sets [GtkTreeView]:reorderable to [FALSE]. *)
+      method sets [GtkTreeView]:reorderable to [false]. *)
 
   method enable_model_drag_source :
     Ocgdk.Enums.modifiertype ->
@@ -161,7 +161,7 @@ and tree_view_t = object
     Ocgdk.Enums.dragaction ->
     unit
   (** Turns [tree_view] into a drag source for automatic DND. Calling this
-      method sets [GtkTreeView]:reorderable to [FALSE]. *)
+      method sets [GtkTreeView]:reorderable to [false]. *)
 
   method expand_all : unit -> unit
   (** Recursively expands all nodes in the [tree_view]. *)
@@ -181,7 +181,7 @@ and tree_view_t = object
 
   method get_columns : unit -> Tree_view_column.tree_view_column_t list
   (** Returns a [GList] of all the [GtkTreeViewColumn]s currently in
-      [tree_view]. The returned list must be freed with g_list_free (). *)
+      [tree_view]. *)
 
   method get_enable_search : unit -> bool
   (** Returns whether or not the tree allows to start interactive searching by
@@ -192,7 +192,7 @@ and tree_view_t = object
 
   method get_expander_column :
     unit -> Tree_view_column.tree_view_column_t option
-  (** Returns the column that is the current expander column, or [NULL] if none
+  (** Returns the column that is the current expander column, or [None] if none
       has been set. This column has the expander arrow drawn next to it. *)
 
   method get_fixed_height_mode : unit -> bool
@@ -205,7 +205,7 @@ and tree_view_t = object
   (** Returns whether all header columns are clickable. *)
 
   method get_headers_visible : unit -> bool
-  (** Returns [TRUE] if the headers on the [tree_view] are visible. *)
+  (** Returns [true] if the headers on the [tree_view] are visible. *)
 
   method get_hover_expand : unit -> bool
   (** Returns whether hover expansion mode is turned on for [tree_view]. *)
@@ -218,7 +218,7 @@ and tree_view_t = object
       [tree_view]. *)
 
   method get_model : unit -> Tree_model.tree_model_t option
-  (** Returns the model the [GtkTreeView] is based on. Returns [NULL] if the
+  (** Returns the model the [GtkTreeView] is based on. Returns [None] if the
       model is unset. *)
 
   method get_n_columns : unit -> int
@@ -238,7 +238,7 @@ and tree_view_t = object
 
   method get_search_entry : unit -> Editable.editable_t option
   (** Returns the [GtkEntry] which is currently in use as interactive search
-      entry for [tree_view]. In case the built-in entry is being used, [NULL]
+      entry for [tree_view]. In case the built-in entry is being used, [None]
       will be returned. *)
 
   method get_selection : unit -> tree_selection_t
@@ -265,7 +265,7 @@ and tree_view_t = object
     Tree_view_column.tree_view_column_t ->
     Tree_view_column.tree_view_column_t option ->
     unit
-  (** Moves [column] to be after to [base_column]. If [base_column] is [NULL],
+  (** Moves [column] to be after to [base_column]. If [base_column] is [None],
       then [column] is placed in the first position. *)
 
   method remove_column : Tree_view_column.tree_view_column_t -> int
@@ -276,7 +276,7 @@ and tree_view_t = object
   (** Activates the cell determined by [path] and [column]. *)
 
   method row_expanded : Raw.Tree_path.t -> bool
-  (** Returns [TRUE] if the node pointed to by [path] is expanded in
+  (** Returns [true] if the node pointed to by [path] is expanded in
       [tree_view]. *)
 
   method scroll_to_cell :
@@ -287,14 +287,14 @@ and tree_view_t = object
     float ->
     unit
   (** Moves the alignments of [tree_view] to the position specified by [column]
-      and [path]. If [column] is [NULL], then no horizontal scrolling occurs.
-      Likewise, if [path] is [NULL] no vertical scrolling occurs. At a minimum,
-      one of [column] or [path] need to be non-[NULL]. [row_align] determines
+      and [path]. If [column] is [None], then no horizontal scrolling occurs.
+      Likewise, if [path] is [None] no vertical scrolling occurs. At a minimum,
+      one of [column] or [path] need to be non-[None]. [row_align] determines
       where the row is placed, and [col_align] determines where [column] is
       placed. Both are expected to be between 0.0 and 1.0. 0.0 means left/top
       alignment, 1.0 means right/bottom alignment, 0.5 means center.
 
-      If [use_align] is [FALSE], then the alignment arguments are ignored, and
+      If [use_align] is [false], then the alignment arguments are ignored, and
       the tree does the minimum amount of work to scroll the cell onto the
       screen. This means that the cell will be scrolled to the edge closest to
       its current position. If the cell is currently visible on the screen,
@@ -326,11 +326,11 @@ and tree_view_t = object
     unit
   (** Sets the current keyboard focus to be at [path], and selects it. This is
       useful when you want to focus the user’s attention on a particular row. If
-      [focus_column] is not [NULL], then focus is given to the column specified
-      by it. If [focus_column] and [focus_cell] are not [NULL], and
+      [focus_column] is not [None], then focus is given to the column specified
+      by it. If [focus_column] and [focus_cell] are not [None], and
       [focus_column] contains 2 or more editable or activatable cells, then
       focus is given to the cell specified by [focus_cell]. Additionally, if
-      [focus_column] is specified, and [start_editing] is [TRUE], then editing
+      [focus_column] is specified, and [start_editing] is [true], then editing
       should be started in the specified cell. This function is often followed
       by [gtk_widget_grab_focus] ([tree_view]) in order to give keyboard focus
       to the widget. Please note that editing can only happen when the widget is
@@ -341,14 +341,14 @@ and tree_view_t = object
 
   method set_drag_dest_row :
     Raw.Tree_path.t option -> Enums.treeviewdropposition -> unit
-  (** Sets the row that is highlighted for feedback. If [path] is [NULL], an
+  (** Sets the row that is highlighted for feedback. If [path] is [None], an
       existing highlight is removed. *)
 
   method set_enable_search : bool -> unit
   [@@ocaml.doc
     "If [enable_search] is set, then the user can type in text to search through\n\
      the tree interactively (this is sometimes called \"typeahead find\").\n\n\
-     Note that even if this is [FALSE], the user can still initiate a search\n\
+     Note that even if this is [false], the user can still initiate a search\n\
      using the “start-interactive-search” key binding."]
 
   method set_enable_tree_lines : bool -> unit
@@ -358,7 +358,7 @@ and tree_view_t = object
   method set_expander_column :
     Tree_view_column.tree_view_column_t option -> unit
   (** Sets the column to draw the expander arrow at. It must be in [tree_view].
-      If [column] is [NULL], then the expander arrow is always at the first
+      If [column] is [None], then the expander arrow is always at the first
       visible column.
 
       If you do not want expander arrow to appear in your tree, set the expander
@@ -398,14 +398,14 @@ and tree_view_t = object
 
   method set_model : Tree_model.tree_model_t option -> unit
   (** Sets the model for a [GtkTreeView]. If the [tree_view] already has a model
-      set, it will remove it before setting the new model. If [model] is [NULL],
+      set, it will remove it before setting the new model. If [model] is [None],
       then it will unset the old model. *)
 
   method set_reorderable : bool -> unit
   (** This function is a convenience function to allow you to reorder models
       that support the [GtkTreeDragSourceIface] and the [GtkTreeDragDestIface].
       Both [GtkTreeStore] and [GtkListStore] support these. If [reorderable] is
-      [TRUE], then the user can reorder the model by dragging and dropping rows.
+      [true], then the user can reorder the model by dragging and dropping rows.
       The developer can listen to these changes by connecting to the model’s
       [GtkTreeModel::row-inserted] and [GtkTreeModel::row-deleted] signals. The
       reordering is implemented by setting up the tree view as a drag source and
@@ -435,7 +435,7 @@ and tree_view_t = object
   method set_search_entry : Editable.editable_t option -> unit
   (** Sets the entry which the interactive search code will use for this
       [tree_view]. This is useful when you want to provide a search entry in our
-      interface at all time at a fixed position. Passing [NULL] for [entry] will
+      interface at all time at a fixed position. Passing [None] for [entry] will
       make the interactive search code use the built-in popup entry again. *)
 
   method set_show_expanders : bool -> unit
@@ -454,7 +454,7 @@ and tree_view_t = object
     Cell_renderer.cell_renderer_t option ->
     unit
   (** Sets the tip area of [tooltip] to the area [path], [column] and [cell]
-      have in common. For example if [path] is [NULL] and [column] is set, the
+      have in common. For example if [path] is [None] and [column] is set, the
       tip area will be set to the full area covered by [column]. See also
       gtk_tooltip_set_tip_area().
 
@@ -471,7 +471,7 @@ and tree_view_t = object
       you. [column] should be set to the column in [tree_view]’s model
       containing the tooltip texts, or -1 to disable this feature.
 
-      When enabled, [GtkWidget:has-tooltip] will be set to [TRUE] and
+      When enabled, [GtkWidget:has-tooltip] will be set to [true] and
       [tree_view] will connect a [GtkWidget::query-tooltip] signal handler.
 
       Note that the signal handler sets the text with gtk_tooltip_set_markup(),
@@ -484,11 +484,11 @@ and tree_view_t = object
 
   method unset_rows_drag_dest : unit -> unit
   (** Undoes the effect of gtk_tree_view_enable_model_drag_dest(). Calling this
-      method sets [GtkTreeView]:reorderable to [FALSE]. *)
+      method sets [GtkTreeView]:reorderable to [false]. *)
 
   method unset_rows_drag_source : unit -> unit
   (** Undoes the effect of gtk_tree_view_enable_model_drag_source(). Calling
-      this method sets [GtkTreeView]:reorderable to [FALSE]. *)
+      this method sets [GtkTreeView]:reorderable to [false]. *)
 
   (** {2:properties Properties} *)
 

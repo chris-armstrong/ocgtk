@@ -16,7 +16,7 @@ class type gesture_single_t = object
     unit -> Ocgdk.Event_sequence.event_sequence_t option
   (** Returns the event sequence currently interacting with [gesture].
 
-      This is only meaningful if [Gtk.Gesture.is_active] returns [TRUE]. *)
+      This is only meaningful if [Gtk.Gesture.is_active] returns [true]. *)
 
   method get_exclusive : unit -> bool
   (** Gets whether a gesture is exclusive.
@@ -24,7 +24,7 @@ class type gesture_single_t = object
       For more information, see [Gtk.GestureSingle.set_exclusive]. *)
 
   method get_touch_only : unit -> bool
-  (** Returns [TRUE] if the gesture is only triggered by touch events. *)
+  (** Returns [true] if the gesture is only triggered by touch events. *)
 
   method set_button : int -> unit
   (** Sets the button number [gesture] listens to.
@@ -42,8 +42,8 @@ class type gesture_single_t = object
   method set_touch_only : bool -> unit
   (** Sets whether to handle only touch events.
 
-      If [touch_only] is [TRUE], [gesture] will only handle events of type
-      [GDK_TOUCH_BEGIN], [GDK_TOUCH_UPDATE] or [GDK_TOUCH_END]. If [FALSE],
+      If [touch_only] is [true], [gesture] will only handle events of type
+      [GDK_TOUCH_BEGIN], [GDK_TOUCH_UPDATE] or [GDK_TOUCH_END]. If [false],
       mouse events will be handled too. *)
 
   (** {2:conversions Conversions} *)

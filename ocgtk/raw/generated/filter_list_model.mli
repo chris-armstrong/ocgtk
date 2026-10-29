@@ -87,11 +87,11 @@ external get_pending : t -> int = "ml_gtk_filter_list_model_get_pending"
     ]}
 
     If no filter operation is ongoing - in particular when
-    [Gtk.FilterListModel:incremental] is [FALSE] - this function returns 0. *)
+    [Gtk.FilterListModel:incremental] is [false] - this function returns 0. *)
 
 external get_model : t -> Ocgio_raw.List_model.t option
   = "ml_gtk_filter_list_model_get_model"
-(** Gets the model currently filtered or [NULL] if none. *)
+(** Gets the model currently filtered or [None] if none. *)
 
 external get_incremental : t -> bool
   = "ml_gtk_filter_list_model_get_incremental"

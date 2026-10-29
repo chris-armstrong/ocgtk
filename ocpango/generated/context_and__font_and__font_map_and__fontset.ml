@@ -174,7 +174,7 @@ and font_t = object
   method get_face : unit -> Font_face.font_face_t option
   (** Gets the [PangoFontFace] to which [font] belongs.
 
-      Note that this function can return [NULL] in cases where the font outlives
+      Note that this function can return [None] in cases where the font outlives
       its font map. *)
 
   method get_font_map : unit -> font_map_t option
@@ -183,7 +183,7 @@ and font_t = object
       Note that the font maintains a {i weak} reference to the font map, so if
       all references to font map are dropped, the font map will be finalized
       even if there are fonts created with the font map that are still alive. In
-      that case this function will return [NULL].
+      that case this function will return [None].
 
       It is the responsibility of the user to ensure that the font map is kept
       alive. In most uses this is not an issue as a [PangoContext] holds a
@@ -196,7 +196,7 @@ and font_t = object
       language tag can be provided to indicate that the metrics should be
       retrieved that correspond to the script(s) used by that language.
 
-      If [font] is [NULL], this function gracefully sets some sane values in the
+      If [font] is [None], this function gracefully sets some sane values in the
       output variables and returns. *)
 
   method has_char : int -> bool

@@ -113,12 +113,12 @@ external get_width : t -> int = "ml_gdk_gl_texture_builder_get_width"
 external get_update_texture : t -> Texture.t option
   = "ml_gdk_gl_texture_builder_get_update_texture"
 (** Gets the texture previously set via
-    gdk_gl_texture_builder_set_update_texture() or [NULL] if none was set. *)
+    gdk_gl_texture_builder_set_update_texture() or [None] if none was set. *)
 
 external get_update_region : t -> Occairo_raw.Region.t option
   = "ml_gdk_gl_texture_builder_get_update_region"
 (** Gets the region previously set via
-    gdk_gl_texture_builder_set_update_region() or [NULL] if none was set. *)
+    gdk_gl_texture_builder_set_update_region() or [None] if none was set. *)
 
 external get_id : t -> int = "ml_gdk_gl_texture_builder_get_id"
 (** Gets the texture id previously set via gdk_gl_texture_builder_set_id() or 0
@@ -139,7 +139,7 @@ external get_context :
   t -> App_launch_context_cycle_de440b34.Gl_context.t option
   = "ml_gdk_gl_texture_builder_get_context"
 (** Gets the context previously set via gdk_gl_texture_builder_set_context() or
-    [NULL] if none was set. *)
+    [None] if none was set. *)
 
 external get_color_state : t -> Cicp_params_and__color_state.Color_state.t
   = "ml_gdk_gl_texture_builder_get_color_state"

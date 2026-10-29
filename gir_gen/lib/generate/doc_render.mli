@@ -25,6 +25,8 @@
    | [Sym_ref]           | [[endpoint]] code span                            | yes            |
    | [Param_ref]         | [[name]] code span                                | —              |
    | [Ref]               | [{!path}] (unreachable in practice)               | —              |
+   | [C_lit]             | [[true]], [[false]], [[None]]; a null "on error" from a [Throws] item is "an [[Error]] result" | — |
+   | [C_prim]            | [[ocaml type]] from the primitive type table; [gpointer] as the word "pointer" | — |
    | [Para]              | paragraph (blank line separated)                  | —              |
    | [Heading]           | per the heading policy above                      | —              |
    | [List]              | odoc shortcut lists ([{- item}] / [{+ item}])     | —              |
@@ -49,10 +51,13 @@ val render : t -> string
 (** Renders with the [Entity] heading policy. The output is comment-hazard
     neutralised and has no unescaped [@] in prose. *)
 
-val render_as : context -> t -> string
-(** [render] with the heading policy selected explicitly. *)
+val render_as : ?ret_shape:ret_shape -> context -> t -> string
+(** [render] with the heading policy selected explicitly. [ret_shape] (default
+    [Plain]) is what the documented item returns; see the C literal rows of the
+    render policy. *)
 
-val render_with_fallbacks : context -> t -> string * fallback list
+val render_with_fallbacks :
+  ?ret_shape:ret_shape -> context -> t -> string * fallback list
 (** [render_as] plus the fallback events raised during rendering (page refs,
     symbol refs, unbalanced inline code, code-block fallbacks, non-https links).
 *)

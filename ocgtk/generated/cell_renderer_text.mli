@@ -188,11 +188,11 @@ class type cell_renderer_text_t = object
 
   method placeholder_text : string
   (** The text that will be displayed in the [GtkCellRenderer] if
-      [GtkCellRendererText:editable] is [TRUE] and the cell is empty. *)
+      [GtkCellRendererText:editable] is [true] and the cell is empty. *)
 
   method set_placeholder_text : string -> unit
   (** The text that will be displayed in the [GtkCellRenderer] if
-      [GtkCellRendererText:editable] is [TRUE] and the cell is empty. *)
+      [GtkCellRendererText:editable] is [true] and the cell is empty. *)
 
   method rise : int
   (** Get property: rise *)

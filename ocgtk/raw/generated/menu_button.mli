@@ -86,23 +86,23 @@ external set_popover : t -> Popover.t option -> unit
 (** Sets the [GtkPopover] that will be popped up when the [menu_button] is
     clicked.
 
-    If [popover] is [NULL], the button is disabled.
+    If [popover] is [None], the button is disabled.
 
     If [Gtk.MenuButton:menu-model] is set, the menu model is dissociated from
-    the [menu_button], and the property is set to [NULL]. *)
+    the [menu_button], and the property is set to [None]. *)
 
 external set_menu_model : t -> Ocgio_raw.Menu_model.t option -> unit
   = "ml_gtk_menu_button_set_menu_model"
 (** Sets the [GMenuModel] from which the popup will be constructed.
 
-    If [menu_model] is [NULL], the button is disabled.
+    If [menu_model] is [None], the button is disabled.
 
     A [Gtk.Popover] will be created from the menu model with
     [Gtk.PopoverMenu.new_from_model]. Actions will be connected as documented
     for this function.
 
     If [Gtk.MenuButton:popover] is already set, it will be dissociated from the
-    [menu_button], and the property is set to [NULL]. *)
+    [menu_button], and the property is set to [None]. *)
 
 external set_label : t -> string -> unit = "ml_gtk_menu_button_set_label"
 (** Sets the label to show inside the menu button.
@@ -119,7 +119,7 @@ external set_icon_name : t -> string -> unit
 
     Setting icon name resets [Gtk.MenuButton:label] and [Gtk.MenuButton:child].
 
-    If [Gtk.MenuButton:always-show-arrow] is set to [TRUE] and
+    If [Gtk.MenuButton:always-show-arrow] is set to [true] and
     [Gtk.MenuButton:direction] is not [GTK_ARROW_NONE], a dropdown arrow will be
     shown next to the icon. *)
 
@@ -151,7 +151,7 @@ external set_child :
     Setting a child resets [Gtk.MenuButton:label] and
     [Gtk.MenuButton:icon-name].
 
-    If [Gtk.MenuButton:always-show-arrow] is set to [TRUE] and
+    If [Gtk.MenuButton:always-show-arrow] is set to [true] and
     [Gtk.MenuButton:direction] is not [GTK_ARROW_NONE], a dropdown arrow will be
     shown next to the child. *)
 
@@ -187,7 +187,7 @@ external get_primary : t -> bool = "ml_gtk_menu_button_get_primary"
 external get_popover : t -> Popover.t option = "ml_gtk_menu_button_get_popover"
 (** Returns the [GtkPopover] that pops out of the button.
 
-    If the button is not using a [GtkPopover], this function returns [NULL]. *)
+    If the button is not using a [GtkPopover], this function returns [None]. *)
 
 external get_menu_model : t -> Ocgio_raw.Menu_model.t option
   = "ml_gtk_menu_button_get_menu_model"

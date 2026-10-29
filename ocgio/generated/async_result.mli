@@ -16,7 +16,7 @@ class type async_result_t = object
 
   method legacy_propagate_error : unit -> (bool, GError.t) result
   (** If [res] is a [Gio.SimpleAsyncResult], this is equivalent to
-      [Gio.SimpleAsyncResult.propagate_error]. Otherwise it returns [FALSE].
+      [Gio.SimpleAsyncResult.propagate_error]. Otherwise it returns [false].
 
       This can be used for legacy error handling in async [*_finish()] wrapper
       functions that traditionally handled [Gio.SimpleAsyncResult] error returns
@@ -54,7 +54,7 @@ end
      operation is not needed, there is no need to call the [_finish()]\n\
      function; GIO will take care of cleaning up the result and error\n\
      information after the [GAsyncReadyCallback] returns. You can pass\n\
-     [NULL] for the [GAsyncReadyCallback] if you don't need to take any\n\
+     [None] for the [GAsyncReadyCallback] if you don't need to take any\n\
      action at all after the operation completes. Applications may also\n\
      take a reference to the [GAsyncResult] and call [_finish()] later;\n\
      however, the [_finish()] function may be called at most once.\n\n\
@@ -130,7 +130,7 @@ class async_result : Raw.Async_result.t -> async_result_t
  operation is not needed, there is no need to call the [_finish()]\n\
  function; GIO will take care of cleaning up the result and error\n\
  information after the [GAsyncReadyCallback] returns. You can pass\n\
- [NULL] for the [GAsyncReadyCallback] if you don't need to take any\n\
+ [None] for the [GAsyncReadyCallback] if you don't need to take any\n\
  action at all after the operation completes. Applications may also\n\
  take a reference to the [GAsyncResult] and call [_finish()] later;\n\
  however, the [_finish()] function may be called at most once.\n\n\

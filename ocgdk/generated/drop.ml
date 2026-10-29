@@ -32,7 +32,7 @@ class type drop_t = object
   (** If this is an in-app drag-and-drop operation, returns the [GdkDrag] that
       corresponds to this drop.
 
-      If it is not, [NULL] is returned. *)
+      If it is not, [None] is returned. *)
 
   method get_formats : unit -> Raw.Content_formats.t
   (** Returns the [GdkContentFormats] that the drop offers the data to be read

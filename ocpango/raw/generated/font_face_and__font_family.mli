@@ -20,7 +20,7 @@ module rec Font_face : sig
     = "ml_pango_font_face_list_sizes"
   (** List the available sizes for a font.
 
-      This is only applicable to bitmap fonts. For scalable fonts, stores [NULL]
+      This is only applicable to bitmap fonts. For scalable fonts, stores [None]
       at the location pointed to by [sizes] and 0 at the location pointed to by
       [n_sizes]. The sizes returned are in Pango units and are sorted in
       ascending order. *)

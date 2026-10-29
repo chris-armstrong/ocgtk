@@ -13,7 +13,7 @@ class type gl_shader_t = object
   method compile : Renderer.renderer_t -> (bool, GError.t) result
   (** Tries to compile the [shader] for the given [renderer].
 
-      If there is a problem, this function returns [FALSE] and reports an error.
+      If there is a problem, this function returns [false] and reports an error.
       You should use this function before relying on the shader for rendering
       and use a fallback with a simpler shader or without shaders if it fails.
 

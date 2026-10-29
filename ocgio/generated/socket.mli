@@ -33,7 +33,7 @@ class type socket_t = Socket_and__socket_connection.socket_t
     constructed by e.g. [GObject.Object.new] you must call [Gio.Initable.init]
     and check the results before using the object. This is done automatically in
     [Gio.Socket.new] and [Gio.Socket.new_from_fd], so these functions can return
-    [NULL].
+    [None].
 
     Sockets operate in two general modes, blocking or non-blocking. When in
     blocking mode all operations (which don’t take an explicit blocking
@@ -109,7 +109,7 @@ class socket : Raw.Socket.t -> socket_t
     constructed by e.g. [GObject.Object.new] you must call [Gio.Initable.init]
     and check the results before using the object. This is done automatically in
     [Gio.Socket.new] and [Gio.Socket.new_from_fd], so these functions can return
-    [NULL].
+    [None].
 
     Sockets operate in two general modes, blocking or non-blocking. When in
     blocking mode all operations (which don’t take an explicit blocking

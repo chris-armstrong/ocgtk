@@ -95,7 +95,7 @@ external new_with_buffer :
   = "ml_gtk_text_view_new_with_buffer"
 (** Creates a new [GtkTextView] widget displaying the buffer [buffer].
 
-    One buffer can be shared among many widgets. [buffer] may be [NULL] to
+    One buffer can be shared among many widgets. [buffer] may be [None] to
     create a default buffer, in which case this function is equivalent to
     [Gtk.TextView.new]. The text view adds its own reference count to the
     buffer; it does not take over an existing reference. *)
@@ -216,7 +216,7 @@ external set_extra_menu : t -> Ocgio_raw.Menu_model.t option -> unit
   = "ml_gtk_text_view_set_extra_menu"
 (** Sets a menu model to add when constructing the context menu for [text_view].
 
-    You can pass [NULL] to remove a previously set extra menu. *)
+    You can pass [None] to remove a previously set extra menu. *)
 
 external set_editable : t -> bool -> unit = "ml_gtk_text_view_set_editable"
 (** Sets the default editability of the [GtkTextView].
@@ -255,8 +255,8 @@ external set_accepts_tab : t -> bool -> unit
   = "ml_gtk_text_view_set_accepts_tab"
 (** Sets the behavior of the text widget when the <kbd>Tab</kbd> key is pressed.
 
-    If [accepts_tab] is [TRUE], a tab character is inserted. If [accepts_tab] is
-    [FALSE] the keyboard focus is moved to the next widget in the focus chain.
+    If [accepts_tab] is [true], a tab character is inserted. If [accepts_tab] is
+    [false] the keyboard focus is moved to the next widget in the focus chain.
 
     Focus can always be moved using <kbd>Ctrl</kbd>+<kbd>Tab</kbd>. *)
 
@@ -274,7 +274,7 @@ external scroll_to_mark :
     indicated by [xalign] and [yalign].
 
     An alignment of 0.0 indicates left or top, 1.0 indicates right or bottom,
-    0.5 means center. If [use_align] is [FALSE], the text scrolls the minimal
+    0.5 means center. If [use_align] is [false], the text scrolls the minimal
     distance to get the mark onscreen, possibly not scrolling at all. The
     effective screen for purposes of this function is reduced by a margin of
     size [within_margin]. *)
@@ -293,7 +293,7 @@ external scroll_to_iter :
     indicated by [xalign] and [yalign].
 
     An alignment of 0.0 indicates left or top, 1.0 indicates right or bottom,
-    0.5 means center. If [use_align] is [FALSE], the text scrolls the minimal
+    0.5 means center. If [use_align] is [false], the text scrolls the minimal
     distance to get the mark onscreen, possibly not scrolling at all. The
     effective screen for purposes of this function is reduced by a margin of
     size [within_margin].
@@ -375,7 +375,7 @@ external im_context_filter_keypress : t -> Ocgdk_raw.Event.t -> bool
 (** Allow the [GtkTextView] input method to internally handle key press and
     release events.
 
-    If this function returns [TRUE], then no further processing should be done
+    If this function returns [true], then no further processing should be done
     for this key event. See [Gtk.IMContext.filter_keypress].
 
     Note that you are expected to call this function from your handler when
@@ -436,7 +436,7 @@ external get_tabs : t -> Ocpango_raw.Tab_array.t option
 (** Gets the default tabs for [text_view].
 
     Tags in the buffer may override the defaults. The returned array will be
-    [NULL] if “standard” (8-space) tabs are used. Free the return value with
+    [None] if “standard” (8-space) tabs are used. Free the return value with
     [Pango.TabArray.free]. *)
 
 external get_rtl_context : t -> Ocpango_raw.Context.t
@@ -499,7 +499,7 @@ external get_line_at_y :
     [y].
 
     [y] is in buffer coordinates, convert from window coordinates with
-    [Gtk.TextView.window_to_buffer_coords]. If non-[NULL], [line_top] will be
+    [Gtk.TextView.window_to_buffer_coords]. If non-[None], [line_top] will be
     filled with the coordinate of the top edge of the line. *)
 
 external get_left_margin : t -> int = "ml_gtk_text_view_get_left_margin"
@@ -583,7 +583,7 @@ external get_gutter :
 
 external get_extra_menu : t -> Ocgio_raw.Menu_model.t
   = "ml_gtk_text_view_get_extra_menu"
-(** Gets the menu model that gets added to the context menu or [NULL] if none
+(** Gets the menu model that gets added to the context menu or [None] if none
     has been set. *)
 
 external get_editable : t -> bool = "ml_gtk_text_view_get_editable"
@@ -608,7 +608,7 @@ external get_cursor_locations :
     location is the location where characters of the directionality opposite to
     the base direction of the paragraph are inserted.
 
-    If [iter] is [NULL], the actual cursor position is used.
+    If [iter] is [None], the actual cursor position is used.
 
     Note that if [iter] happens to be the actual cursor position, and there is
     currently an IM preedit sequence being entered, the returned locations will
@@ -722,7 +722,7 @@ external get_im_module : t -> string = "ml_gtk_text_view_get_im_module"
 
     See [Gtk.IMMulticontext].
 
-    Setting this to a non-[NULL] value overrides the system-wide IM module
+    Setting this to a non-[None] value overrides the system-wide IM module
     setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)
 
 external set_im_module : t -> string -> unit = "ml_gtk_text_view_set_im_module"
@@ -730,7 +730,7 @@ external set_im_module : t -> string -> unit = "ml_gtk_text_view_set_im_module"
 
     See [Gtk.IMMulticontext].
 
-    Setting this to a non-[NULL] value overrides the system-wide IM module
+    Setting this to a non-[None] value overrides the system-wide IM module
     setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)
 
 val on_backspace :

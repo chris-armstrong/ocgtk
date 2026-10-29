@@ -29,7 +29,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_color_dialog_button_get_type"
 external new_ : Color_dialog.t option -> t = "ml_gtk_color_dialog_button_new"
 (** Creates a new [GtkColorDialogButton] with the given [GtkColorDialog].
 
-    You can pass [NULL] to this function and set a [GtkColorDialog] later. The
+    You can pass [None] to this function and set a [GtkColorDialog] later. The
     button will be insensitive until that happens. *)
 
 (* Methods *)

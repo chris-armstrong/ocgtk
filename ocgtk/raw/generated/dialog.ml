@@ -154,7 +154,7 @@ external get_header_bar : t -> Header_bar.t = "ml_gtk_dialog_get_header_bar"
 (** Returns the header bar of [dialog].
 
     Note that the headerbar is only used by the dialog if the
-    [Gtk.Dialog:use-header-bar] property is [TRUE]. *)
+    [Gtk.Dialog:use-header-bar] property is [true]. *)
 
 external get_content_area : t -> Box.t = "ml_gtk_dialog_get_content_area"
 (** Returns the content area of [dialog]. *)
@@ -193,10 +193,10 @@ external add_action_widget :
 
 external get_use_header_bar : t -> int = "ml_gtk_dialog_get_use_header_bar"
 [@@ocaml.doc
-  "[TRUE] if the dialog uses a headerbar for action buttons\n\
+  "[true] if the dialog uses a headerbar for action buttons\n\
    instead of the action-area.\n\n\
    For technical reasons, this property is declared as an integer\n\
-   property, but you should only set it to [TRUE] or [FALSE].\n\n\
+   property, but you should only set it to [true] or [false].\n\n\
    {b Creating a dialog with headerbar}\n\n\
    Builtin [GtkDialog] subclasses such as [Gtk.ColorChooserDialog]\n\
    set this property according to platform conventions (using the\n\

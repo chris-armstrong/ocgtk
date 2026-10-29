@@ -93,7 +93,7 @@ class type native_dialog_t = object
       This allows window managers to e.g. keep the dialog on top of the main
       window, or center the dialog over the main window.
 
-      Passing [NULL] for [parent] unsets the current transient window. *)
+      Passing [None] for [parent] unsets the current transient window. *)
 
   method show : unit -> unit
   (** Shows the dialog on the display.

@@ -42,7 +42,7 @@ class type application_command_line_t = object
       contain non-utf8 data.
 
       It is possible that the remote application did not send a working
-      directory, so this may be [NULL].
+      directory, so this may be [None].
 
       The return value should not be modified or freed and is valid for as long
       as [cmdline] exists. *)
@@ -50,8 +50,8 @@ class type application_command_line_t = object
   method get_environ : unit -> string array
   (** Gets the contents of the 'environ' variable of the command line
       invocation, as would be returned by g_get_environ(), ie as a
-      [NULL]-terminated list of strings in the form 'NAME=VALUE'. The strings
-      may contain non-utf8 data.
+      null-terminated list of strings in the form 'NAME=VALUE'. The strings may
+      contain non-utf8 data.
 
       The remote application usually does not send an environment. Use
       [G_APPLICATION_SEND_ENVIRONMENT] to affect that. Even with this flag set
@@ -81,7 +81,7 @@ class type application_command_line_t = object
       It comes from an untrusted external process and hence the types of all
       values must be validated before being used.
 
-      For local invocation, it will be [NULL]. *)
+      For local invocation, it will be [None]. *)
 
   method get_stdin : unit -> Input_stream.input_stream_t option
   (** Gets the stdin of the invoking process.
@@ -89,7 +89,7 @@ class type application_command_line_t = object
       The [GInputStream] can be used to read data passed to the standard input
       of the invoking process. This doesn't work on all platforms. Presently, it
       is only available on UNIX when using a D-Bus daemon capable of passing
-      file descriptors. If stdin is not available then [NULL] will be returned.
+      file descriptors. If stdin is not available then [None] will be returned.
       In the future, support may be expanded to other platforms.
 
       You must only call this function once per commandline invocation. *)

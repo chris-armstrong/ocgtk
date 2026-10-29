@@ -58,7 +58,7 @@ class type application_t = object
 
   method bind_busy_property : [ `object_ ] Gobject.obj -> string -> unit
   (** Marks [application] as busy (see g_application_mark_busy()) while
-      [property] on [object] is [TRUE].
+      [property] on [object] is [true].
 
       The binding holds a reference to [application] while it is active, but not
       to [object]. Instead, the binding is destroyed when [object] is finalized.
@@ -69,21 +69,21 @@ class type application_t = object
 
   method get_dbus_connection :
     unit -> D_bus_connection.d_bus_connection_t option
-  (** Gets the [GDBusConnection] being used by the application, or [NULL].
+  (** Gets the [GDBusConnection] being used by the application, or [None].
 
       If [GApplication] is using its D-Bus backend then this function will
       return the [GDBusConnection] being used for uniqueness and communication
       with the desktop environment and other instances of the application.
 
       If [GApplication] is not using D-Bus then this function will return
-      [NULL]. This includes the situation where the D-Bus backend would normally
+      [None]. This includes the situation where the D-Bus backend would normally
       be in use but we were unable to connect to the bus.
 
       This function must not be called before the application has been
       registered. See g_application_get_is_registered(). *)
 
   method get_dbus_object_path : unit -> string option
-  (** Gets the D-Bus object path being used by the application, or [NULL].
+  (** Gets the D-Bus object path being used by the application, or [None].
 
       If [GApplication] is using its D-Bus backend then this function will
       return the D-Bus object path that [GApplication] is using. If the
@@ -92,7 +92,7 @@ class type application_t = object
       of this function is undefined.
 
       If [GApplication] is not using D-Bus then this function will return
-      [NULL]. This includes the situation where the D-Bus backend would normally
+      [None]. This includes the situation where the D-Bus backend would normally
       be in use but we were unable to connect to the bus.
 
       This function must not be called before the application has been
@@ -205,14 +205,14 @@ class type application_t = object
       must ensure that any object paths that you wish to register are registered
       before calling this function.
 
-      If the application has already been registered then [TRUE] is returned
+      If the application has already been registered then [true] is returned
       with no work performed.
 
       The [GApplication::startup] signal is emitted if registration succeeds and
       [application] is the primary instance (including the non-unique case).
 
       In the event of an error (such as [cancellable] being cancelled, or a
-      failure to connect to the session bus), [FALSE] is returned and [error] is
+      failure to connect to the session bus), [false] is returned and [error] is
       set appropriately.
 
       Note: the return value of this function is not an indicator that this
@@ -233,7 +233,7 @@ class type application_t = object
      This function is intended to be run from main() and its return value\n\
      is intended to be returned by main(). Although you are expected to pass\n\
      the [argc], [argv] parameters from main() to this function, it is possible\n\
-     to pass [NULL] if [argv] is not available or commandline handling is not\n\
+     to pass [None] if [argv] is not available or commandline handling is not\n\
      required.  Note that on Windows, [argc] and [argv] are ignored, and\n\
      g_win32_get_command_line() is called internally (for proper support\n\
      of Unicode commandline arguments).\n\n\
@@ -260,7 +260,7 @@ class type application_t = object
      If you are interested in doing more complicated local handling of the\n\
      commandline then you should implement your own [GApplication] subclass\n\
      and override local_command_line(). In this case, you most likely want\n\
-     to return [TRUE] from your local_command_line() implementation to\n\
+     to return [true] from your local_command_line() implementation to\n\
      suppress the default handling. See\n\
      \\[gapplication-example-cmdline2.c\\]\\[https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline2.c\\]\n\
      for an example.\n\n\
@@ -314,7 +314,7 @@ class type application_t = object
      replaced with [notification] and shown again as if it was a new\n\
      notification. This works even for notifications sent from a previous\n\
      execution of the application, as long as [id] is the same string.\n\n\
-     [id] may be [NULL], but it is impossible to replace or withdraw\n\
+     [id] may be [None], but it is impossible to replace or withdraw\n\
      notifications without an id.\n\n\
      If [notification] is no longer relevant, it can be withdrawn with\n\
      [Gio.Application.withdraw_notification].\n\n\
@@ -331,7 +331,7 @@ class type application_t = object
       The application id can only be modified if [application] has not yet been
       registered.
 
-      If non-[NULL], the application id must be valid. See
+      If non-[None], the application id must be valid. See
       g_application_id_is_valid(). *)
 
   method set_default : unit -> unit
@@ -340,7 +340,7 @@ class type application_t = object
 
       This function does not take its own reference on [application]. If
       [application] is destroyed then the default application will revert back
-      to [NULL]. *)
+      to [None]. *)
 
   method set_flags : Enums.applicationflags -> unit
   (** Sets the flags for [application].
@@ -401,7 +401,7 @@ class type application_t = object
      See [GResource] for more information about adding resources to your\n\
      application.\n\n\
      You can disable automatic resource loading functionality by setting\n\
-     the path to [NULL].\n\n\
+     the path to [None].\n\n\
      Changing the resource base path once the application is running is\n\
      not recommended.  The point at which the resource path is consulted\n\
      for forming paths for various purposes is unspecified.  When writing\n\
@@ -680,7 +680,7 @@ class application : Raw.Application.t -> application_t
 val new_ : string option -> Enums.applicationflags -> application_t
 (** Creates a new [GApplication] instance.
 
-    If non-[NULL], the application id must be valid. See
+    If non-[None], the application id must be valid. See
     g_application_id_is_valid().
 
     If no application ID is given then some features of [GApplication] (most

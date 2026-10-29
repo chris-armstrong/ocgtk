@@ -94,7 +94,7 @@ and cairo_context_t = object
       [context].
 
       A call to [Gdk.DrawContext.begin_frame] with this [context] must have been
-      done or this function will return [NULL].
+      done or this function will return [None].
 
       The returned context is guaranteed to be valid until
       [Gdk.DrawContext.end_frame] is called. *)
@@ -134,7 +134,7 @@ and clipboard_t = object
   (** Returns the [GdkContentProvider] currently set on [clipboard].
 
       If the [clipboard] is empty or its contents are not owned by the current
-      process, [NULL] will be returned. *)
+      process, [None] will be returned. *)
 
   method get_display : unit -> display_t
   (** Gets the [GdkDisplay] that the clipboard was created for. *)
@@ -149,7 +149,7 @@ and clipboard_t = object
       A clipboard is considered local if it was last claimed by the running
       application.
 
-      Note that [Gdk.Clipboard.get_content] may return [NULL] even on a local
+      Note that [Gdk.Clipboard.get_content] may return [None] even on a local
       clipboard. In this case the clipboard is empty. *)
 
   method read_text_finish :
@@ -177,7 +177,7 @@ and clipboard_t = object
       The clipboard will claim the [GdkDisplay]'s resources and advertise these
       new contents to other applications.
 
-      In the rare case of a failure, this function will return [FALSE]. The
+      In the rare case of a failure, this function will return [false]. The
       clipboard will then continue reporting its old contents and ignore
       [provider].
 
@@ -422,7 +422,7 @@ and display_t = object
       [Gdk.GLContext.make_current] or [Gdk.GLContext.realize]. *)
 
   method device_is_grabbed : device_t -> bool
-  (** Returns [TRUE] if there is an ongoing grab on [device] for [display]. *)
+  (** Returns [true] if there is an ongoing grab on [device] for [display]. *)
 
   method flush : unit -> unit
   (** Flushes any requests queued for the windowing system.
@@ -448,7 +448,7 @@ and display_t = object
   (** Returns the default [GdkSeat] for this display.
 
       Note that a display may not have a seat. In this case, this function will
-      return [NULL]. *)
+      return [None]. *)
 
   method get_dmabuf_formats : unit -> Raw.Dmabuf_formats.t
   (** Returns the dma-buf formats that are supported on this display.
@@ -489,7 +489,7 @@ and display_t = object
       [display]. *)
 
   method get_startup_notification_id : unit -> string option
-  (** Gets the startup notification ID for a Wayland display, or [NULL] if no ID
+  (** Gets the startup notification ID for a Wayland display, or [None] if no ID
       has been defined. *)
 
   method is_closed : unit -> bool
@@ -505,19 +505,19 @@ and display_t = object
       On X11 this function returns whether a compositing manager is compositing
       on [display].
 
-      On modern displays, this value is always [TRUE]. *)
+      On modern displays, this value is always [true]. *)
 
   method is_rgba : unit -> bool
   (** Returns whether surfaces on this [display] are created with an alpha
       channel.
 
-      Even if a [TRUE] is returned, it is possible that the surface’s alpha
+      Even if a [true] is returned, it is possible that the surface’s alpha
       channel won’t be honored when displaying the surface on the screen: in
       particular, for X an appropriate windowing manager and compositing manager
       must be running to provide appropriate display. Use
       [Gdk.Display.is_composited] to check if that is the case.
 
-      On modern displays, this value is always [TRUE]. *)
+      On modern displays, this value is always [true]. *)
 
   method list_seats : unit -> seat_t list
   (** Returns the list of seats known to [display]. *)
@@ -534,7 +534,7 @@ and display_t = object
   method prepare_gl : unit -> (bool, GError.t) result
   (** Checks that OpenGL is available for [self] and ensures that it is properly
       initialized. When this fails, an [error] will be set describing the error
-      and this function returns [FALSE].
+      and this function returns [false].
 
       Note that even if this function succeeds, creating a [GdkGLContext] may
       still fail.
@@ -550,19 +550,19 @@ and display_t = object
   (** Adds the given event to the event queue for [display]. *)
 
   method supports_input_shapes : unit -> bool
-  (** Returns [TRUE] if the display supports input shapes.
+  (** Returns [true] if the display supports input shapes.
 
       This means that [Gdk.Surface.set_input_region] can be used to modify the
       input shape of surfaces on [display].
 
-      On modern displays, this value is always [TRUE]. *)
+      On modern displays, this value is always [true]. *)
 
   method supports_shadow_width : unit -> bool
   (** Returns whether it's possible for a surface to draw outside of the window
       area.
 
-      If [TRUE] is returned the application decides if it wants to draw shadows.
-      If [FALSE] is returned, the compositor decides if it wants to draw
+      If [true] is returned the application decides if it wants to draw shadows.
+      If [false] is returned, the compositor decides if it wants to draw
       shadows. *)
 
   method sync : unit -> unit
@@ -642,13 +642,13 @@ and draw_context_t = object
       that the [context] determined needs to be repainted.
 
       If [context] is not in between calls to [Gdk.DrawContext.begin_frame] and
-      [Gdk.DrawContext.end_frame], [NULL] will be returned. *)
+      [Gdk.DrawContext.end_frame], [None] will be returned. *)
 
   method get_surface : unit -> surface_t option
   (** Retrieves the surface that [context] is bound to. *)
 
   method is_in_frame : unit -> bool
-  (** Returns [TRUE] if [context] is in the process of drawing to its surface.
+  (** Returns [true] if [context] is in the process of drawing to its surface.
 
       This is the case between calls to [Gdk.DrawContext.begin_frame] and
       [Gdk.DrawContext.end_frame]. In this situation, drawing commands may be
@@ -678,7 +678,7 @@ and event_t = object
   (** Returns a [GdkDeviceTool] representing the tool that caused the event.
 
       If the was not generated by a device that supports different tools (such
-      as a tablet), this function will return [NULL].
+      as a tablet), this function will return [None].
 
       Note: the [GdkDeviceTool] will be constant during the application
       lifetime, if settings must be stored persistently across runs, see
@@ -768,7 +768,7 @@ and gl_context_t = object
   (** Used to retrieves the [GdkGLContext] that this [context] share data with.
 
       As many contexts can share data now and no single shared context exists
-      anymore, this function has been deprecated and now always returns [NULL].
+      anymore, this function has been deprecated and now always returns [None].
   *)
 
   method get_use_es : unit -> bool
@@ -782,11 +782,11 @@ and gl_context_t = object
       When realizing a GL context, GDK will try to use the OpenGL 3.2 core
       profile; this profile removes all the OpenGL API that was deprecated prior
       to the 3.2 version of the specification. If the realization is successful,
-      this function will return [FALSE].
+      this function will return [false].
 
       If the underlying OpenGL implementation does not support core profiles,
       GDK will fall back to a pre-3.2 compatibility profile, and this function
-      will return [TRUE].
+      will return [true].
 
       You can use the value returned by this function to decide which kind of
       OpenGL API to use, or whether to do extension discovery, or what kind of
@@ -804,7 +804,7 @@ and gl_context_t = object
       contexts it depends on the GL backend.
 
       Both contexts must be realized for this check to succeed. If either one is
-      not, this function will return [FALSE]. *)
+      not, this function will return [false]. *)
 
   method make_current : unit -> unit
   (** Makes the [context] the current one. *)
@@ -889,7 +889,7 @@ end
      in the draw function of your widget to draw them. Then GDK will handle\n\
      the integration of your rendering with that of other widgets.\n\n\
      Support for [GdkGLContext] is platform-specific and context creation\n\
-     can fail, returning [NULL] context.\n\n\
+     can fail, returning [None] context.\n\n\
      A [GdkGLContext] has to be made \"current\" in order to start using\n\
      it, otherwise any OpenGL call will be ignored.\n\n\
      {b Creating a new OpenGL context}\n\n\
@@ -995,7 +995,7 @@ and monitor_t = object
   (** Gets the width in millimeters of the monitor. *)
 
   method is_valid : unit -> bool
-  (** Returns [TRUE] if the [monitor] object corresponds to a physical monitor.
+  (** Returns [true] if the [monitor] object corresponds to a physical monitor.
 
       The [monitor] becomes invalid when the physical monitor is unplugged or
       removed. *)
@@ -1154,7 +1154,7 @@ and surface_t = object
       error occurs. *)
 
   method create_vulkan_context : unit -> (vulkan_context_t, GError.t) result
-  (** Sets an error and returns [NULL]. *)
+  (** Sets an error and returns [None]. *)
 
   method destroy : unit -> unit
   (** Destroys the window system resources associated with [surface] and
@@ -1171,7 +1171,7 @@ and surface_t = object
   (** Retrieves a [GdkCursor] pointer for the cursor currently set on the
       [GdkSurface].
 
-      If the return value is [NULL] then there is no custom cursor set on the
+      If the return value is [None] then there is no custom cursor set on the
       surface, and it is using the cursor for its parent surface.
 
       Use [Gdk.Surface.set_cursor] to unset the cursor of the surface. *)
@@ -1180,7 +1180,7 @@ and surface_t = object
   (** Retrieves a [GdkCursor] pointer for the [device] currently set on the
       specified [GdkSurface].
 
-      If the return value is [NULL] then there is no custom cursor set on the
+      If the return value is [None] then there is no custom cursor set on the
       specified surface, and it is using the cursor for its parent surface.
 
       Use [Gdk.Surface.set_cursor] to unset the cursor of the surface. *)
@@ -1262,7 +1262,7 @@ and surface_t = object
   method set_cursor : Cursor.cursor_t option -> unit
   (** Sets the default mouse pointer for a [GdkSurface].
 
-      Passing [NULL] for the [cursor] argument means that [surface] will use the
+      Passing [None] for the [cursor] argument means that [surface] will use the
       cursor of its parent surface. Most surfaces should use this default. Note
       that [cursor] must be for the same display as [surface].
 
@@ -1273,7 +1273,7 @@ and surface_t = object
   (** Sets a specific [GdkCursor] for a given device when it gets inside
       [surface].
 
-      Passing [NULL] for the [cursor] argument means that [surface] will use the
+      Passing [None] for the [cursor] argument means that [surface] will use the
       cursor of its parent surface. Most surfaces should use this default.
 
       Use [Gdk.Cursor.new_from_name] or [Gdk.Cursor.new_from_texture] to create
@@ -1326,7 +1326,7 @@ end
     characteristics of the surface.
 
     Support for [GdkVulkanContext] is platform-specific and context creation can
-    fail, returning [NULL] context. *)
+    fail, returning [None] context. *)
 and vulkan_context_t = object
   (** {2:signals Signals} *)
 

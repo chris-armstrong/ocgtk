@@ -49,11 +49,11 @@ class type resolver_t = object
   (** Synchronously reverse-resolves [address] to determine its associated
       hostname.
 
-      If the DNS resolution fails, [error] (if non-[NULL]) will be set to a
+      If the DNS resolution fails, [error] (if non-[None]) will be set to a
       value from [GResolverError].
 
-      If [cancellable] is non-[NULL], it can be used to cancel the operation, in
-      which case [error] (if non-[NULL]) will be set to [G_IO_ERROR_CANCELLED].
+      If [cancellable] is non-[None], it can be used to cancel the operation, in
+      which case [error] (if non-[None]) will be set to [G_IO_ERROR_CANCELLED].
   *)
 
   method lookup_by_address_finish :
@@ -61,7 +61,7 @@ class type resolver_t = object
   (** Retrieves the result of a previous call to
       g_resolver_lookup_by_address_async().
 
-      If the DNS resolution failed, [error] (if non-[NULL]) will be set to a
+      If the DNS resolution failed, [error] (if non-[None]) will be set to a
       value from [GResolverError]. If the operation was cancelled, [error] will
       be set to [G_IO_ERROR_CANCELLED]. *)
 
@@ -82,11 +82,11 @@ class type resolver_t = object
       socket, it is appropriate to add each result using e.g.
       g_socket_listener_add_address().
 
-      If the DNS resolution fails, [error] (if non-[NULL]) will be set to a
-      value from [GResolverError] and [NULL] will be returned.
+      If the DNS resolution fails, [error] (if non-[None]) will be set to a
+      value from [GResolverError] and [None] will be returned.
 
-      If [cancellable] is non-[NULL], it can be used to cancel the operation, in
-      which case [error] (if non-[NULL]) will be set to [G_IO_ERROR_CANCELLED].
+      If [cancellable] is non-[None], it can be used to cancel the operation, in
+      which case [error] (if non-[None]) will be set to [G_IO_ERROR_CANCELLED].
 
       If you are planning to connect to a socket on the resolved IP address, it
       may be easier to create a [GNetworkAddress] and use its
@@ -97,7 +97,7 @@ class type resolver_t = object
     (Inet_address.inet_address_t list, GError.t) result
   (** Retrieves the result of a call to g_resolver_lookup_by_name_async().
 
-      If the DNS resolution failed, [error] (if non-[NULL]) will be set to a
+      If the DNS resolution failed, [error] (if non-[None]) will be set to a
       value from [GResolverError]. If the operation was cancelled, [error] will
       be set to [G_IO_ERROR_CANCELLED]. *)
 
@@ -116,7 +116,7 @@ class type resolver_t = object
   (** Retrieves the result of a call to
       g_resolver_lookup_by_name_with_flags_async().
 
-      If the DNS resolution failed, [error] (if non-[NULL]) will be set to a
+      If the DNS resolution failed, [error] (if non-[None]) will be set to a
       value from [GResolverError]. If the operation was cancelled, [error] will
       be set to [G_IO_ERROR_CANCELLED]. *)
 
@@ -129,11 +129,11 @@ class type resolver_t = object
       returns a list of records as [GVariant] tuples. See [GResolverRecordType]
       for information on what the records contain for each [record_type].
 
-      If the DNS resolution fails, [error] (if non-[NULL]) will be set to a
-      value from [GResolverError] and [NULL] will be returned.
+      If the DNS resolution fails, [error] (if non-[None]) will be set to a
+      value from [GResolverError] and [None] will be returned.
 
-      If [cancellable] is non-[NULL], it can be used to cancel the operation, in
-      which case [error] (if non-[NULL]) will be set to [G_IO_ERROR_CANCELLED].
+      If [cancellable] is non-[None], it can be used to cancel the operation, in
+      which case [error] (if non-[None]) will be set to [G_IO_ERROR_CANCELLED].
   *)
 
   method lookup_records_finish :
@@ -143,7 +143,7 @@ class type resolver_t = object
       [GVariant] tuples. See [GResolverRecordType] for information on what the
       records contain.
 
-      If the DNS resolution failed, [error] (if non-[NULL]) will be set to a
+      If the DNS resolution failed, [error] (if non-[None]) will be set to a
       value from [GResolverError]. If the operation was cancelled, [error] will
       be set to [G_IO_ERROR_CANCELLED]. *)
 
@@ -164,11 +164,11 @@ class type resolver_t = object
       to connect to the first target first, then the second if the first fails,
       etc.)
 
-      If the DNS resolution fails, [error] (if non-[NULL]) will be set to a
-      value from [GResolverError] and [NULL] will be returned.
+      If the DNS resolution fails, [error] (if non-[None]) will be set to a
+      value from [GResolverError] and [None] will be returned.
 
-      If [cancellable] is non-[NULL], it can be used to cancel the operation, in
-      which case [error] (if non-[NULL]) will be set to [G_IO_ERROR_CANCELLED].
+      If [cancellable] is non-[None], it can be used to cancel the operation, in
+      which case [error] (if non-[None]) will be set to [G_IO_ERROR_CANCELLED].
 
       If you are planning to connect to the service, it is usually easier to
       create a [GNetworkService] and use its [GSocketConnectable] interface. *)
@@ -178,7 +178,7 @@ class type resolver_t = object
   (** Retrieves the result of a previous call to
       g_resolver_lookup_service_async().
 
-      If the DNS resolution failed, [error] (if non-[NULL]) will be set to a
+      If the DNS resolution failed, [error] (if non-[None]) will be set to a
       value from [GResolverError]. If the operation was cancelled, [error] will
       be set to [G_IO_ERROR_CANCELLED]. *)
 

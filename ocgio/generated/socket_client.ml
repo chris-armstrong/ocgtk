@@ -16,10 +16,10 @@ class type socket_client_t = object
       are as follows:
 
       - [G_SOCKET_CLIENT_RESOLVING]: [client] is about to look up [connectable]
-        in DNS. [connection] will be [NULL].
+        in DNS. [connection] will be [None].
 
       - [G_SOCKET_CLIENT_RESOLVED]: [client] has successfully resolved
-        [connectable] in DNS. [connection] will be [NULL].
+        [connectable] in DNS. [connection] will be [None].
 
       - [G_SOCKET_CLIENT_CONNECTING]: [client] is about to make a connection to
         a remote host; either a proxy server or the destination server itself.
@@ -48,7 +48,7 @@ class type socket_client_t = object
       - [G_SOCKET_CLIENT_COMPLETE]: [client] has either successfully connected
         to [connectable] (in which case [connection] is the [GSocketConnection]
         that it will be returning to the caller) or has failed (in which case
-        [connection] is [NULL] and the client is about to return an error).
+        [connection] is [None] and the client is about to return an error).
 
       Each event except [G_SOCKET_CLIENT_COMPLETE] may be emitted multiple times
       (or not at all) for a given connectable (in particular, if [client] ends
@@ -145,7 +145,7 @@ class type socket_client_t = object
       it when finished with it.
 
       In the event of any failure (DNS error, service not found, no hosts
-      connectable) [NULL] is returned and [error] (if non-[NULL]) is set
+      connectable) [None] is returned and [error] (if non-[None]) is set
       accordingly. *)
 
   method connect_to_host_finish :
@@ -169,7 +169,7 @@ class type socket_client_t = object
      and returned.  The caller owns this new object and must drop their\n\
      reference to it when finished with it.\n\n\
      In the event of any failure (DNS error, service not found, no hosts\n\
-     connectable) [NULL] is returned and [error] (if non-[NULL]) is set\n\
+     connectable) [None] is returned and [error] (if non-[None]) is set\n\
      accordingly."]
 
   method connect_to_service_finish :
@@ -188,7 +188,7 @@ class type socket_client_t = object
      Attempts to create a TCP connection with a network URI.\n\n\
      [uri] may be any valid URI containing an \"authority\" (hostname/port)\n\
      component. If a port is not specified in the URI, [default_port]\n\
-     will be used. TLS will be negotiated if [GSocketClient:tls] is [TRUE].\n\
+     will be used. TLS will be negotiated if [GSocketClient:tls] is [true].\n\
      ([GSocketClient] does not know to automatically assume TLS for\n\
      certain URI schemes.)\n\n\
      Using this rather than g_socket_client_connect() or\n\
@@ -198,7 +198,7 @@ class type socket_client_t = object
      and returned.  The caller owns this new object and must drop their\n\
      reference to it when finished with it.\n\n\
      In the event of any failure (DNS error, service not found, no hosts\n\
-     connectable) [NULL] is returned and [error] (if non-[NULL]) is set\n\
+     connectable) [None] is returned and [error] (if non-[None]) is set\n\
      accordingly."]
 
   method connect_to_uri_finish :
@@ -270,7 +270,7 @@ class type socket_client_t = object
 
   method set_local_address : Socket_address.socket_address_t option -> unit
   (** Sets the local address of the socket client. The sockets created by this
-      object will bound to the specified address (if not [NULL]) before
+      object will bound to the specified address (if not [None]) before
       connecting.
 
       This is useful if you want to ensure that the local side of the connection
@@ -290,7 +290,7 @@ class type socket_client_t = object
 
       Note that whether or not the proxy resolver is actually used depends on
       the setting of [GSocketClient:enable]-proxy, which is not changed by this
-      function (but which is [TRUE] by default) *)
+      function (but which is [true] by default) *)
 
   method set_socket_type : Enums.sockettype -> unit
   (** Sets the socket type of the socket client. The sockets created by this
@@ -309,7 +309,7 @@ class type socket_client_t = object
 
   method set_tls : bool -> unit
   (** Sets whether [client] creates TLS (aka SSL) connections. If [tls] is
-      [TRUE], [client] will wrap its connections in a [GTlsClientConnection] and
+      [true], [client] will wrap its connections in a [GTlsClientConnection] and
       perform a TLS handshake when connecting.
 
       Note that since [GSocketClient] must return a [GSocketConnection], but

@@ -228,11 +228,11 @@ external add_action_widget :
 (* Properties *)
 
 external get_use_header_bar : t -> int = "ml_gtk_assistant_get_use_header_bar"
-(** [TRUE] if the assistant uses a [GtkHeaderBar] for action buttons instead of
+(** [true] if the assistant uses a [GtkHeaderBar] for action buttons instead of
     the action-area.
 
     For technical reasons, this property is declared as an integer property, but
-    you should only set it to [TRUE] or [FALSE]. *)
+    you should only set it to [true] or [false]. *)
 
 val on_apply :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

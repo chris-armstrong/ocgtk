@@ -92,7 +92,7 @@ class type mount_operation_t = object
 
   method set_anonymous : bool -> unit
   (** Sets the mount operation to use an anonymous user if [anonymous] is
-      [TRUE]. *)
+      [true]. *)
 
   method set_choice : int -> unit
   (** Sets a default choice for the mount operation. *)
@@ -102,11 +102,11 @@ class type mount_operation_t = object
 
   method set_is_tcrypt_hidden_volume : bool -> unit
   (** Sets the mount operation to use a hidden volume if [hidden_volume] is
-      [TRUE]. *)
+      [true]. *)
 
   method set_is_tcrypt_system_volume : bool -> unit
   (** Sets the mount operation to use a system volume if [system_volume] is
-      [TRUE]. *)
+      [true]. *)
 
   method set_password : string option -> unit
   (** Sets the mount operation's password to [password]. *)

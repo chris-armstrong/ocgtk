@@ -35,7 +35,7 @@ external set_tls_validation_flags : t -> Ocgio_enums.tlscertificateflags -> unit
     correctly. See [GSocketClient:tls]-validation-flags for more information. *)
 
 external set_tls : t -> bool -> unit = "ml_g_socket_client_set_tls"
-(** Sets whether [client] creates TLS (aka SSL) connections. If [tls] is [TRUE],
+(** Sets whether [client] creates TLS (aka SSL) connections. If [tls] is [true],
     [client] will wrap its connections in a [GTlsClientConnection] and perform a
     TLS handshake when connecting.
 
@@ -76,7 +76,7 @@ external set_proxy_resolver : t -> Proxy_resolver.t option -> unit
 
     Note that whether or not the proxy resolver is actually used depends on the
     setting of [GSocketClient:enable]-proxy, which is not changed by this
-    function (but which is [TRUE] by default) *)
+    function (but which is [true] by default) *)
 
 external set_protocol : t -> Ocgio_enums.socketprotocol -> unit
   = "ml_g_socket_client_set_protocol"
@@ -94,7 +94,7 @@ external set_local_address :
   option ->
   unit = "ml_g_socket_client_set_local_address"
 (** Sets the local address of the socket client. The sockets created by this
-    object will bound to the specified address (if not [NULL]) before
+    object will bound to the specified address (if not [None]) before
     connecting.
 
     This is useful if you want to ensure that the local side of the connection
@@ -192,7 +192,7 @@ external connect_to_uri :
    Attempts to create a TCP connection with a network URI.\n\n\
    [uri] may be any valid URI containing an \"authority\" (hostname/port)\n\
    component. If a port is not specified in the URI, [default_port]\n\
-   will be used. TLS will be negotiated if [GSocketClient:tls] is [TRUE].\n\
+   will be used. TLS will be negotiated if [GSocketClient:tls] is [true].\n\
    ([GSocketClient] does not know to automatically assume TLS for\n\
    certain URI schemes.)\n\n\
    Using this rather than g_socket_client_connect() or\n\
@@ -202,7 +202,7 @@ external connect_to_uri :
    and returned.  The caller owns this new object and must drop their\n\
    reference to it when finished with it.\n\n\
    In the event of any failure (DNS error, service not found, no hosts\n\
-   connectable) [NULL] is returned and [error] (if non-[NULL]) is set\n\
+   connectable) [None] is returned and [error] (if non-[None]) is set\n\
    accordingly."]
 
 external connect_to_service_finish :
@@ -230,7 +230,7 @@ external connect_to_service :
    and returned.  The caller owns this new object and must drop their\n\
    reference to it when finished with it.\n\n\
    In the event of any failure (DNS error, service not found, no hosts\n\
-   connectable) [NULL] is returned and [error] (if non-[NULL]) is set\n\
+   connectable) [None] is returned and [error] (if non-[None]) is set\n\
    accordingly."]
 
 external connect_to_host_finish :
@@ -276,7 +276,7 @@ external connect_to_host :
     it when finished with it.
 
     In the event of any failure (DNS error, service not found, no hosts
-    connectable) [NULL] is returned and [error] (if non-[NULL]) is set
+    connectable) [None] is returned and [error] (if non-[None]) is set
     accordingly. *)
 
 external connect_finish :

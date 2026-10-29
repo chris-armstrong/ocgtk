@@ -31,7 +31,7 @@ class type drag_source_t = object
   [@@ocaml.doc
     "Emitted on the drag source when a drag has failed.\n\n\
      The signal handler may handle a failed drag operation based on\n\
-     the type of error. It should return [TRUE] if the failure has been handled\n\
+     the type of error. It should return [true] if the failure has been handled\n\
      and the default \"drag operation failed\" animation should not be shown."]
 
   method on_drag_end :
@@ -76,7 +76,7 @@ class type drag_source_t = object
 
       During a DND operation, the actions are offered to potential drop targets.
       If [actions] include [GDK_ACTION_MOVE], you need to listen to the
-      [Gtk.DragSource::drag-end] signal and handle [delete_data] being [TRUE].
+      [Gtk.DragSource::drag-end] signal and handle [delete_data] being [true].
 
       This function can be called before a drag is started, or in a handler for
       the [Gtk.DragSource::prepare] signal. *)
@@ -90,7 +90,7 @@ class type drag_source_t = object
       This function can be called before a drag is started, or in a handler for
       the [Gtk.DragSource::prepare] signal.
 
-      You may consider setting the content provider back to [NULL] in a
+      You may consider setting the content provider back to [None] in a
       [Gtk.DragSource::drag-end] signal handler. *)
 
   method set_icon : Ocgdk.Paintable.paintable_t option -> int -> int -> unit
@@ -99,7 +99,7 @@ class type drag_source_t = object
       The hotspot coordinates determine the point on the icon that gets aligned
       with the hotspot of the cursor.
 
-      If [paintable] is [NULL], a default icon is used.
+      If [paintable] is [None], a default icon is used.
 
       This function can be called before a drag is started, or in a
       [Gtk.DragSource::prepare] or [Gtk.DragSource::drag-begin] signal handler.

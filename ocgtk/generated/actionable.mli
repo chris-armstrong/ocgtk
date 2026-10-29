@@ -36,7 +36,7 @@ class type actionable_t = object
   (** Specifies the name of the action with which this widget should be
       associated.
 
-      If [action_name] is [NULL] then the widget will be unassociated from any
+      If [action_name] is [None] then the widget will be unassociated from any
       previous action.
 
       Usually this function is used when the widget is located (or will be
@@ -50,7 +50,7 @@ class type actionable_t = object
   method set_action_target_value : Gvariant.t option -> unit
   (** Sets the target value of an actionable widget.
 
-      If [target_value] is [NULL] then the target value is unset.
+      If [target_value] is [None] then the target value is unset.
 
       The target value has two purposes. First, it is used as the parameter to
       activation of the action associated with the [GtkActionable] widget.

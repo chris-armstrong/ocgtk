@@ -17,7 +17,7 @@ class type script_iter_t = object
   method next : unit -> bool
   (** Advances a [PangoScriptIter] to the next range.
 
-      If [iter] is already at the end, it is left unchanged and [FALSE] is
+      If [iter] is already at the end, it is left unchanged and [false] is
       returned. *)
 
   (** {2:conversions Conversions} *)

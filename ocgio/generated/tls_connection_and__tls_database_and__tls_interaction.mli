@@ -33,7 +33,7 @@ class type tls_connection_t = object
       For a client-side connection, [peer_cert] is the server's certificate, and
       the signal will only be emitted if the certificate was not acceptable
       according to [conn]'s [GTlsClientConnection:validation_flags]. If you
-      would like the certificate to be accepted despite [errors], return [TRUE]
+      would like the certificate to be accepted despite [errors], return [true]
       from the signal handler. Otherwise, if no handler accepts the certificate,
       the handshake will fail with [G_TLS_ERROR_BAD_CERTIFICATE].
 
@@ -49,16 +49,16 @@ class type tls_connection_t = object
       the client, if this was requested via the server's
       [GTlsServerConnection:authentication_mode]. On the server side, the signal
       is always emitted when the client presents a certificate, and the
-      certificate will only be accepted if a handler returns [TRUE].
+      certificate will only be accepted if a handler returns [true].
 
       Note that if this signal is emitted as part of asynchronous I/O in the
       main thread, then you should not attempt to interact with the user before
       returning from the signal handler. If you want to let the user decide
-      whether or not to accept the certificate, you would have to return [FALSE]
+      whether or not to accept the certificate, you would have to return [false]
       from the signal handler on the first attempt, and then after the
       connection attempt returns a [G_TLS_ERROR_BAD_CERTIFICATE], you can
       interact with the user, and if the user decides to accept the certificate,
-      remember that fact, create a new connection, and return [TRUE] from the
+      remember that fact, create a new connection, and return [true] from the
       signal handler the next time.
 
       If you are doing I/O in another thread, you do not need to worry about
@@ -77,7 +77,7 @@ class type tls_connection_t = object
   *)
 
   method get_ciphersuite_name : unit -> string option
-  (** Returns the name of the current TLS ciphersuite, or [NULL] if the
+  (** Returns the name of the current TLS ciphersuite, or [None] if the
       connection has not handshaked or has been closed. Beware that the TLS
       backend may use any of multiple different naming conventions, because
       OpenSSL and GnuTLS have their own ciphersuite naming conventions that are
@@ -92,7 +92,7 @@ class type tls_connection_t = object
 
   method get_interaction : unit -> tls_interaction_t option
   (** Get the object that will be used to interact with the user. It will be
-      used for things like prompting the user for passwords. If [NULL] is
+      used for things like prompting the user for passwords. If [None] is
       returned, then no user interaction will occur for this connection. *)
 
   method get_negotiated_protocol : unit -> string option
@@ -101,7 +101,7 @@ class type tls_connection_t = object
 
       If the peer did not use the ALPN extension, or did not advertise a
       protocol that matched one of [conn]'s protocols, or the TLS backend does
-      not support ALPN, then this will be [NULL]. See
+      not support ALPN, then this will be [None]. See
       g_tls_connection_set_advertised_protocols(). *)
 
   method get_peer_certificate : unit -> Tls_certificate.tls_certificate_t option
@@ -174,7 +174,7 @@ class type tls_connection_t = object
       is willing to speak on this connection. The Application-Layer Protocol
       Negotiation (ALPN) extension will be used to negotiate a compatible
       protocol with the peer; use g_tls_connection_get_negotiated_protocol() to
-      find the negotiated protocol after the handshake. Specifying [NULL] for
+      find the negotiated protocol after the handshake. Specifying [None] for
       the the value of [protocols] will disable ALPN negotiation.
 
       See
@@ -196,12 +196,12 @@ class type tls_connection_t = object
       (It is also possible that a server will allow the connection with or
       without a certificate; in that case, if you don't provide a certificate,
       you can tell that the server requested one by the fact that
-      g_tls_client_connection_get_accepted_cas() will return non-[NULL].) *)
+      g_tls_client_connection_get_accepted_cas() will return non-[None].) *)
 
   method set_database : tls_database_t option -> unit
   (** Sets the certificate database that is used to verify peer certificates.
       This is set to the default database by default. See
-      g_tls_backend_get_default_database(). If set to [NULL], then peer
+      g_tls_backend_get_default_database(). If set to [None], then peer
       certificate validation will always set the [G_TLS_CERTIFICATE_UNKNOWN_CA]
       error (meaning [GTlsConnection::accept]-certificate will always be emitted
       on client-side connections, unless that bit is not set in
@@ -215,7 +215,7 @@ class type tls_connection_t = object
       used for things like prompting the user for passwords.
 
       The [interaction] argument will normally be a derived subclass of
-      [GTlsInteraction]. [NULL] can also be provided if no user interaction
+      [GTlsInteraction]. [None] can also be provided if no user interaction
       should occur for this connection. *)
 
   method set_rehandshake_mode : Enums.tlsrehandshakemode -> unit
@@ -227,7 +227,7 @@ class type tls_connection_t = object
   method set_require_close_notify : bool -> unit
   [@@ocaml.doc
     "Sets whether or not [conn] expects a proper TLS close notification\n\
-     before the connection is closed. If this is [TRUE] (the default),\n\
+     before the connection is closed. If this is [true] (the default),\n\
      then [conn] will expect to receive a TLS close notification from its\n\
      peer before the connection is closed, and will return a\n\
      [G_TLS_ERROR_EOF] error if the connection is closed without proper\n\
@@ -255,7 +255,7 @@ class type tls_connection_t = object
 
   method set_use_system_certdb : bool -> unit
   (** Sets whether [conn] uses the system certificate database to verify peer
-      certificates. This is [TRUE] by default. If set to [FALSE], then peer
+      certificates. This is [true] by default. If set to [false], then peer
       certificate validation will always set the [G_TLS_CERTIFICATE_UNKNOWN_CA]
       error (meaning [GTlsConnection::accept]-certificate will always be emitted
       on client-side connections, unless that bit is not set in
@@ -293,7 +293,7 @@ and tls_database_t = object
     Tls_certificate.tls_certificate_t -> string option
   (** Create a handle string for the certificate. The database will only be able
       to create a handle for certificates that originate from the database. In
-      cases where the database cannot create a handle for a certificate, [NULL]
+      cases where the database cannot create a handle for a certificate, [None]
       will be returned.
 
       This handle should be stable across various instances of the application,
@@ -315,7 +315,7 @@ and tls_database_t = object
       instantiations of the database.
 
       If the handle is no longer valid, or does not point to a certificate in
-      this database, then [NULL] will be returned.
+      this database, then [None] will be returned.
 
       This function can block, use
       g_tls_database_lookup_certificate_for_handle_async() to perform the lookup
@@ -328,7 +328,7 @@ and tls_database_t = object
       g_tls_database_lookup_certificate_for_handle() for more information.
 
       If the handle is no longer valid, or does not point to a certificate in
-      this database, then [NULL] will be returned. *)
+      this database, then [None] will be returned. *)
 
   method lookup_certificate_issuer :
     Tls_certificate.tls_certificate_t ->
@@ -393,7 +393,7 @@ and tls_database_t = object
       The [identity] is used to ensure the server certificate is valid for the
       expected peer identity. If the identity does not match the certificate,
       [G_TLS_CERTIFICATE_BAD_IDENTITY] will be set in the return value. If
-      [identity] is [NULL], that bit will never be set in the return value. The
+      [identity] is [None], that bit will never be set in the return value. The
       peer identity may also be used to check for pinned certificates (trust
       exceptions) in the database. These may override the normal verification
       process on a host-by-host basis.

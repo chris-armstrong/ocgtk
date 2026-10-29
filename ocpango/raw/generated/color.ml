@@ -31,7 +31,7 @@ external parse_with_alpha : t -> string -> bool * UInt16.t
     [#fff], [#ffffff], [#fffffffff] and [#ffffffffffff].)
 
     Additionally, parse strings of the form [#rgba], [#rrggbbaa],
-    [#rrrrggggbbbbaaaa], if [alpha] is not [NULL], and set [alpha] to the value
+    [#rrrrggggbbbbaaaa], if [alpha] is not [None], and set [alpha] to the value
     specified by the hex digits for [a]. If no alpha component is found in
     [spec], [alpha] is set to 0xffff (for a solid color). *)
 

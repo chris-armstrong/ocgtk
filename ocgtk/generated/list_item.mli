@@ -19,10 +19,10 @@
 
     + The unbound stage where the listitem is not currently connected to an item
       in the list. In that case, the [Gtk.ListItem:item] property is set to
-      [NULL].
+      [None].
 
     + The bound stage where the listitem references an item from the list. The
-      [Gtk.ListItem:item] property is not [NULL]. *)
+      [Gtk.ListItem:item] property is not [None]. *)
 class type list_item_t = object
   (** {2:methods Methods} *)
 
@@ -37,7 +37,7 @@ class type list_item_t = object
       [Gtk.ListItem.set_activatable]. *)
 
   method get_child : unit -> Widget.widget_t option
-  (** Gets the child previously set via [Gtk.ListItem.set_child] or [NULL] if
+  (** Gets the child previously set via [Gtk.ListItem.set_child] or [None] if
       none was set. *)
 
   method get_focusable : unit -> bool
@@ -47,7 +47,7 @@ class type list_item_t = object
   method get_item : unit -> [ `object_ ] Gobject.obj option
   (** Gets the model item that associated with [self].
 
-      If [self] is unbound, this function returns [NULL]. *)
+      If [self] is unbound, this function returns [None]. *)
 
   method get_position : unit -> int
   (** Gets the position in the model that [self] currently displays.
@@ -138,10 +138,10 @@ class list_item : Raw.List_item.t -> list_item_t
 
     + The unbound stage where the listitem is not currently connected to an item
       in the list. In that case, the [Gtk.ListItem:item] property is set to
-      [NULL].
+      [None].
 
     + The bound stage where the listitem references an item from the list. The
-      [Gtk.ListItem:item] property is not [NULL]. *)
+      [Gtk.ListItem:item] property is not [None]. *)
 
 (** {1:constructors Constructors} *)
 

@@ -177,7 +177,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_label_get_type"
 external new_ : string option -> t = "ml_gtk_label_new"
 (** Creates a new label with the given text inside it.
 
-    You can pass [NULL] to get an empty label widget. *)
+    You can pass [None] to get an empty label widget. *)
 
 external new_with_mnemonic : string option -> t
   = "ml_gtk_label_new_with_mnemonic"
@@ -446,7 +446,7 @@ external get_tabs : t -> Ocpango_raw.Tab_array.t option
   = "ml_gtk_label_get_tabs"
 (** Gets the tab stops for the label.
 
-    The returned array will be [NULL] if “standard” (8-space) tabs are used. *)
+    The returned array will be [None] if “standard” (8-space) tabs are used. *)
 
 external get_single_line_mode : t -> bool = "ml_gtk_label_get_single_line_mode"
 (** Returns whether the label is in single line mode. *)

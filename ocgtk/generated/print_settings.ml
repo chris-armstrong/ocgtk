@@ -11,7 +11,7 @@ class type print_settings_t = object
   (** Returns the boolean represented by the value that is associated with
       [key].
 
-      The string “true” represents [TRUE], any other string [FALSE]. *)
+      The string “true” represents [true], any other string [false]. *)
 
   method get_collate : unit -> bool
   (** Gets the value of [GTK_PRINT_SETTINGS_COLLATE]. *)
@@ -118,7 +118,7 @@ class type print_settings_t = object
   (** Gets the value of [GTK_PRINT_SETTINGS_USE_COLOR]. *)
 
   method has_key : string -> bool
-  (** Returns [TRUE], if a value is associated with [key]. *)
+  (** Returns [true], if a value is associated with [key]. *)
 
   method load_file : string -> (bool, GError.t) result
   (** Reads the print settings from [file_name].
@@ -237,7 +237,7 @@ class type print_settings_t = object
   method unset : string -> unit
   (** Removes any value associated with [key].
 
-      This has the same effect as setting the value to [NULL]. *)
+      This has the same effect as setting the value to [None]. *)
 
   (** {2:conversions Conversions} *)
 

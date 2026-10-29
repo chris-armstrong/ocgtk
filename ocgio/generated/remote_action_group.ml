@@ -9,7 +9,7 @@ class type remote_action_group_t = object
      allows for provision of \"platform data\" to be sent along with the\n\
      activation request.  This typically contains details such as the user\n\
      interaction timestamp or startup notification information.\n\n\
-     [platform_data] must be non-[NULL] and must have the type\n\
+     [platform_data] must be non-[None] and must have the type\n\
      [G_VARIANT_TYPE_VARDICT].  If it is floating, it will be consumed."]
 
   method change_action_state_full : string -> Gvariant.t -> Gvariant.t -> unit
@@ -19,7 +19,7 @@ class type remote_action_group_t = object
      it allows for provision of \"platform data\" to be sent along with the\n\
      state change request.  This typically contains details such as the\n\
      user interaction timestamp or startup notification information.\n\n\
-     [platform_data] must be non-[NULL] and must have the type\n\
+     [platform_data] must be non-[None] and must have the type\n\
      [G_VARIANT_TYPE_VARDICT].  If it is floating, it will be consumed."]
 
   (** {2:conversions Conversions} *)

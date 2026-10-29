@@ -122,7 +122,7 @@ external set_stdout_file_path : t -> string option -> unit
   = "ml_g_subprocess_launcher_set_stdout_file_path"
 (** Sets the file path to use as the stdout for spawned processes.
 
-    If [path] is [NULL] then any previously given path is unset.
+    If [path] is [None] then any previously given path is unset.
 
     The file will be created or truncated when the process is spawned, as would
     be the case if using '>' at the shell.
@@ -136,7 +136,7 @@ external set_stdin_file_path : t -> string option -> unit
   = "ml_g_subprocess_launcher_set_stdin_file_path"
 (** Sets the file path to use as the stdin for spawned processes.
 
-    If [path] is [NULL] then any previously given path is unset.
+    If [path] is [None] then any previously given path is unset.
 
     The file must exist or spawning the process will fail.
 
@@ -149,7 +149,7 @@ external set_stderr_file_path : t -> string option -> unit
   = "ml_g_subprocess_launcher_set_stderr_file_path"
 (** Sets the file path to use as the stderr for spawned processes.
 
-    If [path] is [NULL] then any previously given path is unset.
+    If [path] is [None] then any previously given path is unset.
 
     The file will be created or truncated when the process is spawned, as would
     be the case if using '2>' at the shell.
@@ -188,7 +188,7 @@ external set_environ : t -> string array -> unit
     As an alternative, you can use g_subprocess_launcher_setenv(),
     g_subprocess_launcher_unsetenv(), etc.
 
-    Pass an empty array to set an empty environment. Pass [NULL] to inherit the
+    Pass an empty array to set an empty environment. Pass [None] to inherit the
     parent process’ environment. As of GLib 2.54, the parent process’
     environment will be copied when g_subprocess_launcher_set_environ() is
     called. Previously, it was copied when the subprocess was executed. This

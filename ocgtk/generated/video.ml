@@ -4,10 +4,10 @@ class type video_t = object
   (** {2:methods Methods} *)
 
   method get_autoplay : unit -> bool
-  (** Returns [TRUE] if videos have been set to loop. *)
+  (** Returns [true] if videos have been set to loop. *)
 
   method get_file : unit -> Ocgio.File.file_t option
-  (** Gets the file played by [self] or [NULL] if not playing back a file. *)
+  (** Gets the file played by [self] or [None] if not playing back a file. *)
 
   method get_graphics_offload : unit -> Enums.graphicsoffloadenabled
   (** Returns whether graphics offload is enabled.
@@ -15,10 +15,10 @@ class type video_t = object
       See [Gtk.GraphicsOffload] for more information on graphics offload. *)
 
   method get_loop : unit -> bool
-  (** Returns [TRUE] if videos have been set to loop. *)
+  (** Returns [true] if videos have been set to loop. *)
 
   method get_media_stream : unit -> Media_stream.media_stream_t option
-  (** Gets the media stream managed by [self] or [NULL] if none. *)
+  (** Gets the media stream managed by [self] or [None] if none. *)
 
   method set_autoplay : bool -> unit
   (** Sets whether [self] automatically starts playback when it becomes visible

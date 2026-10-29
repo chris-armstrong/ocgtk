@@ -190,7 +190,7 @@ external add_constraint : t -> Constraint.t -> unit
     The [Gtk.Constraint:source] and [Gtk.Constraint:target] properties of
     [constraint] can be:
 
-    - set to [NULL] to indicate that the constraint refers to the widget using
+    - set to [None] to indicate that the constraint refers to the widget using
       [layout]
     - set to the [Gtk.Widget] using [layout]
     - set to a child of the [Gtk.Widget] using [layout]

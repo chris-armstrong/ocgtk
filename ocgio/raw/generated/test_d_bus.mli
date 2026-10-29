@@ -101,7 +101,7 @@ external get_flags : t -> Ocgio_enums.testdbusflags = "ml_g_test_dbus_get_flags"
 
 external get_bus_address : t -> string option = "ml_g_test_dbus_get_bus_address"
 (** Get the address on which dbus-daemon is running. If g_test_dbus_up() has not
-    been called yet, [NULL] is returned. This can be used with
+    been called yet, [None] is returned. This can be used with
     g_dbus_connection_new_for_address(). *)
 
 external down : t -> unit = "ml_g_test_dbus_down"

@@ -232,7 +232,7 @@ external enumerate_children :
   (string array, GError.t) result = "ml_g_resource_enumerate_children"
 (** Returns all the names of children at the specified [path] in the resource.
 
-    The return result is a [NULL] terminated list of strings which should be
+    The return result is a null terminated list of strings which should be
     released with [GLib.strfreev].
 
     If [path] is invalid or does not exist in the [Gio.Resource],

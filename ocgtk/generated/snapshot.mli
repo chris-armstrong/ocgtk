@@ -418,7 +418,7 @@ class type snapshot_t = object
   method to_node : unit -> Ocgsk.Render_node.render_node_t option
   (** Returns the render node that was constructed by [snapshot].
 
-      Note that this function may return [NULL] if nothing has been added to the
+      Note that this function may return [None] if nothing has been added to the
       snapshot or if its content does not produce pixels to be rendered.
 
       After calling this function, it is no longer possible to add more nodes to

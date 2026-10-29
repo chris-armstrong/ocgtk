@@ -37,7 +37,7 @@ external new_from_resource : string -> (t, GError.t) result
   = "ml_gdk_pixbuf_animation_new_from_resource"
 (** Creates a new pixbuf animation by loading an image from an resource.
 
-    The file format is detected automatically. If [NULL] is returned, then
+    The file format is detected automatically. If [None] is returned, then
     [error] will be set. *)
 
 external new_from_stream :
@@ -48,7 +48,7 @@ external new_from_stream :
 
     The file format is detected automatically.
 
-    If [NULL] is returned, then [error] will be set.
+    If [None] is returned, then [error] will be set.
 
     The [cancellable] can be used to abort the operation from another thread. If
     the operation was cancelled, the error [G_IO_ERROR_CANCELLED] will be
@@ -69,7 +69,7 @@ external is_static_image : t -> bool = "ml_gdk_pixbuf_animation_is_static_image"
 (** Checks whether the animation is a static image.
 
     If you load a file with gdk_pixbuf_animation_new_from_file() and it turns
-    out to be a plain, unanimated image, then this function will return [TRUE].
+    out to be a plain, unanimated image, then this function will return [true].
     Use gdk_pixbuf_animation_get_static_image() to retrieve the image. *)
 
 external get_width : t -> int = "ml_gdk_pixbuf_animation_get_width"
@@ -87,7 +87,7 @@ external get_static_image : t -> Pixbuf.t
     something more sophisticated depending on the file format.
 
     If an animation hasn't loaded any frames yet, this function will return
-    [NULL]. *)
+    [None]. *)
 
 external get_height : t -> int = "ml_gdk_pixbuf_animation_get_height"
 (** Queries the height of the bounding box of a pixbuf animation. *)

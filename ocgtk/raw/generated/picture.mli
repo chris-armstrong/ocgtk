@@ -106,19 +106,19 @@ external set_paintable : t -> Ocgdk_raw.Paintable.t option -> unit
   = "ml_gtk_picture_set_paintable"
 (** Makes [self] display the given [paintable].
 
-    If [paintable] is [NULL], nothing will be displayed.
+    If [paintable] is [None], nothing will be displayed.
 
     See [Gtk.Picture.new_for_paintable] for details. *)
 
 external set_keep_aspect_ratio : t -> bool -> unit
   = "ml_gtk_picture_set_keep_aspect_ratio"
-(** If set to [TRUE], the [self] will render its contents according to their
+(** If set to [true], the [self] will render its contents according to their
     aspect ratio.
 
     That means that empty space may show up at the top/bottom or left/right of
     [self].
 
-    If set to [FALSE] or if the contents provide no aspect ratio, the contents
+    If set to [false] or if the contents provide no aspect ratio, the contents
     will be stretched over the picture's whole area. *)
 
 external set_filename : t -> string option -> unit
@@ -148,7 +148,7 @@ external set_content_fit : t -> Ocgtk_enums.contentfit -> unit
     See [Gtk.ContentFit] for details. *)
 
 external set_can_shrink : t -> bool -> unit = "ml_gtk_picture_set_can_shrink"
-(** If set to [TRUE], the [self] can be made smaller than its contents.
+(** If set to [true], the [self] can be made smaller than its contents.
 
     The contents will then be scaled down when rendering.
 
@@ -165,7 +165,7 @@ external set_alternative_text : t -> string option -> unit
   "Sets an alternative textual description for the picture contents.\n\n\
    It is equivalent to the \"alt\" attribute for images on websites.\n\n\
    This text will be made available to accessibility tools.\n\n\
-   If the picture cannot be described textually, set this property to [NULL]."]
+   If the picture cannot be described textually, set this property to [None]."]
 
 external get_paintable : t -> Ocgdk_raw.Paintable.t option
   = "ml_gtk_picture_get_paintable"
@@ -179,7 +179,7 @@ external get_file : t -> Ocgio_raw.File.t option = "ml_gtk_picture_get_file"
 (** Gets the [GFile] currently displayed if [self] is displaying a file.
 
     If [self] is not displaying a file, for example when
-    [Gtk.Picture.set_paintable] was used, then [NULL] is returned. *)
+    [Gtk.Picture.set_paintable] was used, then [None] is returned. *)
 
 external get_content_fit : t -> Ocgtk_enums.contentfit
   = "ml_gtk_picture_get_content_fit"
@@ -194,7 +194,7 @@ external get_alternative_text : t -> string option
   = "ml_gtk_picture_get_alternative_text"
 (** Gets the alternative textual description of the picture.
 
-    The returned string will be [NULL] if the picture cannot be described
+    The returned string will be [None] if the picture cannot be described
     textually. *)
 
 (* Properties *)

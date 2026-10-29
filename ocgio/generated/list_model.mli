@@ -42,15 +42,15 @@ class type list_model_t = object
 
       Depending on the model implementation, calling this function may be less
       efficient than iterating the list with increasing values for [position]
-      until g_list_model_get_item() returns [NULL]. *)
+      until g_list_model_get_item() returns [None]. *)
 
   method get_object : int -> [ `object_ ] Gobject.obj option
   (** Get the item at [position].
 
-      If [position] is greater than the number of items in [list], [NULL] is
+      If [position] is greater than the number of items in [list], [None] is
       returned.
 
-      [NULL] is never returned for an index that is smaller than the length of
+      [None] is never returned for an index that is smaller than the length of
       the list.
 
       This function is meant to be used by language bindings in place of
@@ -111,7 +111,7 @@ end
      and [Gio.ListModel.get_item] returns an item at a (0-based) position.\n\
      In order to allow implementations to calculate the list length lazily,\n\
      you can also iterate over items: starting from 0, repeatedly call\n\
-     [Gio.ListModel.get_item] until it returns [NULL].\n\n\
+     [Gio.ListModel.get_item] until it returns [None].\n\n\
      An implementation may create objects lazily, but must take care to\n\
      return the same object for a given position until all references to\n\
      it are gone.\n\n\
@@ -172,7 +172,7 @@ class list_model : Raw.List_model.t -> list_model_t
  and [Gio.ListModel.get_item] returns an item at a (0-based) position.\n\
  In order to allow implementations to calculate the list length lazily,\n\
  you can also iterate over items: starting from 0, repeatedly call\n\
- [Gio.ListModel.get_item] until it returns [NULL].\n\n\
+ [Gio.ListModel.get_item] until it returns [None].\n\n\
  An implementation may create objects lazily, but must take care to\n\
  return the same object for a given position until all references to\n\
  it are gone.\n\n\

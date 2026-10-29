@@ -73,4 +73,4 @@ val on_authorize_method :
     [GDBusInterfaceSkeleton::g]-authorize-method signal, except that it is for
     the enclosing object.
 
-    The default class handler just returns [TRUE]. *)
+    The default class handler just returns [true]. *)

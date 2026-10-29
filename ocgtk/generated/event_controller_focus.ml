@@ -28,10 +28,10 @@ class type event_controller_focus_t = object
   (** {2:methods Methods} *)
 
   method contains_focus : unit -> bool
-  (** Returns [TRUE] if focus is within [self] or one of its children. *)
+  (** Returns [true] if focus is within [self] or one of its children. *)
 
   method is_focus : unit -> bool
-  (** Returns [TRUE] if focus is within [self], but not one of its children. *)
+  (** Returns [true] if focus is within [self], but not one of its children. *)
 
   (** {2:conversions Conversions} *)
 

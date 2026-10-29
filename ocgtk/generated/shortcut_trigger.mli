@@ -95,7 +95,7 @@ class shortcut_trigger : Raw.Shortcut_trigger.t -> shortcut_trigger_t
 val parse_string : string -> shortcut_trigger_t
 (** Tries to parse the given string into a trigger.
 
-    On success, the parsed trigger is returned. When parsing failed, [NULL] is
+    On success, the parsed trigger is returned. When parsing failed, [None] is
     returned.
 
     The accepted strings are:

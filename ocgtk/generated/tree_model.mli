@@ -38,24 +38,24 @@ class type tree_model_t = object
       would be an acceptable return value for this string. *)
 
   method iter_has_child : Raw.Tree_iter.t -> bool
-  (** Returns [TRUE] if [iter] has children, [FALSE] otherwise. *)
+  (** Returns [true] if [iter] has children, [false] otherwise. *)
 
   method iter_n_children : Raw.Tree_iter.t option -> int
   (** Returns the number of children that [iter] has.
 
-      As a special case, if [iter] is [NULL], then the number of toplevel nodes
+      As a special case, if [iter] is [None], then the number of toplevel nodes
       is returned. *)
 
   method iter_next : Raw.Tree_iter.t -> bool
   (** Sets [iter] to point to the node following it at the current level.
 
-      If there is no next [iter], [FALSE] is returned and [iter] is set to be
+      If there is no next [iter], [false] is returned and [iter] is set to be
       invalid. *)
 
   method iter_previous : Raw.Tree_iter.t -> bool
   (** Sets [iter] to point to the previous node at the current level.
 
-      If there is no previous [iter], [FALSE] is returned and [iter] is set to
+      If there is no previous [iter], [false] is returned and [iter] is set to
       be invalid. *)
 
   method ref_node : Raw.Tree_iter.t -> unit

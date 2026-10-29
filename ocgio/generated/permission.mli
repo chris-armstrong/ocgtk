@@ -37,7 +37,7 @@ class type permission_t = object
       You should check with g_permission_get_can_acquire() before calling this
       function.
 
-      If the permission is acquired then [TRUE] is returned. Otherwise, [FALSE]
+      If the permission is acquired then [true] is returned. Otherwise, [false]
       is returned and [error] is set appropriately.
 
       This call is blocking, likely for a very long time (in the case that user
@@ -52,17 +52,17 @@ class type permission_t = object
       g_permission_acquire(). *)
 
   method get_allowed : unit -> bool
-  (** Gets the value of the 'allowed' property. This property is [TRUE] if the
+  (** Gets the value of the 'allowed' property. This property is [true] if the
       caller currently has permission to perform the action that [permission]
       represents the permission to perform. *)
 
   method get_can_acquire : unit -> bool
-  (** Gets the value of the 'can-acquire' property. This property is [TRUE] if
+  (** Gets the value of the 'can-acquire' property. This property is [true] if
       it is generally possible to acquire the permission by calling
       g_permission_acquire(). *)
 
   method get_can_release : unit -> bool
-  (** Gets the value of the 'can-release' property. This property is [TRUE] if
+  (** Gets the value of the 'can-release' property. This property is [true] if
       it is generally possible to release the permission by calling
       g_permission_release(). *)
 
@@ -83,7 +83,7 @@ class type permission_t = object
       You should check with g_permission_get_can_release() before calling this
       function.
 
-      If the permission is released then [TRUE] is returned. Otherwise, [FALSE]
+      If the permission is released then [true] is returned. Otherwise, [false]
       is returned and [error] is set appropriately.
 
       This call is blocking, likely for a very long time (in the case that user

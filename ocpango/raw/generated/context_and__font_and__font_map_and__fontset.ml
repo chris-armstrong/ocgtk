@@ -405,7 +405,7 @@ and Font : sig
       language tag can be provided to indicate that the metrics should be
       retrieved that correspond to the script(s) used by that language.
 
-      If [font] is [NULL], this function gracefully sets some sane values in the
+      If [font] is [None], this function gracefully sets some sane values in the
       output variables and returns. *)
 
   external get_glyph_extents : t -> int -> Rectangle.t * Rectangle.t
@@ -419,7 +419,7 @@ and Font : sig
       convert from the extents rectangle to more traditional font metrics. The
       units of the rectangles are in 1/PANGO_SCALE of a device unit.
 
-      If [font] is [NULL], this function gracefully sets some sane values in the
+      If [font] is [None], this function gracefully sets some sane values in the
       output variables and returns. *)
 
   external get_font_map : t -> Font_map.t option = "ml_pango_font_get_font_map"
@@ -428,7 +428,7 @@ and Font : sig
       Note that the font maintains a {i weak} reference to the font map, so if
       all references to font map are dropped, the font map will be finalized
       even if there are fonts created with the font map that are still alive. In
-      that case this function will return [NULL].
+      that case this function will return [None].
 
       It is the responsibility of the user to ensure that the font map is kept
       alive. In most uses this is not an issue as a [PangoContext] holds a
@@ -438,7 +438,7 @@ and Font : sig
     = "ml_pango_font_get_face"
   (** Gets the [PangoFontFace] to which [font] belongs.
 
-      Note that this function can return [NULL] in cases where the font outlives
+      Note that this function can return [None] in cases where the font outlives
       its font map. *)
 
   external get_coverage : t -> Language.t -> Coverage.t
@@ -487,7 +487,7 @@ end = struct
       language tag can be provided to indicate that the metrics should be
       retrieved that correspond to the script(s) used by that language.
 
-      If [font] is [NULL], this function gracefully sets some sane values in the
+      If [font] is [None], this function gracefully sets some sane values in the
       output variables and returns. *)
 
   external get_glyph_extents : t -> int -> Rectangle.t * Rectangle.t
@@ -501,7 +501,7 @@ end = struct
       convert from the extents rectangle to more traditional font metrics. The
       units of the rectangles are in 1/PANGO_SCALE of a device unit.
 
-      If [font] is [NULL], this function gracefully sets some sane values in the
+      If [font] is [None], this function gracefully sets some sane values in the
       output variables and returns. *)
 
   external get_font_map : t -> Font_map.t option = "ml_pango_font_get_font_map"
@@ -510,7 +510,7 @@ end = struct
       Note that the font maintains a {i weak} reference to the font map, so if
       all references to font map are dropped, the font map will be finalized
       even if there are fonts created with the font map that are still alive. In
-      that case this function will return [NULL].
+      that case this function will return [None].
 
       It is the responsibility of the user to ensure that the font map is kept
       alive. In most uses this is not an issue as a [PangoContext] holds a
@@ -520,7 +520,7 @@ end = struct
     = "ml_pango_font_get_face"
   (** Gets the [PangoFontFace] to which [font] belongs.
 
-      Note that this function can return [NULL] in cases where the font outlives
+      Note that this function can return [None] in cases where the font outlives
       its font map. *)
 
   external get_coverage : t -> Language.t -> Coverage.t

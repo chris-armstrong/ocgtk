@@ -165,7 +165,7 @@ class type notebook_t = object
   method get_tab_label : Widget.widget_t -> Widget.widget_t option
   (** Returns the tab label widget for the page [child].
 
-      [NULL] is returned if [child] is not in [notebook] or if no tab label has
+      [None] is returned if [child] is not in [notebook] or if no tab label has
       specifically been set for [child]. *)
 
   method get_tab_label_text : Widget.widget_t -> string option
@@ -247,7 +247,7 @@ class type notebook_t = object
   (** Sets a group name for [notebook].
 
       Notebooks with the same name will be able to exchange tabs via drag and
-      drop. A notebook with a [NULL] group name will not be able to exchange
+      drop. A notebook with a [None] group name will not be able to exchange
       tabs with any other notebook. *)
 
   method set_menu_label : Widget.widget_t -> Widget.widget_t option -> unit
@@ -313,7 +313,7 @@ class type notebook_t = object
   method set_tab_label : Widget.widget_t -> Widget.widget_t option -> unit
   (** Changes the tab label for [child].
 
-      If [NULL] is specified for [tab_label], then the page will have the label
+      If [None] is specified for [tab_label], then the page will have the label
       “page N”. *)
 
   method set_tab_label_text : Widget.widget_t -> string -> unit
@@ -330,11 +330,11 @@ class type notebook_t = object
   (** {2:properties Properties} *)
 
   method enable_popup : bool
-  (** If [TRUE], pressing the right mouse button on the notebook shows a page
+  (** If [true], pressing the right mouse button on the notebook shows a page
       switching menu. *)
 
   method set_enable_popup : bool -> unit
-  (** If [TRUE], pressing the right mouse button on the notebook shows a page
+  (** If [true], pressing the right mouse button on the notebook shows a page
       switching menu. *)
 
   (** {2:conversions Conversions} *)

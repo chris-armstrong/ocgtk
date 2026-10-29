@@ -59,15 +59,15 @@ class type text_tag_t = object
   method accumulative_margin : bool
   (** Whether the margins accumulate or override each other.
 
-      When set to [TRUE] the margins of this tag are added to the margins of any
-      other non-accumulative margins present. When set to [FALSE] the margins
+      When set to [true] the margins of this tag are added to the margins of any
+      other non-accumulative margins present. When set to [false] the margins
       override one another (the default). *)
 
   method set_accumulative_margin : bool -> unit
   (** Whether the margins accumulate or override each other.
 
-      When set to [TRUE] the margins of this tag are added to the margins of any
-      other non-accumulative margins present. When set to [FALSE] the margins
+      When set to [true] the margins of this tag are added to the margins of any
+      other non-accumulative margins present. When set to [false] the margins
       override one another (the default). *)
 
   method allow_breaks : bool
@@ -132,13 +132,13 @@ class type text_tag_t = object
   method fallback : bool
   (** Whether font fallback is enabled.
 
-      When set to [TRUE], other fonts will be substituted where the current font
+      When set to [true], other fonts will be substituted where the current font
       is missing glyphs. *)
 
   method set_fallback : bool -> unit
   (** Whether font fallback is enabled.
 
-      When set to [TRUE], other fonts will be substituted where the current font
+      When set to [true], other fonts will be substituted where the current font
       is missing glyphs. *)
 
   method fallback_set : bool
@@ -331,7 +331,7 @@ class type text_tag_t = object
   method name : string
   (** The name used to refer to the tag.
 
-      [NULL] for anonymous tags. *)
+      [None] for anonymous tags. *)
 
   method overline : Ocpango.Enums.overline
   (** Style of overline for this text. *)

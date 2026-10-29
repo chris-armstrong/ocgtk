@@ -76,13 +76,13 @@ external get_input_stream : t -> Ocgio_raw.Input_stream.t option
   = "ml_gtk_media_file_get_input_stream"
 (** Returns the stream that [self] is currently playing from.
 
-    When [self] is not playing or not playing from a stream, [NULL] is returned.
+    When [self] is not playing or not playing from a stream, [None] is returned.
 *)
 
 external get_file : t -> Ocgio_raw.File.t option = "ml_gtk_media_file_get_file"
 (** Returns the file that [self] is currently playing from.
 
-    When [self] is not playing or not playing from a file, [NULL] is returned.
+    When [self] is not playing or not playing from a file, [None] is returned.
 *)
 
 external clear : t -> unit = "ml_gtk_media_file_clear"

@@ -25,6 +25,6 @@ external set_media_stream : t -> Media_stream.t option -> unit
 
 external get_media_stream : t -> Media_stream.t option
   = "ml_gtk_media_controls_get_media_stream"
-(** Gets the media stream managed by [controls] or [NULL] if none. *)
+(** Gets the media stream managed by [controls] or [None] if none. *)
 
 (* Properties *)

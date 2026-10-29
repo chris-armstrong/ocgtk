@@ -28,17 +28,17 @@ class type debug_controller_d_bus_t = object
       appropriate to call [polkit_authority_check_authorization_sync()] to check
       authorization using polkit.
 
-      If [FALSE] is returned then no further handlers are run and the request to
+      If [false] is returned then no further handlers are run and the request to
       change the debug settings is rejected.
 
-      Otherwise, if [TRUE] is returned, signal emission continues. If no
-      handlers return [FALSE], then the debug settings are allowed to be
+      Otherwise, if [true] is returned, signal emission continues. If no
+      handlers return [false], then the debug settings are allowed to be
       changed.
 
       Signal handlers must not modify [invocation], or cause it to return a
       value.
 
-      The default class handler just returns [TRUE]. *)
+      The default class handler just returns [true]. *)
 
   (** {2:methods Methods} *)
 

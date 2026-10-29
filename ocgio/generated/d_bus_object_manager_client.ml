@@ -34,11 +34,11 @@ class type d_bus_object_manager_client_t = object
   (** Gets the flags that [manager] was constructed with. *)
 
   method get_name : unit -> string
-  (** Gets the name that [manager] is for, or [NULL] if not a message bus
+  (** Gets the name that [manager] is for, or [None] if not a message bus
       connection. *)
 
   method get_name_owner : unit -> string option
-  (** The unique name that owns the name that [manager] is for or [NULL] if
+  (** The unique name that owns the name that [manager] is for or [None] if
       no-one currently owns that name. You can connect to the [GObject::notify]
       signal to track changes to the [GDBusObjectManagerClient:name]-owner
       property. *)

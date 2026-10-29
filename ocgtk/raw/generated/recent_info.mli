@@ -54,7 +54,7 @@ external get_short_name : t -> string = "ml_gtk_recent_info_get_short_name"
 external get_private_hint : t -> bool = "ml_gtk_recent_info_get_private_hint"
 (** Gets the value of the “private” flag.
 
-    Resources in the recently used list that have this flag set to [TRUE] should
+    Resources in the recently used list that have this flag set to [true] should
     only be displayed by the applications that have registered them. *)
 
 external get_mime_type : t -> string = "ml_gtk_recent_info_get_mime_type"
@@ -64,8 +64,8 @@ external get_groups : t -> string array * Gsize.t
   = "ml_gtk_recent_info_get_groups"
 (** Returns all groups registered for the recently used item [info].
 
-    The array of returned group names will be [NULL] terminated, so length might
-    optionally be [NULL]. *)
+    The array of returned group names will be null terminated, so length might
+    optionally be [None]. *)
 
 external get_gicon : t -> Ocgio_raw.Icon.t option
   = "ml_gtk_recent_info_get_gicon"

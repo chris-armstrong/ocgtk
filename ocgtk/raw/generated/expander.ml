@@ -124,7 +124,7 @@ external set_label : t -> string option -> unit = "ml_gtk_expander_set_label"
 external set_expanded : t -> bool -> unit = "ml_gtk_expander_set_expanded"
 (** Sets the state of the expander.
 
-    Set to [TRUE], if you want the child widget to be revealed, and [FALSE] if
+    Set to [true], if you want the child widget to be revealed, and [false] if
     you want the child widget to be hidden. *)
 
 external set_child :
@@ -159,13 +159,13 @@ external get_label : t -> string option = "ml_gtk_expander_get_label"
 
     This is including any embedded underlines indicating mnemonics and Pango
     markup, as set by [Gtk.Expander.set_label]. If the label text has not been
-    set the return value will be [NULL]. This will be the case if you create an
+    set the return value will be [None]. This will be the case if you create an
     empty button with gtk_button_new() to use as a container. *)
 
 external get_expanded : t -> bool = "ml_gtk_expander_get_expanded"
 (** Queries a [GtkExpander] and returns its current state.
 
-    Returns [TRUE] if the child widget is revealed. *)
+    Returns [true] if the child widget is revealed. *)
 
 external get_child :
   t ->

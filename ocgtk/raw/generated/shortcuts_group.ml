@@ -66,7 +66,7 @@ external get_view : t -> string = "ml_gtk_shortcuts_group_get_view"
     The group will be hidden if the [Gtk.ShortcutsWindow:view-name] property
     does not match the view of this group.
 
-    Set this to [NULL] to make the group always visible. *)
+    Set this to [None] to make the group always visible. *)
 
 external set_view : t -> string -> unit = "ml_gtk_shortcuts_group_set_view"
 (** An optional view that the shortcuts in this group are relevant for.
@@ -74,4 +74,4 @@ external set_view : t -> string -> unit = "ml_gtk_shortcuts_group_set_view"
     The group will be hidden if the [Gtk.ShortcutsWindow:view-name] property
     does not match the view of this group.
 
-    Set this to [NULL] to make the group always visible. *)
+    Set this to [None] to make the group always visible. *)

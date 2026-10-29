@@ -23,7 +23,7 @@ external set_model : t -> Ocgio_raw.List_model.t option -> unit
   = "ml_gtk_no_selection_set_model"
 (** Sets the model that [self] should wrap.
 
-    If [model] is [NULL], this model will be empty. *)
+    If [model] is [None], this model will be empty. *)
 
 external get_model : t -> Ocgio_raw.List_model.t option
   = "ml_gtk_no_selection_get_model"

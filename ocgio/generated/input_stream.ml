@@ -24,7 +24,7 @@ class type input_stream_t = object
       will still return [G_IO_ERROR_CLOSED] for all operations. Still, it is
       important to check and report the error to the user.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned.
       Cancelling a close will still leave the stream closed, but some streams
@@ -58,13 +58,13 @@ class type input_stream_t = object
       near the end of a file. A zero-length [GBytes] is returned on end of file
       (or if [count] is zero), but never otherwise.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. If an
       operation was partially finished when the operation was cancelled the
       partial result will be returned, without an error.
 
-      On error [NULL] is returned and [error] is set accordingly. *)
+      On error [None] is returned and [error] is set accordingly. *)
 
   method read_bytes_finish :
     Async_result.async_result_t -> (Glib_bytes.t, GError.t) result
@@ -75,7 +75,7 @@ class type input_stream_t = object
 
   method set_pending : unit -> (bool, GError.t) result
   (** Sets [stream] to have actions pending. If the pending flag is already set
-      or [stream] is closed, it will return [FALSE] and set [error]. *)
+      or [stream] is closed, it will return [false] and set [error]. *)
 
   method skip :
     Gsize.t -> Cancellable.cancellable_t option -> (int, GError.t) result
@@ -89,7 +89,7 @@ class type input_stream_t = object
       This function is optional for inherited classes, as the default
       implementation emulates it using read.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. If an
       operation was partially finished when the operation was cancelled the

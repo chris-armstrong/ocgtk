@@ -374,7 +374,9 @@ let generate_method_signatures ~ctx ~property_method_names:_
     in
     let seen = StringSet.add ocaml_name seen in
     let doc =
-      Doc_emit.item_doc ~indent:"    " ~context:Doc_translate.Member meth.doc
+      Doc_emit.item_doc ~indent:"    "
+        ~ret_shape:(Doc_translate.ret_shape_of_throws meth.throws)
+        ~context:Doc_translate.Member meth.doc
     in
     let quantifier = if has_type_var then "'a. " else "" in
     ( Doc_emit.around doc

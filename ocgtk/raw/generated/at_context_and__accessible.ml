@@ -161,7 +161,7 @@ and Accessible : sig
     = "ml_gtk_accessible_get_accessible_parent"
   (** Retrieves the accessible parent for an accessible object.
 
-      This function returns [NULL] for top level widgets. *)
+      This function returns [None] for top level widgets. *)
 
   external announce :
     t -> string -> Ocgtk_enums.accessibleannouncementpriority -> unit
@@ -259,7 +259,7 @@ end = struct
     = "ml_gtk_accessible_get_accessible_parent"
   (** Retrieves the accessible parent for an accessible object.
 
-      This function returns [NULL] for top level widgets. *)
+      This function returns [None] for top level widgets. *)
 
   external announce :
     t -> string -> Ocgtk_enums.accessibleannouncementpriority -> unit

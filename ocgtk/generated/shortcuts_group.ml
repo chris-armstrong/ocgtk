@@ -41,7 +41,7 @@ class type shortcuts_group_t = object
       The group will be hidden if the [Gtk.ShortcutsWindow:view-name] property
       does not match the view of this group.
 
-      Set this to [NULL] to make the group always visible. *)
+      Set this to [None] to make the group always visible. *)
 
   method set_view : string -> unit
   (** An optional view that the shortcuts in this group are relevant for.
@@ -49,7 +49,7 @@ class type shortcuts_group_t = object
       The group will be hidden if the [Gtk.ShortcutsWindow:view-name] property
       does not match the view of this group.
 
-      Set this to [NULL] to make the group always visible. *)
+      Set this to [None] to make the group always visible. *)
 
   (** {2:conversions Conversions} *)
 

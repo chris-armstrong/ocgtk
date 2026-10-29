@@ -27,8 +27,8 @@ external set_touch_only : t -> bool -> unit
   = "ml_gtk_gesture_single_set_touch_only"
 (** Sets whether to handle only touch events.
 
-    If [touch_only] is [TRUE], [gesture] will only handle events of type
-    [GDK_TOUCH_BEGIN], [GDK_TOUCH_UPDATE] or [GDK_TOUCH_END]. If [FALSE], mouse
+    If [touch_only] is [true], [gesture] will only handle events of type
+    [GDK_TOUCH_BEGIN], [GDK_TOUCH_UPDATE] or [GDK_TOUCH_END]. If [false], mouse
     events will be handled too. *)
 
 external set_exclusive : t -> bool -> unit
@@ -46,7 +46,7 @@ external set_button : t -> int -> unit = "ml_gtk_gesture_single_set_button"
     Touch events implicitly match with button 1. *)
 
 external get_touch_only : t -> bool = "ml_gtk_gesture_single_get_touch_only"
-(** Returns [TRUE] if the gesture is only triggered by touch events. *)
+(** Returns [true] if the gesture is only triggered by touch events. *)
 
 external get_exclusive : t -> bool = "ml_gtk_gesture_single_get_exclusive"
 (** Gets whether a gesture is exclusive.
@@ -57,7 +57,7 @@ external get_current_sequence : t -> Ocgdk_raw.Event_sequence.t option
   = "ml_gtk_gesture_single_get_current_sequence"
 (** Returns the event sequence currently interacting with [gesture].
 
-    This is only meaningful if [Gtk.Gesture.is_active] returns [TRUE]. *)
+    This is only meaningful if [Gtk.Gesture.is_active] returns [true]. *)
 
 external get_current_button : t -> int
   = "ml_gtk_gesture_single_get_current_button"

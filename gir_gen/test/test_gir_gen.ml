@@ -32,6 +32,7 @@ let () =
       (* Doc_translate — pure translation engine (no wiring) *)
       ("Doc Parse", Doc_parse_tests.tests);
       ("Doc Render", Doc_render_tests.tests);
+      ("Doc C Idiom", Doc_c_idiom_tests.tests);
       ("Doc Translate", Doc_translate_tests.tests);
       ("Doc Translate Corpus", Doc_translate_corpus_tests.tests);
       ("Doc Emit", Doc_emit_tests.tests);

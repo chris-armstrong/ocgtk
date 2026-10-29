@@ -8,7 +8,7 @@ class type async_initable_t = object
   method new_finish :
     Async_result.async_result_t -> ([ `object_ ] Gobject.obj, GError.t) result
   (** Finishes the async construction for the various g_async_initable_new
-      calls, returning the created object or [NULL] on error. *)
+      calls, returning the created object or an [Error] result. *)
 
   (** {2:conversions Conversions} *)
 

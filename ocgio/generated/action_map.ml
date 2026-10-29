@@ -12,7 +12,7 @@ class type action_map_t = object
   method lookup_action : string -> Action.action_t option
   (** Looks up the action with the name [action_name] in [action_map].
 
-      If no such action exists, returns [NULL]. *)
+      If no such action exists, returns [None]. *)
 
   method remove_action : string -> unit
   (** Removes the named action from the action map.

@@ -51,7 +51,7 @@ class type font_dialog_t = object
       dialog. *)
 
   method get_font_map : unit -> Ocpango.Font_map.font_map_t option
-  (** Returns the fontmap from which fonts are selected, or [NULL] for the
+  (** Returns the fontmap from which fonts are selected, or [None] for the
       default fontmap. *)
 
   method get_language : unit -> Ocpango.Language.language_t option
@@ -74,7 +74,7 @@ class type font_dialog_t = object
   method set_font_map : Ocpango.Font_map.font_map_t option -> unit
   (** Sets the fontmap from which fonts are selected.
 
-      If [fontmap] is [NULL], the default fontmap is used. *)
+      If [fontmap] is [None], the default fontmap is used. *)
 
   method set_language : Ocpango.Language.language_t -> unit
   (** Sets the language for which font features are applied. *)

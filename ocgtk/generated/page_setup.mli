@@ -193,8 +193,8 @@ val new_ : unit -> page_setup_t
 val new_from_file : string -> (page_setup_t, GError.t) result
 (** Reads the page setup from the file [file_name].
 
-    Returns a new [GtkPageSetup] object with the restored page setup, or [NULL]
-    if an error occurred. See [Gtk.PageSetup.to_file]. *)
+    Returns a new [GtkPageSetup] object with the restored page setup, or an
+    [Error] result. See [Gtk.PageSetup.to_file]. *)
 
 val new_from_gvariant : Gvariant.t -> page_setup_t
 (** Desrialize a page setup from an a\{sv\} variant.

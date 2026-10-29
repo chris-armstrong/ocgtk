@@ -32,7 +32,7 @@ external includes_script : t -> Ocpango_enums.script -> bool
 (** Determines if [script] is one of the scripts used to write [language].
 
     The returned value is conservative; if nothing is known about the language
-    tag [language], [TRUE] will be returned, since, as far as Pango knows,
+    tag [language], [true] will be returned, since, as far as Pango knows,
     [script] might be used to write [language].
 
     This routine is used in Pango's itemization process when determining if a
@@ -46,18 +46,18 @@ external get_scripts : t -> Ocpango_enums.script array option * int
 (** Determines the scripts used to to write [language].
 
     If nothing is known about the language tag [language], or if [language] is
-    [NULL], then [NULL] is returned. The list of scripts returned starts with
+    [None], then [None] is returned. The list of scripts returned starts with
     the script that the language uses most and continues to the one it uses
     least.
 
     The value [num_script] points at will be set to the number of scripts in the
-    returned array (or zero if [NULL] is returned).
+    returned array (or zero if [None] is returned).
 
     Most languages use only one script for writing, but there are some that use
     two (Latin and Cyrillic for example), and a few use three (Japanese for
     example). Applications should not make any assumptions on the maximum number
     of scripts returned though, except that it is positive if the return value
-    is not [NULL], and it is a small number.
+    is not [None], and it is a small number.
 
     The [Pango.Language.includes_script] function uses this function internally.
 
@@ -73,7 +73,7 @@ external get_sample_string : t -> string = "ml_pango_language_get_sample_string"
    to be demonstrative of normal text in the language, as well as exposing\n\
    font feature requirements unique to the language. It is suitable for use\n\
    as sample text in a font selection dialog.\n\n\
-   If [language] is [NULL], the default language as found by\n\
+   If [language] is [None], the default language as found by\n\
    [Pango.Language.get_default] is used.\n\n\
    If Pango does not have a sample string for [language], the classic\n\
    \"The quick brown fox...\" is returned.  This can be detected by\n\

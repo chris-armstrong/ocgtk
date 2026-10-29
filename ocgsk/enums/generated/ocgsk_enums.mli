@@ -334,7 +334,7 @@ type transformcategory =
         column) has the values (0, 0, 0, 1). *)
   | `V2D
     (** The matrix is a 2D matrix. This is equivalent to graphene_matrix_is_2d()
-        returning [TRUE]. In particular, this means that Cairo can deal with the
+        returning [true]. In particular, this means that Cairo can deal with the
         matrix. *)
   | `V2D_AFFINE
     (** The matrix is a combination of 2D scale and 2D translation operations.

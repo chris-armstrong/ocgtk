@@ -33,7 +33,7 @@ class type simple_action_t = object
       activating the action, this signal is not emitted.
 
       Since GLib 2.40, if no handler is connected to this signal then the
-      default behaviour for boolean-stated actions with a [NULL] parameter type
+      default behaviour for boolean-stated actions with a [None] parameter type
       is to toggle them via the [GSimpleAction::change]-state signal. For
       stateful actions where the state type is equal to the parameter type, the
       default is to forward them directly to [GSimpleAction::change]-state. This
@@ -118,7 +118,7 @@ class type simple_action_t = object
   *)
 
   method state_type : Gvariant_type.t
-  (** The [GVariantType] of the state that the action has, or [NULL] if the
+  (** The [GVariantType] of the state that the action has, or [None] if the
       action is stateless. *)
 
   (** {2:conversions Conversions} *)

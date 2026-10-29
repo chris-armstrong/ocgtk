@@ -8,10 +8,10 @@ class type settings_schema_source_t = object
       useful to authors of plugin management systems or to those who want to
       introspect the content of schemas.
 
-      If the schema isn't found directly in [source] and [recursive] is [TRUE]
+      If the schema isn't found directly in [source] and [recursive] is [true]
       then the parent sources will also be checked.
 
-      If the schema isn't found, [NULL] is returned. *)
+      If the schema isn't found, [None] is returned. *)
 
   method ref : unit -> Raw.Settings_schema_source.t
   (** Increase the reference count of [source], returning a new reference. *)

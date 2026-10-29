@@ -9,7 +9,7 @@ class type frame_t = object
   method get_label : unit -> string option
   (** Returns the frame labels text.
 
-      If the frame's label widget is not a [GtkLabel], [NULL] is returned. *)
+      If the frame's label widget is not a [GtkLabel], [None] is returned. *)
 
   method get_label_align : unit -> float
   (** Retrieves the X alignment of the frame’s label. *)

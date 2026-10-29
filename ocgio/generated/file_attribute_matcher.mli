@@ -16,7 +16,7 @@ class type file_attribute_matcher_t = object
   method enumerate_namespace : string -> bool
   [@@ocaml.doc
     "Checks if the matcher will match all of the keys in a given namespace.\n\
-     This will always return [TRUE] if a wildcard character is in use (e.g. if\n\
+     This will always return [true] if a wildcard character is in use (e.g. if\n\
      matcher was created with \"standard::{i \" and [ns] is \"standard\", or \
      if matcher was created\n\
      using \"}\" and namespace is anything.)\n\n\
@@ -29,12 +29,12 @@ class type file_attribute_matcher_t = object
   [@@ocaml.doc
     "Checks if an attribute will be matched by an attribute matcher. If\n\
      the matcher was created with the \"*\" matching string, this function\n\
-     will always return [TRUE]."]
+     will always return [true]."]
 
   method matches_only : string -> bool
   [@@ocaml.doc
     "Checks if an attribute matcher only matches a given attribute. Always\n\
-     returns [FALSE] if \"*\" was used when creating the matcher."]
+     returns [false] if \"*\" was used when creating the matcher."]
 
   method ref : unit -> Raw.File_attribute_matcher.t
   (** References a file attribute matcher. *)

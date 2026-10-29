@@ -54,7 +54,7 @@ external set_pulse : t -> int -> unit
 external get_text : t -> string = "ml_gtk_cell_renderer_progress_get_text"
 [@@ocaml.doc
   "The \"text\" property determines the label which will be drawn\n\
-   over the progress bar. Setting this property to [NULL] causes the default\n\
+   over the progress bar. Setting this property to [None] causes the default\n\
    label to be displayed. Setting this property to an empty string causes\n\
    no label to be displayed."]
 
@@ -62,7 +62,7 @@ external set_text : t -> string -> unit
   = "ml_gtk_cell_renderer_progress_set_text"
 [@@ocaml.doc
   "The \"text\" property determines the label which will be drawn\n\
-   over the progress bar. Setting this property to [NULL] causes the default\n\
+   over the progress bar. Setting this property to [None] causes the default\n\
    label to be displayed. Setting this property to an empty string causes\n\
    no label to be displayed."]
 

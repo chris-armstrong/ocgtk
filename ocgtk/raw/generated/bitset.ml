@@ -63,7 +63,7 @@ external splice : t -> int -> int -> int -> unit = "ml_gtk_bitset_splice"
 external shift_right : t -> int -> unit = "ml_gtk_bitset_shift_right"
 (** Shifts all values in [self] to the right by [amount].
 
-    Values that end up too large to be held in a #guint are discarded. *)
+    Values that end up too large to be held in a [int] are discarded. *)
 
 external shift_left : t -> int -> unit = "ml_gtk_bitset_shift_left"
 (** Shifts all values in [self] to the left by [amount].
@@ -139,7 +139,7 @@ external get_maximum : t -> int = "ml_gtk_bitset_get_maximum"
     If [self] is empty, 0 is returned. *)
 
 external equals : t -> t -> bool = "ml_gtk_bitset_equals"
-(** Returns [TRUE] if [self] and [other] contain the same values. *)
+(** Returns [true] if [self] and [other] contain the same values. *)
 
 external difference : t -> t -> unit = "ml_gtk_bitset_difference"
 (** Sets [self] to be the symmetric difference of [self] and [other].

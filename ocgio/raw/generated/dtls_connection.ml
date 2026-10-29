@@ -42,11 +42,11 @@ external shutdown :
   = "ml_g_dtls_connection_shutdown"
 (** Shut down part or all of a DTLS connection.
 
-    If [shutdown_read] is [TRUE] then the receiving side of the connection is
+    If [shutdown_read] is [true] then the receiving side of the connection is
     shut down, and further reading is disallowed. Subsequent calls to
     g_datagram_based_receive_messages() will return [G_IO_ERROR_CLOSED].
 
-    If [shutdown_write] is [TRUE] then the sending side of the connection is
+    If [shutdown_write] is [true] then the sending side of the connection is
     shut down, and further writing is disallowed. Subsequent calls to
     g_datagram_based_send_messages() will return [G_IO_ERROR_CLOSED].
 
@@ -62,7 +62,7 @@ external set_require_close_notify : t -> bool -> unit
   = "ml_g_dtls_connection_set_require_close_notify"
 [@@ocaml.doc
   "Sets whether or not [conn] expects a proper TLS close notification\n\
-   before the connection is closed. If this is [TRUE] (the default),\n\
+   before the connection is closed. If this is [true] (the default),\n\
    then [conn] will expect to receive a TLS close notification from its\n\
    peer before the connection is closed, and will return a\n\
    [G_TLS_ERROR_EOF] error if the connection is closed without proper\n\
@@ -100,7 +100,7 @@ external set_interaction :
     for things like prompting the user for passwords.
 
     The [interaction] argument will normally be a derived subclass of
-    [GTlsInteraction]. [NULL] can also be provided if no user interaction should
+    [GTlsInteraction]. [None] can also be provided if no user interaction should
     occur for this connection. *)
 
 external set_database :
@@ -109,7 +109,7 @@ external set_database :
   unit = "ml_g_dtls_connection_set_database"
 (** Sets the certificate database that is used to verify peer certificates. This
     is set to the default database by default. See
-    g_tls_backend_get_default_database(). If set to [NULL], then peer
+    g_tls_backend_get_default_database(). If set to [None], then peer
     certificate validation will always set the [G_TLS_CERTIFICATE_UNKNOWN_CA]
     error (meaning [GDtlsConnection::accept]-certificate will always be emitted
     on client-side connections, unless that bit is not set in
@@ -134,7 +134,7 @@ external set_certificate : t -> Tls_certificate.t -> unit
     (It is also possible that a server will allow the connection with or without
     a certificate; in that case, if you don't provide a certificate, you can
     tell that the server requested one by the fact that
-    g_dtls_client_connection_get_accepted_cas() will return non-[NULL].) *)
+    g_dtls_client_connection_get_accepted_cas() will return non-[None].) *)
 
 external set_advertised_protocols : t -> string array option -> unit
   = "ml_g_dtls_connection_set_advertised_protocols"
@@ -142,7 +142,7 @@ external set_advertised_protocols : t -> string array option -> unit
     willing to speak on this connection. The Application-Layer Protocol
     Negotiation (ALPN) extension will be used to negotiate a compatible protocol
     with the peer; use g_dtls_connection_get_negotiated_protocol() to find the
-    negotiated protocol after the handshake. Specifying [NULL] for the the value
+    negotiated protocol after the handshake. Specifying [None] for the the value
     of [protocols] will disable ALPN negotiation.
 
     See
@@ -219,7 +219,7 @@ external get_negotiated_protocol : t -> string option
 
     If the peer did not use the ALPN extension, or did not advertise a protocol
     that matched one of [conn]'s protocols, or the TLS backend does not support
-    ALPN, then this will be [NULL]. See
+    ALPN, then this will be [None]. See
     g_dtls_connection_set_advertised_protocols(). *)
 
 external get_interaction :
@@ -227,7 +227,7 @@ external get_interaction :
   Tls_connection_and__tls_database_and__tls_interaction.Tls_interaction.t option
   = "ml_g_dtls_connection_get_interaction"
 (** Get the object that will be used to interact with the user. It will be used
-    for things like prompting the user for passwords. If [NULL] is returned,
+    for things like prompting the user for passwords. If [None] is returned,
     then no user interaction will occur for this connection. *)
 
 external get_database :
@@ -239,7 +239,7 @@ external get_database :
 
 external get_ciphersuite_name : t -> string option
   = "ml_g_dtls_connection_get_ciphersuite_name"
-(** Returns the name of the current DTLS ciphersuite, or [NULL] if the
+(** Returns the name of the current DTLS ciphersuite, or [None] if the
     connection has not handshaked or has been closed. Beware that the TLS
     backend may use any of multiple different naming conventions, because
     OpenSSL and GnuTLS have their own ciphersuite naming conventions that are

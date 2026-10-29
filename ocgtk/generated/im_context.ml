@@ -54,7 +54,7 @@ class type im_context_t = object
   method activate_osk : Ocgdk.Event.event_t option -> bool
   (** Requests the platform to show an on-screen keyboard for user input.
 
-      This method will return [TRUE] if this request was actually performed to
+      This method will return [true] if this request was actually performed to
       the platform, other environmental factors may result in an on-screen
       keyboard effectively not showing up. *)
 
@@ -91,7 +91,7 @@ class type im_context_t = object
   method filter_keypress : Ocgdk.Event.event_t -> bool
   (** Allow an input method to internally handle key press and release events.
 
-      If this function returns [TRUE], then no further processing should be done
+      If this function returns [true], then no further processing should be done
       for this key event. *)
 
   method focus_in : unit -> unit
@@ -143,7 +143,7 @@ class type im_context_t = object
   (** Sets whether the IM context should use the preedit string to display
       feedback.
 
-      If [use_preedit] is [FALSE] (default is [TRUE]), then the IM context may
+      If [use_preedit] is [false] (default is [true]), then the IM context may
       use some other method to display feedback, such as displaying it in a
       child of the root window. *)
 

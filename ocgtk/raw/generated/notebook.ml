@@ -139,7 +139,7 @@ external set_tab_label :
   unit = "ml_gtk_notebook_set_tab_label"
 (** Changes the tab label for [child].
 
-    If [NULL] is specified for [tab_label], then the page will have the label
+    If [None] is specified for [tab_label], then the page will have the label
     “page N”. *)
 
 external set_tab_detachable :
@@ -227,7 +227,7 @@ external set_group_name : t -> string option -> unit
 (** Sets a group name for [notebook].
 
     Notebooks with the same name will be able to exchange tabs via drag and
-    drop. A notebook with a [NULL] group name will not be able to exchange tabs
+    drop. A notebook with a [None] group name will not be able to exchange tabs
     with any other notebook. *)
 
 external set_current_page : t -> int -> unit
@@ -385,7 +385,7 @@ external get_tab_label :
   option = "ml_gtk_notebook_get_tab_label"
 (** Returns the tab label widget for the page [child].
 
-    [NULL] is returned if [child] is not in [notebook] or if no tab label has
+    [None] is returned if [child] is not in [notebook] or if no tab label has
     specifically been set for [child]. *)
 
 external get_tab_detachable :
@@ -512,12 +512,12 @@ external append_page :
 (* Properties *)
 
 external get_enable_popup : t -> bool = "ml_gtk_notebook_get_enable_popup"
-(** If [TRUE], pressing the right mouse button on the notebook shows a page
+(** If [true], pressing the right mouse button on the notebook shows a page
     switching menu. *)
 
 external set_enable_popup : t -> bool -> unit
   = "ml_gtk_notebook_set_enable_popup"
-(** If [TRUE], pressing the right mouse button on the notebook shows a page
+(** If [true], pressing the right mouse button on the notebook shows a page
     switching menu. *)
 
 let on_change_current_page ?after obj ~callback =

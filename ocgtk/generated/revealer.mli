@@ -28,7 +28,7 @@
     [GtkRevealer] has a single CSS node with name revealer. When styling
     [GtkRevealer] using CSS, remember that it only hides its contents, not
     itself. That means applied margin, padding and borders will be visible even
-    when the [Gtk.Revealer:reveal-child] property is set to [FALSE].
+    when the [Gtk.Revealer:reveal-child] property is set to [false].
 
     {b Accessibility}
 
@@ -53,7 +53,7 @@ class type revealer_t = object
   method get_reveal_child : unit -> bool
   (** Returns whether the child is currently revealed.
 
-      This function returns [TRUE] as soon as the transition is to the revealed
+      This function returns [true] as soon as the transition is to the revealed
       state is started. To learn whether the child is fully revealed (ie the
       transition is completed), use [Gtk.Revealer.get_child_revealed]. *)
 
@@ -105,7 +105,7 @@ class revealer : Raw.Revealer.t -> revealer_t
     [GtkRevealer] has a single CSS node with name revealer. When styling
     [GtkRevealer] using CSS, remember that it only hides its contents, not
     itself. That means applied margin, padding and borders will be visible even
-    when the [Gtk.Revealer:reveal-child] property is set to [FALSE].
+    when the [Gtk.Revealer:reveal-child] property is set to [false].
 
     {b Accessibility}
 

@@ -34,7 +34,7 @@ external set_action_target_value : t -> Gvariant.t option -> unit
   = "ml_gtk_actionable_set_action_target_value"
 (** Sets the target value of an actionable widget.
 
-    If [target_value] is [NULL] then the target value is unset.
+    If [target_value] is [None] then the target value is unset.
 
     The target value has two purposes. First, it is used as the parameter to
     activation of the action associated with the [GtkActionable] widget. Second,
@@ -55,7 +55,7 @@ external set_action_name : t -> string option -> unit
 (** Specifies the name of the action with which this widget should be
     associated.
 
-    If [action_name] is [NULL] then the widget will be unassociated from any
+    If [action_name] is [None] then the widget will be unassociated from any
     previous action.
 
     Usually this function is used when the widget is located (or will be

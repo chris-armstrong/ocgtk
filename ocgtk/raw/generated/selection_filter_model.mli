@@ -27,7 +27,7 @@ external set_model : t -> Selection_model.t option -> unit
 
 external get_model : t -> Selection_model.t option
   = "ml_gtk_selection_filter_model_get_model"
-(** Gets the model currently filtered or [NULL] if none. *)
+(** Gets the model currently filtered or [None] if none. *)
 
 (* Properties *)
 

@@ -19,7 +19,7 @@ class type menu_item_t = object
   (** Queries the named [attribute] on [menu_item].
 
       If [expected_type] is specified and the attribute does not have this type,
-      [NULL] is returned. [NULL] is also returned if the attribute simply does
+      [None] is returned. [None] is also returned if the attribute simply does
       not exist. *)
 
   method get_link : string -> Menu_model.menu_model_t option
@@ -29,11 +29,11 @@ class type menu_item_t = object
     string option -> Gvariant.t option -> unit
   [@@ocaml.doc
     "Sets or unsets the \"action\" and \"target\" attributes of [menu_item].\n\n\
-     If [action] is [NULL] then both the \"action\" and \"target\" attributes\n\
+     If [action] is [None] then both the \"action\" and \"target\" attributes\n\
      are unset (and [target_value] is ignored).\n\n\
-     If [action] is non-[NULL] then the \"action\" attribute is set.  The\n\
+     If [action] is non-[None] then the \"action\" attribute is set.  The\n\
      \"target\" attribute is then set to the value of [target_value] if it is\n\
-     non-[NULL] or unset otherwise.\n\n\
+     non-[None] or unset otherwise.\n\n\
      Normal menu items (ie: not submenu, section or other custom item\n\
      types) are expected to have the \"action\" attribute set to identify\n\
      the action that they are associated with.  The state type of the\n\
@@ -48,7 +48,7 @@ class type menu_item_t = object
      If the action has a boolean state then the menu item is usually drawn\n\
      as a toggle menu item (ie: with a checkmark or equivalent\n\
      indication).  The item should be marked as 'toggled' or 'checked'\n\
-     when the boolean state is [TRUE].\n\n\
+     when the boolean state is [true].\n\n\
      If the action has a string state then the menu item is usually drawn\n\
      as a radio menu item (ie: with a radio bullet or equivalent\n\
      indication).  The item should be marked as 'selected' when the string\n\
@@ -70,8 +70,8 @@ class type menu_item_t = object
 
       must consist only of lowercase ASCII characters, digits and '-'.
 
-      If [value] is non-[NULL] then it is used as the new value for the
-      attribute. If [value] is [NULL] then the attribute is unset. If the
+      If [value] is non-[None] then it is used as the new value for the
+      attribute. If [value] is [None] then the attribute is unset. If the
       [value] [GVariant] is floating, it is consumed.
 
       See also g_menu_item_set_attribute() for a more convenient way to do the
@@ -98,16 +98,16 @@ class type menu_item_t = object
      bookmarks or applications in an \"Open With\" menu.  Don't use it on\n\
      menu items corresponding to verbs (eg: stock icons for 'Save' or\n\
      'Quit').\n\n\
-     If [icon] is [NULL] then the icon is unset."]
+     If [icon] is [None] then the icon is unset."]
 
   method set_label : string option -> unit
   [@@ocaml.doc
     "Sets or unsets the \"label\" attribute of [menu_item].\n\n\
-     If [label] is non-[NULL] it is used as the label for the menu item.  If\n\
-     it is [NULL] then the label attribute is unset."]
+     If [label] is non-[None] it is used as the label for the menu item.  If\n\
+     it is [None] then the label attribute is unset."]
 
   method set_link : string -> Menu_model.menu_model_t option -> unit
-  (** Creates a link from [menu_item] to [model] if non-[NULL], or unsets it.
+  (** Creates a link from [menu_item] to [model] if non-[None], or unsets it.
 
       Links are used to establish a relationship between a particular menu item
       and another menu. For example, [G_MENU_LINK_SUBMENU] is used to associate
@@ -130,7 +130,7 @@ class type menu_item_t = object
   method set_submenu : Menu_model.menu_model_t option -> unit
   [@@ocaml.doc
     "Sets or unsets the \"submenu\" link of [menu_item] to [submenu].\n\n\
-     If [submenu] is non-[NULL], it is linked to.  If it is [NULL] then the\n\
+     If [submenu] is non-[None], it is linked to.  If it is [None] then the\n\
      link is unset.\n\n\
      The effect of having one menu appear as a submenu of another is\n\
      exactly as it sounds."]
@@ -148,9 +148,9 @@ class menu_item : Raw.Menu_item.t -> menu_item_t
 val new_ : string option -> string option -> menu_item_t
 [@@ocaml.doc
   "Creates a new [GMenuItem].\n\n\
-   If [label] is non-[NULL] it is used to set the \"label\" attribute of the\n\
+   If [label] is non-[None] it is used to set the \"label\" attribute of the\n\
    new item.\n\n\
-   If [detailed_action] is non-[NULL] it is used to set the \"action\" and\n\
+   If [detailed_action] is non-[None] it is used to set the \"action\" and\n\
    possibly the \"target\" attribute of the new item.  See\n\
    g_menu_item_set_detailed_action() for more information."]
 
@@ -170,7 +170,7 @@ val new_section : string option -> Menu_model.menu_model_t -> menu_item_t
    exactly as it sounds: the items from [section] become a direct part of\n\
    the menu that [menu_item] is added to.\n\n\
    Visual separation is typically displayed between two non-empty\n\
-   sections.  If [label] is non-[NULL] then it will be incorporated into\n\
+   sections.  If [label] is non-[None] then it will be incorporated into\n\
    this visual indication.  This allows for labeled subsections of a\n\
    menu.\n\n\
    As a simple example, consider a typical \"Edit\" menu from a simple\n\

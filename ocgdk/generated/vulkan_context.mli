@@ -23,7 +23,7 @@ class type vulkan_context_t = App_launch_context_cycle_de440b34.vulkan_context_t
     characteristics of the surface.
 
     Support for [GdkVulkanContext] is platform-specific and context creation can
-    fail, returning [NULL] context. *)
+    fail, returning [None] context. *)
 
 class vulkan_context : Raw.Vulkan_context.t -> vulkan_context_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Vulkan_context.t}. *)
@@ -37,7 +37,7 @@ class vulkan_context : Raw.Vulkan_context.t -> vulkan_context_t
     characteristics of the surface.
 
     Support for [GdkVulkanContext] is platform-specific and context creation can
-    fail, returning [NULL] context. *)
+    fail, returning [None] context. *)
 
 (** {1:constructors Constructors} *)
 

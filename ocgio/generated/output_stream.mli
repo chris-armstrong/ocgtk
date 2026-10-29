@@ -56,7 +56,7 @@ class type output_stream_t = object
       important to check and report the error to the user, otherwise there might
       be a loss of data as all data might not be written.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned.
       Cancelling a close will still leave the stream closed, but there some
@@ -74,7 +74,7 @@ class type output_stream_t = object
 
       This function is optional for inherited classes.
 
-      If [cancellable] is not [NULL], then the operation can be cancelled by
+      If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
       was cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
 
@@ -94,7 +94,7 @@ class type output_stream_t = object
 
   method set_pending : unit -> (bool, GError.t) result
   (** Sets [stream] to have actions pending. If the pending flag is already set
-      or [stream] is closed, it will return [FALSE] and set [error]. *)
+      or [stream] is closed, it will return [false] and set [error]. *)
 
   method splice :
     Input_stream.input_stream_t ->

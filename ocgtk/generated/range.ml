@@ -22,8 +22,8 @@ class type range_t = object
 
       It allows an application to determine the type of scroll event that
       occurred and the resultant new value. The application can handle the event
-      itself and return [TRUE] to prevent further processing. Or, by returning
-      [FALSE], it can pass the event to other handlers until the default GTK
+      itself and return [true] to prevent further processing. Or, by returning
+      [false], it can pass the event to other handlers until the default GTK
       handler is reached.
 
       The value parameter is unrounded. An application that overrides the

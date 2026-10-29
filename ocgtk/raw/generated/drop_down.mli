@@ -109,7 +109,7 @@ external get_show_arrow : t -> bool = "ml_gtk_drop_down_get_show_arrow"
 
 external get_selected_item : t -> [ `object_ ] Gobject.obj option
   = "ml_gtk_drop_down_get_selected_item"
-(** Gets the selected item. If no item is selected, [NULL] is returned. *)
+(** Gets the selected item. If no item is selected, [None] is returned. *)
 
 external get_selected : t -> int = "ml_gtk_drop_down_get_selected"
 (** Gets the position of the selected item. *)

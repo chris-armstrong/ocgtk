@@ -11,7 +11,7 @@ class type multi_selection_t = object
   method set_model : Ocgio.List_model.list_model_t option -> unit
   (** Sets the model that [self] should wrap.
 
-      If [model] is [NULL], [self] will be empty. *)
+      If [model] is [None], [self] will be empty. *)
 
   (** {2:properties Properties} *)
 

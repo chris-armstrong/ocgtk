@@ -50,7 +50,7 @@ class type menu_t = object
       After the menu is frozen, it is an error to attempt to make any changes to
       it. In effect this means that the [GMenu] API must no longer be used.
 
-      This function causes g_menu_model_is_mutable() to begin returning [FALSE],
+      This function causes g_menu_model_is_mutable() to begin returning [false],
       which has some positive performance implications. *)
 
   method insert : int -> string option -> string option -> unit

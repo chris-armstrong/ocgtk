@@ -97,11 +97,11 @@ external get_pending : t -> int = "ml_gtk_sort_list_model_get_pending"
     ]}
 
     If no sort operation is ongoing - in particular when
-    [Gtk.SortListModel:incremental] is [FALSE] - this function returns 0. *)
+    [Gtk.SortListModel:incremental] is [false] - this function returns 0. *)
 
 external get_model : t -> Ocgio_raw.List_model.t option
   = "ml_gtk_sort_list_model_get_model"
-(** Gets the model currently sorted or [NULL] if none. *)
+(** Gets the model currently sorted or [None] if none. *)
 
 external get_incremental : t -> bool = "ml_gtk_sort_list_model_get_incremental"
 (** Returns whether incremental sorting is enabled.

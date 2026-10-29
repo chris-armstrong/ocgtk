@@ -50,7 +50,7 @@ external set_show_peek_icon : t -> bool -> unit
   = "ml_gtk_password_entry_set_show_peek_icon"
 (** Sets whether the entry should have a clickable icon to reveal the contents.
 
-    Setting this to [FALSE] also hides the text again. *)
+    Setting this to [false] also hides the text again. *)
 
 external set_extra_menu : t -> Ocgio_raw.Menu_model.t option -> unit
   = "ml_gtk_password_entry_set_extra_menu"

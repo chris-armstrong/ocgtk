@@ -29,7 +29,7 @@
     method directly, instead it will be used automatically in various ways. For
     C applications you generally just call [Gio.Initable.new] directly, or
     indirectly via a [foo_thing_new()] wrapper. This will call
-    [Gio.Initable.init] under the cover, returning [NULL] and setting a [GError]
+    [Gio.Initable.init] under the cover, returning [None] and setting a [GError]
     on failure (at which point the instance is unreferenced).
 
     For bindings in languages where the native constructor supports exceptions
@@ -49,9 +49,9 @@ class type initable_t = object
       construction, either with this function or g_async_initable_init_async().
 
       Implementations may also support cancellation. If [cancellable] is not
-      [NULL], then initialization can be cancelled by triggering the cancellable
+      [None], then initialization can be cancelled by triggering the cancellable
       object from another thread. If the operation was cancelled, the error
-      [G_IO_ERROR_CANCELLED] will be returned. If [cancellable] is not [NULL]
+      [G_IO_ERROR_CANCELLED] will be returned. If [cancellable] is not [None]
       and the object doesn't support cancellable initialization the error
       [G_IO_ERROR_NOT_SUPPORTED] will be returned.
 
@@ -105,7 +105,7 @@ class initable : Raw.Initable.t -> initable_t
     method directly, instead it will be used automatically in various ways. For
     C applications you generally just call [Gio.Initable.new] directly, or
     indirectly via a [foo_thing_new()] wrapper. This will call
-    [Gio.Initable.init] under the cover, returning [NULL] and setting a [GError]
+    [Gio.Initable.init] under the cover, returning [None] and setting a [GError]
     on failure (at which point the instance is unreferenced).
 
     For bindings in languages where the native constructor supports exceptions

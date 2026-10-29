@@ -64,11 +64,11 @@ class type font_dialog_button_t = object
   *)
 
   method set_use_font : bool -> unit
-  (** If [use_font] is [TRUE], the font name will be written using the selected
+  (** If [use_font] is [true], the font name will be written using the selected
       font. *)
 
   method set_use_size : bool -> unit
-  (** If [use_size] is [TRUE], the font name will be written using the selected
+  (** If [use_size] is [true], the font name will be written using the selected
       font size. *)
 
   (** {2:conversions Conversions} *)

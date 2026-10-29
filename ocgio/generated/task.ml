@@ -11,8 +11,8 @@ class type task_t = object
       for more details. *)
 
   method get_completed : unit -> bool
-  (** Gets the value of [GTask:completed]. This changes from [FALSE] to [TRUE]
-      after the task’s callback is invoked, and will return [FALSE] if called
+  (** Gets the value of [GTask:completed]. This changes from [false] to [true]
+      after the task’s callback is invoked, and will return [false] if called
       from inside the callback. *)
 
   method get_name : unit -> string option
@@ -29,16 +29,16 @@ class type task_t = object
   (** Tests if [task] resulted in an error. *)
 
   method propagate_boolean : unit -> (bool, GError.t) result
-  (** Gets the result of [task] as a #gboolean.
+  (** Gets the result of [task] as a [bool].
 
       If the task resulted in an error, or was cancelled, then this will instead
-      return [FALSE] and set [error].
+      return [false] and set [error].
 
       Since this method transfers ownership of the return value (or error) to
       the caller, you may only call it once. *)
 
   method propagate_int : unit -> (int, GError.t) result
-  (** Gets the result of [task] as an integer (#gssize).
+  (** Gets the result of [task] as an integer ([int]).
 
       If the task resulted in an error, or was cancelled, then this will instead
       return -1 and set [error].
@@ -78,8 +78,8 @@ class type task_t = object
   method return_value : Gobject.Value.t option -> unit
   (** Sets [task]'s result to [result] (by copying it) and completes the task.
 
-      If [result] is [NULL] then a [GValue] of type [G_TYPE_POINTER] with a
-      value of [NULL] will be used for the result.
+      If [result] is [None] then a [GValue] of type [G_TYPE_POINTER] with a
+      value of [None] will be used for the result.
 
       This is a very generic low-level method intended primarily for use by
       language bindings; for C code, g_task_return_pointer() and the like will
@@ -87,22 +87,22 @@ class type task_t = object
 
   method set_check_cancellable : bool -> unit
   [@@ocaml.doc
-    "Sets or clears [task]'s check-cancellable flag. If this is [TRUE]\n\
+    "Sets or clears [task]'s check-cancellable flag. If this is [true]\n\
      (the default), then g_task_propagate_pointer(), etc, and\n\
      g_task_had_error() will check the task's [GCancellable] first, and\n\
      if it has been cancelled, then they will consider the task to have\n\
      returned an \"Operation was cancelled\" error\n\
      ([G_IO_ERROR_CANCELLED]), regardless of any other error or return\n\
      value the task may have had.\n\n\
-     If [check_cancellable] is [FALSE], then the [GTask] will not check the\n\
+     If [check_cancellable] is [false], then the [GTask] will not check the\n\
      cancellable itself, and it is up to [task]'s owner to do this (eg,\n\
      via g_task_return_error_if_cancelled()).\n\n\
      If you are using g_task_set_return_on_cancel() as well, then\n\
-     you must leave check-cancellable set [TRUE]."]
+     you must leave check-cancellable set [true]."]
 
   method set_name : string option -> unit
   (** Sets [task]’s name, used in debugging and profiling. The name defaults to
-      [NULL].
+      [None].
 
       The task name should describe in a human readable way what the task does.
       For example, ‘Open file’ or ‘Connect to network host’. It is used to set
@@ -123,7 +123,7 @@ class type task_t = object
   (** Sets or clears [task]'s return-on-cancel flag. This is only meaningful for
       tasks run via g_task_run_in_thread() or g_task_run_in_thread_sync().
 
-      If [return_on_cancel] is [TRUE], then cancelling [task]'s [GCancellable]
+      If [return_on_cancel] is [true], then cancelling [task]'s [GCancellable]
       will immediately cause it to return, as though the task's
       [GTaskThreadFunc] had called g_task_return_error_if_cancelled() and then
       returned.
@@ -132,14 +132,14 @@ class type task_t = object
       function. The [GTaskThreadFunc] just needs to be careful that it does not
       modify any externally-visible state after it has been cancelled. To do
       that, the thread should call g_task_set_return_on_cancel() again to
-      (atomically) set return-on-cancel [FALSE] before making externally-visible
+      (atomically) set return-on-cancel [false] before making externally-visible
       changes; if the task gets cancelled before the return-on-cancel flag could
       be changed, g_task_set_return_on_cancel() will indicate this by returning
-      [FALSE].
+      [false].
 
       You can disable and re-enable this flag multiple times if you wish. If the
-      task's [GCancellable] is cancelled while return-on-cancel is [FALSE], then
-      calling g_task_set_return_on_cancel() to set it [TRUE] again will cause
+      task's [GCancellable] is cancelled while return-on-cancel is [false], then
+      calling g_task_set_return_on_cancel() to set it [true] again will cause
       the task to be cancelled at that point.
 
       If the task's [GCancellable] is already cancelled before you call

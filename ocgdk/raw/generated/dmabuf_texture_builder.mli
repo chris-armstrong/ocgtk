@@ -158,7 +158,7 @@ external set_color_state :
   = "ml_gdk_dmabuf_texture_builder_set_color_state"
 (** Sets the color state for the texture.
 
-    By default, the colorstate is [NULL]. In that case, GTK will choose the
+    By default, the colorstate is [None]. In that case, GTK will choose the
     correct colorstate based on the format. If you don't know what colorstates
     are, this is probably the right thing. *)
 
@@ -169,13 +169,13 @@ external get_width : t -> int = "ml_gdk_dmabuf_texture_builder_get_width"
 external get_update_texture : t -> Texture.t option
   = "ml_gdk_dmabuf_texture_builder_get_update_texture"
 (** Gets the texture previously set via
-    gdk_dmabuf_texture_builder_set_update_texture() or [NULL] if none was set.
+    gdk_dmabuf_texture_builder_set_update_texture() or [None] if none was set.
 *)
 
 external get_update_region : t -> Occairo_raw.Region.t option
   = "ml_gdk_dmabuf_texture_builder_get_update_region"
 (** Gets the region previously set via
-    gdk_dmabuf_texture_builder_set_update_region() or [NULL] if none was set. *)
+    gdk_dmabuf_texture_builder_set_update_region() or [None] if none was set. *)
 
 external get_stride : t -> int -> int
   = "ml_gdk_dmabuf_texture_builder_get_stride"

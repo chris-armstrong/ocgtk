@@ -31,12 +31,12 @@ class type cursor_t = object
   method get_name : unit -> string option
   (** Returns the name of the cursor.
 
-      If the cursor is not a named cursor, [NULL] will be returned. *)
+      If the cursor is not a named cursor, [None] will be returned. *)
 
   method get_texture : unit -> Texture.texture_t option
   (** Returns the texture for the cursor.
 
-      If the cursor is a named cursor, [NULL] will be returned. *)
+      If the cursor is a named cursor, [None] will be returned. *)
 
   (** {2:conversions Conversions} *)
 

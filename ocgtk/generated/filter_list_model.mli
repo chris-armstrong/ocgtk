@@ -38,7 +38,7 @@ class type filter_list_model_t = object
       See [Gtk.FilterListModel.set_incremental]. *)
 
   method get_model : unit -> Ocgio.List_model.list_model_t option
-  (** Gets the model currently filtered or [NULL] if none. *)
+  (** Gets the model currently filtered or [None] if none. *)
 
   method get_pending : unit -> int
   (** Returns the number of items that have not been filtered yet.
@@ -55,7 +55,7 @@ class type filter_list_model_t = object
       ]}
 
       If no filter operation is ongoing - in particular when
-      [Gtk.FilterListModel:incremental] is [FALSE] - this function returns 0. *)
+      [Gtk.FilterListModel:incremental] is [false] - this function returns 0. *)
 
   method get_watch_items : unit -> bool
   (** Returns whether watching items is enabled.

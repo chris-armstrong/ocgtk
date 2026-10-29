@@ -9,7 +9,7 @@ class type language_t = object
      to be demonstrative of normal text in the language, as well as exposing\n\
      font feature requirements unique to the language. It is suitable for use\n\
      as sample text in a font selection dialog.\n\n\
-     If [language] is [NULL], the default language as found by\n\
+     If [language] is [None], the default language as found by\n\
      [Pango.Language.get_default] is used.\n\n\
      If Pango does not have a sample string for [language], the classic\n\
      \"The quick brown fox...\" is returned.  This can be detected by\n\
@@ -23,7 +23,7 @@ class type language_t = object
   (** Determines if [script] is one of the scripts used to write [language].
 
       The returned value is conservative; if nothing is known about the language
-      tag [language], [TRUE] will be returned, since, as far as Pango knows,
+      tag [language], [true] will be returned, since, as far as Pango knows,
       [script] might be used to write [language].
 
       This routine is used in Pango's itemization process when determining if a

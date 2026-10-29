@@ -54,7 +54,7 @@ external set_measure_overlay :
 (** Sets whether [widget] is included in the measured size of [overlay].
 
     The overlay will request the size of the largest child that has this
-    property set to [TRUE]. Children who are not included may be drawn outside
+    property set to [true]. Children who are not included may be drawn outside
     of [overlay]'s allocation if they are too large. *)
 
 external set_clip_overlay :

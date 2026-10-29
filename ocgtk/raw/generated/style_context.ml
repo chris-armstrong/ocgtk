@@ -104,7 +104,7 @@ external lookup_color : t -> string -> bool * Ocgdk_raw.Rgb_a.t
 (** Looks up and resolves a color name in the [context] color map. *)
 
 external has_class : t -> string -> bool = "ml_gtk_style_context_has_class"
-(** Returns [TRUE] if [context] currently has defined the given class name. *)
+(** Returns [true] if [context] currently has defined the given class name. *)
 
 external get_state : t -> Ocgtk_enums.stateflags
   = "ml_gtk_style_context_get_state"

@@ -16,7 +16,7 @@
 
     By default, [GtkLinkButton] calls [Gtk.FileLauncher.launch] when the button
     is clicked. This behaviour can be overridden by connecting to the
-    [Gtk.LinkButton::activate-link] signal and returning [TRUE] from the signal
+    [Gtk.LinkButton::activate-link] signal and returning [true] from the signal
     handler.
 
     {b Shortcuts and Gestures}

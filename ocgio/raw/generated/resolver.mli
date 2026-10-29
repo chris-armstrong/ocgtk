@@ -48,7 +48,7 @@ external lookup_service_finish :
 (** Retrieves the result of a previous call to
     g_resolver_lookup_service_async().
 
-    If the DNS resolution failed, [error] (if non-[NULL]) will be set to a value
+    If the DNS resolution failed, [error] (if non-[None]) will be set to a value
     from [GResolverError]. If the operation was cancelled, [error] will be set
     to [G_IO_ERROR_CANCELLED]. *)
 
@@ -69,11 +69,11 @@ external lookup_service :
     [GSrvTarget], sorted in order of preference. (That is, you should attempt to
     connect to the first target first, then the second if the first fails, etc.)
 
-    If the DNS resolution fails, [error] (if non-[NULL]) will be set to a value
-    from [GResolverError] and [NULL] will be returned.
+    If the DNS resolution fails, [error] (if non-[None]) will be set to a value
+    from [GResolverError] and [None] will be returned.
 
-    If [cancellable] is non-[NULL], it can be used to cancel the operation, in
-    which case [error] (if non-[NULL]) will be set to [G_IO_ERROR_CANCELLED].
+    If [cancellable] is non-[None], it can be used to cancel the operation, in
+    which case [error] (if non-[None]) will be set to [G_IO_ERROR_CANCELLED].
 
     If you are planning to connect to the service, it is usually easier to
     create a [GNetworkService] and use its [GSocketConnectable] interface. *)
@@ -86,7 +86,7 @@ external lookup_records_finish :
     [GVariant] tuples. See [GResolverRecordType] for information on what the
     records contain.
 
-    If the DNS resolution failed, [error] (if non-[NULL]) will be set to a value
+    If the DNS resolution failed, [error] (if non-[None]) will be set to a value
     from [GResolverError]. If the operation was cancelled, [error] will be set
     to [G_IO_ERROR_CANCELLED]. *)
 
@@ -100,11 +100,11 @@ external lookup_records :
     returns a list of records as [GVariant] tuples. See [GResolverRecordType]
     for information on what the records contain for each [record_type].
 
-    If the DNS resolution fails, [error] (if non-[NULL]) will be set to a value
-    from [GResolverError] and [NULL] will be returned.
+    If the DNS resolution fails, [error] (if non-[None]) will be set to a value
+    from [GResolverError] and [None] will be returned.
 
-    If [cancellable] is non-[NULL], it can be used to cancel the operation, in
-    which case [error] (if non-[NULL]) will be set to [G_IO_ERROR_CANCELLED]. *)
+    If [cancellable] is non-[None], it can be used to cancel the operation, in
+    which case [error] (if non-[None]) will be set to [G_IO_ERROR_CANCELLED]. *)
 
 external lookup_by_name_with_flags_finish :
   t -> Async_result.t -> (Inet_address.t list, GError.t) result
@@ -112,7 +112,7 @@ external lookup_by_name_with_flags_finish :
 (** Retrieves the result of a call to
     g_resolver_lookup_by_name_with_flags_async().
 
-    If the DNS resolution failed, [error] (if non-[NULL]) will be set to a value
+    If the DNS resolution failed, [error] (if non-[None]) will be set to a value
     from [GResolverError]. If the operation was cancelled, [error] will be set
     to [G_IO_ERROR_CANCELLED]. *)
 
@@ -132,7 +132,7 @@ external lookup_by_name_finish :
   = "ml_g_resolver_lookup_by_name_finish"
 (** Retrieves the result of a call to g_resolver_lookup_by_name_async().
 
-    If the DNS resolution failed, [error] (if non-[NULL]) will be set to a value
+    If the DNS resolution failed, [error] (if non-[None]) will be set to a value
     from [GResolverError]. If the operation was cancelled, [error] will be set
     to [G_IO_ERROR_CANCELLED]. *)
 
@@ -151,11 +151,11 @@ external lookup_by_name :
     first fails, etc. If you are using the result to listen on a socket, it is
     appropriate to add each result using e.g. g_socket_listener_add_address().
 
-    If the DNS resolution fails, [error] (if non-[NULL]) will be set to a value
-    from [GResolverError] and [NULL] will be returned.
+    If the DNS resolution fails, [error] (if non-[None]) will be set to a value
+    from [GResolverError] and [None] will be returned.
 
-    If [cancellable] is non-[NULL], it can be used to cancel the operation, in
-    which case [error] (if non-[NULL]) will be set to [G_IO_ERROR_CANCELLED].
+    If [cancellable] is non-[None], it can be used to cancel the operation, in
+    which case [error] (if non-[None]) will be set to [G_IO_ERROR_CANCELLED].
 
     If you are planning to connect to a socket on the resolved IP address, it
     may be easier to create a [GNetworkAddress] and use its [GSocketConnectable]
@@ -167,7 +167,7 @@ external lookup_by_address_finish :
 (** Retrieves the result of a previous call to
     g_resolver_lookup_by_address_async().
 
-    If the DNS resolution failed, [error] (if non-[NULL]) will be set to a value
+    If the DNS resolution failed, [error] (if non-[None]) will be set to a value
     from [GResolverError]. If the operation was cancelled, [error] will be set
     to [G_IO_ERROR_CANCELLED]. *)
 
@@ -177,11 +177,11 @@ external lookup_by_address :
 (** Synchronously reverse-resolves [address] to determine its associated
     hostname.
 
-    If the DNS resolution fails, [error] (if non-[NULL]) will be set to a value
+    If the DNS resolution fails, [error] (if non-[None]) will be set to a value
     from [GResolverError].
 
-    If [cancellable] is non-[NULL], it can be used to cancel the operation, in
-    which case [error] (if non-[NULL]) will be set to [G_IO_ERROR_CANCELLED]. *)
+    If [cancellable] is non-[None], it can be used to cancel the operation, in
+    which case [error] (if non-[None]) will be set to [G_IO_ERROR_CANCELLED]. *)
 
 external get_timeout : t -> int = "ml_g_resolver_get_timeout"
 (** Get the timeout applied to all resolver lookups. See [GResolver:timeout]. *)
