@@ -50,7 +50,8 @@ end
      the stylus-sensitive area.\n\n\
      These buttons and sensors have no implicit meaning, and by default they\n\
      perform no action. [GtkPadController] is provided to map those to\n\
-     [Gio.Action] objects, thus letting the application give them a more\n\
+     {{!Ocgio.Action.class-type-action_t}[Gio.Action]} objects, thus letting \
+     the application give them a more\n\
      semantic meaning.\n\n\
      Buttons and sensors are not constrained to triggering a single action,\n\
      some [GDK_SOURCE_TABLET_PAD] devices feature multiple \"modes\". All these\n\
@@ -62,8 +63,12 @@ end
      [Gdk.DevicePad.get_group_n_modes].\n\n\
      Each of the actions that a given button/strip/ring performs for a given \
      mode\n\
-     is defined by a [Gtk.PadActionEntry]. It contains an action name that\n\
-     will be looked up in the given [Gio.ActionGroup] and activated whenever\n\
+     is defined by a \
+     {{!Ocgtk.Pad_action_entry.class-type-pad_action_entry_t}[Gtk.PadActionEntry]}. \
+     It contains an action name that\n\
+     will be looked up in the given \
+     {{!Ocgio.Action_group.class-type-action_group_t}[Gio.ActionGroup]} and \
+     activated whenever\n\
      the specified input element and mode are triggered.\n\n\
      A simple example of [GtkPadController] usage: Assigning button 1 in all\n\
      modes and pad devices to an \"invert-selection\" action:\n\n\
@@ -108,7 +113,8 @@ class pad_controller : Raw.Pad_controller.t -> pad_controller_t
  the stylus-sensitive area.\n\n\
  These buttons and sensors have no implicit meaning, and by default they\n\
  perform no action. [GtkPadController] is provided to map those to\n\
- [Gio.Action] objects, thus letting the application give them a more\n\
+ {{!Ocgio.Action.class-type-action_t}[Gio.Action]} objects, thus letting the \
+ application give them a more\n\
  semantic meaning.\n\n\
  Buttons and sensors are not constrained to triggering a single action,\n\
  some [GDK_SOURCE_TABLET_PAD] devices feature multiple \"modes\". All these\n\
@@ -119,8 +125,12 @@ class pad_controller : Raw.Pad_controller.t -> pad_controller_t
  different modes. See [Gdk.DevicePad.get_n_groups] and\n\
  [Gdk.DevicePad.get_group_n_modes].\n\n\
  Each of the actions that a given button/strip/ring performs for a given mode\n\
- is defined by a [Gtk.PadActionEntry]. It contains an action name that\n\
- will be looked up in the given [Gio.ActionGroup] and activated whenever\n\
+ is defined by a \
+ {{!Ocgtk.Pad_action_entry.class-type-pad_action_entry_t}[Gtk.PadActionEntry]}. \
+ It contains an action name that\n\
+ will be looked up in the given \
+ {{!Ocgio.Action_group.class-type-action_group_t}[Gio.ActionGroup]} and \
+ activated whenever\n\
  the specified input element and mode are triggered.\n\n\
  A simple example of [GtkPadController] usage: Assigning button 1 in all\n\
  modes and pad devices to an \"invert-selection\" action:\n\n\

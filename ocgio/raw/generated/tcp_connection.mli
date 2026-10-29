@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TcpConnection: TcpConnection *)
 
-(** This is the subclass of [Gio.SocketConnection] that is created for TCP/IP
-    sockets.
+(** This is the subclass of
+    {{!Ocgio.Raw.Socket_connection}[Gio.SocketConnection]} that is created for
+    TCP/IP sockets.
 
     The class built on this module is in {!Ocgio.Tcp_connection}. *)
 

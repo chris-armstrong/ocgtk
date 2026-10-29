@@ -4,8 +4,9 @@
 (** Base class for objects implementing different rendering methods.
 
     [GdkDrawContext] is the base object used by contexts implementing different
-    rendering methods, such as [Gdk.CairoContext] or [Gdk.GLContext]. It
-    provides shared functionality between those contexts.
+    rendering methods, such as {{!Ocgdk.Raw.Cairo_context}[Gdk.CairoContext]} or
+    {{!Ocgdk.Raw.Gl_context}[Gdk.GLContext]}. It provides shared functionality
+    between those contexts.
 
     You will always interact with one of those subclasses.
 

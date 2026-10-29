@@ -1,5 +1,5 @@
 (** A [PangoCoverage] structure is a map from Unicode characters to
-    [Pango.CoverageLevel] values.
+    {{!Ocpango.Enums.type-coveragelevel}[Pango.CoverageLevel]} values.
 
     Its methods, signals and properties are on {!class-type-coverage_t}. Its
     full description is under {!section-description}. Its constructors are under
@@ -11,7 +11,7 @@
 (** {b The methods, signals and properties of a [Coverage].}
 
     A [PangoCoverage] structure is a map from Unicode characters to
-    [Pango.CoverageLevel] values.
+    {{!Ocpango.Enums.type-coveragelevel}[Pango.CoverageLevel]} values.
 
     It is often necessary in Pango to determine if a particular font can
     represent a particular character, and also how well it can represent that
@@ -53,7 +53,7 @@ class coverage : Raw.Coverage.t -> coverage_t
 (** {1:description Description}
 
     A [PangoCoverage] structure is a map from Unicode characters to
-    [Pango.CoverageLevel] values.
+    {{!Ocpango.Enums.type-coveragelevel}[Pango.CoverageLevel]} values.
 
     It is often necessary in Pango to determine if a particular font can
     represent a particular character, and also how well it can represent that

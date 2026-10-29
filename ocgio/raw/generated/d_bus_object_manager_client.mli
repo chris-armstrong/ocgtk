@@ -2,13 +2,14 @@
 (* DBusObjectManagerClient: DBusObjectManagerClient *)
 
 (** [GDBusObjectManagerClient] is used to create, monitor and delete object
-    proxies for remote objects exported by a [Gio.DBusObjectManagerServer] (or
+    proxies for remote objects exported by a
+    {{!Ocgio.Raw.D_bus_object_manager_server}[Gio.DBusObjectManagerServer]} (or
     any code implementing the org.freedesktop.DBus.ObjectManager interface).
 
     Once an instance of this type has been created, you can connect to the
     [Gio.DBusObjectManager::object-added] and
     \[signal@Gio.DBusObjectManager::object-removed signals\] and inspect the
-    [Gio.DBusObjectProxy] objects returned by
+    {{!Ocgio.Raw.D_bus_object_proxy}[Gio.DBusObjectProxy]} objects returned by
     [Gio.DBusObjectManager.get_objects].
 
     If the name for a [GDBusObjectManagerClient] is not owned by anyone at
@@ -33,27 +34,29 @@
     currently existing object proxies. Since
     [Gio.DBusObjectManagerClient:name-owner] is [None] when this happens, you
     can use this information to disambiguate a synthesized signal from a genuine
-    signal caused by object removal on the remote [Gio.DBusObjectManager].
-    Similarly, when a new name owner appears,
-    [Gio.DBusObjectManager::object-added] signals are synthesized while
-    [Gio.DBusObjectManagerClient:name-owner] is still [None]. Only when all
-    object proxies have been added, the [Gio.DBusObjectManagerClient:name-owner]
-    is set to the new name owner (this includes emission of the
-    [GObject.Object::notify] signal). Furthermore, you are guaranteed that
-    [Gio.DBusObjectManagerClient:name-owner] will alternate between a name owner
-    (e.g. [:1.42]) and [None] even in the case where the name of interest is
-    atomically replaced
+    signal caused by object removal on the remote
+    {{!Ocgio.Raw.D_bus_object_manager}[Gio.DBusObjectManager]}. Similarly, when
+    a new name owner appears, [Gio.DBusObjectManager::object-added] signals are
+    synthesized while [Gio.DBusObjectManagerClient:name-owner] is still [None].
+    Only when all object proxies have been added, the
+    [Gio.DBusObjectManagerClient:name-owner] is set to the new name owner (this
+    includes emission of the [GObject.Object::notify] signal). Furthermore, you
+    are guaranteed that [Gio.DBusObjectManagerClient:name-owner] will alternate
+    between a name owner (e.g. [:1.42]) and [None] even in the case where the
+    name of interest is atomically replaced
 
-    Ultimately, [GDBusObjectManagerClient] is used to obtain [Gio.DBusProxy]
-    instances. All signals (including the
-    [org.freedesktop.DBus.Properties::PropertiesChanged] signal) delivered to
-    [Gio.DBusProxy] instances are guaranteed to originate from the name owner.
-    This guarantee along with the behavior described above, means that certain
-    race conditions including the “half the proxy is from the old owner and the
-    other half is from the new owner” problem cannot happen.
+    Ultimately, [GDBusObjectManagerClient] is used to obtain
+    {{!Ocgio.Raw.D_bus_proxy}[Gio.DBusProxy]} instances. All signals (including
+    the [org.freedesktop.DBus.Properties::PropertiesChanged] signal) delivered
+    to {{!Ocgio.Raw.D_bus_proxy}[Gio.DBusProxy]} instances are guaranteed to
+    originate from the name owner. This guarantee along with the behavior
+    described above, means that certain race conditions including the “half the
+    proxy is from the old owner and the other half is from the new owner”
+    problem cannot happen.
 
     To avoid having the application connect to signals on the returned
-    [Gio.DBusObjectProxy] and [Gio.DBusProxy] objects, the
+    {{!Ocgio.Raw.D_bus_object_proxy}[Gio.DBusObjectProxy]} and
+    {{!Ocgio.Raw.D_bus_proxy}[Gio.DBusProxy]} objects, the
     [Gio.DBusObject::interface-added], [Gio.DBusObject::interface-removed],
     [Gio.DBusProxy::g-properties-changed] and [Gio.DBusProxy::g-signal] signals
     are also emitted on the [GDBusObjectManagerClient] instance managing these
@@ -65,7 +68,8 @@
     Note that all callbacks and signals are emitted in the thread-default main
     context (see [GLib.MainContext.push_thread_default]) that the
     [GDBusObjectManagerClient] object was constructed in. Additionally, the
-    [Gio.DBusObjectProxy] and [Gio.DBusProxy] objects originating from the
+    {{!Ocgio.Raw.D_bus_object_proxy}[Gio.DBusObjectProxy]} and
+    {{!Ocgio.Raw.D_bus_proxy}[Gio.DBusProxy]} objects originating from the
     [GDBusObjectManagerClient] object will be created in the same context and,
     consequently, will deliver signals in the same main loop.
 

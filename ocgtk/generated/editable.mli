@@ -210,8 +210,10 @@ end
      Requires:\n\
      - {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}\n\n\
      Interface for single-line text editing widgets.\n\n\
-     Typical examples of editable widgets are [Gtk.Entry] and\n\
-     [Gtk.SpinButton]. It contains functions for generically manipulating\n\
+     Typical examples of editable widgets are \
+     {{!Ocgtk.Entry.class-type-entry_t}[Gtk.Entry]} and\n\
+     {{!Ocgtk.Spin_button.class-type-spin_button_t}[Gtk.SpinButton]}. It \
+     contains functions for generically manipulating\n\
      an editable widget, a large number of action signals used for key bindings,\n\
      and several signals that an application can connect to modify the behavior\n\
      of a widget.\n\n\
@@ -324,8 +326,10 @@ class editable : Raw.Editable.t -> editable_t
 [@@@ocaml.text
 "{1:description Description}\n\n\
  Interface for single-line text editing widgets.\n\n\
- Typical examples of editable widgets are [Gtk.Entry] and\n\
- [Gtk.SpinButton]. It contains functions for generically manipulating\n\
+ Typical examples of editable widgets are \
+ {{!Ocgtk.Entry.class-type-entry_t}[Gtk.Entry]} and\n\
+ {{!Ocgtk.Spin_button.class-type-spin_button_t}[Gtk.SpinButton]}. It contains \
+ functions for generically manipulating\n\
  an editable widget, a large number of action signals used for key bindings,\n\
  and several signals that an application can connect to modify the behavior\n\
  of a widget.\n\n\

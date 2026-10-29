@@ -17,7 +17,8 @@
  [Gtk.ComboBox:has-entry] property), its contents can be retrieved\n\
  using [Gtk.ComboBoxText.get_active_text].\n\n\
  You should not call [Gtk.ComboBox.set_model] or attempt to pack more\n\
- cells into this combo box via its [Gtk.CellLayout] interface.\n\n\
+ cells into this combo box via its {{!Ocgtk.Raw.Cell_layout}[Gtk.CellLayout]} \
+ interface.\n\n\
  {b GtkComboBoxText as GtkBuildable}\n\n\
  The [GtkComboBoxText] implementation of the [GtkBuildable] interface supports\n\
  adding items directly using the [<items>] element and specifying [<item>]\n\

@@ -1,5 +1,7 @@
-(** [GSeekable] is implemented by streams (implementations of [Gio.InputStream]
-    or [Gio.OutputStream]) that support seeking.
+(** [GSeekable] is implemented by streams (implementations of
+    {{!Ocgio.Input_stream.class-type-input_stream_t}[Gio.InputStream]} or
+    {{!Ocgio.Output_stream.class-type-output_stream_t}[Gio.OutputStream]}) that
+    support seeking.
 
     Its methods, signals and properties are on {!class-type-seekable_t}. Its
     full description is under {!section-description}. Its constructors are under
@@ -10,8 +12,10 @@
 
 (** {b The methods, signals and properties of a [Seekable].}
 
-    [GSeekable] is implemented by streams (implementations of [Gio.InputStream]
-    or [Gio.OutputStream]) that support seeking.
+    [GSeekable] is implemented by streams (implementations of
+    {{!Ocgio.Input_stream.class-type-input_stream_t}[Gio.InputStream]} or
+    {{!Ocgio.Output_stream.class-type-output_stream_t}[Gio.OutputStream]}) that
+    support seeking.
 
     Seekable streams largely fall into two categories: resizable and fixed-size.
 
@@ -57,8 +61,10 @@ class seekable : Raw.Seekable.t -> seekable_t
 
 (** {1:description Description}
 
-    [GSeekable] is implemented by streams (implementations of [Gio.InputStream]
-    or [Gio.OutputStream]) that support seeking.
+    [GSeekable] is implemented by streams (implementations of
+    {{!Ocgio.Input_stream.class-type-input_stream_t}[Gio.InputStream]} or
+    {{!Ocgio.Output_stream.class-type-output_stream_t}[Gio.OutputStream]}) that
+    support seeking.
 
     Seekable streams largely fall into two categories: resizable and fixed-size.
 

@@ -156,13 +156,18 @@ end
      An example GtkStack\n\n\
      In contrast to [GtkNotebook], [GtkStack] does not provide a means\n\
      for users to change the visible child. Instead, a separate widget\n\
-     such as [Gtk.StackSwitcher] or [Gtk.StackSidebar] can\n\
+     such as \
+     {{!Ocgtk.Stack_switcher.class-type-stack_switcher_t}[Gtk.StackSwitcher]} \
+     or {{!Ocgtk.Stack_sidebar.class-type-stack_sidebar_t}[Gtk.StackSidebar]} \
+     can\n\
      be used with [GtkStack] to provide this functionality.\n\n\
      Transitions between pages can be animated as slides or fades. This\n\
      can be controlled with [Gtk.Stack.set_transition_type].\n\
      These animations respect the [Gtk.Settings:gtk-enable-animations]\n\
      setting.\n\n\
-     [GtkStack] maintains a [Gtk.StackPage] object for each added\n\
+     [GtkStack] maintains a \
+     {{!Ocgtk.Stack_page.class-type-stack_page_t}[Gtk.StackPage]} object for \
+     each added\n\
      child, which holds additional per-child properties. You\n\
      obtain the [GtkStackPage] for a child with [Gtk.Stack.get_page]\n\
      and you can obtain a [GtkSelectionModel] containing all the pages\n\
@@ -199,13 +204,17 @@ class stack : Raw.Stack.t -> stack_t
  An example GtkStack\n\n\
  In contrast to [GtkNotebook], [GtkStack] does not provide a means\n\
  for users to change the visible child. Instead, a separate widget\n\
- such as [Gtk.StackSwitcher] or [Gtk.StackSidebar] can\n\
+ such as \
+ {{!Ocgtk.Stack_switcher.class-type-stack_switcher_t}[Gtk.StackSwitcher]} or \
+ {{!Ocgtk.Stack_sidebar.class-type-stack_sidebar_t}[Gtk.StackSidebar]} can\n\
  be used with [GtkStack] to provide this functionality.\n\n\
  Transitions between pages can be animated as slides or fades. This\n\
  can be controlled with [Gtk.Stack.set_transition_type].\n\
  These animations respect the [Gtk.Settings:gtk-enable-animations]\n\
  setting.\n\n\
- [GtkStack] maintains a [Gtk.StackPage] object for each added\n\
+ [GtkStack] maintains a \
+ {{!Ocgtk.Stack_page.class-type-stack_page_t}[Gtk.StackPage]} object for each \
+ added\n\
  child, which holds additional per-child properties. You\n\
  obtain the [GtkStackPage] for a child with [Gtk.Stack.get_page]\n\
  and you can obtain a [GtkSelectionModel] containing all the pages\n\

@@ -1,4 +1,5 @@
-(** [GDtlsClientConnection] is the client-side subclass of [Gio.DtlsConnection],
+(** [GDtlsClientConnection] is the client-side subclass of
+    {{!Ocgio.Dtls_connection.class-type-dtls_connection_t}[Gio.DtlsConnection]},
     representing a client-side DTLS connection.
 
     Its methods, signals and properties are on
@@ -14,7 +15,8 @@
     - {{!Ocgio.Datagram_based.class-type-datagram_based_t}Ocgio.Datagram_based}
     - {{!Ocgio.Dtls_connection.class-type-dtls_connection_t}Ocgio.Dtls_connection}
 
-    [GDtlsClientConnection] is the client-side subclass of [Gio.DtlsConnection],
+    [GDtlsClientConnection] is the client-side subclass of
+    {{!Ocgio.Dtls_connection.class-type-dtls_connection_t}[Gio.DtlsConnection]},
     representing a client-side DTLS connection. *)
 class type dtls_client_connection_t = object
   (** {2:methods Methods} *)

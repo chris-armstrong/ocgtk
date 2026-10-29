@@ -19,7 +19,7 @@
 
     It is a low-level API that offers a lot of flexibility. For instance, it
     lets you establish a connection over any transport that can by represented
-    as a [Gio.IOStream].
+    as a {{!Ocgio.Io_stream.class-type-io_stream_t}[Gio.IOStream]}.
 
     This class is rarely used directly in D-Bus clients. If you are writing a
     D-Bus client, it is often easier to use the [Gio.bus_own_name],
@@ -334,7 +334,7 @@ class d_bus_connection : Raw.D_bus_connection.t -> d_bus_connection_t
 
     It is a low-level API that offers a lot of flexibility. For instance, it
     lets you establish a connection over any transport that can by represented
-    as a [Gio.IOStream].
+    as a {{!Ocgio.Io_stream.class-type-io_stream_t}[Gio.IOStream]}.
 
     This class is rarely used directly in D-Bus clients. If you are writing a
     D-Bus client, it is often easier to use the [Gio.bus_own_name],

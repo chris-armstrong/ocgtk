@@ -4,9 +4,10 @@
 (** [GFileIOStream] provides I/O streams that both read and write to the same
     file handle.
 
-    [GFileIOStream] implements [Gio.Seekable], which allows the I/O stream to
-    jump to arbitrary positions in the file and to truncate the file, provided
-    the filesystem of the file supports these operations.
+    [GFileIOStream] implements {{!Ocgio.Raw.Seekable}[Gio.Seekable]}, which
+    allows the I/O stream to jump to arbitrary positions in the file and to
+    truncate the file, provided the filesystem of the file supports these
+    operations.
 
     To find the position of a file I/O stream, use [Gio.Seekable.tell].
 
@@ -17,8 +18,8 @@
     [Gio.Seekable.truncate].
 
     The default implementation of all the [GFileIOStream] operations and the
-    implementation of [Gio.Seekable] just call into the same operations on the
-    output stream.
+    implementation of {{!Ocgio.Raw.Seekable}[Gio.Seekable]} just call into the
+    same operations on the output stream.
 
     The class built on this module is in {!Ocgio.File_io_stream}. *)
 

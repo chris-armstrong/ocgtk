@@ -19,7 +19,8 @@ class type drive_t = App_info_cycle_64c425a0.drive_t
     generally only created for removable hardware or hardware with removable
     media. For example, an optical disc drive, or a USB flash drive.
 
-    [GDrive] is a container class for [Gio.Volume] objects that stem from the
+    [GDrive] is a container class for
+    {{!Ocgio.Volume.class-type-volume_t}[Gio.Volume]} objects that stem from the
     same piece of media. As such, [GDrive] abstracts a drive with (or without)
     removable media and provides operations for querying whether media is
     available, determining whether media change is automatically detected and
@@ -51,7 +52,8 @@ class drive : Raw.Drive.t -> drive_t
     generally only created for removable hardware or hardware with removable
     media. For example, an optical disc drive, or a USB flash drive.
 
-    [GDrive] is a container class for [Gio.Volume] objects that stem from the
+    [GDrive] is a container class for
+    {{!Ocgio.Volume.class-type-volume_t}[Gio.Volume]} objects that stem from the
     same piece of media. As such, [GDrive] abstracts a drive with (or without)
     removable media and provides operations for querying whether media is
     available, determining whether media change is automatically detected and

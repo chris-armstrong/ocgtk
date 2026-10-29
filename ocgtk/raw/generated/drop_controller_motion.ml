@@ -3,11 +3,12 @@
 
 (** An event controller tracking the pointer during Drag-and-Drop operations.
 
-    It is modeled after [Gtk.EventControllerMotion] so if you have used that,
-    this should feel really familiar.
+    It is modeled after
+    {{!Ocgtk.Raw.Event_controller_motion}[Gtk.EventControllerMotion]} so if you
+    have used that, this should feel really familiar.
 
-    This controller is not able to accept drops, use [Gtk.DropTarget] for that
-    purpose.
+    This controller is not able to accept drops, use
+    {{!Ocgtk.Raw.Drop_target}[Gtk.DropTarget]} for that purpose.
 
     The class built on this module is in {!Ocgtk.Drop_controller_motion}. *)
 

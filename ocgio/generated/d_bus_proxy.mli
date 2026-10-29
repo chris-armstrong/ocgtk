@@ -22,7 +22,8 @@
 
     By default, [GDBusProxy] will cache all properties (and listen to changes)
     of the remote object, and proxy all signals that get emitted. This behaviour
-    can be changed by passing suitable [Gio.DBusProxyFlags] when the proxy is
+    can be changed by passing suitable
+    {{!Ocgio.Enums.type-dbusproxyflags}[Gio.DBusProxyFlags]} when the proxy is
     created. If the proxy is for a well-known name, the property cache is
     flushed when the name owner vanishes and reloaded when a name owner appears.
 
@@ -322,7 +323,8 @@ class d_bus_proxy : Raw.D_bus_proxy.t -> d_bus_proxy_t
 
     By default, [GDBusProxy] will cache all properties (and listen to changes)
     of the remote object, and proxy all signals that get emitted. This behaviour
-    can be changed by passing suitable [Gio.DBusProxyFlags] when the proxy is
+    can be changed by passing suitable
+    {{!Ocgio.Enums.type-dbusproxyflags}[Gio.DBusProxyFlags]} when the proxy is
     created. If the proxy is for a well-known name, the property cache is
     flushed when the name owner vanishes and reloaded when a name owner appears.
 
@@ -384,7 +386,9 @@ val new_for_bus_sync :
 (** Like g_dbus_proxy_new_sync() but takes a [GBusType] instead of a
     [GDBusConnection].
 
-    [GDBusProxy] is used in this \[example\][Gio.DBusProxy]. *)
+    [GDBusProxy] is used in this
+    \[example\]{{!Ocgio.D_bus_proxy.class-type-d_bus_proxy_t}[Gio.DBusProxy]}.
+*)
 
 val new_sync :
   D_bus_connection.d_bus_connection_t ->
@@ -417,4 +421,6 @@ val new_sync :
     This is a synchronous failable constructor. See g_dbus_proxy_new() and
     g_dbus_proxy_new_finish() for the asynchronous version.
 
-    [GDBusProxy] is used in this \[example\][Gio.DBusProxy]. *)
+    [GDBusProxy] is used in this
+    \[example\]{{!Ocgio.D_bus_proxy.class-type-d_bus_proxy_t}[Gio.DBusProxy]}.
+*)

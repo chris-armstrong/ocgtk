@@ -1,4 +1,5 @@
-(** Renders a scene graph defined via a tree of [Gsk.RenderNode] instances.
+(** Renders a scene graph defined via a tree of
+    {{!Ocgsk.Render_node.class-type-render_node_t}[Gsk.RenderNode]} instances.
 
     Its methods, signals and properties are on {!class-type-renderer_t}. Its
     full description is under {!section-description}. Its constructors are under
@@ -9,11 +10,12 @@
 
 (** {b The methods, signals and properties of a [Renderer].}
 
-    Renders a scene graph defined via a tree of [Gsk.RenderNode] instances.
+    Renders a scene graph defined via a tree of
+    {{!Ocgsk.Render_node.class-type-render_node_t}[Gsk.RenderNode]} instances.
 
     Typically you will use a [GskRenderer] instance to repeatedly call
     [Gsk.Renderer.render] to update the contents of its associated
-    [Gdk.Surface].
+    {{!Ocgdk.Surface.class-type-surface_t}[Gdk.Surface]}.
 
     It is necessary to realize a [GskRenderer] instance using
     [Gsk.Renderer.realize] before calling [Gsk.Renderer.render], in order to
@@ -88,11 +90,12 @@ class renderer : Raw.Renderer.t -> renderer_t
 
 (** {1:description Description}
 
-    Renders a scene graph defined via a tree of [Gsk.RenderNode] instances.
+    Renders a scene graph defined via a tree of
+    {{!Ocgsk.Render_node.class-type-render_node_t}[Gsk.RenderNode]} instances.
 
     Typically you will use a [GskRenderer] instance to repeatedly call
     [Gsk.Renderer.render] to update the contents of its associated
-    [Gdk.Surface].
+    {{!Ocgdk.Surface.class-type-surface_t}[Gdk.Surface]}.
 
     It is necessary to realize a [GskRenderer] instance using
     [Gsk.Renderer.realize] before calling [Gsk.Renderer.render], in order to

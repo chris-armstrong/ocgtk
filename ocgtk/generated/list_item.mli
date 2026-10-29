@@ -1,4 +1,5 @@
-(** Used by list widgets to represent items in a [Gio.ListModel].
+(** Used by list widgets to represent items in a
+    {{!Ocgio.List_model.class-type-list_model_t}[Gio.ListModel]}.
 
     Its methods, signals and properties are on {!class-type-list_item_t}. Its
     full description is under {!section-description}. Its constructors are under
@@ -9,7 +10,8 @@
 
 (** {b The methods, signals and properties of a [ListItem].}
 
-    Used by list widgets to represent items in a [Gio.ListModel].
+    Used by list widgets to represent items in a
+    {{!Ocgio.List_model.class-type-list_model_t}[Gio.ListModel]}.
 
     [GtkListItem] objects are managed by the list widget (with its factory) and
     cannot be created by applications, but they need to be populated by
@@ -128,7 +130,8 @@ class list_item : Raw.List_item.t -> list_item_t
 
 (** {1:description Description}
 
-    Used by list widgets to represent items in a [Gio.ListModel].
+    Used by list widgets to represent items in a
+    {{!Ocgio.List_model.class-type-list_model_t}[Gio.ListModel]}.
 
     [GtkListItem] objects are managed by the list widget (with its factory) and
     cannot be created by applications, but they need to be populated by

@@ -8,11 +8,16 @@
     Inherits from: {{!Ocgio.Io_stream.class-type-io_stream_t}Ocgio.Io_stream}
 
     [GTlsConnection] is the base TLS connection class type, which wraps a
-    [Gio.IOStream] and provides TLS encryption on top of it. Its subclasses,
-    [Gio.TlsClientConnection] and [Gio.TlsServerConnection], implement
-    client-side and server-side TLS, respectively.
+    {{!Ocgio.Io_stream.class-type-io_stream_t}[Gio.IOStream]} and provides TLS
+    encryption on top of it. Its subclasses,
+    {{!Ocgio.Tls_client_connection.class-type-tls_client_connection_t}[Gio.TlsClientConnection]}
+    and
+    {{!Ocgio.Tls_server_connection.class-type-tls_server_connection_t}[Gio.TlsServerConnection]},
+    implement client-side and server-side TLS, respectively.
 
-    For DTLS (Datagram TLS) support, see [Gio.DtlsConnection]. *)
+    For DTLS (Datagram TLS) support, see
+    {{!Ocgio.Dtls_connection.class-type-dtls_connection_t}[Gio.DtlsConnection]}.
+*)
 class type tls_connection_t = object
   inherit Io_stream.io_stream_t
 
@@ -285,7 +290,8 @@ end
     All implementations are required to be fully thread-safe.
 
     Most common client applications will not directly interact with
-    [GTlsDatabase]. It is used internally by [Gio.TlsConnection]. *)
+    [GTlsDatabase]. It is used internally by
+    {{!Ocgio.Tls_connection.class-type-tls_connection_t}[Gio.TlsConnection]}. *)
 and tls_database_t = object
   (** {2:methods Methods} *)
 

@@ -48,7 +48,7 @@
  When the entry shows progress, it adds a subnode with the name progress.\n\
  The node has the style class .pulse when the shown progress is pulsing.\n\n\
  For all the subnodes added to the text node in various situations,\n\
- see [Gtk.Text].\n\n\
+ see {{!Ocgtk.Raw.Text}[Gtk.Text]}.\n\n\
  {b GtkEntry as GtkBuildable}\n\n\
  The [GtkEntry] implementation of the [GtkBuildable] interface supports a\n\
  custom [<attributes>] element, which supports any number of [<attribute>]\n\
@@ -502,7 +502,7 @@ external set_enable_emoji_completion : t -> bool -> unit
 external get_im_module : t -> string = "ml_gtk_entry_get_im_module"
 (** Which IM (input method) module should be used for this entry.
 
-    See [Gtk.IMContext].
+    See {{!Ocgtk.Raw.Im_context}[Gtk.IMContext]}.
 
     Setting this to a non-[None] value overrides the system-wide IM module
     setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)
@@ -510,7 +510,7 @@ external get_im_module : t -> string = "ml_gtk_entry_get_im_module"
 external set_im_module : t -> string -> unit = "ml_gtk_entry_set_im_module"
 (** Which IM (input method) module should be used for this entry.
 
-    See [Gtk.IMContext].
+    See {{!Ocgtk.Raw.Im_context}[Gtk.IMContext]}.
 
     Setting this to a non-[None] value overrides the system-wide IM module
     setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)

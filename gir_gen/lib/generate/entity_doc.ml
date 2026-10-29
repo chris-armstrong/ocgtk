@@ -2,8 +2,12 @@
 
 open StdLabels
 
+(* Canned text is trusted markup and is not translated, so it has no
+   references to resolve. *)
 let canned text =
-  Doc_emit.item_doc ~indent:"" ~fallback:text ~context:Doc_translate.Member None
+  Doc_emit.item_doc ~indent:"" ~fallback:text
+    ~refs:(Doc_resolve.no_links ~namespace:"")
+    ~context:Doc_translate.Member None
 
 let layer1_path ~namespace ~class_name =
   Fmt.str "%s.Raw.%s"
@@ -20,9 +24,9 @@ let layer2_path ~namespace ~class_name =
    a sentence of its own rather than the navigation paragraph. *)
 let synopsis_fallback ~class_name = Fmt.str "Bindings for [%s]." class_name
 
-let translated class_doc =
+let translated ~refs class_doc =
   Option.bind class_doc (fun raw ->
-      match String.trim (Doc_translate.translate Doc_translate.Member raw) with
+      match String.trim (Doc_emit.translate ~refs Doc_translate.Member raw) with
       | "" -> None
       | text -> Some text)
 
@@ -64,32 +68,32 @@ let first_paragraph text =
       Some (String.trim first)
   | _ -> None
 
-let synopsis ~class_name ~class_doc =
-  Option.bind (translated class_doc) first_paragraph
+let synopsis ~refs ~class_name ~class_doc =
+  Option.bind (translated ~refs class_doc) first_paragraph
   |> Option.value ~default:(synopsis_fallback ~class_name)
 
 (* The full class doc, unless the synopsis already says all of it. *)
-let description_text ~class_name ~class_doc =
-  Option.bind (translated class_doc) (fun text ->
-      if String.equal text (synopsis ~class_name ~class_doc) then None
+let description_text ~refs ~class_name ~class_doc =
+  Option.bind (translated ~refs class_doc) (fun text ->
+      if String.equal text (synopsis ~refs ~class_name ~class_doc) then None
       else Some text)
 
-let l1_module ~namespace ~class_name ~class_doc =
+let l1_module ~(refs : Doc_resolve.env) ~class_name ~class_doc =
   Doc_emit.item_doc ~indent:""
     ~fallback:(synopsis_fallback ~class_name)
     ~suffix:
       (Fmt.str "The class built on this module is in {!%s}."
-         (layer2_path ~namespace ~class_name))
-    ~context:Doc_translate.Member class_doc
+         (layer2_path ~namespace:refs.namespace ~class_name))
+    ~refs ~context:Doc_translate.Member class_doc
 
-let l2_module ~namespace ~class_name ~class_doc =
+let l2_module ~(refs : Doc_resolve.env) ~class_name ~class_doc =
   let description =
-    match description_text ~class_name ~class_doc with
+    match description_text ~refs ~class_name ~class_doc with
     | Some _ -> " Its full description is under {!section-description}."
     | None -> ""
   in
   Doc_emit.item_doc ~indent:""
-    ~fallback:(synopsis ~class_name ~class_doc)
+    ~fallback:(synopsis ~refs ~class_name ~class_doc)
     ~suffix:
       (Fmt.str
          "Its methods, signals and properties are on {!class-type-%s}.%s Its \
@@ -97,15 +101,16 @@ let l2_module ~namespace ~class_name ~class_doc =
           built on are in {!%s}."
          (Utils.class_type_name class_name)
          description
-         (layer1_path ~namespace ~class_name))
-    ~context:Doc_translate.Member None
+         (layer1_path ~namespace:refs.namespace ~class_name))
+    ~refs ~context:Doc_translate.Member None
 
 let class_heading = "(** {1:class Class} *)"
 
-let description ~class_name ~class_doc =
-  Option.bind (description_text ~class_name ~class_doc) (fun text ->
+let description ~refs ~class_name ~class_doc =
+  Option.bind (description_text ~refs ~class_name ~class_doc) (fun text ->
       Doc_emit.item_doc ~indent:"" ~fallback:text
-        ~prefix:"{1:description Description}" ~context:Doc_translate.Member None)
+        ~prefix:"{1:description Description}" ~refs
+        ~context:Doc_translate.Member None)
 
 type ancestor =
   | Bound of { namespace : string; name : string }
@@ -141,7 +146,7 @@ let inheritance_paragraphs { parent; implements; requires } =
       ancestor_list ~label:"Requires" requires;
     ]
 
-let class_type ~class_name ~inheritance ~class_doc =
+let class_type ~refs ~class_name ~inheritance ~class_doc =
   let heading =
     Fmt.str "{b The methods, signals and properties of a [%s].}" class_name
   in
@@ -149,7 +154,7 @@ let class_type ~class_name ~inheritance ~class_doc =
     ~prefix:
       (String.concat ~sep:"\n\n"
          (heading :: inheritance_paragraphs inheritance))
-    ~context:Doc_translate.Member class_doc
+    ~refs ~context:Doc_translate.Member class_doc
 
 let class_ ~namespace ~class_name =
   canned
@@ -204,10 +209,11 @@ let no_constructors instantiation =
         "This class is not instantiated directly - it is used as a return \
          value by methods on other classes.")
 
-let constructor ~namespace ~class_name (ctor : Types.gir_constructor) =
+let constructor ~(refs : Doc_resolve.env) ~class_name
+    (ctor : Types.gir_constructor) =
   let c_function = Fmt.str "[%s]" ctor.c_identifier in
   let wrapped =
-    upstream_base_url namespace
+    upstream_base_url refs.namespace
     |> Option.fold ~none:c_function ~some:(fun base ->
         Fmt.str "{{:%sctor.%s.%s.html}%s}" base class_name ctor.ctor_name
           c_function)
@@ -215,12 +221,12 @@ let constructor ~namespace ~class_name (ctor : Types.gir_constructor) =
   Doc_emit.item_doc ~indent:""
     ~ret_shape:(Doc_translate.ret_shape_of_throws ctor.throws)
     ~fallback:(Fmt.str "Create a new [%s]. Wraps %s." class_name wrapped)
-    ~context:Doc_translate.Member ctor.ctor_doc
+    ~refs ~context:Doc_translate.Member ctor.ctor_doc
 
 type accessor = Getter | Setter
 
-let property ~accessor (prop : Types.gir_property) =
+let property ~refs ~accessor (prop : Types.gir_property) =
   let verb = match accessor with Getter -> "Get" | Setter -> "Set" in
   Doc_emit.item_doc ~indent:""
     ~fallback:(Fmt.str "%s property: %s" verb prop.prop_name)
-    ~context:Doc_translate.Member prop.prop_doc
+    ~refs ~context:Doc_translate.Member prop.prop_doc

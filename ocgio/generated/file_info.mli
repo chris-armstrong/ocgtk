@@ -1,4 +1,5 @@
-(** Stores information about a file system object referenced by a [Gio.File].
+(** Stores information about a file system object referenced by a
+    {{!Ocgio.File.class-type-file_t}[Gio.File]}.
 
     Its methods, signals and properties are on {!class-type-file_info_t}. Its
     full description is under {!section-description}. Its constructors are under
@@ -9,7 +10,8 @@
 
 (** {b The methods, signals and properties of a [FileInfo].}
 
-    Stores information about a file system object referenced by a [Gio.File].
+    Stores information about a file system object referenced by a
+    {{!Ocgio.File.class-type-file_t}[Gio.File]}.
 
     Functionality for manipulating basic metadata for files. [GFileInfo]
     implements methods for getting information that all files should contain,
@@ -18,10 +20,10 @@
     See the file attributes document for more information on how GIO handles
     file attributes.
 
-    To obtain a [GFileInfo] for a [Gio.File], use [Gio.File.query_info] (or its
-    async variant). To obtain a [GFileInfo] for a file input or output stream,
-    use [Gio.FileInputStream.query_info] or [Gio.FileOutputStream.query_info]
-    (or their async variants).
+    To obtain a [GFileInfo] for a {{!Ocgio.File.class-type-file_t}[Gio.File]},
+    use [Gio.File.query_info] (or its async variant). To obtain a [GFileInfo]
+    for a file input or output stream, use [Gio.FileInputStream.query_info] or
+    [Gio.FileOutputStream.query_info] (or their async variants).
 
     To change the actual attributes of a file, you should then set the attribute
     in the [GFileInfo] and call [Gio.File.set_attributes_from_info] or
@@ -43,8 +45,8 @@
     [Gio.FileInfo.has_attribute] or [Gio.FileInfo.list_attributes] to check what
     attributes are specified for a [GFileInfo].
 
-    [Gio.FileAttributeMatcher] allows for searching through a [GFileInfo] for
-    attributes. *)
+    {{!Ocgio.File_attribute_matcher.class-type-file_attribute_matcher_t}[Gio.FileAttributeMatcher]}
+    allows for searching through a [GFileInfo] for attributes. *)
 class type file_info_t = object
   (** {2:methods Methods} *)
 
@@ -347,7 +349,8 @@ class file_info : Raw.File_info.t -> file_info_t
 
 (** {1:description Description}
 
-    Stores information about a file system object referenced by a [Gio.File].
+    Stores information about a file system object referenced by a
+    {{!Ocgio.File.class-type-file_t}[Gio.File]}.
 
     Functionality for manipulating basic metadata for files. [GFileInfo]
     implements methods for getting information that all files should contain,
@@ -356,10 +359,10 @@ class file_info : Raw.File_info.t -> file_info_t
     See the file attributes document for more information on how GIO handles
     file attributes.
 
-    To obtain a [GFileInfo] for a [Gio.File], use [Gio.File.query_info] (or its
-    async variant). To obtain a [GFileInfo] for a file input or output stream,
-    use [Gio.FileInputStream.query_info] or [Gio.FileOutputStream.query_info]
-    (or their async variants).
+    To obtain a [GFileInfo] for a {{!Ocgio.File.class-type-file_t}[Gio.File]},
+    use [Gio.File.query_info] (or its async variant). To obtain a [GFileInfo]
+    for a file input or output stream, use [Gio.FileInputStream.query_info] or
+    [Gio.FileOutputStream.query_info] (or their async variants).
 
     To change the actual attributes of a file, you should then set the attribute
     in the [GFileInfo] and call [Gio.File.set_attributes_from_info] or
@@ -381,8 +384,8 @@ class file_info : Raw.File_info.t -> file_info_t
     [Gio.FileInfo.has_attribute] or [Gio.FileInfo.list_attributes] to check what
     attributes are specified for a [GFileInfo].
 
-    [Gio.FileAttributeMatcher] allows for searching through a [GFileInfo] for
-    attributes. *)
+    {{!Ocgio.File_attribute_matcher.class-type-file_attribute_matcher_t}[Gio.FileAttributeMatcher]}
+    allows for searching through a [GFileInfo] for attributes. *)
 
 (** {1:constructors Constructors} *)
 

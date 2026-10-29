@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* OverlayLayout: OverlayLayout *)
 
-(** The layout manager used by [Gtk.Overlay].
+(** The layout manager used by {{!Ocgtk.Raw.Overlay}[Gtk.Overlay]}.
 
     It places widgets as overlays on top of the main child.
 

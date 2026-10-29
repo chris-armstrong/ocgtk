@@ -71,6 +71,7 @@ let build_context ?(cross_references = StringMap.empty)
     current_cycle_classes = [];
     cross_references;
     target_library = Raw_library;
+    doc_index = StringMap.empty;
   }
 
 (* ================================================================= *)

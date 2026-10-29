@@ -1,5 +1,6 @@
 (** A render node that will fill the area determined by stroking the the given
-    [Gsk.Path] using the [Gsk.Stroke] attributes.
+    {{!Ocgsk.Path.class-type-path_t}[Gsk.Path]} using the
+    {{!Ocgsk.Stroke.class-type-stroke_t}[Gsk.Stroke]} attributes.
 
     Its methods, signals and properties are on {!class-type-stroke_node_t}. Its
     constructors are under {!section-constructors}. The functions it is built on
@@ -13,7 +14,8 @@
     {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
 
     A render node that will fill the area determined by stroking the the given
-    [Gsk.Path] using the [Gsk.Stroke] attributes. *)
+    {{!Ocgsk.Path.class-type-path_t}[Gsk.Path]} using the
+    {{!Ocgsk.Stroke.class-type-stroke_t}[Gsk.Stroke]} attributes. *)
 class type stroke_node_t = object
   inherit Render_node.render_node_t
 

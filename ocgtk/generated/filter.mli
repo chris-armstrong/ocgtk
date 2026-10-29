@@ -1,4 +1,5 @@
-(** Describes the filtering to be performed by a [Gtk.FilterListModel].
+(** Describes the filtering to be performed by a
+    {{!Ocgtk.Filter_list_model.class-type-filter_list_model_t}[Gtk.FilterListModel]}.
 
     Its methods, signals and properties are on {!class-type-filter_t}. Its full
     description is under {!section-description}. Its constructors are under
@@ -9,7 +10,8 @@
 
 (** {b The methods, signals and properties of a [Filter].}
 
-    Describes the filtering to be performed by a [Gtk.FilterListModel].
+    Describes the filtering to be performed by a
+    {{!Ocgtk.Filter_list_model.class-type-filter_list_model_t}[Gtk.FilterListModel]}.
 
     The model will use the filter to determine if it should include items or not
     by calling [Gtk.Filter.match] for each item and only keeping the ones that
@@ -80,7 +82,8 @@ class filter : Raw.Filter.t -> filter_t
 
 (** {1:description Description}
 
-    Describes the filtering to be performed by a [Gtk.FilterListModel].
+    Describes the filtering to be performed by a
+    {{!Ocgtk.Filter_list_model.class-type-filter_list_model_t}[Gtk.FilterListModel]}.
 
     The model will use the filter to determine if it should include items or not
     by calling [Gtk.Filter.match] for each item and only keeping the ones that

@@ -17,8 +17,10 @@
     [Gdk.ContentProvider.new_for_bytes].
 
     GDK knows how to handle common text and image formats out-of-the-box. See
-    [Gdk.ContentSerializer] and [Gdk.ContentDeserializer] if you want to add
-    support for application-specific data formats. *)
+    {{!Ocgdk.Content_serializer.class-type-content_serializer_t}[Gdk.ContentSerializer]}
+    and
+    {{!Ocgdk.Content_deserializer.class-type-content_deserializer_t}[Gdk.ContentDeserializer]}
+    if you want to add support for application-specific data formats. *)
 class type content_provider_t = object
   (** {2:signals Signals} *)
 
@@ -66,8 +68,10 @@ class content_provider : Raw.Content_provider.t -> content_provider_t
     [Gdk.ContentProvider.new_for_bytes].
 
     GDK knows how to handle common text and image formats out-of-the-box. See
-    [Gdk.ContentSerializer] and [Gdk.ContentDeserializer] if you want to add
-    support for application-specific data formats. *)
+    {{!Ocgdk.Content_serializer.class-type-content_serializer_t}[Gdk.ContentSerializer]}
+    and
+    {{!Ocgdk.Content_deserializer.class-type-content_deserializer_t}[Gdk.ContentDeserializer]}
+    if you want to add support for application-specific data formats. *)
 
 (** {1:constructors Constructors} *)
 

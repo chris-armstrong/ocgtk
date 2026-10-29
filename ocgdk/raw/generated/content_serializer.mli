@@ -11,7 +11,7 @@
     text, colors, images or file lists. To register your own serialization
     functions, use [Gdk.content_register_serializer].
 
-    Also see [Gdk.ContentDeserializer].
+    Also see {{!Ocgdk.Raw.Content_deserializer}[Gdk.ContentDeserializer]}.
 
     The class built on this module is in {!Ocgdk.Content_serializer}. *)
 

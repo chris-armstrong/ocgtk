@@ -119,8 +119,8 @@ end
 
     To make text or image data available in a clipboard, use
     [Gdk.Clipboard.set_text] or [Gdk.Clipboard.set_texture]. For other data, you
-    can use [Gdk.Clipboard.set_content], which takes a [Gdk.ContentProvider]
-    object.
+    can use [Gdk.Clipboard.set_content], which takes a
+    {{!Ocgdk.Raw.Content_provider}[Gdk.ContentProvider]} object.
 
     To read textual or image data from a clipboard, use
     [Gdk.Clipboard.read_text_async] or [Gdk.Clipboard.read_texture_async]. For
@@ -214,8 +214,8 @@ end
 
 (** Represents an input device, such as a keyboard, mouse or touchpad.
 
-    See the [Gdk.Seat] documentation for more information about the various
-    kinds of devices, and their relationships.
+    See the {{!Ocgdk.Raw.Seat}[Gdk.Seat]} documentation for more information
+    about the various kinds of devices, and their relationships.
 
     The class built on this module is in {!Ocgdk.Device}. *)
 and Device : sig
@@ -382,11 +382,13 @@ end
       projectors, etc)
 
     Most of the input device handling has been factored out into separate
-    [Gdk.Seat] objects. Every display has a one or more seats, which can be
-    accessed with [Gdk.Display.get_default_seat] and [Gdk.Display.list_seats].
+    {{!Ocgdk.Raw.Seat}[Gdk.Seat]} objects. Every display has a one or more
+    seats, which can be accessed with [Gdk.Display.get_default_seat] and
+    [Gdk.Display.list_seats].
 
-    Output devices are represented by [Gdk.Monitor] objects, which can be
-    accessed with [Gdk.Display.get_monitor_at_surface] and similar APIs.
+    Output devices are represented by {{!Ocgdk.Raw.Monitor}[Gdk.Monitor]}
+    objects, which can be accessed with [Gdk.Display.get_monitor_at_surface] and
+    similar APIs.
 
     The class built on this module is in {!Ocgdk.Display}. *)
 and Display : sig
@@ -582,7 +584,8 @@ and Display : sig
       The formats returned by this function can be used for negotiating buffer
       formats with producers such as v4l, pipewire or GStreamer.
 
-      To learn more about dma-bufs, see [Gdk.DmabufTextureBuilder].
+      To learn more about dma-bufs, see
+      {{!Ocgdk.Raw.Dmabuf_texture_builder}[Gdk.DmabufTextureBuilder]}.
 
       This function is threadsafe. It can be called from any thread. *)
 
@@ -678,8 +681,9 @@ end
 (** Base class for objects implementing different rendering methods.
 
     [GdkDrawContext] is the base object used by contexts implementing different
-    rendering methods, such as [Gdk.CairoContext] or [Gdk.GLContext]. It
-    provides shared functionality between those contexts.
+    rendering methods, such as {{!Ocgdk.Raw.Cairo_context}[Gdk.CairoContext]} or
+    {{!Ocgdk.Raw.Gl_context}[Gdk.GLContext]}. It provides shared functionality
+    between those contexts.
 
     You will always interact with one of those subclasses.
 
@@ -725,9 +729,9 @@ and Draw_context : sig
       This makes the drawing available on screen. See
       [Gdk.DrawContext.begin_frame] for more details about drawing.
 
-      When using a [Gdk.GLContext], this function may call [glFlush()]
-      implicitly before returning; it is not recommended to call [glFlush()]
-      explicitly before calling this function. *)
+      When using a {{!Ocgdk.Raw.Gl_context}[Gdk.GLContext]}, this function may
+      call [glFlush()] implicitly before returning; it is not recommended to
+      call [glFlush()] explicitly before calling this function. *)
 
   external begin_frame : t -> Occairo_raw.Region.t -> unit
     = "ml_gdk_draw_context_begin_frame"
@@ -737,8 +741,8 @@ and Draw_context : sig
       Calling this function begins a drawing operation using [context] on the
       surface that [context] was created from. The actual requirements and
       guarantees for the drawing operation vary for different implementations of
-      drawing, so a [Gdk.CairoContext] and a [Gdk.GLContext] need to be treated
-      differently.
+      drawing, so a {{!Ocgdk.Raw.Cairo_context}[Gdk.CairoContext]} and a
+      {{!Ocgdk.Raw.Gl_context}[Gdk.GLContext]} need to be treated differently.
 
       A call to this function is a requirement for drawing and must be followed
       by a call to [Gdk.DrawContext.end_frame], which will complete the drawing
@@ -1273,7 +1277,8 @@ end
     It’s a low-level object, used to implement high-level objects such as
     GtkWindow.
 
-    The surfaces you see in practice are either [Gdk.Toplevel] or [Gdk.Popup],
+    The surfaces you see in practice are either
+    {{!Ocgdk.Raw.Toplevel}[Gdk.Toplevel]} or {{!Ocgdk.Raw.Popup}[Gdk.Popup]},
     and those interfaces provide much of the required API to interact with these
     surfaces. Other, more specialized surface types exist, but you will rarely
     interact with them directly.

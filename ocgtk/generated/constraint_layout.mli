@@ -81,11 +81,14 @@ end
      - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\n\
      Uses constraints to describe relations between widgets.\n\n\
      [GtkConstraintLayout] is a layout manager that uses relations between\n\
-     widget attributes, expressed via [Gtk.Constraint] instances, to\n\
+     widget attributes, expressed via \
+     {{!Ocgtk.Constraint.class-type-constraint__t}[Gtk.Constraint]} instances, \
+     to\n\
      measure and allocate widgets.\n\n\
      {b How do constraints work}\n\n\
      Constraints are objects defining the relationship between attributes\n\
-     of a widget; you can read the description of the [Gtk.Constraint]\n\
+     of a widget; you can read the description of the \
+     {{!Ocgtk.Constraint.class-type-constraint__t}[Gtk.Constraint]}\n\
      class to have a more in depth definition.\n\n\
      By taking multiple constraints and applying them to the children of\n\
      a widget using [GtkConstraintLayout], it's possible to describe\n\
@@ -106,11 +109,14 @@ end
      is undefined.\n\n\
      A constraint-based layout with conflicting constraints may be unsolvable,\n\
      and lead to an unstable layout. You can use the [Gtk.Constraint:strength]\n\
-     property of [Gtk.Constraint] to \"nudge\" the layout towards a solution.\n\n\
+     property of \
+     {{!Ocgtk.Constraint.class-type-constraint__t}[Gtk.Constraint]} to \
+     \"nudge\" the layout towards a solution.\n\n\
      {b GtkConstraintLayout as GtkBuildable}\n\n\
-     [GtkConstraintLayout] implements the [Gtk.Buildable] interface and\n\
+     [GtkConstraintLayout] implements the \
+     {{!Ocgtk.Buildable.class-type-buildable_t}[Gtk.Buildable]} interface and\n\
      has a custom \"constraints\" element which allows describing constraints in\n\
-     a [Gtk.Builder] UI file.\n\n\
+     a {{!Ocgtk.Builder.class-type-builder_t}[Gtk.Builder]} UI file.\n\n\
      An example of a UI definition fragment specifying a constraint:\n\n\
      {[\n\
     \  <object class=\"GtkConstraintLayout\">\n\
@@ -169,7 +175,8 @@ end
      The Visual Format Language describes all the constraints on a row or\n\
      column, typically starting from the leading edge towards the trailing\n\
      one. Each element of the layout is composed by \"views\", which identify\n\
-     a [Gtk.ConstraintTarget].\n\n\
+     a \
+     {{!Ocgtk.Constraint_target.class-type-constraint_target_t}[Gtk.ConstraintTarget]}.\n\n\
      For instance:\n\n\
      {[\n\
     \  [button]-[textField]\n\
@@ -213,11 +220,13 @@ class constraint_layout : Raw.Constraint_layout.t -> constraint_layout_t
 "{1:description Description}\n\n\
  Uses constraints to describe relations between widgets.\n\n\
  [GtkConstraintLayout] is a layout manager that uses relations between\n\
- widget attributes, expressed via [Gtk.Constraint] instances, to\n\
+ widget attributes, expressed via \
+ {{!Ocgtk.Constraint.class-type-constraint__t}[Gtk.Constraint]} instances, to\n\
  measure and allocate widgets.\n\n\
  {b How do constraints work}\n\n\
  Constraints are objects defining the relationship between attributes\n\
- of a widget; you can read the description of the [Gtk.Constraint]\n\
+ of a widget; you can read the description of the \
+ {{!Ocgtk.Constraint.class-type-constraint__t}[Gtk.Constraint]}\n\
  class to have a more in depth definition.\n\n\
  By taking multiple constraints and applying them to the children of\n\
  a widget using [GtkConstraintLayout], it's possible to describe\n\
@@ -237,11 +246,13 @@ class constraint_layout : Raw.Constraint_layout.t -> constraint_layout_t
  is undefined.\n\n\
  A constraint-based layout with conflicting constraints may be unsolvable,\n\
  and lead to an unstable layout. You can use the [Gtk.Constraint:strength]\n\
- property of [Gtk.Constraint] to \"nudge\" the layout towards a solution.\n\n\
+ property of {{!Ocgtk.Constraint.class-type-constraint__t}[Gtk.Constraint]} to \
+ \"nudge\" the layout towards a solution.\n\n\
  {b GtkConstraintLayout as GtkBuildable}\n\n\
- [GtkConstraintLayout] implements the [Gtk.Buildable] interface and\n\
+ [GtkConstraintLayout] implements the \
+ {{!Ocgtk.Buildable.class-type-buildable_t}[Gtk.Buildable]} interface and\n\
  has a custom \"constraints\" element which allows describing constraints in\n\
- a [Gtk.Builder] UI file.\n\n\
+ a {{!Ocgtk.Builder.class-type-builder_t}[Gtk.Builder]} UI file.\n\n\
  An example of a UI definition fragment specifying a constraint:\n\n\
  {[\n\
 \  <object class=\"GtkConstraintLayout\">\n\
@@ -299,7 +310,8 @@ class constraint_layout : Raw.Constraint_layout.t -> constraint_layout_t
  The Visual Format Language describes all the constraints on a row or\n\
  column, typically starting from the leading edge towards the trailing\n\
  one. Each element of the layout is composed by \"views\", which identify\n\
- a [Gtk.ConstraintTarget].\n\n\
+ a \
+ {{!Ocgtk.Constraint_target.class-type-constraint_target_t}[Gtk.ConstraintTarget]}.\n\n\
  For instance:\n\n\
  {[\n\
 \  [button]-[textField]\n\

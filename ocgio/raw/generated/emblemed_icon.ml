@@ -1,12 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* EmblemedIcon: EmblemedIcon *)
 
-(** [GEmblemedIcon] is an implementation of [Gio.Icon] that supports adding an
-    emblem to an icon. Adding multiple emblems to an icon is ensured via
-    [Gio.EmblemedIcon.add_emblem].
+(** [GEmblemedIcon] is an implementation of {{!Ocgio.Raw.Icon}[Gio.Icon]} that
+    supports adding an emblem to an icon. Adding multiple emblems to an icon is
+    ensured via [Gio.EmblemedIcon.add_emblem].
 
     Note that [GEmblemedIcon] allows no control over the position of the
-    emblems. See also [Gio.Emblem] for more information.
+    emblems. See also {{!Ocgio.Raw.Emblem}[Gio.Emblem]} for more information.
 
     The class built on this module is in {!Ocgio.Emblemed_icon}. *)
 
@@ -34,4 +34,4 @@ external add_emblem : t -> Emblem.t -> unit = "ml_g_emblemed_icon_add_emblem"
 (* Properties *)
 
 external get_gicon : t -> Icon.t = "ml_g_emblemed_icon_get_gicon"
-(** The [Gio.Icon] to attach emblems to. *)
+(** The {{!Ocgio.Raw.Icon}[Gio.Icon]} to attach emblems to. *)

@@ -3,7 +3,8 @@
 
 [@@@ocaml.text
 "Displays a small amount of text.\n\n\
- Most labels are used to label another widget (such as an [Entry]).\n\n\
+ Most labels are used to label another widget (such as an \
+ {{!Ocgtk.Raw.Entry}[Entry]}).\n\n\
  An example GtkLabel\n\n\
  {b Shortcuts and Gestures}\n\n\
  [GtkLabel] supports the following keyboard shortcuts, when the cursor is\n\
@@ -51,7 +52,8 @@
  The GtkLabel implementation of the GtkBuildable interface supports a\n\
  custom [<attributes>] element, which supports any number of [<attribute>]\n\
  elements. The [<attribute>] element has attributes named “name“, “value“,\n\
- “start“ and “end“ and allows you to specify [Pango.Attribute]\n\
+ “start“ and “end“ and allows you to specify \
+ {{!Ocpango.Raw.Attribute}[Pango.Attribute]}\n\
  values for this label.\n\n\
  An example of a UI definition fragment specifying Pango attributes:\n\n\
  {[\n\
@@ -76,7 +78,8 @@
  to the functions [Gtk.Label.new_with_mnemonic] or\n\
  [Gtk.Label.set_text_with_mnemonic].\n\n\
  Mnemonics automatically activate any activatable widget the label is\n\
- inside, such as a [Gtk.Button]; if the label is not inside the\n\
+ inside, such as a {{!Ocgtk.Raw.Button}[Gtk.Button]}; if the label is not \
+ inside the\n\
  mnemonic’s target widget, you have to tell the label about the target\n\
  using [Gtk.Label.set_mnemonic_widget].\n\n\
  Here’s a simple example where the label is inside a button:\n\n\
@@ -93,7 +96,7 @@
  GtkWidget *button = gtk_button_new_with_mnemonic (\"_Hello\");\n\
  ]}\n\n\
  To create a mnemonic for a widget alongside the label, such as a\n\
- [Gtk.Entry], you have to point the label at the entry with\n\
+ {{!Ocgtk.Raw.Entry}[Gtk.Entry]}, you have to point the label at the entry with\n\
  [Gtk.Label.set_mnemonic_widget]:\n\n\
  {[\n\
  // Pressing Alt+H will focus the entry\n\
@@ -117,13 +120,16 @@
  If you pass text obtained from the user, file, or a network to\n\
  [Gtk.Label.set_markup], you’ll want to escape it with\n\
  [GLib.markup_escape_text] or [GLib.markup_printf_escaped].\n\n\
- Markup strings are just a convenient way to set the [Pango.AttrList]\n\
+ Markup strings are just a convenient way to set the \
+ {{!Ocpango.Raw.Attr_list}[Pango.AttrList]}\n\
  on a label; [Gtk.Label.set_attributes] may be a simpler way to set\n\
- attributes in some cases. Be careful though; [Pango.AttrList] tends\n\
+ attributes in some cases. Be careful though; \
+ {{!Ocpango.Raw.Attr_list}[Pango.AttrList]} tends\n\
  to cause internationalization problems, unless you’re applying attributes\n\
  to the entire string (i.e. unless you set the range of each attribute\n\
  to \\[0, [G_MAXINT])). The reason is that specifying the [start_index] and\n\
- [end_index] for a [Pango.Attribute] requires knowledge of the exact\n\
+ [end_index] for a {{!Ocpango.Raw.Attribute}[Pango.Attribute]} requires \
+ knowledge of the exact\n\
  string being displayed, so translations will cause problems.\n\n\
  {b Selectable labels}\n\n\
  Labels can be made selectable with [Gtk.Label.set_selectable].\n\
@@ -296,9 +302,10 @@ external set_mnemonic_widget :
     [Gtk.Label.set_markup_with_mnemonic], [Gtk.Label.set_text_with_mnemonic],
     [Gtk.Label.new_with_mnemonic] or the [Gtk.Label:use_underline] property) the
     label can be associated with a widget that is the target of the mnemonic.
-    When the label is inside a widget (like a [Gtk.Button] or a [Gtk.Notebook]
-    tab) it is automatically associated with the correct widget, but sometimes
-    (i.e. when the target is a [Gtk.Entry] next to the label) you need to set it
+    When the label is inside a widget (like a {{!Ocgtk.Raw.Button}[Gtk.Button]}
+    or a {{!Ocgtk.Raw.Notebook}[Gtk.Notebook]} tab) it is automatically
+    associated with the correct widget, but sometimes (i.e. when the target is a
+    {{!Ocgtk.Raw.Entry}[Gtk.Entry]} next to the label) you need to set it
     explicitly using this function.
 
     The target widget will be accelerated by emitting the
@@ -498,9 +505,11 @@ external get_layout_offsets : t -> int * int = "ml_gtk_label_get_layout_offsets"
 (** Obtains the coordinates where the label will draw its Pango layout.
 
     The coordinates are useful to convert mouse events into coordinates inside
-    the [Pango.Layout], e.g. to take some action if some part of the label is
-    clicked. Remember when using the [Pango.Layout] functions you need to
-    convert to and from pixels using [PANGO_PIXELS()] or [Pango.SCALE]. *)
+    the {{!Ocpango.Raw.Layout}[Pango.Layout]}, e.g. to take some action if some
+    part of the label is clicked. Remember when using the
+    {{!Ocpango.Raw.Layout}[Pango.Layout]} functions you need to convert to and
+    from pixels using [PANGO_PIXELS()] or
+    {{!Ocpango.Constants.scale}[Pango.SCALE]}. *)
 
 external get_layout : t -> Ocpango_raw.Layout.t = "ml_gtk_label_get_layout"
 (** Gets the Pango layout used to display the label.
@@ -547,11 +556,11 @@ external get_attributes : t -> Ocpango_raw.Attr_list.t option
   = "ml_gtk_label_get_attributes"
 (** Gets the label's attribute list.
 
-    This is the [Pango.AttrList] that was set on the label using
-    [Gtk.Label.set_attributes], if any. This function does not reflect
-    attributes that come from the label's markup (see [Gtk.Label.set_markup]).
-    If you want to get the effective attributes for the label, use
-    [pango_layout_get_attributes (gtk_label_get_layout (self))]. *)
+    This is the {{!Ocpango.Raw.Attr_list}[Pango.AttrList]} that was set on the
+    label using [Gtk.Label.set_attributes], if any. This function does not
+    reflect attributes that come from the label's markup (see
+    [Gtk.Label.set_markup]). If you want to get the effective attributes for the
+    label, use [pango_layout_get_attributes (gtk_label_get_layout (self))]. *)
 
 (* Properties *)
 

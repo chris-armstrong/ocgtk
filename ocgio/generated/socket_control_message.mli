@@ -1,6 +1,7 @@
 (** A [GSocketControlMessage] is a special-purpose utility message that can be
-    sent to or received from a [Gio.Socket]. These types of messages are often
-    called ‘ancillary data’.
+    sent to or received from a
+    {{!Ocgio.Socket.class-type-socket_t}[Gio.Socket]}. These types of messages
+    are often called ‘ancillary data’.
 
     Its methods, signals and properties are on
     {!class-type-socket_control_message_t}. Its full description is under
@@ -12,8 +13,9 @@
 (** {b The methods, signals and properties of a [SocketControlMessage].}
 
     A [GSocketControlMessage] is a special-purpose utility message that can be
-    sent to or received from a [Gio.Socket]. These types of messages are often
-    called ‘ancillary data’.
+    sent to or received from a
+    {{!Ocgio.Socket.class-type-socket_t}[Gio.Socket]}. These types of messages
+    are often called ‘ancillary data’.
 
     The message can represent some sort of special instruction to or information
     from the socket or can represent a special kind of transfer to the peer (for
@@ -60,8 +62,9 @@ class socket_control_message :
 (** {1:description Description}
 
     A [GSocketControlMessage] is a special-purpose utility message that can be
-    sent to or received from a [Gio.Socket]. These types of messages are often
-    called ‘ancillary data’.
+    sent to or received from a
+    {{!Ocgio.Socket.class-type-socket_t}[Gio.Socket]}. These types of messages
+    are often called ‘ancillary data’.
 
     The message can represent some sort of special instruction to or information
     from the socket or can represent a special kind of transfer to the peer (for

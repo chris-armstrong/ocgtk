@@ -18,8 +18,9 @@
 
     Displays an icon-size spinning animation.
 
-    It is often used as an alternative to a [Gtk.ProgressBar] for displaying
-    indefinite activity, instead of actual progress.
+    It is often used as an alternative to a
+    {{!Ocgtk.Progress_bar.class-type-progress_bar_t}[Gtk.ProgressBar]} for
+    displaying indefinite activity, instead of actual progress.
 
     An example GtkSpinner
 
@@ -63,8 +64,9 @@ class spinner : Raw.Spinner.t -> spinner_t
 
     Displays an icon-size spinning animation.
 
-    It is often used as an alternative to a [Gtk.ProgressBar] for displaying
-    indefinite activity, instead of actual progress.
+    It is often used as an alternative to a
+    {{!Ocgtk.Progress_bar.class-type-progress_bar_t}[Gtk.ProgressBar]} for
+    displaying indefinite activity, instead of actual progress.
 
     An example GtkSpinner
 

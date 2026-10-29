@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Seekable: Seekable *)
 
-(** [GSeekable] is implemented by streams (implementations of [Gio.InputStream]
-    or [Gio.OutputStream]) that support seeking.
+(** [GSeekable] is implemented by streams (implementations of
+    {{!Ocgio.Raw.Input_stream}[Gio.InputStream]} or
+    {{!Ocgio.Raw.Output_stream}[Gio.OutputStream]}) that support seeking.
 
     Seekable streams largely fall into two categories: resizable and fixed-size.
 

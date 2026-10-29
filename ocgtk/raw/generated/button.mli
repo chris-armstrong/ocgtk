@@ -27,10 +27,14 @@
     .suggested-action and .destructive-action. In special cases, buttons can be
     made round by adding the .circular style class.
 
-    Button-like widgets like [Gtk.ToggleButton], [Gtk.MenuButton],
-    [Gtk.VolumeButton], [Gtk.LockButton], [Gtk.ColorButton] or [Gtk.FontButton]
-    use style classes such as .toggle, .popup, .scale, .lock, .color on the
-    button node to differentiate themselves from a plain [GtkButton].
+    Button-like widgets like {{!Ocgtk.Raw.Toggle_button}[Gtk.ToggleButton]},
+    {{!Ocgtk.Raw.Menu_button}[Gtk.MenuButton]},
+    {{!Ocgtk.Raw.Volume_button}[Gtk.VolumeButton]},
+    {{!Ocgtk.Raw.Lock_button}[Gtk.LockButton]},
+    {{!Ocgtk.Raw.Color_button}[Gtk.ColorButton]} or
+    {{!Ocgtk.Raw.Font_button}[Gtk.FontButton]} use style classes such as
+    .toggle, .popup, .scale, .lock, .color on the button node to differentiate
+    themselves from a plain [GtkButton].
 
     {b Accessibility}
 

@@ -4,8 +4,8 @@
 [@@@ocaml.text
 "A widget for displaying both trees and lists\n\n\
  An example GtkTreeView\n\n\
- Widget that displays any object that implements the [Gtk.TreeModel] \
- interface.\n\n\
+ Widget that displays any object that implements the \
+ {{!Ocgtk.Raw.Tree_model}[Gtk.TreeModel]} interface.\n\n\
  Please refer to the tree widget conceptual overview\n\
  for an overview of all the objects and data types related to the tree\n\
  widget and how they work together.\n\n\
@@ -28,8 +28,9 @@
  (and vice versa).\n\n\
  {b [GtkTreeView] as [GtkBuildable]}\n\n\
  The [GtkTreeView] implementation of the [GtkBuildable] interface accepts\n\
- [Gtk.TreeViewColumn] objects as [<child>] elements and exposes the\n\
- internal [Gtk.TreeSelection] in UI definitions.\n\n\
+ {{!Ocgtk.Raw.Tree_view_column}[Gtk.TreeViewColumn]} objects as [<child>] \
+ elements and exposes the\n\
+ internal {{!Ocgtk.Raw.Tree_selection}[Gtk.TreeSelection]} in UI definitions.\n\n\
  An example of a UI definition fragment with [GtkTreeView]:\n\n\
  {[\n\
  <object class=\"GtkTreeView\" id=\"treeview\">\n\

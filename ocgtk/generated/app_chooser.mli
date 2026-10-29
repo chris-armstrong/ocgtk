@@ -16,8 +16,11 @@
     [GtkAppChooser] is an interface for widgets which allow the user to choose
     an application.
 
-    The main objects that implement this interface are [Gtk.AppChooserWidget],
-    [Gtk.AppChooserDialog] and [Gtk.AppChooserButton].
+    The main objects that implement this interface are
+    {{!Ocgtk.App_chooser_widget.class-type-app_chooser_widget_t}[Gtk.AppChooserWidget]},
+    {{!Ocgtk.App_chooser_dialog.class-type-app_chooser_dialog_t}[Gtk.AppChooserDialog]}
+    and
+    {{!Ocgtk.App_chooser_button.class-type-app_chooser_button_t}[Gtk.AppChooserButton]}.
 
     Applications are represented by GIO [GAppInfo] objects here. GIO has a
     concept of recommended and fallback applications for a given content type.
@@ -56,8 +59,11 @@ class app_chooser : Raw.App_chooser.t -> app_chooser_t
     [GtkAppChooser] is an interface for widgets which allow the user to choose
     an application.
 
-    The main objects that implement this interface are [Gtk.AppChooserWidget],
-    [Gtk.AppChooserDialog] and [Gtk.AppChooserButton].
+    The main objects that implement this interface are
+    {{!Ocgtk.App_chooser_widget.class-type-app_chooser_widget_t}[Gtk.AppChooserWidget]},
+    {{!Ocgtk.App_chooser_dialog.class-type-app_chooser_dialog_t}[Gtk.AppChooserDialog]}
+    and
+    {{!Ocgtk.App_chooser_button.class-type-app_chooser_button_t}[Gtk.AppChooserButton]}.
 
     Applications are represented by GIO [GAppInfo] objects here. GIO has a
     concept of recommended and fallback applications for a given content type.

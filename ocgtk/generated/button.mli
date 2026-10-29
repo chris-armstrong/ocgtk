@@ -43,10 +43,15 @@
     .suggested-action and .destructive-action. In special cases, buttons can be
     made round by adding the .circular style class.
 
-    Button-like widgets like [Gtk.ToggleButton], [Gtk.MenuButton],
-    [Gtk.VolumeButton], [Gtk.LockButton], [Gtk.ColorButton] or [Gtk.FontButton]
-    use style classes such as .toggle, .popup, .scale, .lock, .color on the
-    button node to differentiate themselves from a plain [GtkButton].
+    Button-like widgets like
+    {{!Ocgtk.Toggle_button.class-type-toggle_button_t}[Gtk.ToggleButton]},
+    {{!Ocgtk.Menu_button.class-type-menu_button_t}[Gtk.MenuButton]},
+    {{!Ocgtk.Volume_button.class-type-volume_button_t}[Gtk.VolumeButton]},
+    {{!Ocgtk.Lock_button.class-type-lock_button_t}[Gtk.LockButton]},
+    {{!Ocgtk.Color_button.class-type-color_button_t}[Gtk.ColorButton]} or
+    {{!Ocgtk.Font_button.class-type-font_button_t}[Gtk.FontButton]} use style
+    classes such as .toggle, .popup, .scale, .lock, .color on the button node to
+    differentiate themselves from a plain [GtkButton].
 
     {b Accessibility}
 
@@ -177,10 +182,15 @@ class button : Raw.Button.t -> button_t
     .suggested-action and .destructive-action. In special cases, buttons can be
     made round by adding the .circular style class.
 
-    Button-like widgets like [Gtk.ToggleButton], [Gtk.MenuButton],
-    [Gtk.VolumeButton], [Gtk.LockButton], [Gtk.ColorButton] or [Gtk.FontButton]
-    use style classes such as .toggle, .popup, .scale, .lock, .color on the
-    button node to differentiate themselves from a plain [GtkButton].
+    Button-like widgets like
+    {{!Ocgtk.Toggle_button.class-type-toggle_button_t}[Gtk.ToggleButton]},
+    {{!Ocgtk.Menu_button.class-type-menu_button_t}[Gtk.MenuButton]},
+    {{!Ocgtk.Volume_button.class-type-volume_button_t}[Gtk.VolumeButton]},
+    {{!Ocgtk.Lock_button.class-type-lock_button_t}[Gtk.LockButton]},
+    {{!Ocgtk.Color_button.class-type-color_button_t}[Gtk.ColorButton]} or
+    {{!Ocgtk.Font_button.class-type-font_button_t}[Gtk.FontButton]} use style
+    classes such as .toggle, .popup, .scale, .lock, .color on the button node to
+    differentiate themselves from a plain [GtkButton].
 
     {b Accessibility}
 

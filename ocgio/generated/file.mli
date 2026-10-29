@@ -5,8 +5,9 @@
     system. [GFile]s are lightweight, immutable objects that do no I/O upon
     creation. It is necessary to understand that [GFile] objects do not
     represent files, merely an identifier for a file. All file content I/O is
-    implemented as streaming operations (see [Gio.InputStream] and
-    [Gio.OutputStream]).
+    implemented as streaming operations (see
+    {{!Ocgio.Input_stream.class-type-input_stream_t}[Gio.InputStream]} and
+    {{!Ocgio.Output_stream.class-type-output_stream_t}[Gio.OutputStream]}).
 
     Its methods, signals and properties are on {!class-type-file_t}. Its full
     description is under {!section-description}. Its constructors are under
@@ -22,8 +23,9 @@ class type file_t = App_info_cycle_64c425a0.file_t
     system. [GFile]s are lightweight, immutable objects that do no I/O upon
     creation. It is necessary to understand that [GFile] objects do not
     represent files, merely an identifier for a file. All file content I/O is
-    implemented as streaming operations (see [Gio.InputStream] and
-    [Gio.OutputStream]).
+    implemented as streaming operations (see
+    {{!Ocgio.Input_stream.class-type-input_stream_t}[Gio.InputStream]} and
+    {{!Ocgio.Output_stream.class-type-output_stream_t}[Gio.OutputStream]}).
 
     To construct a [GFile], you can use:
 
@@ -80,8 +82,9 @@ class type file_t = App_info_cycle_64c425a0.file_t
     suit your application. Asynchronous versions of synchronous functions simply
     have [_async()] appended to their function names. The asynchronous I/O
     functions call a [Gio.AsyncReadyCallback] which is then used to finalize the
-    operation, producing a [Gio.AsyncResult] which is then passed to the
-    function’s matching [_finish()] operation.
+    operation, producing a
+    {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]} which is
+    then passed to the function’s matching [_finish()] operation.
 
     It is highly recommended to use asynchronous calls when running within a
     shared main loop, such as in the main thread of an application. This avoids
@@ -113,8 +116,9 @@ class file : Raw.File.t -> file_t
     system. [GFile]s are lightweight, immutable objects that do no I/O upon
     creation. It is necessary to understand that [GFile] objects do not
     represent files, merely an identifier for a file. All file content I/O is
-    implemented as streaming operations (see [Gio.InputStream] and
-    [Gio.OutputStream]).
+    implemented as streaming operations (see
+    {{!Ocgio.Input_stream.class-type-input_stream_t}[Gio.InputStream]} and
+    {{!Ocgio.Output_stream.class-type-output_stream_t}[Gio.OutputStream]}).
 
     To construct a [GFile], you can use:
 
@@ -171,8 +175,9 @@ class file : Raw.File.t -> file_t
     suit your application. Asynchronous versions of synchronous functions simply
     have [_async()] appended to their function names. The asynchronous I/O
     functions call a [Gio.AsyncReadyCallback] which is then used to finalize the
-    operation, producing a [Gio.AsyncResult] which is then passed to the
-    function’s matching [_finish()] operation.
+    operation, producing a
+    {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]} which is
+    then passed to the function’s matching [_finish()] operation.
 
     It is highly recommended to use asynchronous calls when running within a
     shared main loop, such as in the main thread of an application. This avoids

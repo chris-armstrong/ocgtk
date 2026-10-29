@@ -1,9 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SimplePermission: SimplePermission *)
 
-(** [GSimplePermission] is a trivial implementation of [Gio.Permission] that
-    represents a permission that is either always or never allowed. The value is
-    given at construction and doesn’t change.
+(** [GSimplePermission] is a trivial implementation of
+    {{!Ocgio.Raw.Permission}[Gio.Permission]} that represents a permission that
+    is either always or never allowed. The value is given at construction and
+    doesn’t change.
 
     Calling [Gio.Permission.acquire] or [Gio.Permission.release] on a
     [GSimplePermission] will result in errors.

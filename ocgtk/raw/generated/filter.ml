@@ -1,7 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Filter: Filter *)
 
-(** Describes the filtering to be performed by a [Gtk.FilterListModel].
+(** Describes the filtering to be performed by a
+    {{!Ocgtk.Raw.Filter_list_model}[Gtk.FilterListModel]}.
 
     The model will use the filter to determine if it should include items or not
     by calling [Gtk.Filter.match] for each item and only keeping the ones that
@@ -49,7 +50,8 @@ external changed : t -> Ocgtk_enums.filterchange -> unit
     check items again via [Gtk.Filter.match].
 
     Depending on the [change] parameter, not all items need to be changed, but
-    only some. Refer to the [Gtk.FilterChange] documentation for details.
+    only some. Refer to the {{!Ocgtk.Enums.type-filterchange}[Gtk.FilterChange]}
+    documentation for details.
 
     This function is intended for implementers of [GtkFilter] subclasses and
     should not be called from other functions. *)

@@ -130,7 +130,7 @@ end
      ]}\n\n\
      In order to retrieve the list of recently used files, you can use\n\
      [Gtk.RecentManager.get_items], which returns a list of\n\
-     [Gtk.RecentInfo].\n\n\
+     {{!Ocgtk.Recent_info.class-type-recent_info_t}[Gtk.RecentInfo]}.\n\n\
      Note that the maximum age of the recently used files list is\n\
      controllable through the [Gtk.Settings:gtk-recent-files-max-age]\n\
      property."]
@@ -180,7 +180,7 @@ class recent_manager : Raw.Recent_manager.t -> recent_manager_t
  ]}\n\n\
  In order to retrieve the list of recently used files, you can use\n\
  [Gtk.RecentManager.get_items], which returns a list of\n\
- [Gtk.RecentInfo].\n\n\
+ {{!Ocgtk.Recent_info.class-type-recent_info_t}[Gtk.RecentInfo]}.\n\n\
  Note that the maximum age of the recently used files list is\n\
  controllable through the [Gtk.Settings:gtk-recent-files-max-age]\n\
  property."]

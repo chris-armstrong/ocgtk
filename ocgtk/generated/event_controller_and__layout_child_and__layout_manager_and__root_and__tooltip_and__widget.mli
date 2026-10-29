@@ -152,7 +152,8 @@ end
      manager instance using [Gtk.Widget.set_layout_manager].\n\n\
      {b Layout properties}\n\n\
      A layout manager can expose properties for controlling the layout of\n\
-     each child, by creating an object type derived from [Gtk.LayoutChild]\n\
+     each child, by creating an object type derived from \
+     {{!Ocgtk.Layout_child.class-type-layout_child_t}[Gtk.LayoutChild]}\n\
      and installing the properties on it as normal [GObject] properties.\n\n\
      Each [GtkLayoutChild] instance storing the layout properties for a\n\
      specific child is created through the [Gtk.LayoutManager.get_layout_child]\n\
@@ -1782,7 +1783,8 @@ end
      The geometry management system will query a widget hierarchy in\n\
      only one orientation at a time. When widgets are initially queried\n\
      for their minimum sizes it is generally done in two initial passes\n\
-     in the [Gtk.SizeRequestMode] chosen by the toplevel.\n\n\
+     in the {{!Ocgtk.Enums.type-sizerequestmode}[Gtk.SizeRequestMode]} chosen \
+     by the toplevel.\n\n\
      For example, when queried in the normal \
      [GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH] mode:\n\n\
      First, the default minimum and natural width for each widget\n\
@@ -1815,7 +1817,8 @@ end
      allocated size then it must support the request in both\n\
      [GtkSizeRequestMode]s even if the widget in question only\n\
      trades sizes in a single orientation.\n\n\
-     For instance, a [Gtk.Label] that does height-for-width word wrapping\n\
+     For instance, a {{!Ocgtk.Label.class-type-label_t}[Gtk.Label]} that does \
+     height-for-width word wrapping\n\
      will not expect to have [Gtk.Widget.measure] with an orientation of\n\
      [GTK_ORIENTATION_VERTICAL] called because that call is specific to a\n\
      width-for-height request. In this case the label must return the height\n\
@@ -1871,7 +1874,8 @@ end
      example above.\n\n\
      It will not work to use the wrapper function [Gtk.Widget.measure]\n\
      inside your own [Gtk.Widget.size_allocate] implementation.\n\
-     These return a request adjusted by [Gtk.SizeGroup], the widget's\n\
+     These return a request adjusted by \
+     {{!Ocgtk.Size_group.class-type-size_group_t}[Gtk.SizeGroup]}, the widget's\n\
      align and expand flags, as well as its CSS style.\n\n\
      If a widget used the wrappers inside its virtual method implementations,\n\
      then the adjustments (such as widget margins) would be applied\n\
@@ -1879,7 +1883,8 @@ end
      to do it.\n\n\
      Of course if you are getting the size request for another widget, such\n\
      as a child widget, you must use [Gtk.Widget.measure]; otherwise, you\n\
-     would not properly consider widget margins, [Gtk.SizeGroup], and\n\
+     would not properly consider widget margins, \
+     {{!Ocgtk.Size_group.class-type-size_group_t}[Gtk.SizeGroup]}, and\n\
      so forth.\n\n\
      GTK also supports baseline vertical alignment of widgets. This\n\
      means that widgets are positioned such that the typographical baseline of\n\
@@ -1899,7 +1904,9 @@ end
      The [GtkWidget] implementation of the [GtkBuildable] interface\n\
      supports various custom elements to specify additional aspects of widgets\n\
      that are not directly expressed as properties.\n\n\
-     If the widget uses a [Gtk.LayoutManager], [GtkWidget] supports\n\
+     If the widget uses a \
+     {{!Ocgtk.Layout_manager.class-type-layout_manager_t}[Gtk.LayoutManager]}, \
+     [GtkWidget] supports\n\
      a custom [<layout>] element, used to define layout properties:\n\n\
      {[\n\
      <object class=\"GtkGrid\" id=\"my_grid\">\n\
@@ -1954,7 +1961,8 @@ end
      time using [Gtk.WidgetClass.set_template].\n\n\
      The interface description semantics expected in composite template \
      descriptions\n\
-     is slightly different from regular [Gtk.Builder] XML.\n\n\
+     is slightly different from regular \
+     {{!Ocgtk.Builder.class-type-builder_t}[Gtk.Builder]} XML.\n\n\
      Unlike regular interface descriptions, [Gtk.WidgetClass.set_template]\n\
      will expect a [<template>] tag as a direct child of the toplevel\n\
      [<interface>] tag. The [<template>] tag must specify the “class” attribute\n\

@@ -107,7 +107,8 @@ end
      need\n\
      some additional modifications to your test case fixture. For example; if \
      your\n\
-     service uses [Gio.Settings] and installs a schema then it is important\n\
+     service uses {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]} and \
+     installs a schema then it is important\n\
      that your test service not load the schema in the ordinary installed \
      location\n\
      (chances are that your service and schema files are not yet installed, or\n\
@@ -179,7 +180,8 @@ class test_d_bus : Raw.Test_d_bus.t -> test_d_bus_t
  Note that these examples only deal with isolating the D-Bus aspect of your\n\
  service. To successfully run isolated unit tests on your service you may need\n\
  some additional modifications to your test case fixture. For example; if your\n\
- service uses [Gio.Settings] and installs a schema then it is important\n\
+ service uses {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]} and \
+ installs a schema then it is important\n\
  that your test service not load the schema in the ordinary installed location\n\
  (chances are that your service and schema files are not yet installed, or\n\
  worse; there is an older version of the schema file sitting in the install\n\

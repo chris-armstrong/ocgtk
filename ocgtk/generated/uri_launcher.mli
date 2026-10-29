@@ -19,7 +19,8 @@
 
     The operation is started with the [Gtk.UriLauncher.launch] function.
 
-    To launch a file, use [Gtk.FileLauncher]. *)
+    To launch a file, use
+    {{!Ocgtk.File_launcher.class-type-file_launcher_t}[Gtk.FileLauncher]}. *)
 class type uri_launcher_t = object
   (** {2:methods Methods} *)
 
@@ -60,7 +61,8 @@ class uri_launcher : Raw.Uri_launcher.t -> uri_launcher_t
 
     The operation is started with the [Gtk.UriLauncher.launch] function.
 
-    To launch a file, use [Gtk.FileLauncher]. *)
+    To launch a file, use
+    {{!Ocgtk.File_launcher.class-type-file_launcher_t}[Gtk.FileLauncher]}. *)
 
 (** {1:constructors Constructors} *)
 

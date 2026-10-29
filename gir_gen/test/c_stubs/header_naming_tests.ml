@@ -41,6 +41,7 @@ let create_test_context_with_namespace namespace_name =
     current_cycle_classes = [];
     cross_references = StringMap.empty;
     target_library = Raw_library;
+    doc_index = StringMap.empty;
   }
 
 (* ========================================================================= *)

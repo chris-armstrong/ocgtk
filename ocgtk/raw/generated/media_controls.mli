@@ -5,7 +5,8 @@
 
     An example GtkMediaControls
 
-    Usually, [GtkMediaControls] is used as part of [Gtk.Video].
+    Usually, [GtkMediaControls] is used as part of
+    {{!Ocgtk.Raw.Video}[Gtk.Video]}.
 
     The class built on this module is in {!Ocgtk.Media_controls}. *)
 

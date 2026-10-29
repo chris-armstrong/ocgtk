@@ -1,6 +1,8 @@
-(** [GSimpleProxyResolver] is a simple [Gio.ProxyResolver] implementation that
-    handles a single default proxy, multiple URI-scheme-specific proxies, and a
-    list of hosts that proxies should not be used for.
+(** [GSimpleProxyResolver] is a simple
+    {{!Ocgio.Proxy_resolver.class-type-proxy_resolver_t}[Gio.ProxyResolver]}
+    implementation that handles a single default proxy, multiple
+    URI-scheme-specific proxies, and a list of hosts that proxies should not be
+    used for.
 
     Its methods, signals and properties are on
     {!class-type-simple_proxy_resolver_t}. Its full description is under
@@ -14,9 +16,11 @@
     Implements:
     - {{!Ocgio.Proxy_resolver.class-type-proxy_resolver_t}Ocgio.Proxy_resolver}
 
-    [GSimpleProxyResolver] is a simple [Gio.ProxyResolver] implementation that
-    handles a single default proxy, multiple URI-scheme-specific proxies, and a
-    list of hosts that proxies should not be used for.
+    [GSimpleProxyResolver] is a simple
+    {{!Ocgio.Proxy_resolver.class-type-proxy_resolver_t}[Gio.ProxyResolver]}
+    implementation that handles a single default proxy, multiple
+    URI-scheme-specific proxies, and a list of hosts that proxies should not be
+    used for.
 
     [GSimpleProxyResolver] is never the default proxy resolver, but it can be
     used as the base class for another proxy resolver implementation, or it can
@@ -64,9 +68,11 @@ class simple_proxy_resolver :
 
 (** {1:description Description}
 
-    [GSimpleProxyResolver] is a simple [Gio.ProxyResolver] implementation that
-    handles a single default proxy, multiple URI-scheme-specific proxies, and a
-    list of hosts that proxies should not be used for.
+    [GSimpleProxyResolver] is a simple
+    {{!Ocgio.Proxy_resolver.class-type-proxy_resolver_t}[Gio.ProxyResolver]}
+    implementation that handles a single default proxy, multiple
+    URI-scheme-specific proxies, and a list of hosts that proxies should not be
+    used for.
 
     [GSimpleProxyResolver] is never the default proxy resolver, but it can be
     used as the base class for another proxy resolver implementation, or it can

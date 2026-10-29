@@ -31,10 +31,11 @@
     {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-peer.c}gdbus-example-peer.c}.
 
     Note that a minimal [GDBusServer] will accept connections from any peer. In
-    many use-cases it will be necessary to add a [Gio.DBusAuthObserver] that
-    only accepts connections that have successfully authenticated as the same
-    user that is running the [GDBusServer]. Since GLib 2.68 this can be achieved
-    more simply by passing the
+    many use-cases it will be necessary to add a
+    {{!Ocgio.D_bus_auth_observer.class-type-d_bus_auth_observer_t}[Gio.DBusAuthObserver]}
+    that only accepts connections that have successfully authenticated as the
+    same user that is running the [GDBusServer]. Since GLib 2.68 this can be
+    achieved more simply by passing the
     [G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER] flag to the server.
 *)
 class type d_bus_server_t = object
@@ -126,10 +127,11 @@ class d_bus_server : Raw.D_bus_server.t -> d_bus_server_t
     {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-peer.c}gdbus-example-peer.c}.
 
     Note that a minimal [GDBusServer] will accept connections from any peer. In
-    many use-cases it will be necessary to add a [Gio.DBusAuthObserver] that
-    only accepts connections that have successfully authenticated as the same
-    user that is running the [GDBusServer]. Since GLib 2.68 this can be achieved
-    more simply by passing the
+    many use-cases it will be necessary to add a
+    {{!Ocgio.D_bus_auth_observer.class-type-d_bus_auth_observer_t}[Gio.DBusAuthObserver]}
+    that only accepts connections that have successfully authenticated as the
+    same user that is running the [GDBusServer]. Since GLib 2.68 this can be
+    achieved more simply by passing the
     [G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER] flag to the server.
 *)
 

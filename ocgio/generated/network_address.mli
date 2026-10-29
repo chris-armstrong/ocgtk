@@ -22,8 +22,9 @@
     this object is kept alive which may have unexpected results if alive for too
     long.
 
-    See [Gio.SocketConnectable] for an example of using the connectable
-    interface. *)
+    See
+    {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}[Gio.SocketConnectable]}
+    for an example of using the connectable interface. *)
 class type network_address_t = object
   inherit Socket_connectable.socket_connectable_t
 
@@ -57,8 +58,9 @@ class network_address : Raw.Network_address.t -> network_address_t
     this object is kept alive which may have unexpected results if alive for too
     long.
 
-    See [Gio.SocketConnectable] for an example of using the connectable
-    interface. *)
+    See
+    {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}[Gio.SocketConnectable]}
+    for an example of using the connectable interface. *)
 
 (** {1:constructors Constructors} *)
 

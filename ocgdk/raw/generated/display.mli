@@ -11,11 +11,13 @@
       projectors, etc)
 
     Most of the input device handling has been factored out into separate
-    [Gdk.Seat] objects. Every display has a one or more seats, which can be
-    accessed with [Gdk.Display.get_default_seat] and [Gdk.Display.list_seats].
+    {{!Ocgdk.Raw.Seat}[Gdk.Seat]} objects. Every display has a one or more
+    seats, which can be accessed with [Gdk.Display.get_default_seat] and
+    [Gdk.Display.list_seats].
 
-    Output devices are represented by [Gdk.Monitor] objects, which can be
-    accessed with [Gdk.Display.get_monitor_at_surface] and similar APIs.
+    Output devices are represented by {{!Ocgdk.Raw.Monitor}[Gdk.Monitor]}
+    objects, which can be accessed with [Gdk.Display.get_monitor_at_surface] and
+    similar APIs.
 
     The class built on this module is in {!Ocgdk.Display}. *)
 

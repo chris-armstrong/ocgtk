@@ -223,10 +223,14 @@ end
      - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\
      - {{!Ocgtk.Cell_layout.class-type-cell_layout_t}Ocgtk.Cell_layout}\n\n\
      An abstract class for laying out [GtkCellRenderer]s\n\n\
-     The [GtkCellArea] is an abstract class for [Gtk.CellLayout]\n\
+     The [GtkCellArea] is an abstract class for \
+     {{!Ocgtk.Cell_layout.class-type-cell_layout_t}[Gtk.CellLayout]}\n\
      widgets (also referred to as \"layouting widgets\") to interface with\n\
-     an arbitrary number of [Gtk.CellRenderer]s and interact with the user\n\
-     for a given [Gtk.TreeModel] row.\n\n\
+     an arbitrary number of \
+     {{!Ocgtk.Cell_renderer.class-type-cell_renderer_t}[Gtk.CellRenderer]}s \
+     and interact with the user\n\
+     for a given {{!Ocgtk.Tree_model.class-type-tree_model_t}[Gtk.TreeModel]} \
+     row.\n\n\
      The cell area handles events, focus navigation, drawing and\n\
      size requests and allocations for a given row of data.\n\n\
      Usually users dont have to interact with the [GtkCellArea] directly\n\
@@ -240,8 +244,10 @@ end
      size of an area for an arbitrary number of [GtkTreeModel] rows.\n\n\
      When requesting the size of a cell area one needs to calculate\n\
      the size for a handful of rows, and this will be done differently by\n\
-     different layouting widgets. For instance a [Gtk.TreeViewColumn]\n\
-     always lines up the areas from top to bottom while a [Gtk.IconView]\n\
+     different layouting widgets. For instance a \
+     {{!Ocgtk.Tree_view_column.class-type-tree_view_column_t}[Gtk.TreeViewColumn]}\n\
+     always lines up the areas from top to bottom while a \
+     {{!Ocgtk.Icon_view.class-type-icon_view_t}[Gtk.IconView]}\n\
      on the other hand might enforce that all areas received the same\n\
      width and wrap the areas around, requesting height for more cell\n\
      areas when allocated less width.\n\n\
@@ -249,16 +255,22 @@ end
      alignments with areas rendered for adjacent rows (cells can\n\
      appear “columnized” inside an area even when the size of\n\
      cells are different in each row). For this reason the [GtkCellArea]\n\
-     uses a [Gtk.CellAreaContext] object to store the alignments\n\
+     uses a \
+     {{!Ocgtk.Cell_area_context.class-type-cell_area_context_t}[Gtk.CellAreaContext]} \
+     object to store the alignments\n\
      and sizes along the way (as well as the overall largest minimum\n\
      and natural size for all the rows which have been calculated\n\
      with the said context).\n\n\
-     The [Gtk.CellAreaContext] is an opaque object specific to the\n\
+     The \
+     {{!Ocgtk.Cell_area_context.class-type-cell_area_context_t}[Gtk.CellAreaContext]} \
+     is an opaque object specific to the\n\
      [GtkCellArea] which created it (see [Gtk.CellArea.create_context]).\n\n\
      The owning cell-layouting widget can create as many contexts as\n\
      it wishes to calculate sizes of rows which should receive the\n\
      same size in at least one orientation (horizontally or vertically),\n\
-     However, it’s important that the same [Gtk.CellAreaContext] which\n\
+     However, it’s important that the same \
+     {{!Ocgtk.Cell_area_context.class-type-cell_area_context_t}[Gtk.CellAreaContext]} \
+     which\n\
      was used to request the sizes for a given [GtkTreeModel] row be\n\
      used when rendering or processing events for that row.\n\n\
      In order to request the width of all the rows at the root level\n\
@@ -413,7 +425,9 @@ end
      responsible for knowing where [GtkTreeModel] rows are rendered inside\n\
      the widget, so at [Gtk.Widget.focus] time the layouting widget\n\
      should use the [GtkCellArea] methods to navigate focus inside the area\n\
-     and then observe the [Gtk.DirectionType] to pass the focus to adjacent\n\
+     and then observe the \
+     {{!Ocgtk.Enums.type-directiontype}[Gtk.DirectionType]} to pass the focus \
+     to adjacent\n\
      rows and areas.\n\n\
      A basic example of how the [Gtk.Widget.focus] virtual method\n\
      should be implemented:\n\n\
@@ -477,7 +491,8 @@ end
      {b Cell Properties}\n\n\
      The [GtkCellArea] introduces cell properties for [GtkCellRenderer]s.\n\
      This provides some general interfaces for defining the relationship\n\
-     cell areas have with their cells. For instance in a [Gtk.CellAreaBox]\n\
+     cell areas have with their cells. For instance in a \
+     {{!Ocgtk.Cell_area_box.class-type-cell_area_box_t}[Gtk.CellAreaBox]}\n\
      a cell might “expand” and receive extra space when the area is allocated\n\
      more than its full natural request, or a cell might be configured to \
      “align”\n\

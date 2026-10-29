@@ -1,6 +1,7 @@
-(** A [GSimpleAction] is the obvious simple implementation of the [Gio.Action]
-    interface. This is the easiest way to create an action for purposes of
-    adding it to a [Gio.SimpleActionGroup].
+(** A [GSimpleAction] is the obvious simple implementation of the
+    {{!Ocgio.Action.class-type-action_t}[Gio.Action]} interface. This is the
+    easiest way to create an action for purposes of adding it to a
+    {{!Ocgio.Simple_action_group.class-type-simple_action_group_t}[Gio.SimpleActionGroup]}.
 
     Its methods, signals and properties are on {!class-type-simple_action_t}.
     Its constructors are under {!section-constructors}. The functions it is
@@ -13,9 +14,11 @@
     Implements:
     - {{!Ocgio.Action.class-type-action_t}Ocgio.Action}
 
-    A [GSimpleAction] is the obvious simple implementation of the [Gio.Action]
-    interface. This is the easiest way to create an action for purposes of
-    adding it to a [Gio.SimpleActionGroup]. *)
+    A [GSimpleAction] is the obvious simple implementation of the
+    {{!Ocgio.Action.class-type-action_t}[Gio.Action]} interface. This is the
+    easiest way to create an action for purposes of adding it to a
+    {{!Ocgio.Simple_action_group.class-type-simple_action_group_t}[Gio.SimpleActionGroup]}.
+*)
 class type simple_action_t = object
   inherit Action.action_t
 

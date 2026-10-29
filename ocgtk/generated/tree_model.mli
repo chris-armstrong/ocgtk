@@ -156,18 +156,23 @@ end
      Models are accessed on a node/column level of granularity. One can\n\
      query for the value of a model at a certain node and a certain\n\
      column on that node. There are two structures used to reference a\n\
-     particular node in a model. They are the [Gtk.TreePath] and\n\
-     the [Gtk.TreeIter] (“iter” is short for iterator). Most of the\n\
-     interface consists of operations on a [Gtk.TreeIter].\n\n\
+     particular node in a model. They are the \
+     {{!Ocgtk.Tree_path.class-type-tree_path_t}[Gtk.TreePath]} and\n\
+     the {{!Ocgtk.Tree_iter.class-type-tree_iter_t}[Gtk.TreeIter]} (“iter” is \
+     short for iterator). Most of the\n\
+     interface consists of operations on a \
+     {{!Ocgtk.Tree_iter.class-type-tree_iter_t}[Gtk.TreeIter]}.\n\n\
      A path is essentially a potential node. It is a location on a model\n\
      that may or may not actually correspond to a node on a specific\n\
-     model. A [Gtk.TreePath] can be converted into either an\n\
+     model. A {{!Ocgtk.Tree_path.class-type-tree_path_t}[Gtk.TreePath]} can be \
+     converted into either an\n\
      array of unsigned integers or a string. The string form is a list\n\
      of numbers separated by a colon. Each number refers to the offset\n\
      at that level. Thus, the path [0] refers to the root\n\
      node and the path [2:4] refers to the fifth child of\n\
      the third node.\n\n\
-     By contrast, a [Gtk.TreeIter] is a reference to a specific node on\n\
+     By contrast, a {{!Ocgtk.Tree_iter.class-type-tree_iter_t}[Gtk.TreeIter]} \
+     is a reference to a specific node on\n\
      a specific model. It is a generic struct with an integer and three\n\
      generic pointers. These are filled in by the model in a model-specific\n\
      way. One can convert a path to an iterator by calling\n\
@@ -329,18 +334,23 @@ class tree_model : Raw.Tree_model.t -> tree_model_t
  Models are accessed on a node/column level of granularity. One can\n\
  query for the value of a model at a certain node and a certain\n\
  column on that node. There are two structures used to reference a\n\
- particular node in a model. They are the [Gtk.TreePath] and\n\
- the [Gtk.TreeIter] (“iter” is short for iterator). Most of the\n\
- interface consists of operations on a [Gtk.TreeIter].\n\n\
+ particular node in a model. They are the \
+ {{!Ocgtk.Tree_path.class-type-tree_path_t}[Gtk.TreePath]} and\n\
+ the {{!Ocgtk.Tree_iter.class-type-tree_iter_t}[Gtk.TreeIter]} (“iter” is \
+ short for iterator). Most of the\n\
+ interface consists of operations on a \
+ {{!Ocgtk.Tree_iter.class-type-tree_iter_t}[Gtk.TreeIter]}.\n\n\
  A path is essentially a potential node. It is a location on a model\n\
  that may or may not actually correspond to a node on a specific\n\
- model. A [Gtk.TreePath] can be converted into either an\n\
+ model. A {{!Ocgtk.Tree_path.class-type-tree_path_t}[Gtk.TreePath]} can be \
+ converted into either an\n\
  array of unsigned integers or a string. The string form is a list\n\
  of numbers separated by a colon. Each number refers to the offset\n\
  at that level. Thus, the path [0] refers to the root\n\
  node and the path [2:4] refers to the fifth child of\n\
  the third node.\n\n\
- By contrast, a [Gtk.TreeIter] is a reference to a specific node on\n\
+ By contrast, a {{!Ocgtk.Tree_iter.class-type-tree_iter_t}[Gtk.TreeIter]} is a \
+ reference to a specific node on\n\
  a specific model. It is a generic struct with an integer and three\n\
  generic pointers. These are filled in by the model in a model-specific\n\
  way. One can convert a path to an iterator by calling\n\

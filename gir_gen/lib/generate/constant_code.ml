@@ -30,6 +30,9 @@ let ocaml_type_of_gir_type_name type_name =
   Option.bind (List.assoc_opt type_name Type_mappings.type_mappings) (fun tm ->
       serializable tm.ocaml_type)
 
+let is_generated (cst : gir_constant) =
+  Option.is_some (ocaml_type_of_gir_type_name cst.value_type.name)
+
 (** Serialize a constant value string to an OCaml literal or construction
     expression for [ocaml_type]. *)
 let serialize_value ~ocaml_type value =
@@ -72,22 +75,22 @@ let iter_mappable_constants ~warn_unmappable ~emit constants =
     [Doc_emit], with the native [version] rendered as [@since]. With no doc but
     a version, a synthetic line naming the C type stands in; with neither, there
     is no doc. *)
-let constant_doc (cst : gir_constant) =
+let constant_doc ~refs (cst : gir_constant) =
   let fallback =
     Option.map (fun _ -> Fmt.str "[%s]" cst.constant_c_type) cst.version
   in
-  Doc_emit.item_doc ~indent:"" ?since:cst.version ?fallback
+  Doc_emit.item_doc ~indent:"" ?since:cst.version ?fallback ~refs
     ~context:Doc_translate.Member cst.constant_doc
 
 (** Generate the .mli content for the constants of a namespace. Returns just the
     file header when [constants] is empty. *)
-let generate_constants_interface ~namespace constants =
+let generate_constants_interface ~refs ~namespace constants =
   let buf = Buffer.create 4096 in
   bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
   bprintf buf "(* %s Constants *)\n\n" namespace;
   iter_mappable_constants ~warn_unmappable:true
     ~emit:(fun ~ocaml_name ~ocaml_type cst ->
-      let doc = constant_doc cst in
+      let doc = constant_doc ~refs cst in
       bprintf buf "%s" (Doc_emit.before_item doc);
       bprintf buf "val %s : %s\n\n" ocaml_name ocaml_type;
       bprintf buf "%s" (Doc_emit.after_item doc))

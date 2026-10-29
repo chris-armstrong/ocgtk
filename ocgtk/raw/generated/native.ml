@@ -1,7 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Native: Native *)
 
-(** An interface for widgets that have their own [Gdk.Surface].
+(** An interface for widgets that have their own
+    {{!Ocgdk.Raw.Surface}[Gdk.Surface]}.
 
     The obvious example of a [GtkNative] is [GtkWindow].
 
@@ -12,9 +13,9 @@
     also possible to find the [GtkNative] to which a surface belongs, with
     [Gtk.Native.get_for_surface].
 
-    In addition to a [Gdk.Surface], a [GtkNative] also provides a [Gsk.Renderer]
-    for rendering on that surface. To get the renderer, use
-    [Gtk.Native.get_renderer].
+    In addition to a {{!Ocgdk.Raw.Surface}[Gdk.Surface]}, a [GtkNative] also
+    provides a {{!Ocgsk.Raw.Renderer}[Gsk.Renderer]} for rendering on that
+    surface. To get the renderer, use [Gtk.Native.get_renderer].
 
     The class built on this module is in {!Ocgtk.Native}. *)
 

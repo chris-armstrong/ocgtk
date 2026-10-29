@@ -1,7 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* BufferedOutputStream: BufferedOutputStream *)
 
-(** Buffered output stream implements [Gio.FilterOutputStream] and provides for
+(** Buffered output stream implements
+    {{!Ocgio.Raw.Filter_output_stream}[Gio.FilterOutputStream]} and provides for
     buffered writes.
 
     By default, [GBufferedOutputStream]'s buffer size is set at 4 kilobytes.

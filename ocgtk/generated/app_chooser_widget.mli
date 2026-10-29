@@ -19,15 +19,17 @@
 
     [GtkAppChooserWidget] is a widget for selecting applications.
 
-    It is the main building block for [Gtk.AppChooserDialog]. Most applications
-    only need to use the latter; but you can use this widget as part of a larger
-    widget if you have special needs.
+    It is the main building block for
+    {{!Ocgtk.App_chooser_dialog.class-type-app_chooser_dialog_t}[Gtk.AppChooserDialog]}.
+    Most applications only need to use the latter; but you can use this widget
+    as part of a larger widget if you have special needs.
 
     [GtkAppChooserWidget] offers detailed control over what applications are
     shown, using the [Gtk.AppChooserWidget:show-default],
     [Gtk.AppChooserWidget:show-recommended],
     [Gtk.AppChooserWidget:show-fallback], [Gtk.AppChooserWidget:show-other] and
-    [Gtk.AppChooserWidget:show-all] properties. See the [Gtk.AppChooser]
+    [Gtk.AppChooserWidget:show-all] properties. See the
+    {{!Ocgtk.App_chooser.class-type-app_chooser_t}[Gtk.AppChooser]}
     documentation for more information about these groups of applications.
 
     To keep track of the selected application, use the
@@ -123,15 +125,17 @@ class app_chooser_widget : Raw.App_chooser_widget.t -> app_chooser_widget_t
 
     [GtkAppChooserWidget] is a widget for selecting applications.
 
-    It is the main building block for [Gtk.AppChooserDialog]. Most applications
-    only need to use the latter; but you can use this widget as part of a larger
-    widget if you have special needs.
+    It is the main building block for
+    {{!Ocgtk.App_chooser_dialog.class-type-app_chooser_dialog_t}[Gtk.AppChooserDialog]}.
+    Most applications only need to use the latter; but you can use this widget
+    as part of a larger widget if you have special needs.
 
     [GtkAppChooserWidget] offers detailed control over what applications are
     shown, using the [Gtk.AppChooserWidget:show-default],
     [Gtk.AppChooserWidget:show-recommended],
     [Gtk.AppChooserWidget:show-fallback], [Gtk.AppChooserWidget:show-other] and
-    [Gtk.AppChooserWidget:show-all] properties. See the [Gtk.AppChooser]
+    [Gtk.AppChooserWidget:show-all] properties. See the
+    {{!Ocgtk.App_chooser.class-type-app_chooser_t}[Gtk.AppChooser]}
     documentation for more information about these groups of applications.
 
     To keep track of the selected application, use the

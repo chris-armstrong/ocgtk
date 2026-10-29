@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* UnixConnection: UnixConnection *)
 
-(** This is the subclass of [Gio.SocketConnection] that is created for UNIX
-    domain sockets.
+(** This is the subclass of
+    {{!Ocgio.Raw.Socket_connection}[Gio.SocketConnection]} that is created for
+    UNIX domain sockets.
 
     It contains functions to do some of the UNIX socket specific functionality
     like passing file descriptors.

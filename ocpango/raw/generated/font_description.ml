@@ -46,8 +46,8 @@ external set_weight : t -> Ocpango_enums.weight -> unit
 (** Sets the weight field of a font description.
 
     The weight field specifies how bold or light the font should be. In addition
-    to the values of the [Pango.Weight] enumeration, other intermediate numeric
-    values are possible. *)
+    to the values of the {{!Ocpango.Enums.type-weight}[Pango.Weight]}
+    enumeration, other intermediate numeric values are possible. *)
 
 external set_variations_static : t -> string -> unit
   = "ml_pango_font_description_set_variations_static"
@@ -83,16 +83,16 @@ external set_variant : t -> Ocpango_enums.variant -> unit
   = "ml_pango_font_description_set_variant"
 (** Sets the variant field of a font description.
 
-    The [Pango.Variant] can either be [PANGO_VARIANT_NORMAL] or
-    [PANGO_VARIANT_SMALL_CAPS]. *)
+    The {{!Ocpango.Enums.type-variant}[Pango.Variant]} can either be
+    [PANGO_VARIANT_NORMAL] or [PANGO_VARIANT_SMALL_CAPS]. *)
 
 external set_style : t -> Ocpango_enums.style -> unit
   = "ml_pango_font_description_set_style"
 (** Sets the style field of a [PangoFontDescription].
 
-    The [Pango.Style] enumeration describes whether the font is slanted and the
-    manner in which it is slanted; it can be either [PANGO_STYLE_NORMAL],
-    [PANGO_STYLE_ITALIC], or [PANGO_STYLE_OBLIQUE].
+    The {{!Ocpango.Enums.type-style}[Pango.Style]} enumeration describes whether
+    the font is slanted and the manner in which it is slanted; it can be either
+    [PANGO_STYLE_NORMAL], [PANGO_STYLE_ITALIC], or [PANGO_STYLE_OBLIQUE].
 
     Most fonts will either have a italic style or an oblique style, but not
     both, and font matching in Pango will match italic specifications with
@@ -102,8 +102,8 @@ external set_stretch : t -> Ocpango_enums.stretch -> unit
   = "ml_pango_font_description_set_stretch"
 (** Sets the stretch field of a font description.
 
-    The [Pango.Stretch] field specifies how narrow or wide the font should be.
-*)
+    The {{!Ocpango.Enums.type-stretch}[Pango.Stretch]} field specifies how
+    narrow or wide the font should be. *)
 
 external set_size : t -> int -> unit = "ml_pango_font_description_set_size"
 (** Sets the size field of a font description in fractional points.

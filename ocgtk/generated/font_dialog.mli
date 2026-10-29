@@ -17,8 +17,10 @@
     The dialog is shown with the [Gtk.FontDialog.choose_font] function or its
     variants.
 
-    See [Gtk.FontDialogButton] for a convenient control that uses
-    [GtkFontDialog] and presents the results. *)
+    See
+    {{!Ocgtk.Font_dialog_button.class-type-font_dialog_button_t}[Gtk.FontDialogButton]}
+    for a convenient control that uses [GtkFontDialog] and presents the results.
+*)
 class type font_dialog_t = object
   (** {2:methods Methods} *)
 
@@ -104,8 +106,10 @@ class font_dialog : Raw.Font_dialog.t -> font_dialog_t
     The dialog is shown with the [Gtk.FontDialog.choose_font] function or its
     variants.
 
-    See [Gtk.FontDialogButton] for a convenient control that uses
-    [GtkFontDialog] and presents the results. *)
+    See
+    {{!Ocgtk.Font_dialog_button.class-type-font_dialog_button_t}[Gtk.FontDialogButton]}
+    for a convenient control that uses [GtkFontDialog] and presents the results.
+*)
 
 (** {1:constructors Constructors} *)
 

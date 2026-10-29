@@ -4,7 +4,8 @@
 (** [GMemoryInputStream] is a class for using arbitrary memory chunks as input
     for GIO streaming input operations.
 
-    As of GLib 2.34, [GMemoryInputStream] implements [Gio.PollableInputStream].
+    As of GLib 2.34, [GMemoryInputStream] implements
+    {{!Ocgio.Raw.Pollable_input_stream}[Gio.PollableInputStream]}.
 
     The class built on this module is in {!Ocgio.Memory_input_stream}. *)
 

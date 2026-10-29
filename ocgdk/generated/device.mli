@@ -15,8 +15,8 @@ class type device_t = App_launch_context_cycle_de440b34.device_t
 
     Represents an input device, such as a keyboard, mouse or touchpad.
 
-    See the [Gdk.Seat] documentation for more information about the various
-    kinds of devices, and their relationships. *)
+    See the {{!Ocgdk.Seat.class-type-seat_t}[Gdk.Seat]} documentation for more
+    information about the various kinds of devices, and their relationships. *)
 
 class device : Raw.Device.t -> device_t
 (** Wraps a raw handle of {!Ocgdk.Raw.Device.t}. *)
@@ -25,8 +25,8 @@ class device : Raw.Device.t -> device_t
 
     Represents an input device, such as a keyboard, mouse or touchpad.
 
-    See the [Gdk.Seat] documentation for more information about the various
-    kinds of devices, and their relationships. *)
+    See the {{!Ocgdk.Seat.class-type-seat_t}[Gdk.Seat]} documentation for more
+    information about the various kinds of devices, and their relationships. *)
 
 (** {1:constructors Constructors} *)
 

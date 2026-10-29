@@ -1,13 +1,17 @@
 (* Doc_emit — see doc_emit.mli for the contract. *)
 
+let translate ?ret_shape ~refs context raw =
+  Doc_translate.parse context raw
+  |> Doc_resolve.resolve refs |> fst
+  |> Doc_translate.render_as ?ret_shape context
+
 (* Prose for an item: the translated [doc] when it says something, otherwise
    the [fallback]. Returns the prose and whether it came from the fallback,
    because the two render [@since] differently (see [item_doc]). *)
-let prose_of ?ret_shape ~context ~doc ~fallback () =
+let prose_of ?ret_shape ~refs ~context ~doc ~fallback () =
   let translated =
     Option.fold ~none:""
-      ~some:(fun raw ->
-        String.trim (Doc_translate.translate ?ret_shape context raw))
+      ~some:(fun raw -> String.trim (translate ?ret_shape ~refs context raw))
       doc
   in
   if not (String.equal translated "") then Some (translated, false)
@@ -72,9 +76,10 @@ let with_prefix ?prefix prose =
   | Some prefix, None -> Some (prefix, true)
   | None, prose -> prose
 
-let item_doc ~indent ?since ?fallback ?prefix ?suffix ?ret_shape ~context doc =
+let item_doc ~indent ?since ?fallback ?prefix ?suffix ?ret_shape ~refs ~context
+    doc =
   let prose =
-    prose_of ?ret_shape ~context ~doc ~fallback ()
+    prose_of ?ret_shape ~refs ~context ~doc ~fallback ()
     |> with_prefix ?prefix |> with_suffix ?suffix
   in
   let body =

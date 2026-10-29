@@ -1,7 +1,8 @@
-(** [GPollableOutputStream] is implemented by [Gio.OutputStream]s that can be
-    polled for readiness to write. This can be used when interfacing with a
-    non-GIO API that expects UNIX-file-descriptor-style asynchronous I/O rather
-    than GIO-style.
+(** [GPollableOutputStream] is implemented by
+    {{!Ocgio.Output_stream.class-type-output_stream_t}[Gio.OutputStream]}s that
+    can be polled for readiness to write. This can be used when interfacing with
+    a non-GIO API that expects UNIX-file-descriptor-style asynchronous I/O
+    rather than GIO-style.
 
     Its methods, signals and properties are on
     {!class-type-pollable_output_stream_t}. Its full description is under
@@ -15,10 +16,11 @@
     Requires:
     - {{!Ocgio.Output_stream.class-type-output_stream_t}Ocgio.Output_stream}
 
-    [GPollableOutputStream] is implemented by [Gio.OutputStream]s that can be
-    polled for readiness to write. This can be used when interfacing with a
-    non-GIO API that expects UNIX-file-descriptor-style asynchronous I/O rather
-    than GIO-style.
+    [GPollableOutputStream] is implemented by
+    {{!Ocgio.Output_stream.class-type-output_stream_t}[Gio.OutputStream]}s that
+    can be polled for readiness to write. This can be used when interfacing with
+    a non-GIO API that expects UNIX-file-descriptor-style asynchronous I/O
+    rather than GIO-style.
 
     Some classes may implement [GPollableOutputStream] but have only certain
     instances of that class be pollable. If [Gio.PollableOutputStream.can_poll]
@@ -60,10 +62,11 @@ class pollable_output_stream :
 
 (** {1:description Description}
 
-    [GPollableOutputStream] is implemented by [Gio.OutputStream]s that can be
-    polled for readiness to write. This can be used when interfacing with a
-    non-GIO API that expects UNIX-file-descriptor-style asynchronous I/O rather
-    than GIO-style.
+    [GPollableOutputStream] is implemented by
+    {{!Ocgio.Output_stream.class-type-output_stream_t}[Gio.OutputStream]}s that
+    can be polled for readiness to write. This can be used when interfacing with
+    a non-GIO API that expects UNIX-file-descriptor-style asynchronous I/O
+    rather than GIO-style.
 
     Some classes may implement [GPollableOutputStream] but have only certain
     instances of that class be pollable. If [Gio.PollableOutputStream.can_poll]

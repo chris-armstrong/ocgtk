@@ -8,7 +8,9 @@
     (translucency).
 
     In GTK, the main widgets that implement this interface are
-    [Gtk.ColorChooserWidget], [Gtk.ColorChooserDialog] and [Gtk.ColorButton].
+    {{!Ocgtk.Raw.Color_chooser_widget}[Gtk.ColorChooserWidget]},
+    {{!Ocgtk.Raw.Color_chooser_dialog}[Gtk.ColorChooserDialog]} and
+    {{!Ocgtk.Raw.Color_button}[Gtk.ColorButton]}.
 
     The class built on this module is in {!Ocgtk.Color_chooser}. *)
 
@@ -48,7 +50,8 @@ external add_palette :
     [colors_per_line] colors in each row. If [horizontal] is [false], the colors
     are grouped in columns instead.
 
-    The default color palette of [Gtk.ColorChooserWidget] has 45 colors,
+    The default color palette of
+    {{!Ocgtk.Raw.Color_chooser_widget}[Gtk.ColorChooserWidget]} has 45 colors,
     organized in columns of 5 colors (this includes some grays).
 
     The layout of the color chooser widget works best when the palettes have

@@ -81,7 +81,8 @@ val l2_callback_type : current_layer2_module:string -> signal_emission -> string
     Exposed primarily for tests; production callers use {!emit_l2_method_sig}.
 *)
 
-val emit_l1_val : current_class:string -> signal_emission -> string
+val emit_l1_val :
+  refs:Doc_resolve.env -> current_class:string -> signal_emission -> string
 (** [emit_l1_val ~current_class e] returns a single [val] declaration for
     insertion into the L1 [.mli] of [current_class], with the signal's doc.
 
@@ -145,7 +146,10 @@ val emit_l2_method :
     does not trigger OCaml warning 16. *)
 
 val emit_l2_method_sig :
-  current_layer2_module:string -> signal_emission -> string
+  refs:Doc_resolve.env ->
+  current_layer2_module:string ->
+  signal_emission ->
+  string
 (** [emit_l2_method_sig ~current_layer2_module e] returns a class type method
     signature, with the signal's doc, for insertion into a generated L2 class
     type body.

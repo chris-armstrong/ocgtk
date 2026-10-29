@@ -141,7 +141,8 @@ end
      [Gtk.Dialog::response] signal with a response ID that you specified.\n\
      GTK will never assign a meaning to positive response IDs; these are\n\
      entirely user-defined. But for convenience, you can use the response\n\
-     IDs in the [Gtk.ResponseType] enumeration (these all have values\n\
+     IDs in the {{!Ocgtk.Enums.type-responsetype}[Gtk.ResponseType]} \
+     enumeration (these all have values\n\
      less than zero). If a dialog receives a delete event, the\n\
      [Gtk.Dialog::response] signal will be emitted with the\n\
      [GTK_RESPONSE_DELETE_EVENT] response ID.\n\n\
@@ -152,7 +153,8 @@ end
      from user input), can be created by calling [Gtk.Window.set_modal]\n\
      on the dialog. When using [Gtk.Dialog.new_with_buttons], you can also\n\
      pass the [GTK_DIALOG_MODAL] flag to make a dialog modal.\n\n\
-     For the simple dialog in the following example, a [Gtk.MessageDialog]\n\
+     For the simple dialog in the following example, a \
+     {{!Ocgtk.Message_dialog.class-type-message_dialog_t}[Gtk.MessageDialog]}\n\
      would save some effort. But you’d need to create the dialog contents \
      manually\n\
      if you had more than a simple message in the dialog.\n\n\
@@ -246,7 +248,8 @@ class dialog : Raw.Dialog.t -> dialog_t
  [Gtk.Dialog::response] signal with a response ID that you specified.\n\
  GTK will never assign a meaning to positive response IDs; these are\n\
  entirely user-defined. But for convenience, you can use the response\n\
- IDs in the [Gtk.ResponseType] enumeration (these all have values\n\
+ IDs in the {{!Ocgtk.Enums.type-responsetype}[Gtk.ResponseType]} enumeration \
+ (these all have values\n\
  less than zero). If a dialog receives a delete event, the\n\
  [Gtk.Dialog::response] signal will be emitted with the\n\
  [GTK_RESPONSE_DELETE_EVENT] response ID.\n\n\
@@ -257,7 +260,8 @@ class dialog : Raw.Dialog.t -> dialog_t
  from user input), can be created by calling [Gtk.Window.set_modal]\n\
  on the dialog. When using [Gtk.Dialog.new_with_buttons], you can also\n\
  pass the [GTK_DIALOG_MODAL] flag to make a dialog modal.\n\n\
- For the simple dialog in the following example, a [Gtk.MessageDialog]\n\
+ For the simple dialog in the following example, a \
+ {{!Ocgtk.Message_dialog.class-type-message_dialog_t}[Gtk.MessageDialog]}\n\
  would save some effort. But you’d need to create the dialog contents manually\n\
  if you had more than a simple message in the dialog.\n\n\
  An example for simple [GtkDialog] usage:\n\n\

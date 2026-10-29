@@ -394,6 +394,7 @@ let make_generation_context ?(namespace = make_gir_namespace ())
     current_cycle_classes;
     cross_references;
     target_library;
+    doc_index = StringMap.empty;
   }
 
 let void_type = make_gir_type ~name:"none" ~c_type:"void" ()

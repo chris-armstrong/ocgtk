@@ -1,7 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* BufferedInputStream: BufferedInputStream *)
 
-(** Buffered input stream implements [Gio.FilterInputStream] and provides for
+(** Buffered input stream implements
+    {{!Ocgio.Raw.Filter_input_stream}[Gio.FilterInputStream]} and provides for
     buffered reads.
 
     By default, [GBufferedInputStream]'s buffer size is set at 4 kilobytes.
@@ -26,13 +27,13 @@ external gtype : unit -> Gobject.Type.t
   = "ml_gio_buffered_input_stream_get_type"
 
 external new_ : Input_stream.t -> t = "ml_g_buffered_input_stream_new"
-(** Creates a new [Gio.InputStream] from the given [base_stream], with a buffer
-    set to the default size (4 kilobytes). *)
+(** Creates a new {{!Ocgio.Raw.Input_stream}[Gio.InputStream]} from the given
+    [base_stream], with a buffer set to the default size (4 kilobytes). *)
 
 external new_sized : Input_stream.t -> Gsize.t -> t
   = "ml_g_buffered_input_stream_new_sized"
-(** Creates a new [Gio.BufferedInputStream] from the given [base_stream], with a
-    buffer set to [size]. *)
+(** Creates a new {{!Ocgio.Raw.Buffered_input_stream}[Gio.BufferedInputStream]}
+    from the given [base_stream], with a buffer set to [size]. *)
 
 (* Methods *)
 

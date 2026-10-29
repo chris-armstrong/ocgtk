@@ -3,7 +3,8 @@
 
 (** Sorts items numerically.
 
-    To obtain the numbers to compare, this sorter evaluates a [Gtk.Expression].
+    To obtain the numbers to compare, this sorter evaluates a
+    {{!Ocgtk.Raw.Expression}[Gtk.Expression]}.
 
     The class built on this module is in {!Ocgtk.Numeric_sorter}. *)
 

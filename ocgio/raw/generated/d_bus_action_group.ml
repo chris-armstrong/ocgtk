@@ -1,7 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DBusActionGroup: DBusActionGroup *)
 
-(** [GDBusActionGroup] is an implementation of the [Gio.ActionGroup] interface.
+(** [GDBusActionGroup] is an implementation of the
+    {{!Ocgio.Raw.Action_group}[Gio.ActionGroup]} interface.
 
     [GDBusActionGroup] can be used as a proxy for an action group that is
     exported over D-Bus with [Gio.DBusConnection.export_action_group].

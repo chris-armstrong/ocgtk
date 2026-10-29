@@ -5,8 +5,9 @@
 
     An example GtkFontChooserDialog
 
-    [GtkFontChooserDialog] implements the [Gtk.FontChooser] interface and does
-    not provide much API of its own.
+    [GtkFontChooserDialog] implements the
+    {{!Ocgtk.Raw.Font_chooser}[Gtk.FontChooser]} interface and does not provide
+    much API of its own.
 
     To create a [GtkFontChooserDialog], use [Gtk.FontChooserDialog.new].
 

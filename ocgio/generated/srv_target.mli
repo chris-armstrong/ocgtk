@@ -22,7 +22,9 @@
     You can use [Gio.Resolver.lookup_service] or
     [Gio.Resolver.lookup_service_async] to find the [GSrvTarget]s for a given
     service. However, if you are simply planning to connect to the remote
-    service, you can use [Gio.NetworkService]’s [Gio.SocketConnectable]
+    service, you can use
+    {{!Ocgio.Network_service.class-type-network_service_t}[Gio.NetworkService]}’s
+    {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}[Gio.SocketConnectable]}
     interface and not need to worry about [GSrvTarget] at all. *)
 class type srv_target_t = object
   (** {2:methods Methods} *)
@@ -67,7 +69,9 @@ class srv_target : Raw.Srv_target.t -> srv_target_t
     You can use [Gio.Resolver.lookup_service] or
     [Gio.Resolver.lookup_service_async] to find the [GSrvTarget]s for a given
     service. However, if you are simply planning to connect to the remote
-    service, you can use [Gio.NetworkService]’s [Gio.SocketConnectable]
+    service, you can use
+    {{!Ocgio.Network_service.class-type-network_service_t}[Gio.NetworkService]}’s
+    {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}[Gio.SocketConnectable]}
     interface and not need to worry about [GSrvTarget] at all. *)
 
 (** {1:constructors Constructors} *)

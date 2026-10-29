@@ -23,7 +23,9 @@
  should be profiled for your application. [malloc_trim()], for example, may\n\
  make future heap allocations slower (due to releasing cached heap pages back\n\
  to the kernel).\n\n\
- See [Gio.MemoryMonitorWarningLevel] for details on the various warning\n\
+ See \
+ {{!Ocgio.Enums.type-memorymonitorwarninglevel}[Gio.MemoryMonitorWarningLevel]} \
+ for details on the various warning\n\
  levels.\n\n\
  {[\n\
  static void\n\
@@ -67,5 +69,6 @@ val on_low_memory_warning :
     warning level. See the [GMemoryMonitorWarningLevel] documentation for
     details.
 
-    Since the [Gio.MemoryMonitor] is a singleton, this signal will be emitted in
-    the [GLib.MainContext.default]\[global-default main context\]. *)
+    Since the {{!Ocgio.Raw.Memory_monitor}[Gio.MemoryMonitor]} is a singleton,
+    this signal will be emitted in the
+    [GLib.MainContext.default]\[global-default main context\]. *)

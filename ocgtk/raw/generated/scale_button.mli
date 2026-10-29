@@ -4,8 +4,9 @@
 (** Provides a button which pops up a scale widget.
 
     This kind of widget is commonly used for volume controls in multimedia
-    applications, and GTK provides a [Gtk.VolumeButton] subclass that is
-    tailored for this use case.
+    applications, and GTK provides a
+    {{!Ocgtk.Raw.Volume_button}[Gtk.VolumeButton]} subclass that is tailored for
+    this use case.
 
     {b Shortcuts and Gestures}
 

@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PropertyAction: PropertyAction *)
 
-(** A [GPropertyAction] is a way to get a [Gio.Action] with a state value
-    reflecting and controlling the value of a [GObject.Object] property.
+(** A [GPropertyAction] is a way to get a {{!Ocgio.Raw.Action}[Gio.Action]} with
+    a state value reflecting and controlling the value of a [GObject.Object]
+    property.
 
     The state of the action will correspond to the value of the property.
     Changing it will change the property (assuming the requested value matches
@@ -35,11 +36,12 @@
     between). [GPropertyAction] does not have a separate state that is kept in
     sync with the property value — its state is the property value.
 
-    For example, it might be useful to create a [Gio.Action] corresponding to
-    the [visible-child-name] property of a
-    {{:https://docs.gtk.org/gtk4/class.Stack.html}[GtkStack]} so that the
-    current page can be switched from a menu. The active radio indication in the
-    menu is then directly determined from the active page of the [GtkStack].
+    For example, it might be useful to create a
+    {{!Ocgio.Raw.Action}[Gio.Action]} corresponding to the [visible-child-name]
+    property of a {{:https://docs.gtk.org/gtk4/class.Stack.html}[GtkStack]} so
+    that the current page can be switched from a menu. The active radio
+    indication in the menu is then directly determined from the active page of
+    the [GtkStack].
 
     An anti-example would be binding the [active-id] property on a
     {{:https://docs.gtk.org/gtk4/class.ComboBox.html}[GtkComboBox]}. This is
@@ -48,10 +50,11 @@
 
     Another anti-example would be to bind to the [visible-child-name] property
     of a {{:https://docs.gtk.org/gtk4/class.Stack.html}[GtkStack]} if this value
-    is actually stored in [Gio.Settings]. In that case, the real source of the
-    value is* [Gio.Settings]. If you want a [Gio.Action] to control a setting
-    stored in [Gio.Settings], see [Gio.Settings.create_action] instead, and
-    possibly combine its use with [Gio.Settings.bind].
+    is actually stored in {{!Ocgio.Raw.Settings}[Gio.Settings]}. In that case,
+    the real source of the value is* {{!Ocgio.Raw.Settings}[Gio.Settings]}. If
+    you want a {{!Ocgio.Raw.Action}[Gio.Action]} to control a setting stored in
+    {{!Ocgio.Raw.Settings}[Gio.Settings]}, see [Gio.Settings.create_action]
+    instead, and possibly combine its use with [Gio.Settings.bind].
 
     The class built on this module is in {!Ocgio.Property_action}. *)
 

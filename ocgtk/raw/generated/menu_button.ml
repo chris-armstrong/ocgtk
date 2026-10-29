@@ -11,9 +11,9 @@
     The [GtkMenuButton] widget can show either an icon (set with the
     [Gtk.MenuButton:icon-name] property) or a label (set with the
     [Gtk.MenuButton:label] property). If neither is explicitly set, a
-    [Gtk.Image] is automatically created, using an arrow image oriented
-    according to [Gtk.MenuButton:direction] or the generic “open-menu-symbolic”
-    icon if the direction is not set.
+    {{!Ocgtk.Raw.Image}[Gtk.Image]} is automatically created, using an arrow
+    image oriented according to [Gtk.MenuButton:direction] or the generic
+    “open-menu-symbolic” icon if the direction is not set.
 
     The positioning of the popup is determined by the [Gtk.MenuButton:direction]
     property of the menu button.
@@ -97,9 +97,9 @@ external set_menu_model : t -> Ocgio_raw.Menu_model.t option -> unit
 
     If [menu_model] is [None], the button is disabled.
 
-    A [Gtk.Popover] will be created from the menu model with
-    [Gtk.PopoverMenu.new_from_model]. Actions will be connected as documented
-    for this function.
+    A {{!Ocgtk.Raw.Popover}[Gtk.Popover]} will be created from the menu model
+    with [Gtk.PopoverMenu.new_from_model]. Actions will be connected as
+    documented for this function.
 
     If [Gtk.MenuButton:popover] is already set, it will be dissociated from the
     [menu_button], and the property is set to [None]. *)

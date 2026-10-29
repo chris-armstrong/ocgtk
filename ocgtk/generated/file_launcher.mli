@@ -19,7 +19,8 @@
 
     The operation is started with the [Gtk.FileLauncher.launch] function.
 
-    To launch uris that don't represent files, use [Gtk.UriLauncher]. *)
+    To launch uris that don't represent files, use
+    {{!Ocgtk.Uri_launcher.class-type-uri_launcher_t}[Gtk.UriLauncher]}. *)
 class type file_launcher_t = object
   (** {2:methods Methods} *)
 
@@ -73,7 +74,8 @@ class file_launcher : Raw.File_launcher.t -> file_launcher_t
 
     The operation is started with the [Gtk.FileLauncher.launch] function.
 
-    To launch uris that don't represent files, use [Gtk.UriLauncher]. *)
+    To launch uris that don't represent files, use
+    {{!Ocgtk.Uri_launcher.class-type-uri_launcher_t}[Gtk.UriLauncher]}. *)
 
 (** {1:constructors Constructors} *)
 

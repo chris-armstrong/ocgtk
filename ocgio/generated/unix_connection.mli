@@ -1,5 +1,6 @@
-(** This is the subclass of [Gio.SocketConnection] that is created for UNIX
-    domain sockets.
+(** This is the subclass of
+    {{!Ocgio.Socket_connection.class-type-socket_connection_t}[Gio.SocketConnection]}
+    that is created for UNIX domain sockets.
 
     Its methods, signals and properties are on {!class-type-unix_connection_t}.
     Its full description is under {!section-description}. Its constructors are
@@ -13,8 +14,9 @@
     Inherits from:
     {{!Ocgio.Socket_connection.class-type-socket_connection_t}Ocgio.Socket_connection}
 
-    This is the subclass of [Gio.SocketConnection] that is created for UNIX
-    domain sockets.
+    This is the subclass of
+    {{!Ocgio.Socket_connection.class-type-socket_connection_t}[Gio.SocketConnection]}
+    that is created for UNIX domain sockets.
 
     It contains functions to do some of the UNIX socket specific functionality
     like passing file descriptors.
@@ -111,8 +113,9 @@ class unix_connection : Raw.Unix_connection.t -> unix_connection_t
 
 (** {1:description Description}
 
-    This is the subclass of [Gio.SocketConnection] that is created for UNIX
-    domain sockets.
+    This is the subclass of
+    {{!Ocgio.Socket_connection.class-type-socket_connection_t}[Gio.SocketConnection]}
+    that is created for UNIX domain sockets.
 
     It contains functions to do some of the UNIX socket specific functionality
     like passing file descriptors.

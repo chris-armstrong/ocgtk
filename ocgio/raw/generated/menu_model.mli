@@ -53,9 +53,12 @@
     application. Examples include global menus, jumplists, dash boards, etc. To
     support such uses, it is necessary to ‘export’ information about actions and
     their representation in menus, which is exactly what the action group
-    exporter and the menu model exporter do for [Gio.ActionGroup] and
-    [Gio.MenuModel]. The client-side counterparts to make use of the exported
-    information are [Gio.DBusActionGroup] and [Gio.DBusMenuModel].
+    exporter and the menu model exporter do for
+    {{!Ocgio.Raw.Action_group}[Gio.ActionGroup]} and
+    {{!Ocgio.Raw.Menu_model}[Gio.MenuModel]}. The client-side counterparts to
+    make use of the exported information are
+    {{!Ocgio.Raw.D_bus_action_group}[Gio.DBusActionGroup]} and
+    {{!Ocgio.Raw.D_bus_menu_model}[Gio.DBusMenuModel]}.
 
     The API of [GMenuModel] is very generic, with iterators for the attributes
     and links of an item, see [Gio.MenuModel.iterate_item_attributes] and

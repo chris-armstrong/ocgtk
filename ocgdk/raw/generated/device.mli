@@ -3,8 +3,8 @@
 
 (** Represents an input device, such as a keyboard, mouse or touchpad.
 
-    See the [Gdk.Seat] documentation for more information about the various
-    kinds of devices, and their relationships.
+    See the {{!Ocgdk.Raw.Seat}[Gdk.Seat]} documentation for more information
+    about the various kinds of devices, and their relationships.
 
     The class built on this module is in {!Ocgdk.Device}. *)
 

@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* GLTextureBuilder: GLTextureBuilder *)
 
-(** Constructs [Gdk.Texture] objects from GL textures.
+(** Constructs {{!Ocgdk.Raw.Texture}[Gdk.Texture]} objects from GL textures.
 
     The operation is quite simple: Create a texture builder, set all the
     necessary properties - keep in mind that the properties

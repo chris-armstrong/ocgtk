@@ -6,8 +6,9 @@
     An example GtkIconView
 
     [GtkIconView] provides an alternative view on a [GtkTreeModel]. It displays
-    the model as a grid of icons with labels. Like [Gtk.TreeView], it allows to
-    select one or multiple items (depending on the selection mode, see
+    the model as a grid of icons with labels. Like
+    {{!Ocgtk.Raw.Tree_view}[Gtk.TreeView]}, it allows to select one or multiple
+    items (depending on the selection mode, see
     [Gtk.IconView.set_selection_mode]). In addition to selection with the arrow
     keys, [GtkIconView] supports rubberband selection, which is controlled by
     dragging the pointer.
@@ -360,8 +361,8 @@ external get_cell_area :
 
 val on_activate_cursor_item :
   ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
-(** A \[keybinding signal\][Gtk.SignalAction] which gets emitted when the user
-    activates the currently focused item.
+(** A \[keybinding signal\]{{!Ocgtk.Raw.Signal_action}[Gtk.SignalAction]} which
+    gets emitted when the user activates the currently focused item.
 
     Applications should not connect to it, but may emit it with
     g_signal_emit_by_name() if they need to control activation programmatically.
@@ -380,7 +381,7 @@ val on_move_cursor :
   Gobject.Signal.handler_id
 [@@ocaml.doc
   "The ::move-cursor signal is a\n\
-   \\[keybinding signal\\][Gtk.SignalAction]\n\
+   \\[keybinding signal\\]{{!Ocgtk.Raw.Signal_action}[Gtk.SignalAction]}\n\
    which gets emitted when the user initiates a cursor movement.\n\n\
    Applications should not connect to it, but may emit it with\n\
    g_signal_emit_by_name() if they need to control the cursor\n\
@@ -394,8 +395,8 @@ val on_move_cursor :
 
 val on_select_all :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
-(** A \[keybinding signal\][Gtk.SignalAction] which gets emitted when the user
-    selects all items.
+(** A \[keybinding signal\]{{!Ocgtk.Raw.Signal_action}[Gtk.SignalAction]} which
+    gets emitted when the user selects all items.
 
     Applications should not connect to it, but may emit it with
     g_signal_emit_by_name() if they need to control selection programmatically.
@@ -404,8 +405,8 @@ val on_select_all :
 
 val on_select_cursor_item :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
-(** A \[keybinding signal\][Gtk.SignalAction] which gets emitted when the user
-    selects the item that is currently focused.
+(** A \[keybinding signal\]{{!Ocgtk.Raw.Signal_action}[Gtk.SignalAction]} which
+    gets emitted when the user selects the item that is currently focused.
 
     Applications should not connect to it, but may emit it with
     g_signal_emit_by_name() if they need to control selection programmatically.
@@ -419,9 +420,9 @@ val on_selection_changed :
 
 val on_toggle_cursor_item :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
-(** A \[keybinding signal\][Gtk.SignalAction] which gets emitted when the user
-    toggles whether the currently focused item is selected or not. The exact
-    effect of this depend on the selection mode.
+(** A \[keybinding signal\]{{!Ocgtk.Raw.Signal_action}[Gtk.SignalAction]} which
+    gets emitted when the user toggles whether the currently focused item is
+    selected or not. The exact effect of this depend on the selection mode.
 
     Applications should not connect to it, but may emit it with
     g_signal_emit_by_name() if they need to control selection programmatically.
@@ -430,8 +431,8 @@ val on_toggle_cursor_item :
 
 val on_unselect_all :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
-(** A \[keybinding signal\][Gtk.SignalAction] which gets emitted when the user
-    unselects all items.
+(** A \[keybinding signal\]{{!Ocgtk.Raw.Signal_action}[Gtk.SignalAction]} which
+    gets emitted when the user unselects all items.
 
     Applications should not connect to it, but may emit it with
     g_signal_emit_by_name() if they need to control selection programmatically.

@@ -14,7 +14,9 @@
     widgets.
 
     In GTK, the main objects that implement this interface are
-    [Gtk.FileChooserWidget] and [Gtk.FileChooserDialog].
+    {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t}[Gtk.FileChooserWidget]}
+    and
+    {{!Ocgtk.File_chooser_dialog.class-type-file_chooser_dialog_t}[Gtk.FileChooserDialog]}.
 
     You do not need to write an object that implements the [GtkFileChooser]
     interface unless you are trying to adapt an existing file selector to expose
@@ -250,7 +252,9 @@ class file_chooser : Raw.File_chooser.t -> file_chooser_t
     widgets.
 
     In GTK, the main objects that implement this interface are
-    [Gtk.FileChooserWidget] and [Gtk.FileChooserDialog].
+    {{!Ocgtk.File_chooser_widget.class-type-file_chooser_widget_t}[Gtk.FileChooserWidget]}
+    and
+    {{!Ocgtk.File_chooser_dialog.class-type-file_chooser_dialog_t}[Gtk.FileChooserDialog]}.
 
     You do not need to write an object that implements the [GtkFileChooser]
     interface unless you are trying to adapt an existing file selector to expose

@@ -5,7 +5,7 @@
     If an object implements this interface then it must be initialized as the
     first thing after construction, either via [Gio.Initable.init] or
     [Gio.AsyncInitable.init_async] (the latter is only available if it also
-    implements [Gio.AsyncInitable]).
+    implements {{!Ocgio.Raw.Async_initable}[Gio.AsyncInitable]}).
 
     If the object is not initialized, or initialization returns with an error,
     then all operations on the object except [g_object_ref()] and
@@ -54,7 +54,7 @@ external init : t -> Cancellable.t option -> (bool, GError.t) result
     If the object is not initialized, or initialization returns with an error,
     then all operations on the object except g_object_ref() and g_object_unref()
     are considered to be invalid, and have undefined behaviour. See the
-    \[description\][Gio.Initable] for more details.
+    \[description\]{{!Ocgio.Raw.Initable}[Gio.Initable]} for more details.
 
     Callers should not assume that a class which implements [GInitable] can be
     initialized multiple times, unless the class explicitly documents itself as

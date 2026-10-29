@@ -7,8 +7,9 @@
     the user questions or show a list of applications preventing unmount or
     eject operations from completing.
 
-    Note that [GMountOperation] is used for more than just [Gio.Mount] objects –
-    for example it is also used in [Gio.Drive.start] and [Gio.Drive.stop].
+    Note that [GMountOperation] is used for more than just
+    {{!Ocgio.Raw.Mount}[Gio.Mount]} objects – for example it is also used in
+    [Gio.Drive.start] and [Gio.Drive.stop].
 
     Users should instantiate a subclass of this that implements all the various
     callbacks to show the required dialogs, such as

@@ -5,8 +5,9 @@
 
     Actions can be used to expose functionality in a structured way, either from
     one part of a program to another, or to the outside world. Action groups are
-    often used together with a [Gio.MenuModel] that provides additional
-    representation data for displaying the actions to the user, e.g. in a menu.
+    often used together with a {{!Ocgio.Raw.Menu_model}[Gio.MenuModel]} that
+    provides additional representation data for displaying the actions to the
+    user, e.g. in a menu.
 
     The main way to interact with the actions in a [GActionGroup] is to activate
     them with [Gio.ActionGroup.activate_action]. Activating an action may
@@ -159,7 +160,8 @@ external activate_action : t -> string -> Gvariant.t option -> unit
    parameter must be given as [parameter].  If the action is expecting no\n\
    parameters then [parameter] must be [None].  See\n\
    [Gio.ActionGroup.get_action_parameter_type].\n\n\
-   If the [Gio.ActionGroup] implementation supports asynchronous remote\n\
+   If the {{!Ocgio.Raw.Action_group}[Gio.ActionGroup]} implementation supports \
+   asynchronous remote\n\
    activation over D-Bus, this call may return before the relevant\n\
    D-Bus traffic has been sent, or any replies have been received. In\n\
    order to block on such asynchronous activation calls,\n\
@@ -185,25 +187,29 @@ external action_state_changed : t -> string -> Gvariant.t -> unit
   = "ml_g_action_group_action_state_changed"
 (** Emits the [Gio.ActionGroup::action-state-changed] signal on [action_group].
 
-    This function should only be called by [Gio.ActionGroup] implementations. *)
+    This function should only be called by
+    {{!Ocgio.Raw.Action_group}[Gio.ActionGroup]} implementations. *)
 
 external action_removed : t -> string -> unit
   = "ml_g_action_group_action_removed"
 (** Emits the [Gio.ActionGroup::action-removed] signal on [action_group].
 
-    This function should only be called by [Gio.ActionGroup] implementations. *)
+    This function should only be called by
+    {{!Ocgio.Raw.Action_group}[Gio.ActionGroup]} implementations. *)
 
 external action_enabled_changed : t -> string -> bool -> unit
   = "ml_g_action_group_action_enabled_changed"
 (** Emits the [Gio.ActionGroup::action-enabled-changed] signal on
     [action_group].
 
-    This function should only be called by [Gio.ActionGroup] implementations. *)
+    This function should only be called by
+    {{!Ocgio.Raw.Action_group}[Gio.ActionGroup]} implementations. *)
 
 external action_added : t -> string -> unit = "ml_g_action_group_action_added"
 (** Emits the [Gio.ActionGroup::action-added] signal on [action_group].
 
-    This function should only be called by [Gio.ActionGroup] implementations. *)
+    This function should only be called by
+    {{!Ocgio.Raw.Action_group}[Gio.ActionGroup]} implementations. *)
 
 let on_action_added ?after obj ~callback =
   let closure =

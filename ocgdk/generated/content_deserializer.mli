@@ -21,7 +21,9 @@
     text, colors, images or file lists. To register your own deserialization
     functions, use [content_register_deserializer].
 
-    Also see [Gdk.ContentSerializer]. *)
+    Also see
+    {{!Ocgdk.Content_serializer.class-type-content_serializer_t}[Gdk.ContentSerializer]}.
+*)
 class type content_deserializer_t = object
   inherit Ocgio.Async_result.async_result_t
 
@@ -82,7 +84,9 @@ class content_deserializer :
     text, colors, images or file lists. To register your own deserialization
     functions, use [content_register_deserializer].
 
-    Also see [Gdk.ContentSerializer]. *)
+    Also see
+    {{!Ocgdk.Content_serializer.class-type-content_serializer_t}[Gdk.ContentSerializer]}.
+*)
 
 (** {1:constructors Constructors} *)
 

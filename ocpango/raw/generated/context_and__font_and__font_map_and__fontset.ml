@@ -577,8 +577,9 @@ and Font_map : sig
 
       Note that the returned families are not in any particular order.
 
-      [PangoFontMap] also implemented the [Gio.ListModel] interface for
-      enumerating families. *)
+      [PangoFontMap] also implemented the
+      {{!Ocgio.Raw.List_model}[Gio.ListModel]} interface for enumerating
+      families. *)
 
   external get_serial : t -> int = "ml_pango_font_map_get_serial"
   [@@ocaml.doc
@@ -667,8 +668,9 @@ end = struct
 
       Note that the returned families are not in any particular order.
 
-      [PangoFontMap] also implemented the [Gio.ListModel] interface for
-      enumerating families. *)
+      [PangoFontMap] also implemented the
+      {{!Ocgio.Raw.List_model}[Gio.ListModel]} interface for enumerating
+      families. *)
 
   external get_serial : t -> int = "ml_pango_font_map_get_serial"
   [@@ocaml.doc

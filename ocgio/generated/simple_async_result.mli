@@ -1,5 +1,5 @@
-(** As of GLib 2.46, [GSimpleAsyncResult] is deprecated in favor of [Gio.Task],
-    which provides a simpler API.
+(** As of GLib 2.46, [GSimpleAsyncResult] is deprecated in favor of
+    {{!Ocgio.Task.class-type-task_t}[Gio.Task]}, which provides a simpler API.
 
     Its methods, signals and properties are on
     {!class-type-simple_async_result_t}. Its full description is under
@@ -86,8 +86,10 @@ end
      Implements:\n\
      - {{!Ocgio.Async_result.class-type-async_result_t}Ocgio.Async_result}\n\n\
      As of GLib 2.46, [GSimpleAsyncResult] is deprecated in favor of\n\
-     [Gio.Task], which provides a simpler API.\n\n\
-     [GSimpleAsyncResult] implements [Gio.AsyncResult].\n\n\
+     {{!Ocgio.Task.class-type-task_t}[Gio.Task]}, which provides a simpler \
+     API.\n\n\
+     [GSimpleAsyncResult] implements \
+     {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]}.\n\n\
      [GSimpleAsyncResult] handles [Gio.AsyncReadyCallback]s, error\n\
      reporting, operation cancellation and the final state of an operation,\n\
      completely transparent to the application. Results can be returned\n\
@@ -98,7 +100,9 @@ end
      are covered.\n\n\
      Most of the time, an application will not need to know of the details\n\
      of this API; it is handled transparently, and any necessary operations\n\
-     are handled by [Gio.AsyncResult]’s interface. However, if implementing\n\
+     are handled by \
+     {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]}’s \
+     interface. However, if implementing\n\
      a new GIO module, for writing language bindings, or for complex\n\
      applications that need better control of how asynchronous operations\n\
      are completed, it is important to understand this functionality.\n\n\
@@ -145,7 +149,8 @@ end
      provided, getting the operation’s result as a [gpointer], [gboolean], and\n\
      [gssize], respectively.\n\n\
      For the details of the requirements implementations must respect, see\n\
-     [Gio.AsyncResult].  A typical implementation of an asynchronous\n\
+     {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]}.  A \
+     typical implementation of an asynchronous\n\
      operation using [GSimpleAsyncResult] looks something like this:\n\n\
      {[\n\
      static void\n\
@@ -237,8 +242,9 @@ class simple_async_result : Raw.Simple_async_result.t -> simple_async_result_t
 [@@@ocaml.text
 "{1:description Description}\n\n\
  As of GLib 2.46, [GSimpleAsyncResult] is deprecated in favor of\n\
- [Gio.Task], which provides a simpler API.\n\n\
- [GSimpleAsyncResult] implements [Gio.AsyncResult].\n\n\
+ {{!Ocgio.Task.class-type-task_t}[Gio.Task]}, which provides a simpler API.\n\n\
+ [GSimpleAsyncResult] implements \
+ {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]}.\n\n\
  [GSimpleAsyncResult] handles [Gio.AsyncReadyCallback]s, error\n\
  reporting, operation cancellation and the final state of an operation,\n\
  completely transparent to the application. Results can be returned\n\
@@ -249,7 +255,9 @@ class simple_async_result : Raw.Simple_async_result.t -> simple_async_result_t
  are covered.\n\n\
  Most of the time, an application will not need to know of the details\n\
  of this API; it is handled transparently, and any necessary operations\n\
- are handled by [Gio.AsyncResult]’s interface. However, if implementing\n\
+ are handled by \
+ {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]}’s \
+ interface. However, if implementing\n\
  a new GIO module, for writing language bindings, or for complex\n\
  applications that need better control of how asynchronous operations\n\
  are completed, it is important to understand this functionality.\n\n\
@@ -295,7 +303,8 @@ class simple_async_result : Raw.Simple_async_result.t -> simple_async_result_t
  provided, getting the operation’s result as a [gpointer], [gboolean], and\n\
  [gssize], respectively.\n\n\
  For the details of the requirements implementations must respect, see\n\
- [Gio.AsyncResult].  A typical implementation of an asynchronous\n\
+ {{!Ocgio.Async_result.class-type-async_result_t}[Gio.AsyncResult]}.  A \
+ typical implementation of an asynchronous\n\
  operation using [GSimpleAsyncResult] looks something like this:\n\n\
  {[\n\
  static void\n\

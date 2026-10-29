@@ -1,5 +1,6 @@
-(** Buffered input stream implements [Gio.FilterInputStream] and provides for
-    buffered reads.
+(** Buffered input stream implements
+    {{!Ocgio.Filter_input_stream.class-type-filter_input_stream_t}[Gio.FilterInputStream]}
+    and provides for buffered reads.
 
     Its methods, signals and properties are on
     {!class-type-buffered_input_stream_t}. Its full description is under
@@ -16,8 +17,9 @@
     Implements:
     - {{!Ocgio.Seekable.class-type-seekable_t}Ocgio.Seekable}
 
-    Buffered input stream implements [Gio.FilterInputStream] and provides for
-    buffered reads.
+    Buffered input stream implements
+    {{!Ocgio.Filter_input_stream.class-type-filter_input_stream_t}[Gio.FilterInputStream]}
+    and provides for buffered reads.
 
     By default, [GBufferedInputStream]'s buffer size is set at 4 kilobytes.
 
@@ -105,8 +107,9 @@ class buffered_input_stream :
 
 (** {1:description Description}
 
-    Buffered input stream implements [Gio.FilterInputStream] and provides for
-    buffered reads.
+    Buffered input stream implements
+    {{!Ocgio.Filter_input_stream.class-type-filter_input_stream_t}[Gio.FilterInputStream]}
+    and provides for buffered reads.
 
     By default, [GBufferedInputStream]'s buffer size is set at 4 kilobytes.
 
@@ -123,10 +126,12 @@ class buffered_input_stream :
 (** {1:constructors Constructors} *)
 
 val new_ : Input_stream.input_stream_t -> buffered_input_stream_t
-(** Creates a new [Gio.InputStream] from the given [base_stream], with a buffer
-    set to the default size (4 kilobytes). *)
+(** Creates a new
+    {{!Ocgio.Input_stream.class-type-input_stream_t}[Gio.InputStream]} from the
+    given [base_stream], with a buffer set to the default size (4 kilobytes). *)
 
 val new_sized :
   Input_stream.input_stream_t -> Gsize.t -> buffered_input_stream_t
-(** Creates a new [Gio.BufferedInputStream] from the given [base_stream], with a
-    buffer set to [size]. *)
+(** Creates a new
+    {{!Ocgio.Buffered_input_stream.class-type-buffered_input_stream_t}[Gio.BufferedInputStream]}
+    from the given [base_stream], with a buffer set to [size]. *)

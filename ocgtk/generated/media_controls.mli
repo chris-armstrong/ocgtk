@@ -20,7 +20,8 @@
 
     An example GtkMediaControls
 
-    Usually, [GtkMediaControls] is used as part of [Gtk.Video]. *)
+    Usually, [GtkMediaControls] is used as part of
+    {{!Ocgtk.Video.class-type-video_t}[Gtk.Video]}. *)
 class type media_controls_t = object
   inherit Widget.widget_t
 
@@ -46,7 +47,8 @@ class media_controls : Raw.Media_controls.t -> media_controls_t
 
     An example GtkMediaControls
 
-    Usually, [GtkMediaControls] is used as part of [Gtk.Video]. *)
+    Usually, [GtkMediaControls] is used as part of
+    {{!Ocgtk.Video.class-type-video_t}[Gtk.Video]}. *)
 
 (** {1:constructors Constructors} *)
 

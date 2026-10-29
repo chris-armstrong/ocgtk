@@ -8,8 +8,8 @@
     [GInetAddress].
 
     To actually connect to a remote host, you will need a
-    [Gio.InetSocketAddress] (which includes a [GInetAddress] as well as a port
-    number).
+    {{!Ocgio.Raw.Inet_socket_address}[Gio.InetSocketAddress]} (which includes a
+    [GInetAddress] as well as a port number).
 
     The class built on this module is in {!Ocgio.Inet_address}. *)
 

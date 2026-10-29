@@ -1,4 +1,5 @@
-(** Displays the contents of a [Gtk.TextBuffer].
+(** Displays the contents of a
+    {{!Ocgtk.Text_buffer.class-type-text_buffer_t}[Gtk.TextBuffer]}.
 
     Its methods, signals and properties are on {!class-type-text_view_t}. Its
     full description is under {!section-description}. Its constructors are under
@@ -18,7 +19,8 @@
     - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
     - {{!Ocgtk.Scrollable.class-type-scrollable_t}Ocgtk.Scrollable}
 
-    Displays the contents of a [Gtk.TextBuffer].
+    Displays the contents of a
+    {{!Ocgtk.Text_buffer.class-type-text_buffer_t}[Gtk.TextBuffer]}.
 
     An example GtkTextView
 
@@ -706,7 +708,8 @@ class text_view : Raw.Text_view.t -> text_view_t
 
 (** {1:description Description}
 
-    Displays the contents of a [Gtk.TextBuffer].
+    Displays the contents of a
+    {{!Ocgtk.Text_buffer.class-type-text_buffer_t}[Gtk.TextBuffer]}.
 
     An example GtkTextView
 

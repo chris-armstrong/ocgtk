@@ -1,5 +1,6 @@
-(** Buffered output stream implements [Gio.FilterOutputStream] and provides for
-    buffered writes.
+(** Buffered output stream implements
+    {{!Ocgio.Filter_output_stream.class-type-filter_output_stream_t}[Gio.FilterOutputStream]}
+    and provides for buffered writes.
 
     Its methods, signals and properties are on
     {!class-type-buffered_output_stream_t}. Its full description is under
@@ -16,8 +17,9 @@
     Implements:
     - {{!Ocgio.Seekable.class-type-seekable_t}Ocgio.Seekable}
 
-    Buffered output stream implements [Gio.FilterOutputStream] and provides for
-    buffered writes.
+    Buffered output stream implements
+    {{!Ocgio.Filter_output_stream.class-type-filter_output_stream_t}[Gio.FilterOutputStream]}
+    and provides for buffered writes.
 
     By default, [GBufferedOutputStream]'s buffer size is set at 4 kilobytes.
 
@@ -63,8 +65,9 @@ class buffered_output_stream :
 
 (** {1:description Description}
 
-    Buffered output stream implements [Gio.FilterOutputStream] and provides for
-    buffered writes.
+    Buffered output stream implements
+    {{!Ocgio.Filter_output_stream.class-type-filter_output_stream_t}[Gio.FilterOutputStream]}
+    and provides for buffered writes.
 
     By default, [GBufferedOutputStream]'s buffer size is set at 4 kilobytes.
 

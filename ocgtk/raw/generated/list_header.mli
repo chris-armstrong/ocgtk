@@ -3,9 +3,10 @@
 
 (** Used by list widgets to represent the headers they display.
 
-    [GtkListHeader] objects are managed just like [Gtk.ListItem] objects via
-    their factory, but provide a different set of properties suitable for
-    managing the header instead of individual items.
+    [GtkListHeader] objects are managed just like
+    {{!Ocgtk.Raw.List_item}[Gtk.ListItem]} objects via their factory, but
+    provide a different set of properties suitable for managing the header
+    instead of individual items.
 
     The class built on this module is in {!Ocgtk.List_header}. *)
 

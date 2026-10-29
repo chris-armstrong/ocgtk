@@ -61,16 +61,20 @@ end
      {{!Ocgtk.Shortcut_manager.class-type-shortcut_manager_t}Ocgtk.Shortcut_manager}\n\n\
      A [GtkWindow] subclass that integrates with [GtkApplication].\n\n\
      Notably, [GtkApplicationWindow] can handle an application menubar.\n\n\
-     This class implements the [Gio.ActionGroup] and [Gio.ActionMap]\n\
+     This class implements the \
+     {{!Ocgio.Action_group.class-type-action_group_t}[Gio.ActionGroup]} and \
+     {{!Ocgio.Action_map.class-type-action_map_t}[Gio.ActionMap]}\n\
      interfaces, to let you add window-specific actions that will be exported\n\
-     by the associated [Gtk.Application], together with its application-wide\n\
+     by the associated \
+     {{!Ocgtk.Application.class-type-application_t}[Gtk.Application]}, \
+     together with its application-wide\n\
      actions. Window-specific actions are prefixed with the “win.”\n\
      prefix and application-wide actions are prefixed with the “app.”\n\
      prefix. Actions must be addressed with the prefixed name when\n\
      referring to them from a menu model.\n\n\
      Note that widgets that are placed inside a [GtkApplicationWindow]\n\
      can also activate these actions, if they implement the\n\
-     [Gtk.Actionable] interface.\n\n\
+     {{!Ocgtk.Actionable.class-type-actionable_t}[Gtk.Actionable]} interface.\n\n\
      The settings [Gtk.Settings:gtk-shell-shows-app-menu] and\n\
      [Gtk.Settings:gtk-shell-shows-menubar] tell GTK whether the\n\
      desktop environment is showing the application menu and menubar\n\
@@ -83,12 +87,14 @@ end
      desktop environment does not display the application menu, then it will\n\
      automatically be included in the menubar or in the window’s client-side\n\
      decorations.\n\n\
-     See [Gtk.PopoverMenu] for information about the XML language\n\
+     See {{!Ocgtk.Popover_menu.class-type-popover_menu_t}[Gtk.PopoverMenu]} \
+     for information about the XML language\n\
      used by [GtkBuilder] for menu models.\n\n\
      See also: [Gtk.Application.set_menubar].\n\n\
      {b A GtkApplicationWindow with a menubar}\n\n\
      The code sample below shows how to set up a [GtkApplicationWindow]\n\
-     with a menu bar defined on the [Gtk.Application]:\n\n\
+     with a menu bar defined on the \
+     {{!Ocgtk.Application.class-type-application_t}[Gtk.Application]}:\n\n\
      {[\n\
      GtkApplication *app = gtk_application_new (\"org.gtk.test\", 0);\n\n\
      GtkBuilder *builder = gtk_builder_new_from_string (\n\
@@ -125,16 +131,20 @@ class application_window : Raw.Application_window.t -> application_window_t
 "{1:description Description}\n\n\
  A [GtkWindow] subclass that integrates with [GtkApplication].\n\n\
  Notably, [GtkApplicationWindow] can handle an application menubar.\n\n\
- This class implements the [Gio.ActionGroup] and [Gio.ActionMap]\n\
+ This class implements the \
+ {{!Ocgio.Action_group.class-type-action_group_t}[Gio.ActionGroup]} and \
+ {{!Ocgio.Action_map.class-type-action_map_t}[Gio.ActionMap]}\n\
  interfaces, to let you add window-specific actions that will be exported\n\
- by the associated [Gtk.Application], together with its application-wide\n\
+ by the associated \
+ {{!Ocgtk.Application.class-type-application_t}[Gtk.Application]}, together \
+ with its application-wide\n\
  actions. Window-specific actions are prefixed with the “win.”\n\
  prefix and application-wide actions are prefixed with the “app.”\n\
  prefix. Actions must be addressed with the prefixed name when\n\
  referring to them from a menu model.\n\n\
  Note that widgets that are placed inside a [GtkApplicationWindow]\n\
  can also activate these actions, if they implement the\n\
- [Gtk.Actionable] interface.\n\n\
+ {{!Ocgtk.Actionable.class-type-actionable_t}[Gtk.Actionable]} interface.\n\n\
  The settings [Gtk.Settings:gtk-shell-shows-app-menu] and\n\
  [Gtk.Settings:gtk-shell-shows-menubar] tell GTK whether the\n\
  desktop environment is showing the application menu and menubar\n\
@@ -147,12 +157,14 @@ class application_window : Raw.Application_window.t -> application_window_t
  desktop environment does not display the application menu, then it will\n\
  automatically be included in the menubar or in the window’s client-side\n\
  decorations.\n\n\
- See [Gtk.PopoverMenu] for information about the XML language\n\
+ See {{!Ocgtk.Popover_menu.class-type-popover_menu_t}[Gtk.PopoverMenu]} for \
+ information about the XML language\n\
  used by [GtkBuilder] for menu models.\n\n\
  See also: [Gtk.Application.set_menubar].\n\n\
  {b A GtkApplicationWindow with a menubar}\n\n\
  The code sample below shows how to set up a [GtkApplicationWindow]\n\
- with a menu bar defined on the [Gtk.Application]:\n\n\
+ with a menu bar defined on the \
+ {{!Ocgtk.Application.class-type-application_t}[Gtk.Application]}:\n\n\
  {[\n\
  GtkApplication *app = gtk_application_new (\"org.gtk.test\", 0);\n\n\
  GtkBuilder *builder = gtk_builder_new_from_string (\n\

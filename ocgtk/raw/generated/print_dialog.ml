@@ -28,8 +28,9 @@ external setup_finish :
   = "ml_gtk_print_dialog_setup_finish"
 (** Finishes the [Gtk.PrintDialog.setup] call.
 
-    If the call was successful, it returns a [Gtk.PrintSetup] which contains the
-    print settings and page setup information that will be used to print.
+    If the call was successful, it returns a
+    {{!Ocgtk.Raw.Print_setup}[Gtk.PrintSetup]} which contains the print settings
+    and page setup information that will be used to print.
 
     Note that this function returns a [Gtk.DialogError.DISMISSED] error if the
     user cancels the dialog. *)

@@ -22,12 +22,12 @@
     between search results and ending the search.
 
     Often, [GtkSearchEntry] will be fed events by means of being placed inside a
-    [Gtk.SearchBar]. If that is not the case, you can use
-    [Gtk.SearchEntry.set_key_capture_widget] to let it capture key input from
-    another widget.
+    {{!Ocgtk.Raw.Search_bar}[Gtk.SearchBar]}. If that is not the case, you can
+    use [Gtk.SearchEntry.set_key_capture_widget] to let it capture key input
+    from another widget.
 
     [GtkSearchEntry] provides only minimal API and should be used with the
-    [Gtk.Editable] API.
+    {{!Ocgtk.Raw.Editable}[Gtk.Editable]} API.
 
     {b Shortcuts and Gestures}
 

@@ -399,7 +399,8 @@ end
      - \
      {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      Displays a small amount of text.\n\n\
-     Most labels are used to label another widget (such as an [Entry]).\n\n\
+     Most labels are used to label another widget (such as an \
+     {{!Ocgtk.Entry.class-type-entry_t}[Entry]}).\n\n\
      An example GtkLabel\n\n\
      {b Shortcuts and Gestures}\n\n\
      [GtkLabel] supports the following keyboard shortcuts, when the cursor is\n\
@@ -449,7 +450,8 @@ end
      The GtkLabel implementation of the GtkBuildable interface supports a\n\
      custom [<attributes>] element, which supports any number of [<attribute>]\n\
      elements. The [<attribute>] element has attributes named “name“, “value“,\n\
-     “start“ and “end“ and allows you to specify [Pango.Attribute]\n\
+     “start“ and “end“ and allows you to specify \
+     {{!Ocpango.Attribute.class-type-attribute_t}[Pango.Attribute]}\n\
      values for this label.\n\n\
      An example of a UI definition fragment specifying Pango attributes:\n\n\
      {[\n\
@@ -476,7 +478,8 @@ end
      to the functions [Gtk.Label.new_with_mnemonic] or\n\
      [Gtk.Label.set_text_with_mnemonic].\n\n\
      Mnemonics automatically activate any activatable widget the label is\n\
-     inside, such as a [Gtk.Button]; if the label is not inside the\n\
+     inside, such as a {{!Ocgtk.Button.class-type-button_t}[Gtk.Button]}; if \
+     the label is not inside the\n\
      mnemonic’s target widget, you have to tell the label about the target\n\
      using [Gtk.Label.set_mnemonic_widget].\n\n\
      Here’s a simple example where the label is inside a button:\n\n\
@@ -493,7 +496,8 @@ end
      GtkWidget *button = gtk_button_new_with_mnemonic (\"_Hello\");\n\
      ]}\n\n\
      To create a mnemonic for a widget alongside the label, such as a\n\
-     [Gtk.Entry], you have to point the label at the entry with\n\
+     {{!Ocgtk.Entry.class-type-entry_t}[Gtk.Entry]}, you have to point the \
+     label at the entry with\n\
      [Gtk.Label.set_mnemonic_widget]:\n\n\
      {[\n\
      // Pressing Alt+H will focus the entry\n\
@@ -517,13 +521,17 @@ end
      If you pass text obtained from the user, file, or a network to\n\
      [Gtk.Label.set_markup], you’ll want to escape it with\n\
      [GLib.markup_escape_text] or [GLib.markup_printf_escaped].\n\n\
-     Markup strings are just a convenient way to set the [Pango.AttrList]\n\
+     Markup strings are just a convenient way to set the \
+     {{!Ocpango.Attr_list.class-type-attr_list_t}[Pango.AttrList]}\n\
      on a label; [Gtk.Label.set_attributes] may be a simpler way to set\n\
-     attributes in some cases. Be careful though; [Pango.AttrList] tends\n\
+     attributes in some cases. Be careful though; \
+     {{!Ocpango.Attr_list.class-type-attr_list_t}[Pango.AttrList]} tends\n\
      to cause internationalization problems, unless you’re applying attributes\n\
      to the entire string (i.e. unless you set the range of each attribute\n\
      to \\[0, [G_MAXINT])). The reason is that specifying the [start_index] and\n\
-     [end_index] for a [Pango.Attribute] requires knowledge of the exact\n\
+     [end_index] for a \
+     {{!Ocpango.Attribute.class-type-attribute_t}[Pango.Attribute]} requires \
+     knowledge of the exact\n\
      string being displayed, so translations will cause problems.\n\n\
      {b Selectable labels}\n\n\
      Labels can be made selectable with [Gtk.Label.set_selectable].\n\
@@ -575,7 +583,8 @@ class label : Raw.Label.t -> label_t
 [@@@ocaml.text
 "{1:description Description}\n\n\
  Displays a small amount of text.\n\n\
- Most labels are used to label another widget (such as an [Entry]).\n\n\
+ Most labels are used to label another widget (such as an \
+ {{!Ocgtk.Entry.class-type-entry_t}[Entry]}).\n\n\
  An example GtkLabel\n\n\
  {b Shortcuts and Gestures}\n\n\
  [GtkLabel] supports the following keyboard shortcuts, when the cursor is\n\
@@ -623,7 +632,8 @@ class label : Raw.Label.t -> label_t
  The GtkLabel implementation of the GtkBuildable interface supports a\n\
  custom [<attributes>] element, which supports any number of [<attribute>]\n\
  elements. The [<attribute>] element has attributes named “name“, “value“,\n\
- “start“ and “end“ and allows you to specify [Pango.Attribute]\n\
+ “start“ and “end“ and allows you to specify \
+ {{!Ocpango.Attribute.class-type-attribute_t}[Pango.Attribute]}\n\
  values for this label.\n\n\
  An example of a UI definition fragment specifying Pango attributes:\n\n\
  {[\n\
@@ -648,7 +658,8 @@ class label : Raw.Label.t -> label_t
  to the functions [Gtk.Label.new_with_mnemonic] or\n\
  [Gtk.Label.set_text_with_mnemonic].\n\n\
  Mnemonics automatically activate any activatable widget the label is\n\
- inside, such as a [Gtk.Button]; if the label is not inside the\n\
+ inside, such as a {{!Ocgtk.Button.class-type-button_t}[Gtk.Button]}; if the \
+ label is not inside the\n\
  mnemonic’s target widget, you have to tell the label about the target\n\
  using [Gtk.Label.set_mnemonic_widget].\n\n\
  Here’s a simple example where the label is inside a button:\n\n\
@@ -665,7 +676,8 @@ class label : Raw.Label.t -> label_t
  GtkWidget *button = gtk_button_new_with_mnemonic (\"_Hello\");\n\
  ]}\n\n\
  To create a mnemonic for a widget alongside the label, such as a\n\
- [Gtk.Entry], you have to point the label at the entry with\n\
+ {{!Ocgtk.Entry.class-type-entry_t}[Gtk.Entry]}, you have to point the label \
+ at the entry with\n\
  [Gtk.Label.set_mnemonic_widget]:\n\n\
  {[\n\
  // Pressing Alt+H will focus the entry\n\
@@ -689,13 +701,17 @@ class label : Raw.Label.t -> label_t
  If you pass text obtained from the user, file, or a network to\n\
  [Gtk.Label.set_markup], you’ll want to escape it with\n\
  [GLib.markup_escape_text] or [GLib.markup_printf_escaped].\n\n\
- Markup strings are just a convenient way to set the [Pango.AttrList]\n\
+ Markup strings are just a convenient way to set the \
+ {{!Ocpango.Attr_list.class-type-attr_list_t}[Pango.AttrList]}\n\
  on a label; [Gtk.Label.set_attributes] may be a simpler way to set\n\
- attributes in some cases. Be careful though; [Pango.AttrList] tends\n\
+ attributes in some cases. Be careful though; \
+ {{!Ocpango.Attr_list.class-type-attr_list_t}[Pango.AttrList]} tends\n\
  to cause internationalization problems, unless you’re applying attributes\n\
  to the entire string (i.e. unless you set the range of each attribute\n\
  to \\[0, [G_MAXINT])). The reason is that specifying the [start_index] and\n\
- [end_index] for a [Pango.Attribute] requires knowledge of the exact\n\
+ [end_index] for a \
+ {{!Ocpango.Attribute.class-type-attribute_t}[Pango.Attribute]} requires \
+ knowledge of the exact\n\
  string being displayed, so translations will cause problems.\n\n\
  {b Selectable labels}\n\n\
  Labels can be made selectable with [Gtk.Label.set_selectable].\n\

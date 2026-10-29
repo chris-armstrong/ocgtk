@@ -39,13 +39,13 @@ external set_line_join : t -> Ocgsk_enums.linejoin -> unit
   = "ml_gsk_stroke_set_line_join"
 (** Sets the line join to be used when stroking.
 
-    See [Gsk.LineJoin] for details. *)
+    See {{!Ocgsk.Enums.type-linejoin}[Gsk.LineJoin]} for details. *)
 
 external set_line_cap : t -> Ocgsk_enums.linecap -> unit
   = "ml_gsk_stroke_set_line_cap"
 (** Sets the line cap to be used when stroking.
 
-    See [Gsk.LineCap] for details. *)
+    See {{!Ocgsk.Enums.type-linecap}[Gsk.LineCap]} for details. *)
 
 external set_dash_offset : t -> float -> unit = "ml_gsk_stroke_set_dash_offset"
 (** Sets the offset into the dash pattern where dashing should begin.
@@ -86,12 +86,12 @@ external get_line_join : t -> Ocgsk_enums.linejoin
   = "ml_gsk_stroke_get_line_join"
 (** Gets the line join used.
 
-    See [Gsk.LineJoin] for details. *)
+    See {{!Ocgsk.Enums.type-linejoin}[Gsk.LineJoin]} for details. *)
 
 external get_line_cap : t -> Ocgsk_enums.linecap = "ml_gsk_stroke_get_line_cap"
 (** Gets the line cap used.
 
-    See [Gsk.LineCap] for details. *)
+    See {{!Ocgsk.Enums.type-linecap}[Gsk.LineCap]} for details. *)
 
 external get_dash_offset : t -> float = "ml_gsk_stroke_get_dash_offset"
 (** Gets the dash offset. *)

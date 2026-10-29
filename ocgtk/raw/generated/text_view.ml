@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TextView: TextView *)
 
-(** Displays the contents of a [Gtk.TextBuffer].
+(** Displays the contents of a {{!Ocgtk.Raw.Text_buffer}[Gtk.TextBuffer]}.
 
     An example GtkTextView
 
@@ -720,7 +720,7 @@ external add_child_at_anchor :
 external get_im_module : t -> string = "ml_gtk_text_view_get_im_module"
 (** Which IM (input method) module should be used for this text_view.
 
-    See [Gtk.IMMulticontext].
+    See {{!Ocgtk.Raw.Im_multicontext}[Gtk.IMMulticontext]}.
 
     Setting this to a non-[None] value overrides the system-wide IM module
     setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)
@@ -728,7 +728,7 @@ external get_im_module : t -> string = "ml_gtk_text_view_get_im_module"
 external set_im_module : t -> string -> unit = "ml_gtk_text_view_set_im_module"
 (** Which IM (input method) module should be used for this text_view.
 
-    See [Gtk.IMMulticontext].
+    See {{!Ocgtk.Raw.Im_multicontext}[Gtk.IMMulticontext]}.
 
     Setting this to a non-[None] value overrides the system-wide IM module
     setting. See the GtkSettings [Gtk.Settings:gtk-im-module] property. *)

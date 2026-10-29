@@ -3,7 +3,8 @@
 
 [@@@ocaml.text
 "[GDBusAuthObserver] provides a mechanism for participating\n\
- in how a [Gio.DBusServer] (or a [Gio.DBusConnection])\n\
+ in how a {{!Ocgio.Raw.D_bus_server}[Gio.DBusServer]} (or a \
+ {{!Ocgio.Raw.D_bus_connection}[Gio.DBusConnection]})\n\
  authenticates remote peers.\n\n\
  Simply instantiate a [GDBusAuthObserver] and connect to the\n\
  signals you are interested in. Note that new signals may be added\n\

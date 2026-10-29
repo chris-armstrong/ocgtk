@@ -702,8 +702,8 @@ and Tree_view : sig
       bool) ->
     Gobject.Signal.handler_id
   (** The [GtkTreeView]::move-cursor signal is a \[keybinding
-      signal\][Gtk.SignalAction] which gets emitted when the user presses one of
-      the cursor keys.
+      signal\]{{!Ocgtk.Raw.Signal_action}[Gtk.SignalAction]} which gets emitted
+      when the user presses one of the cursor keys.
 
       Applications should not connect to it, but may emit it with
       g_signal_emit_by_name() if they need to control the cursor

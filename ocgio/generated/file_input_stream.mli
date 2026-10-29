@@ -19,11 +19,12 @@
     [GFileInputStream] provides input streams that take their content from a
     file.
 
-    [GFileInputStream] implements [Gio.Seekable], which allows the input stream
-    to jump to arbitrary positions in the file, provided the filesystem of the
-    file allows it. To find the position of a file input stream, use
-    [Gio.Seekable.tell]. To find out if a file input stream supports seeking,
-    use [Gio.Seekable.can_seek]. To position a file input stream, use
+    [GFileInputStream] implements
+    {{!Ocgio.Seekable.class-type-seekable_t}[Gio.Seekable]}, which allows the
+    input stream to jump to arbitrary positions in the file, provided the
+    filesystem of the file allows it. To find the position of a file input
+    stream, use [Gio.Seekable.tell]. To find out if a file input stream supports
+    seeking, use [Gio.Seekable.can_seek]. To position a file input stream, use
     [Gio.Seekable.seek]. *)
 class type file_input_stream_t = object
   inherit Input_stream.input_stream_t
@@ -58,11 +59,12 @@ class file_input_stream : Raw.File_input_stream.t -> file_input_stream_t
     [GFileInputStream] provides input streams that take their content from a
     file.
 
-    [GFileInputStream] implements [Gio.Seekable], which allows the input stream
-    to jump to arbitrary positions in the file, provided the filesystem of the
-    file allows it. To find the position of a file input stream, use
-    [Gio.Seekable.tell]. To find out if a file input stream supports seeking,
-    use [Gio.Seekable.can_seek]. To position a file input stream, use
+    [GFileInputStream] implements
+    {{!Ocgio.Seekable.class-type-seekable_t}[Gio.Seekable]}, which allows the
+    input stream to jump to arbitrary positions in the file, provided the
+    filesystem of the file allows it. To find the position of a file input
+    stream, use [Gio.Seekable.tell]. To find out if a file input stream supports
+    seeking, use [Gio.Seekable.can_seek]. To position a file input stream, use
     [Gio.Seekable.seek]. *)
 
 (** {1:constructors Constructors} *)

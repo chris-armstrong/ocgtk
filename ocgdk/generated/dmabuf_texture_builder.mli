@@ -1,4 +1,5 @@
-(** Constructs [Gdk.Texture] objects from DMA buffers.
+(** Constructs {{!Ocgdk.Texture.class-type-texture_t}[Gdk.Texture]} objects from
+    DMA buffers.
 
     Its methods, signals and properties are on
     {!class-type-dmabuf_texture_builder_t}. Its full description is under
@@ -9,7 +10,8 @@
 
 (** {b The methods, signals and properties of a [DmabufTextureBuilder].}
 
-    Constructs [Gdk.Texture] objects from DMA buffers.
+    Constructs {{!Ocgdk.Texture.class-type-texture_t}[Gdk.Texture]} objects from
+    DMA buffers.
 
     DMA buffers are commonly called {b _dma-bufs_}.
 
@@ -208,7 +210,8 @@ class dmabuf_texture_builder :
 
 (** {1:description Description}
 
-    Constructs [Gdk.Texture] objects from DMA buffers.
+    Constructs {{!Ocgdk.Texture.class-type-texture_t}[Gdk.Texture]} objects from
+    DMA buffers.
 
     DMA buffers are commonly called {b _dma-bufs_}.
 

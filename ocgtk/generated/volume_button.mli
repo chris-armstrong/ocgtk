@@ -63,4 +63,4 @@ val new_ : unit -> volume_button_t
 
     The button has a range between 0.0 and 1.0, with a stepping of 0.02. Volume
     values can be obtained and modified using the functions from
-    [Gtk.ScaleButton]. *)
+    {{!Ocgtk.Scale_button.class-type-scale_button_t}[Gtk.ScaleButton]}. *)

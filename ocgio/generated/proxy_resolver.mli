@@ -1,6 +1,7 @@
 (** [GProxyResolver] provides synchronous and asynchronous network proxy
-    resolution. [GProxyResolver] is used within [Gio.SocketClient] through the
-    method [Gio.SocketConnectable.proxy_enumerate].
+    resolution. [GProxyResolver] is used within
+    {{!Ocgio.Socket_client.class-type-socket_client_t}[Gio.SocketClient]}
+    through the method [Gio.SocketConnectable.proxy_enumerate].
 
     Its methods, signals and properties are on {!class-type-proxy_resolver_t}.
     Its full description is under {!section-description}. Its constructors are
@@ -12,8 +13,9 @@
 (** {b The methods, signals and properties of a [ProxyResolver].}
 
     [GProxyResolver] provides synchronous and asynchronous network proxy
-    resolution. [GProxyResolver] is used within [Gio.SocketClient] through the
-    method [Gio.SocketConnectable.proxy_enumerate].
+    resolution. [GProxyResolver] is used within
+    {{!Ocgio.Socket_client.class-type-socket_client_t}[Gio.SocketClient]}
+    through the method [Gio.SocketConnectable.proxy_enumerate].
 
     Implementations of [GProxyResolver] based on
     {{:https://github.com/libproxy/libproxy}libproxy} and GNOME settings can be
@@ -61,8 +63,9 @@ class proxy_resolver : Raw.Proxy_resolver.t -> proxy_resolver_t
 (** {1:description Description}
 
     [GProxyResolver] provides synchronous and asynchronous network proxy
-    resolution. [GProxyResolver] is used within [Gio.SocketClient] through the
-    method [Gio.SocketConnectable.proxy_enumerate].
+    resolution. [GProxyResolver] is used within
+    {{!Ocgio.Socket_client.class-type-socket_client_t}[Gio.SocketClient]}
+    through the method [Gio.SocketConnectable.proxy_enumerate].
 
     Implementations of [GProxyResolver] based on
     {{:https://github.com/libproxy/libproxy}libproxy} and GNOME settings can be

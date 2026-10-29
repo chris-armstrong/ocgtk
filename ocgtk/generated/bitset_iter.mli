@@ -1,4 +1,5 @@
-(** Iterates over the elements of a [Gtk.Bitset].
+(** Iterates over the elements of a
+    {{!Ocgtk.Bitset.class-type-bitset_t}[Gtk.Bitset]}.
 
     Its methods, signals and properties are on {!class-type-bitset_iter_t}. Its
     full description is under {!section-description}. Its constructors are under
@@ -9,7 +10,8 @@
 
 (** {b The methods, signals and properties of a [BitsetIter].}
 
-    Iterates over the elements of a [Gtk.Bitset].
+    Iterates over the elements of a
+    {{!Ocgtk.Bitset.class-type-bitset_t}[Gtk.Bitset]}.
 
     `GtkBitSetIter is an opaque, stack-allocated struct.
 
@@ -38,7 +40,8 @@ class bitset_iter : Raw.Bitset_iter.t -> bitset_iter_t
 
 (** {1:description Description}
 
-    Iterates over the elements of a [Gtk.Bitset].
+    Iterates over the elements of a
+    {{!Ocgtk.Bitset.class-type-bitset_t}[Gtk.Bitset]}.
 
     `GtkBitSetIter is an opaque, stack-allocated struct.
 

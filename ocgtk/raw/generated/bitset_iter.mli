@@ -1,7 +1,7 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* BitsetIter: BitsetIter *)
 
-(** Iterates over the elements of a [Gtk.Bitset].
+(** Iterates over the elements of a {{!Ocgtk.Raw.Bitset}[Gtk.Bitset]}.
 
     `GtkBitSetIter is an opaque, stack-allocated struct.
 

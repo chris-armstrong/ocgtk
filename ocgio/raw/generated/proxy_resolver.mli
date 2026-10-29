@@ -2,8 +2,9 @@
 (* ProxyResolver: ProxyResolver *)
 
 (** [GProxyResolver] provides synchronous and asynchronous network proxy
-    resolution. [GProxyResolver] is used within [Gio.SocketClient] through the
-    method [Gio.SocketConnectable.proxy_enumerate].
+    resolution. [GProxyResolver] is used within
+    {{!Ocgio.Raw.Socket_client}[Gio.SocketClient]} through the method
+    [Gio.SocketConnectable.proxy_enumerate].
 
     Implementations of [GProxyResolver] based on
     {{:https://github.com/libproxy/libproxy}libproxy} and GNOME settings can be

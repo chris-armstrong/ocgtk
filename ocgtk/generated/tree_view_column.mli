@@ -1,4 +1,5 @@
-(** A visible column in a [Gtk.TreeView] widget
+(** A visible column in a
+    {{!Ocgtk.Tree_view.class-type-tree_view_t}[Gtk.TreeView]} widget
 
     Its methods, signals and properties are on {!class-type-tree_view_column_t}.
     Its full description is under {!section-description}. Its constructors are
@@ -15,7 +16,8 @@
     - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
     - {{!Ocgtk.Cell_layout.class-type-cell_layout_t}Ocgtk.Cell_layout}
 
-    A visible column in a [Gtk.TreeView] widget
+    A visible column in a
+    {{!Ocgtk.Tree_view.class-type-tree_view_t}[Gtk.TreeView]} widget
 
     The [GtkTreeViewColumn] object represents a visible column in a
     [GtkTreeView] widget. It allows to set properties of the column header, and
@@ -24,8 +26,9 @@
 
     Please refer to the tree widget conceptual overview for an overview of all
     the objects and data types related to the tree widget and how they work
-    together, and to the [Gtk.TreeView] documentation for specifics about the
-    CSS node structure for treeviews and their headers. *)
+    together, and to the
+    {{!Ocgtk.Tree_view.class-type-tree_view_t}[Gtk.TreeView]} documentation for
+    specifics about the CSS node structure for treeviews and their headers. *)
 class type tree_view_column_t = object
   inherit Buildable.buildable_t
   inherit Cell_layout.cell_layout_t
@@ -249,7 +252,8 @@ class tree_view_column : Raw.Tree_view_column.t -> tree_view_column_t
 
 (** {1:description Description}
 
-    A visible column in a [Gtk.TreeView] widget
+    A visible column in a
+    {{!Ocgtk.Tree_view.class-type-tree_view_t}[Gtk.TreeView]} widget
 
     The [GtkTreeViewColumn] object represents a visible column in a
     [GtkTreeView] widget. It allows to set properties of the column header, and
@@ -258,8 +262,9 @@ class tree_view_column : Raw.Tree_view_column.t -> tree_view_column_t
 
     Please refer to the tree widget conceptual overview for an overview of all
     the objects and data types related to the tree widget and how they work
-    together, and to the [Gtk.TreeView] documentation for specifics about the
-    CSS node structure for treeviews and their headers. *)
+    together, and to the
+    {{!Ocgtk.Tree_view.class-type-tree_view_t}[Gtk.TreeView]} documentation for
+    specifics about the CSS node structure for treeviews and their headers. *)
 
 (** {1:constructors Constructors} *)
 

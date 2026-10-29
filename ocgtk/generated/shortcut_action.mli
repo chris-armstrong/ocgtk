@@ -24,14 +24,18 @@
 
     GTK provides various actions:
 
-    - [Gtk.MnemonicAction]: a shortcut action that calls
-      gtk_widget_mnemonic_activate()
-    - [Gtk.CallbackAction]: a shortcut action that invokes a given callback
-    - [Gtk.SignalAction]: a shortcut action that emits a given signal
-    - [Gtk.ActivateAction]: a shortcut action that calls gtk_widget_activate()
-    - [Gtk.NamedAction]: a shortcut action that calls
-      gtk_widget_activate_action()
-    - [Gtk.NothingAction]: a shortcut action that does nothing *)
+    - {{!Ocgtk.Mnemonic_action.class-type-mnemonic_action_t}[Gtk.MnemonicAction]}:
+      a shortcut action that calls gtk_widget_mnemonic_activate()
+    - {{!Ocgtk.Callback_action.class-type-callback_action_t}[Gtk.CallbackAction]}:
+      a shortcut action that invokes a given callback
+    - {{!Ocgtk.Signal_action.class-type-signal_action_t}[Gtk.SignalAction]}: a
+      shortcut action that emits a given signal
+    - {{!Ocgtk.Activate_action.class-type-activate_action_t}[Gtk.ActivateAction]}:
+      a shortcut action that calls gtk_widget_activate()
+    - {{!Ocgtk.Named_action.class-type-named_action_t}[Gtk.NamedAction]}: a
+      shortcut action that calls gtk_widget_activate_action()
+    - {{!Ocgtk.Nothing_action.class-type-nothing_action_t}[Gtk.NothingAction]}:
+      a shortcut action that does nothing *)
 class type shortcut_action_t = object
   (** {2:methods Methods} *)
 
@@ -76,14 +80,18 @@ class shortcut_action : Raw.Shortcut_action.t -> shortcut_action_t
 
     GTK provides various actions:
 
-    - [Gtk.MnemonicAction]: a shortcut action that calls
-      gtk_widget_mnemonic_activate()
-    - [Gtk.CallbackAction]: a shortcut action that invokes a given callback
-    - [Gtk.SignalAction]: a shortcut action that emits a given signal
-    - [Gtk.ActivateAction]: a shortcut action that calls gtk_widget_activate()
-    - [Gtk.NamedAction]: a shortcut action that calls
-      gtk_widget_activate_action()
-    - [Gtk.NothingAction]: a shortcut action that does nothing *)
+    - {{!Ocgtk.Mnemonic_action.class-type-mnemonic_action_t}[Gtk.MnemonicAction]}:
+      a shortcut action that calls gtk_widget_mnemonic_activate()
+    - {{!Ocgtk.Callback_action.class-type-callback_action_t}[Gtk.CallbackAction]}:
+      a shortcut action that invokes a given callback
+    - {{!Ocgtk.Signal_action.class-type-signal_action_t}[Gtk.SignalAction]}: a
+      shortcut action that emits a given signal
+    - {{!Ocgtk.Activate_action.class-type-activate_action_t}[Gtk.ActivateAction]}:
+      a shortcut action that calls gtk_widget_activate()
+    - {{!Ocgtk.Named_action.class-type-named_action_t}[Gtk.NamedAction]}: a
+      shortcut action that calls gtk_widget_activate_action()
+    - {{!Ocgtk.Nothing_action.class-type-nothing_action_t}[Gtk.NothingAction]}:
+      a shortcut action that does nothing *)
 
 (** {1:constructors Constructors} *)
 

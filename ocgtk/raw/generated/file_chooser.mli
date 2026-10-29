@@ -5,7 +5,8 @@
     widgets.
 
     In GTK, the main objects that implement this interface are
-    [Gtk.FileChooserWidget] and [Gtk.FileChooserDialog].
+    {{!Ocgtk.Raw.File_chooser_widget}[Gtk.FileChooserWidget]} and
+    {{!Ocgtk.Raw.File_chooser_dialog}[Gtk.FileChooserDialog]}.
 
     You do not need to write an object that implements the [GtkFileChooser]
     interface unless you are trying to adapt an existing file selector to expose

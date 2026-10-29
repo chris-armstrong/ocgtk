@@ -181,7 +181,9 @@ end
      {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}\n\n\
      Allows drawing with OpenGL.\n\n\
      An example GtkGLArea\n\n\
-     [GtkGLArea] sets up its own [Gdk.GLContext], and creates a custom\n\
+     [GtkGLArea] sets up its own \
+     {{!Ocgdk.Gl_context.class-type-gl_context_t}[Gdk.GLContext]}, and creates \
+     a custom\n\
      GL framebuffer that the widget will do GL rendering onto. It also ensures\n\
      that this framebuffer is the default GL rendering target when rendering.\n\
      The completed rendering is integrated into the larger GTK scene graph as\n\
@@ -278,7 +280,9 @@ class gl_area : Raw.Gl_area.t -> gl_area_t
 "{1:description Description}\n\n\
  Allows drawing with OpenGL.\n\n\
  An example GtkGLArea\n\n\
- [GtkGLArea] sets up its own [Gdk.GLContext], and creates a custom\n\
+ [GtkGLArea] sets up its own \
+ {{!Ocgdk.Gl_context.class-type-gl_context_t}[Gdk.GLContext]}, and creates a \
+ custom\n\
  GL framebuffer that the widget will do GL rendering onto. It also ensures\n\
  that this framebuffer is the default GL rendering target when rendering.\n\
  The completed rendering is integrated into the larger GTK scene graph as\n\

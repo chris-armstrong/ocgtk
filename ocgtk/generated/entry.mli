@@ -697,7 +697,7 @@ end
      When the entry shows progress, it adds a subnode with the name progress.\n\
      The node has the style class .pulse when the shown progress is pulsing.\n\n\
      For all the subnodes added to the text node in various situations,\n\
-     see [Gtk.Text].\n\n\
+     see {{!Ocgtk.Text.class-type-text_t}[Gtk.Text]}.\n\n\
      {b GtkEntry as GtkBuildable}\n\n\
      The [GtkEntry] implementation of the [GtkBuildable] interface supports a\n\
      custom [<attributes>] element, which supports any number of [<attribute>]\n\
@@ -773,7 +773,7 @@ class entry : Raw.Entry.t -> entry_t
  When the entry shows progress, it adds a subnode with the name progress.\n\
  The node has the style class .pulse when the shown progress is pulsing.\n\n\
  For all the subnodes added to the text node in various situations,\n\
- see [Gtk.Text].\n\n\
+ see {{!Ocgtk.Text.class-type-text_t}[Gtk.Text]}.\n\n\
  {b GtkEntry as GtkBuildable}\n\n\
  The [GtkEntry] implementation of the [GtkBuildable] interface supports a\n\
  custom [<attributes>] element, which supports any number of [<attribute>]\n\

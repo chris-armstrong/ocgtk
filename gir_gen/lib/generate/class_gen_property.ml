@@ -119,7 +119,9 @@ let generate_property_signatures ~ctx ~class_name ~methods ~seen
     in
     let method_name = prop_snake |> Utils.sanitize_identifier in
     Doc_emit.around
-      (Entity_doc.property ~accessor:Entity_doc.Getter prop)
+      (Entity_doc.property
+         ~refs:(Doc_resolve.class_member (Doc_resolve.env_of_ctx ctx))
+         ~accessor:Entity_doc.Getter prop)
       (Fmt.str "    method %s : %s\n" method_name ocaml_type)
   in
   let generate_setter _prop prop_snake =
@@ -137,7 +139,9 @@ let generate_property_signatures ~ctx ~class_name ~methods ~seen
     in
     let method_name = "set_" ^ prop_snake |> Utils.sanitize_identifier in
     Doc_emit.around
-      (Entity_doc.property ~accessor:Entity_doc.Setter prop)
+      (Entity_doc.property
+         ~refs:(Doc_resolve.class_member (Doc_resolve.env_of_ctx ctx))
+         ~accessor:Entity_doc.Setter prop)
       (Fmt.str "    method %s : %s -> unit\n" method_name ocaml_type)
   in
   generate_property_code ~ctx ~class_name ~methods ~seen ~generate_getter

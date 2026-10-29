@@ -17,7 +17,7 @@
  for the dialog. This is required, as there may not be one in the case of a\n\
  platform native dialog.\n\n\
  Showing, hiding and running the dialog is handled by the\n\
- [Gtk.NativeDialog] functions.\n\n\
+ {{!Ocgtk.Raw.Native_dialog}[Gtk.NativeDialog]} functions.\n\n\
  Note that unlike [GtkFileChooserDialog], [GtkFileChooserNative] objects\n\
  are not toplevel widgets, and GTK does not keep them alive. It is your\n\
  responsibility to keep a reference until you are done with the\n\
@@ -83,14 +83,17 @@
 \  gtk_native_dialog_show (GTK_NATIVE_DIALOG (native));\n\
  ]}\n\n\
  For more information on how to best set up a file dialog,\n\
- see the [Gtk.FileChooserDialog] documentation.\n\n\
+ see the {{!Ocgtk.Raw.File_chooser_dialog}[Gtk.FileChooserDialog]} \
+ documentation.\n\n\
  {b Response Codes}\n\n\
- [GtkFileChooserNative] inherits from [Gtk.NativeDialog],\n\
+ [GtkFileChooserNative] inherits from \
+ {{!Ocgtk.Raw.Native_dialog}[Gtk.NativeDialog]},\n\
  which means it will return [GTK_RESPONSE_ACCEPT] if the user accepted,\n\
  and [GTK_RESPONSE_CANCEL] if he pressed cancel. It can also return\n\
  [GTK_RESPONSE_DELETE_EVENT] if the window was unexpectedly closed.\n\n\
  {b Differences from [GtkFileChooserDialog]}\n\n\
- There are a few things in the [Gtk.FileChooser] interface that\n\
+ There are a few things in the {{!Ocgtk.Raw.File_chooser}[Gtk.FileChooser]} \
+ interface that\n\
  are not possible to use with [GtkFileChooserNative], as such use would\n\
  prohibit the use of a native dialog.\n\n\
  No operations that change the dialog work while the dialog is visible.\n\
@@ -99,7 +102,7 @@
  On windows the [IFileDialog] implementation (added in Windows Vista) is\n\
  used. It supports many of the features that [GtkFileChooser] has, but\n\
  there are some things it does not handle:\n\n\
- - Any [Gtk.FileFilter] added using a mimetype\n\n\
+ - Any {{!Ocgtk.Raw.File_filter}[Gtk.FileFilter]} added using a mimetype\n\n\
  If any of these features are used the regular [GtkFileChooserDialog]\n\
  will be used in place of the native one.\n\n\
  {b Portal details}\n\n\

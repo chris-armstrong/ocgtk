@@ -35,4 +35,6 @@ val new_ : Ocgdk.Texture.texture_t -> Ocgraphene.Rect.rect_t -> texture_node_t
     given by [bounds].
 
     Note that GSK applies linear filtering when textures are scaled and
-    transformed. See [Gsk.TextureScaleNode] for a way to influence filtering. *)
+    transformed. See
+    {{!Ocgsk.Texture_scale_node.class-type-texture_scale_node_t}[Gsk.TextureScaleNode]}
+    for a way to influence filtering. *)

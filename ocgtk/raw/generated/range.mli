@@ -3,8 +3,8 @@
 
 (** Base class for widgets which visualize an adjustment.
 
-    Widgets that are derived from [GtkRange] include [Gtk.Scale] and
-    [Gtk.Scrollbar].
+    Widgets that are derived from [GtkRange] include
+    {{!Ocgtk.Raw.Scale}[Gtk.Scale]} and {{!Ocgtk.Raw.Scrollbar}[Gtk.Scrollbar]}.
 
     Apart from signals for monitoring the parameters of the adjustment,
     [GtkRange] provides properties and methods for setting a “fill level” on

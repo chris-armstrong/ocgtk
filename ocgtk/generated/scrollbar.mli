@@ -23,9 +23,10 @@
     An example GtkScrollbar
 
     Its position and movement are controlled by the adjustment that is passed to
-    or created by [Gtk.Scrollbar.new]. See [Gtk.Adjustment] for more details.
-    The [Gtk.Adjustment:value] field sets the position of the thumb and must be
-    between [Gtk.Adjustment:lower] and [Gtk.Adjustment:upper] -
+    or created by [Gtk.Scrollbar.new]. See
+    {{!Ocgtk.Adjustment.class-type-adjustment_t}[Gtk.Adjustment]} for more
+    details. The [Gtk.Adjustment:value] field sets the position of the thumb and
+    must be between [Gtk.Adjustment:lower] and [Gtk.Adjustment:upper] -
     [Gtk.Adjustment:page-size]. The [Gtk.Adjustment:page-size] represents the
     size of the visible scrollable area.
 
@@ -51,9 +52,10 @@
     in 'fine-tuning' mode.
 
     Other style classes that may be added to scrollbars inside
-    [Gtk.ScrolledWindow] include the positional classes (.left, .right, .top,
-    .bottom) and style classes related to overlay scrolling (.overlay-indicator,
-    .dragging, .hovering).
+    {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t}[Gtk.ScrolledWindow]}
+    include the positional classes (.left, .right, .top, .bottom) and style
+    classes related to overlay scrolling (.overlay-indicator, .dragging,
+    .hovering).
 
     {b Accessibility}
 
@@ -86,9 +88,10 @@ class scrollbar : Raw.Scrollbar.t -> scrollbar_t
     An example GtkScrollbar
 
     Its position and movement are controlled by the adjustment that is passed to
-    or created by [Gtk.Scrollbar.new]. See [Gtk.Adjustment] for more details.
-    The [Gtk.Adjustment:value] field sets the position of the thumb and must be
-    between [Gtk.Adjustment:lower] and [Gtk.Adjustment:upper] -
+    or created by [Gtk.Scrollbar.new]. See
+    {{!Ocgtk.Adjustment.class-type-adjustment_t}[Gtk.Adjustment]} for more
+    details. The [Gtk.Adjustment:value] field sets the position of the thumb and
+    must be between [Gtk.Adjustment:lower] and [Gtk.Adjustment:upper] -
     [Gtk.Adjustment:page-size]. The [Gtk.Adjustment:page-size] represents the
     size of the visible scrollable area.
 
@@ -114,9 +117,10 @@ class scrollbar : Raw.Scrollbar.t -> scrollbar_t
     in 'fine-tuning' mode.
 
     Other style classes that may be added to scrollbars inside
-    [Gtk.ScrolledWindow] include the positional classes (.left, .right, .top,
-    .bottom) and style classes related to overlay scrolling (.overlay-indicator,
-    .dragging, .hovering).
+    {{!Ocgtk.Scrolled_window.class-type-scrolled_window_t}[Gtk.ScrolledWindow]}
+    include the positional classes (.left, .right, .top, .bottom) and style
+    classes related to overlay scrolling (.overlay-indicator, .dragging,
+    .hovering).
 
     {b Accessibility}
 

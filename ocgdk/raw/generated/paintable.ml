@@ -17,10 +17,11 @@
     it is suggested that you scale your paintable ignoring any potential aspect
     ratio.
 
-    The contents that a [GdkPaintable] produces may depend on the [Gdk.Snapshot]
-    passed to it. For example, paintables may decide to use more detailed images
-    on higher resolution screens or when OpenGL is available. A [GdkPaintable]
-    will however always produce the same output for the same snapshot.
+    The contents that a [GdkPaintable] produces may depend on the
+    {{!Ocgdk.Raw.Snapshot}[Gdk.Snapshot]} passed to it. For example, paintables
+    may decide to use more detailed images on higher resolution screens or when
+    OpenGL is available. A [GdkPaintable] will however always produce the same
+    output for the same snapshot.
 
     A [GdkPaintable] may change its contents, meaning that it will now produce a
     different output with the same snapshot. Once that happens, it will call
@@ -137,7 +138,8 @@ external get_flags : t -> Ocgdk_enums.paintableflags
 
     This is oftentimes useful for optimizations.
 
-    See [Gdk.PaintableFlags] for the flags and what they mean. *)
+    See {{!Ocgdk.Enums.type-paintableflags}[Gdk.PaintableFlags]} for the flags
+    and what they mean. *)
 
 external get_current_image : t -> t = "ml_gdk_paintable_get_current_image"
 (** Gets an immutable paintable for the current contents displayed by

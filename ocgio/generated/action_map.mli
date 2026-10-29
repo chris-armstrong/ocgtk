@@ -58,9 +58,11 @@ end
   [@@ocaml.doc
     "{b The methods, signals and properties of a [ActionMap].}\n\n\
      [GActionMap] is an interface for action containers.\n\n\
-     The [GActionMap] interface is implemented by [Gio.ActionGroup]\n\
+     The [GActionMap] interface is implemented by \
+     {{!Ocgio.Action_group.class-type-action_group_t}[Gio.ActionGroup]}\n\
      implementations that operate by containing a number of named\n\
-     [Gio.Action] instances, such as [Gio.SimpleActionGroup].\n\n\
+     {{!Ocgio.Action.class-type-action_t}[Gio.Action]} instances, such as \
+     {{!Ocgio.Simple_action_group.class-type-simple_action_group_t}[Gio.SimpleActionGroup]}.\n\n\
      One useful application of this interface is to map the\n\
      names of actions from various action groups to unique,\n\
      prefixed names (e.g. by prepending \"app.\" or \"win.\").\n\
@@ -73,9 +75,11 @@ class action_map : Raw.Action_map.t -> action_map_t
 [@@@ocaml.text
 "{1:description Description}\n\n\
  [GActionMap] is an interface for action containers.\n\n\
- The [GActionMap] interface is implemented by [Gio.ActionGroup]\n\
+ The [GActionMap] interface is implemented by \
+ {{!Ocgio.Action_group.class-type-action_group_t}[Gio.ActionGroup]}\n\
  implementations that operate by containing a number of named\n\
- [Gio.Action] instances, such as [Gio.SimpleActionGroup].\n\n\
+ {{!Ocgio.Action.class-type-action_t}[Gio.Action]} instances, such as \
+ {{!Ocgio.Simple_action_group.class-type-simple_action_group_t}[Gio.SimpleActionGroup]}.\n\n\
  One useful application of this interface is to map the\n\
  names of actions from various action groups to unique,\n\
  prefixed names (e.g. by prepending \"app.\" or \"win.\").\n\

@@ -69,7 +69,8 @@ end
      [Gtk.ToggleButton.new_with_label]. If using the former, it is advisable\n\
      to pack a widget, (such as a [GtkLabel] and/or a [GtkImage]), into the \
      toggle\n\
-     button’s container. (See [Gtk.Button] for more information).\n\n\
+     button’s container. (See \
+     {{!Ocgtk.Button.class-type-button_t}[Gtk.Button]} for more information).\n\n\
      The state of a [GtkToggleButton] can be set specifically using\n\
      [Gtk.ToggleButton.set_active], and retrieved using\n\
      [Gtk.ToggleButton.get_active].\n\n\
@@ -129,7 +130,8 @@ class toggle_button : Raw.Toggle_button.t -> toggle_button_t
  A toggle button is created by calling either [Gtk.ToggleButton.new] or\n\
  [Gtk.ToggleButton.new_with_label]. If using the former, it is advisable\n\
  to pack a widget, (such as a [GtkLabel] and/or a [GtkImage]), into the toggle\n\
- button’s container. (See [Gtk.Button] for more information).\n\n\
+ button’s container. (See {{!Ocgtk.Button.class-type-button_t}[Gtk.Button]} \
+ for more information).\n\n\
  The state of a [GtkToggleButton] can be set specifically using\n\
  [Gtk.ToggleButton.set_active], and retrieved using\n\
  [Gtk.ToggleButton.get_active].\n\n\

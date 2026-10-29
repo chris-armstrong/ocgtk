@@ -1,5 +1,5 @@
-(** Contains information that is necessary position a [Gdk.Popup] relative to
-    its parent.
+(** Contains information that is necessary position a
+    {{!Ocgdk.Popup.class-type-popup_t}[Gdk.Popup]} relative to its parent.
 
     Its methods, signals and properties are on {!class-type-popup_layout_t}. Its
     full description is under {!section-description}. Its constructors are under
@@ -10,8 +10,8 @@
 
 (** {b The methods, signals and properties of a [PopupLayout].}
 
-    Contains information that is necessary position a [Gdk.Popup] relative to
-    its parent.
+    Contains information that is necessary position a
+    {{!Ocgdk.Popup.class-type-popup_t}[Gdk.Popup]} relative to its parent.
 
     The positioning requires a negotiation with the windowing system, since it
     depends on external constraints, such as the position of the parent surface,
@@ -101,8 +101,8 @@ class popup_layout : Raw.Popup_layout.t -> popup_layout_t
 
 (** {1:description Description}
 
-    Contains information that is necessary position a [Gdk.Popup] relative to
-    its parent.
+    Contains information that is necessary position a
+    {{!Ocgdk.Popup.class-type-popup_t}[Gdk.Popup]} relative to its parent.
 
     The positioning requires a negotiation with the windowing system, since it
     depends on external constraints, such as the position of the parent surface,

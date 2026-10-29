@@ -148,29 +148,29 @@ module rec App_info : sig
   (** Gets the commandline with which the application will be started. *)
 
   external equal : t -> t -> bool = "ml_g_app_info_equal"
-  (** Checks if two [Gio.AppInfo]s are equal.
+  (** Checks if two {{!Ocgio.Raw.App_info}[Gio.AppInfo]}s are equal.
 
       Note that the check {i may not} compare each individual field, and only
       does an identity check. In case detecting changes in the contents is
       needed, program code must additionally compare relevant fields. *)
 
   external dup : t -> t = "ml_g_app_info_dup"
-  (** Creates a duplicate of a [Gio.AppInfo]. *)
+  (** Creates a duplicate of a {{!Ocgio.Raw.App_info}[Gio.AppInfo]}. *)
 
   external delete : t -> bool = "ml_g_app_info_delete"
-  (** Tries to delete a [Gio.AppInfo].
+  (** Tries to delete a {{!Ocgio.Raw.App_info}[Gio.AppInfo]}.
 
       On some platforms, there may be a difference between user-defined
-      [Gio.AppInfo]s which can be deleted, and system-wide ones which cannot.
-      See [Gio.AppInfo.can_delete]. *)
+      {{!Ocgio.Raw.App_info}[Gio.AppInfo]}s which can be deleted, and
+      system-wide ones which cannot. See [Gio.AppInfo.can_delete]. *)
 
   external can_remove_supports_type : t -> bool
     = "ml_g_app_info_can_remove_supports_type"
   (** Checks if a supported content type can be removed from an application. *)
 
   external can_delete : t -> bool = "ml_g_app_info_can_delete"
-  (** Obtains the information whether the [Gio.AppInfo] can be deleted. See
-      [Gio.AppInfo.delete]. *)
+  (** Obtains the information whether the {{!Ocgio.Raw.App_info}[Gio.AppInfo]}
+      can be deleted. See [Gio.AppInfo.delete]. *)
 
   external add_supports_type : t -> string -> (bool, GError.t) result
     = "ml_g_app_info_add_supports_type"
@@ -197,10 +197,12 @@ end
    of course cannot be mapped to a POSIX path (in GVfs there’s no FUSE mount\n\
    for it); such URIs will be passed unmodified to the application.\n\n\
    Specifically for GVfs 2.26 and later, the POSIX URI will be mapped\n\
-   back to the GIO URI in the [Gio.File] constructors (since GVfs\n\
+   back to the GIO URI in the {{!Ocgio.Raw.File}[Gio.File]} constructors \
+   (since GVfs\n\
    implements the GVfs extension point). As such, if the application\n\
    needs to examine the URI, it needs to use [Gio.File.get_uri]\n\
-   or similar on [Gio.File]. In other words, an application cannot\n\
+   or similar on {{!Ocgio.Raw.File}[Gio.File]}. In other words, an application \
+   cannot\n\
    assume that the URI passed to e.g. [Gio.File.new_for_commandline_arg]\n\
    is equal to the result of [Gio.File.get_uri]. The following snippet\n\
    illustrates this:\n\n\
@@ -299,8 +301,9 @@ and App_launch_context : sig
     callback:(startup_notify_id:string -> unit) ->
     Gobject.Signal.handler_id
   (** The [Gio.AppLaunchContext::launch-failed] signal is emitted when a
-      [Gio.AppInfo] launch fails. The startup notification id is provided, so
-      that the launcher can cancel the startup notification.
+      {{!Ocgio.Raw.App_info}[Gio.AppInfo]} launch fails. The startup
+      notification id is provided, so that the launcher can cancel the startup
+      notification.
 
       Because a launch operation may involve spawning multiple instances of the
       target application, you should expect this signal to be emitted multiple
@@ -312,10 +315,11 @@ and App_launch_context : sig
     callback:(info:App_info.t -> platform_data:Gvariant.t -> unit) ->
     Gobject.Signal.handler_id
   (** The [Gio.AppLaunchContext::launch-started] signal is emitted when a
-      [Gio.AppInfo] is about to be launched. If non-null the [platform_data] is
-      an GVariant dictionary mapping strings to variants (ie [a{sv}]), which
-      contains additional, platform-specific data about this launch. On UNIX, at
-      least the [startup-notification-id] keys will be present.
+      {{!Ocgio.Raw.App_info}[Gio.AppInfo]} is about to be launched. If non-null
+      the [platform_data] is an GVariant dictionary mapping strings to variants
+      (ie [a{sv}]), which contains additional, platform-specific data about this
+      launch. On UNIX, at least the [startup-notification-id] keys will be
+      present.
 
       The value of the [startup-notification-id] key (type [s]) is a startup
       notification ID corresponding to the format from the
@@ -337,7 +341,7 @@ and App_launch_context : sig
     callback:(info:App_info.t -> platform_data:Gvariant.t -> unit) ->
     Gobject.Signal.handler_id
   (** The [Gio.AppLaunchContext::launched] signal is emitted when a
-      [Gio.AppInfo] is successfully launched.
+      {{!Ocgio.Raw.App_info}[Gio.AppInfo]} is successfully launched.
 
       Because a launch operation may involve spawning multiple instances of the
       target application, you should expect this signal to be emitted multiple
@@ -363,11 +367,11 @@ end
     generally only created for removable hardware or hardware with removable
     media. For example, an optical disc drive, or a USB flash drive.
 
-    [GDrive] is a container class for [Gio.Volume] objects that stem from the
-    same piece of media. As such, [GDrive] abstracts a drive with (or without)
-    removable media and provides operations for querying whether media is
-    available, determining whether media change is automatically detected and
-    ejecting the media.
+    [GDrive] is a container class for {{!Ocgio.Raw.Volume}[Gio.Volume]} objects
+    that stem from the same piece of media. As such, [GDrive] abstracts a drive
+    with (or without) removable media and provides operations for querying
+    whether media is available, determining whether media change is
+    automatically detected and ejecting the media.
 
     If the [GDrive] reports that media isn’t automatically detected, one can
     poll for media; typically one should not do this periodically as a poll for
@@ -506,8 +510,9 @@ end
     system. [GFile]s are lightweight, immutable objects that do no I/O upon
     creation. It is necessary to understand that [GFile] objects do not
     represent files, merely an identifier for a file. All file content I/O is
-    implemented as streaming operations (see [Gio.InputStream] and
-    [Gio.OutputStream]).
+    implemented as streaming operations (see
+    {{!Ocgio.Raw.Input_stream}[Gio.InputStream]} and
+    {{!Ocgio.Raw.Output_stream}[Gio.OutputStream]}).
 
     To construct a [GFile], you can use:
 
@@ -564,8 +569,8 @@ end
     suit your application. Asynchronous versions of synchronous functions simply
     have [_async()] appended to their function names. The asynchronous I/O
     functions call a [Gio.AsyncReadyCallback] which is then used to finalize the
-    operation, producing a [Gio.AsyncResult] which is then passed to the
-    function’s matching [_finish()] operation.
+    operation, producing a {{!Ocgio.Raw.Async_result}[Gio.AsyncResult]} which is
+    then passed to the function’s matching [_finish()] operation.
 
     It is highly recommended to use asynchronous calls when running within a
     shared main loop, such as in the main thread of an application. This avoids
@@ -932,7 +937,8 @@ and File : sig
     (File_info.t, GError.t) result = "ml_g_file_query_info"
   [@@ocaml.doc
     "Gets the requested information about specified [file].\n\n\
-    \  The result is a [Gio.FileInfo] object that contains key-value\n\
+    \  The result is a {{!Ocgio.Raw.File_info}[Gio.FileInfo]} object that \
+     contains key-value\n\
     \  attributes (such as the type or size of the file).\n\n\
     \  The [attributes] value is a string that specifies the file\n\
     \  attributes that should be gathered. It is not an error if\n\
@@ -941,20 +947,25 @@ and File : sig
      file\n\
     \  is inaccessible (due to being in a folder with restrictive \
      permissions), for\n\
-    \  example, you can expect the returned [Gio.FileInfo] to have very few\n\
+    \  example, you can expect the returned \
+     {{!Ocgio.Raw.File_info}[Gio.FileInfo]} to have very few\n\
     \  attributes set. You should check whether an attribute is set using\n\
     \  [Gio.FileInfo.has_attribute] before trying to retrieve its value.\n\n\
     \  It is guaranteed that if any of the following attributes are listed in\n\
-    \  [attributes], they will always be set in the returned [Gio.FileInfo],\n\
+    \  [attributes], they will always be set in the returned \
+     {{!Ocgio.Raw.File_info}[Gio.FileInfo]},\n\
     \  even if the user doesn’t have permissions to access the file:\n\n\
-    \  - [Gio.FILE_ATTRIBUTE_STANDARD_NAME]\n\
-    \  - [Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME]\n\n\
+    \  - \
+     {{!Ocgio.Constants.file_attribute_standard_name}[Gio.FILE_ATTRIBUTE_STANDARD_NAME]}\n\
+    \  - \
+     {{!Ocgio.Constants.file_attribute_standard_display_name}[Gio.FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME]}\n\n\
     \  [attributes] should be a comma-separated list of attributes or attribute\n\
     \  wildcards. The wildcard [\"*\"] means all attributes, and a wildcard like\n\
     \  [\"standard::*\"] means all attributes in the standard namespace.\n\
     \  An example attribute query might be [\"standard::*,owner::user\"].\n\
     \  The standard attributes are available as defines, like\n\
-    \  [Gio.FILE_ATTRIBUTE_STANDARD_NAME].\n\n\
+    \  \
+     {{!Ocgio.Constants.file_attribute_standard_name}[Gio.FILE_ATTRIBUTE_STANDARD_NAME]}.\n\n\
     \  If [cancellable] is not [None], then the operation can be cancelled\n\
     \  by triggering the cancellable object from another thread. If the\n\
     \  operation was cancelled, the error [Gio.IOErrorEnum.CANCELLED] will be\n\
@@ -1606,16 +1617,17 @@ and File : sig
       possible too, and depend on what kind of filesystem the file is on. *)
 end
 
-(** [GFileEnumerator] allows you to operate on a set of [Gio.File] objects,
-    returning a [Gio.FileInfo] structure for each file enumerated (e.g.
-    [Gio.File.enumerate_children] will return a [GFileEnumerator] for each of
-    the children within a directory).
+(** [GFileEnumerator] allows you to operate on a set of
+    {{!Ocgio.Raw.File}[Gio.File]} objects, returning a
+    {{!Ocgio.Raw.File_info}[Gio.FileInfo]} structure for each file enumerated
+    (e.g. [Gio.File.enumerate_children] will return a [GFileEnumerator] for each
+    of the children within a directory).
 
     To get the next file's information from a [GFileEnumerator], use
     [Gio.FileEnumerator.next_file] or its asynchronous version,
     [Gio.FileEnumerator.next_files_async]. Note that the asynchronous version
-    will return a list of [Gio.FileInfo] objects, whereas the synchronous will
-    only return the next file in the enumerator.
+    will return a list of {{!Ocgio.Raw.File_info}[Gio.FileInfo]} objects,
+    whereas the synchronous will only return the next file in the enumerator.
 
     The ordering of returned files is unspecified for non-Unix platforms; for
     more information, see [GLib.Dir.read_name]. On Unix, when operating on local
@@ -1804,20 +1816,23 @@ end
     because it’s not the same as a UNIX mount, it might be a GVFS mount, but you
     can still access the files on it if you use GIO.
 
-    A [GMount] might be associated with a [Gio.Volume] (such as a USB flash
-    drive) which hosts it.
+    A [GMount] might be associated with a {{!Ocgio.Raw.Volume}[Gio.Volume]}
+    (such as a USB flash drive) which hosts it.
 
     Unmounting a [GMount] instance is an asynchronous operation. For more
-    information about asynchronous operations, see [Gio.AsyncResult] and
-    [Gio.Task]. To unmount a [GMount] instance, first call
+    information about asynchronous operations, see
+    {{!Ocgio.Raw.Async_result}[Gio.AsyncResult]} and
+    {{!Ocgio.Raw.Task}[Gio.Task]}. To unmount a [GMount] instance, first call
     [Gio.Mount.unmount_with_operation] with (at least) the [GMount] instance and
     a [Gio.AsyncReadyCallback]. The callback will be fired when the operation
-    has resolved (either with success or failure), and a [Gio.AsyncResult]
-    structure will be passed to the callback. That callback should then call
+    has resolved (either with success or failure), and a
+    {{!Ocgio.Raw.Async_result}[Gio.AsyncResult]} structure will be passed to the
+    callback. That callback should then call
     [Gio.Mount.unmount_with_operation_finish] with the [GMount] and the
-    [Gio.AsyncResult] data to see if the operation was completed successfully.
-    If an [error] is present when [Gio.Mount.unmount_with_operation_finish] is
-    called, then it will be filled with any error information.
+    {{!Ocgio.Raw.Async_result}[Gio.AsyncResult]} data to see if the operation
+    was completed successfully. If an [error] is present when
+    [Gio.Mount.unmount_with_operation_finish] is called, then it will be filled
+    with any error information.
 
     Note, when porting from GnomeVFS, [GMount] is the moral equivalent of
     [GnomeVFSVolume].
@@ -1977,23 +1992,28 @@ end
     For example, a file system partition on a USB flash drive, or an optical
     disc inserted into a disc drive.
 
-    If a [GVolume] is currently mounted, the corresponding [Gio.Mount] can be
-    retrieved using [Gio.Volume.get_mount].
+    If a [GVolume] is currently mounted, the corresponding
+    {{!Ocgio.Raw.Mount}[Gio.Mount]} can be retrieved using
+    [Gio.Volume.get_mount].
 
     Mounting a [GVolume] instance is an asynchronous operation. For more
-    information about asynchronous operations, see [Gio.AsyncResult] and
-    [Gio.Task]. To mount a [GVolume], first call [Gio.Volume.mount] with (at
-    least) the [GVolume] instance, optionally a [Gio.MountOperation] object and
-    a [Gio.AsyncReadyCallback].
+    information about asynchronous operations, see
+    {{!Ocgio.Raw.Async_result}[Gio.AsyncResult]} and
+    {{!Ocgio.Raw.Task}[Gio.Task]}. To mount a [GVolume], first call
+    [Gio.Volume.mount] with (at least) the [GVolume] instance, optionally a
+    {{!Ocgio.Raw.Mount_operation}[Gio.MountOperation]} object and a
+    [Gio.AsyncReadyCallback].
 
-    Typically, one will only want to pass [None] for the [Gio.MountOperation] if
-    automounting all volumes when a desktop session starts since it’s not
-    desirable to put up a lot of dialogs asking for credentials.
+    Typically, one will only want to pass [None] for the
+    {{!Ocgio.Raw.Mount_operation}[Gio.MountOperation]} if automounting all
+    volumes when a desktop session starts since it’s not desirable to put up a
+    lot of dialogs asking for credentials.
 
     The callback will be fired when the operation has resolved (either with
-    success or failure), and a [Gio.AsyncResult] instance will be passed to the
-    callback. That callback should then call [Gio.Volume.mount_finish] with the
-    [GVolume] instance and the [Gio.AsyncResult] data to see if the operation
+    success or failure), and a {{!Ocgio.Raw.Async_result}[Gio.AsyncResult]}
+    instance will be passed to the callback. That callback should then call
+    [Gio.Volume.mount_finish] with the [GVolume] instance and the
+    {{!Ocgio.Raw.Async_result}[Gio.AsyncResult]} data to see if the operation
     was completed successfully. If a [GLib.Error] is present when
     [Gio.Volume.mount_finish] is called, then it will be filled with any error
     information.

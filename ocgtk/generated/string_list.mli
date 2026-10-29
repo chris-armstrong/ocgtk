@@ -79,7 +79,9 @@ end
      - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}\n\
      - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}\n\n\
      A list model that wraps an array of strings.\n\n\
-     The objects in the model are of type [Gtk.StringObject] and have\n\
+     The objects in the model are of type \
+     {{!Ocgtk.String_object.class-type-string_object_t}[Gtk.StringObject]} and \
+     have\n\
      a \"string\" property that can be used inside expressions.\n\n\
      [GtkStringList] is well-suited for any place where you would\n\
      typically use a char*\\[\\], but need a list model.\n\n\
@@ -106,7 +108,8 @@ class string_list : Raw.String_list.t -> string_list_t
 [@@@ocaml.text
 "{1:description Description}\n\n\
  A list model that wraps an array of strings.\n\n\
- The objects in the model are of type [Gtk.StringObject] and have\n\
+ The objects in the model are of type \
+ {{!Ocgtk.String_object.class-type-string_object_t}[Gtk.StringObject]} and have\n\
  a \"string\" property that can be used inside expressions.\n\n\
  [GtkStringList] is well-suited for any place where you would\n\
  typically use a char*\\[\\], but need a list model.\n\n\

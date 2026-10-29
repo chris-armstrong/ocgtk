@@ -117,7 +117,8 @@ and Color_state : sig
 
   external create_cicp_params : t -> Cicp_params.t option
     = "ml_gdk_color_state_create_cicp_params"
-  (** Create a [Gdk.CicpParams] representing the colorstate.
+  (** Create a {{!Ocgdk.Raw.Cicp_params}[Gdk.CicpParams]} representing the
+      colorstate.
 
       It is not guaranteed that every [GdkColorState] can be represented with
       Cicp parameters. If that is the case, this function returns [None]. *)

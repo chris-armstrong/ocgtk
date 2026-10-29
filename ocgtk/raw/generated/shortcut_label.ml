@@ -3,7 +3,8 @@
 
 (** [GtkShortcutLabel] displays a single keyboard shortcut or gesture.
 
-    The main use case for [GtkShortcutLabel] is inside a [Gtk.ShortcutsWindow].
+    The main use case for [GtkShortcutLabel] is inside a
+    {{!Ocgtk.Raw.Shortcuts_window}[Gtk.ShortcutsWindow]}.
 
     The class built on this module is in {!Ocgtk.Shortcut_label}. *)
 

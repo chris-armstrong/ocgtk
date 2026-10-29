@@ -514,15 +514,21 @@ end
      [Gio.Application.register]). Unfortunately, this means that you cannot\n\
      use [Gio.Application:is-remote] to decide if you want to register\n\
      object paths.\n\n\
-     [GApplication] also implements the [Gio.ActionGroup] and [Gio.ActionMap]\n\
+     [GApplication] also implements the \
+     {{!Ocgio.Action_group.class-type-action_group_t}[Gio.ActionGroup]} and \
+     {{!Ocgio.Action_map.class-type-action_map_t}[Gio.ActionMap]}\n\
      interfaces and lets you easily export actions by adding them with\n\
      [Gio.ActionMap.add_action]. When invoking an action by calling\n\
      [Gio.ActionGroup.activate_action] on the application, it is always\n\
      invoked in the primary instance. The actions are also exported on\n\
-     the session bus, and GIO provides the [Gio.DBusActionGroup] wrapper to\n\
-     conveniently access them remotely. GIO provides a [Gio.DBusMenuModel] \
+     the session bus, and GIO provides the \
+     {{!Ocgio.D_bus_action_group.class-type-d_bus_action_group_t}[Gio.DBusActionGroup]} \
+     wrapper to\n\
+     conveniently access them remotely. GIO provides a \
+     {{!Ocgio.D_bus_menu_model.class-type-d_bus_menu_model_t}[Gio.DBusMenuModel]} \
      wrapper\n\
-     for remote access to exported [Gio.MenuModel]s.\n\n\
+     for remote access to exported \
+     {{!Ocgio.Menu_model.class-type-menu_model_t}[Gio.MenuModel]}s.\n\n\
      Note: Due to the fact that actions are exported on the session bus,\n\
      using [maybe] parameters is not supported, since D-Bus does not support\n\
      [maybe] types.\n\n\
@@ -540,7 +546,8 @@ end
      data, override the [Gio.Application.before_emit] or\n\
      [Gio.Application.after_emit] virtual functions\n\
      in your [GApplication] subclass. When dealing with\n\
-     [Gio.ApplicationCommandLine] objects, the platform data is\n\
+     {{!Ocgio.Application_command_line.class-type-application_command_line_t}[Gio.ApplicationCommandLine]} \
+     objects, the platform data is\n\
      directly available via [Gio.ApplicationCommandLine.get_cwd],\n\
      [Gio.ApplicationCommandLine.get_environ] and\n\
      [Gio.ApplicationCommandLine.get_platform_data].\n\n\
@@ -626,14 +633,21 @@ class application : Raw.Application.t -> application_t
  [Gio.Application.register]). Unfortunately, this means that you cannot\n\
  use [Gio.Application:is-remote] to decide if you want to register\n\
  object paths.\n\n\
- [GApplication] also implements the [Gio.ActionGroup] and [Gio.ActionMap]\n\
+ [GApplication] also implements the \
+ {{!Ocgio.Action_group.class-type-action_group_t}[Gio.ActionGroup]} and \
+ {{!Ocgio.Action_map.class-type-action_map_t}[Gio.ActionMap]}\n\
  interfaces and lets you easily export actions by adding them with\n\
  [Gio.ActionMap.add_action]. When invoking an action by calling\n\
  [Gio.ActionGroup.activate_action] on the application, it is always\n\
  invoked in the primary instance. The actions are also exported on\n\
- the session bus, and GIO provides the [Gio.DBusActionGroup] wrapper to\n\
- conveniently access them remotely. GIO provides a [Gio.DBusMenuModel] wrapper\n\
- for remote access to exported [Gio.MenuModel]s.\n\n\
+ the session bus, and GIO provides the \
+ {{!Ocgio.D_bus_action_group.class-type-d_bus_action_group_t}[Gio.DBusActionGroup]} \
+ wrapper to\n\
+ conveniently access them remotely. GIO provides a \
+ {{!Ocgio.D_bus_menu_model.class-type-d_bus_menu_model_t}[Gio.DBusMenuModel]} \
+ wrapper\n\
+ for remote access to exported \
+ {{!Ocgio.Menu_model.class-type-menu_model_t}[Gio.MenuModel]}s.\n\n\
  Note: Due to the fact that actions are exported on the session bus,\n\
  using [maybe] parameters is not supported, since D-Bus does not support\n\
  [maybe] types.\n\n\
@@ -651,7 +665,8 @@ class application : Raw.Application.t -> application_t
  data, override the [Gio.Application.before_emit] or\n\
  [Gio.Application.after_emit] virtual functions\n\
  in your [GApplication] subclass. When dealing with\n\
- [Gio.ApplicationCommandLine] objects, the platform data is\n\
+ {{!Ocgio.Application_command_line.class-type-application_command_line_t}[Gio.ApplicationCommandLine]} \
+ objects, the platform data is\n\
  directly available via [Gio.ApplicationCommandLine.get_cwd],\n\
  [Gio.ApplicationCommandLine.get_environ] and\n\
  [Gio.ApplicationCommandLine.get_platform_data].\n\n\

@@ -312,7 +312,9 @@ end
      and the start of the next).\n\n\
      {b Creating new [GdkPixbuf]}\n\n\
      The most basic way to create a pixbuf is to wrap an existing pixel\n\
-     buffer with a [GdkPixbuf.Pixbuf] instance. You can use the\n\
+     buffer with a \
+     {{!Ocgdkpixbuf.Pixbuf.class-type-pixbuf_t}[GdkPixbuf.Pixbuf]} instance. \
+     You can use the\n\
      [GdkPixbuf.Pixbuf.new_from_data] function to do this.\n\n\
      Every time you create a new [GdkPixbuf] instance for some data, you\n\
      will need to specify the destroy notification function that will be\n\
@@ -330,7 +332,8 @@ end
      You can also copy an existing pixbuf with the [Pixbuf.copy]\n\
      function. This is not the same as just acquiring a reference to\n\
      the old pixbuf instance: the copy function will actually duplicate\n\
-     the pixel data in memory and create a new [Pixbuf] instance\n\
+     the pixel data in memory and create a new \
+     {{!Ocgdkpixbuf.Pixbuf.class-type-pixbuf_t}[Pixbuf]} instance\n\
      for it.\n\n\
      {b Reference counting}\n\n\
      [GdkPixbuf] structures are reference counted. This means that an\n\
@@ -419,7 +422,8 @@ class pixbuf : Raw.Pixbuf.t -> pixbuf_t
  and the start of the next).\n\n\
  {b Creating new [GdkPixbuf]}\n\n\
  The most basic way to create a pixbuf is to wrap an existing pixel\n\
- buffer with a [GdkPixbuf.Pixbuf] instance. You can use the\n\
+ buffer with a {{!Ocgdkpixbuf.Pixbuf.class-type-pixbuf_t}[GdkPixbuf.Pixbuf]} \
+ instance. You can use the\n\
  [GdkPixbuf.Pixbuf.new_from_data] function to do this.\n\n\
  Every time you create a new [GdkPixbuf] instance for some data, you\n\
  will need to specify the destroy notification function that will be\n\
@@ -437,7 +441,8 @@ class pixbuf : Raw.Pixbuf.t -> pixbuf_t
  You can also copy an existing pixbuf with the [Pixbuf.copy]\n\
  function. This is not the same as just acquiring a reference to\n\
  the old pixbuf instance: the copy function will actually duplicate\n\
- the pixel data in memory and create a new [Pixbuf] instance\n\
+ the pixel data in memory and create a new \
+ {{!Ocgdkpixbuf.Pixbuf.class-type-pixbuf_t}[Pixbuf]} instance\n\
  for it.\n\n\
  {b Reference counting}\n\n\
  [GdkPixbuf] structures are reference counted. This means that an\n\

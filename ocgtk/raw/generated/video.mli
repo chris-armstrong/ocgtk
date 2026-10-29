@@ -5,15 +5,17 @@
 
     An example GtkVideo
 
-    The controls are available separately as [Gtk.MediaControls]. If you just
-    want to display a video without controls, you can treat it like any other
-    paintable and for example put it into a [Gtk.Picture].
+    The controls are available separately as
+    {{!Ocgtk.Raw.Media_controls}[Gtk.MediaControls]}. If you just want to
+    display a video without controls, you can treat it like any other paintable
+    and for example put it into a {{!Ocgtk.Raw.Picture}[Gtk.Picture]}.
 
     [GtkVideo] aims to cover use cases such as previews, embedded animations,
     etc. It supports autoplay, looping, and simple media controls. It does not
     have support for video overlays, multichannel audio, device selection, or
     input. If you are writing a full-fledged video player, you may want to use
-    the [Gdk.Paintable] API and a media framework such as Gstreamer directly.
+    the {{!Ocgdk.Raw.Paintable}[Gdk.Paintable]} API and a media framework such
+    as Gstreamer directly.
 
     The class built on this module is in {!Ocgtk.Video}. *)
 
@@ -55,7 +57,8 @@ external set_media_stream : t -> Media_stream.t option -> unit
 (** Sets the media stream to be played back.
 
     [self] will take full control of managing the media stream. If you want to
-    manage a media stream yourself, consider using a [Gtk.Picture] for display.
+    manage a media stream yourself, consider using a
+    {{!Ocgtk.Raw.Picture}[Gtk.Picture]} for display.
 
     If you want to display a file, consider using [Gtk.Video.set_file] instead.
 *)
@@ -67,7 +70,8 @@ external set_graphics_offload : t -> Ocgtk_enums.graphicsoffloadenabled -> unit
   = "ml_gtk_video_set_graphics_offload"
 (** Sets whether to enable graphics offload.
 
-    See [Gtk.GraphicsOffload] for more information on graphics offload. *)
+    See {{!Ocgtk.Raw.Graphics_offload}[Gtk.GraphicsOffload]} for more
+    information on graphics offload. *)
 
 external set_filename : t -> string option -> unit = "ml_gtk_video_set_filename"
 (** Makes [self] play the given [filename].
@@ -93,7 +97,8 @@ external get_graphics_offload : t -> Ocgtk_enums.graphicsoffloadenabled
   = "ml_gtk_video_get_graphics_offload"
 (** Returns whether graphics offload is enabled.
 
-    See [Gtk.GraphicsOffload] for more information on graphics offload. *)
+    See {{!Ocgtk.Raw.Graphics_offload}[Gtk.GraphicsOffload]} for more
+    information on graphics offload. *)
 
 external get_file : t -> Ocgio_raw.File.t option = "ml_gtk_video_get_file"
 (** Gets the file played by [self] or [None] if not playing back a file. *)

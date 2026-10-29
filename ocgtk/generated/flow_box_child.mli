@@ -18,8 +18,8 @@
 
     The kind of widget that can be added to a [GtkFlowBox].
 
-    [Gtk.FlowBox] will automatically wrap its children in a [GtkFlowBoxChild]
-    when necessary. *)
+    {{!Ocgtk.Flow_box.class-type-flow_box_t}[Gtk.FlowBox]} will automatically
+    wrap its children in a [GtkFlowBoxChild] when necessary. *)
 class type flow_box_child_t = object
   inherit Widget.widget_t
 
@@ -84,8 +84,8 @@ class flow_box_child : Raw.Flow_box_child.t -> flow_box_child_t
 
     The kind of widget that can be added to a [GtkFlowBox].
 
-    [Gtk.FlowBox] will automatically wrap its children in a [GtkFlowBoxChild]
-    when necessary. *)
+    {{!Ocgtk.Flow_box.class-type-flow_box_t}[Gtk.FlowBox]} will automatically
+    wrap its children in a [GtkFlowBoxChild] when necessary. *)
 
 (** {1:constructors Constructors} *)
 

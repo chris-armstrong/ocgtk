@@ -20,7 +20,8 @@
  error conditions that may have occurred.\n\n\
  The [_finish()] function for an operation takes the generic result\n\
  (of type [GAsyncResult]) and returns the specific result that the\n\
- operation in question yields (e.g. a [Gio.FileEnumerator] for a\n\
+ operation in question yields (e.g. a \
+ {{!Ocgio.Raw.File_enumerator}[Gio.FileEnumerator]} for a\n\
  \"enumerate children\" operation). If the result or error status of the\n\
  operation is not needed, there is no need to call the [_finish()]\n\
  function; GIO will take care of cleaning up the result and error\n\
@@ -83,16 +84,19 @@ external from_gobject : 'a Gobject.obj -> t = "ml_gio_async_result_from_gobject"
 
 external legacy_propagate_error : t -> (bool, GError.t) result
   = "ml_g_async_result_legacy_propagate_error"
-(** If [res] is a [Gio.SimpleAsyncResult], this is equivalent to
-    [Gio.SimpleAsyncResult.propagate_error]. Otherwise it returns [false].
+(** If [res] is a {{!Ocgio.Raw.Simple_async_result}[Gio.SimpleAsyncResult]},
+    this is equivalent to [Gio.SimpleAsyncResult.propagate_error]. Otherwise it
+    returns [false].
 
     This can be used for legacy error handling in async [*_finish()] wrapper
-    functions that traditionally handled [Gio.SimpleAsyncResult] error returns
+    functions that traditionally handled
+    {{!Ocgio.Raw.Simple_async_result}[Gio.SimpleAsyncResult]} error returns
     themselves rather than calling into the virtual method. This should not be
-    used in new code; [Gio.AsyncResult] errors that are set by virtual methods
-    should also be extracted by virtual methods, to enable subclasses to chain
-    up correctly. *)
+    used in new code; {{!Ocgio.Raw.Async_result}[Gio.AsyncResult]} errors that
+    are set by virtual methods should also be extracted by virtual methods, to
+    enable subclasses to chain up correctly. *)
 
 external get_source_object : t -> [ `object_ ] Gobject.obj option
   = "ml_g_async_result_get_source_object"
-(** Gets the source object from a [Gio.AsyncResult]. *)
+(** Gets the source object from a {{!Ocgio.Raw.Async_result}[Gio.AsyncResult]}.
+*)

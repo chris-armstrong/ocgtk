@@ -188,8 +188,9 @@ external matrix_2d :
   = "ml_gsk_transform_matrix_2d_bytecode" "ml_gsk_transform_matrix_2d_native"
 (** Multiplies [next] with the matrix \[ xx yx x0; xy yy y0; 0 0 1 \].
 
-    The result of calling [Gsk.Transform.to_2d] on the returned [Gsk.Transform]
-    should match the input passed to this function.
+    The result of calling [Gsk.Transform.to_2d] on the returned
+    {{!Ocgsk.Raw.Transform}[Gsk.Transform]} should match the input passed to
+    this function.
 
     This function consumes [next]. Use [Gsk.Transform.ref] first if you want to
     keep it around. *)

@@ -25,6 +25,16 @@ let emit_code_span buf content =
   Buffer.add_string buf content;
   Buffer.add_char buf ']'
 
+(* A code span, or escaped plain prose when [s] contains a [\]] that would end
+   the span early. *)
+let emit_balanced_code buf s fbs =
+  if String.contains s ']' then (
+    escape_prose buf s;
+    Inline_code_unbalanced s :: fbs)
+  else (
+    emit_code_span buf s;
+    fbs)
+
 (* A null return "on error" from a throwing item is its [Error] result: the
    bindings return [(_, GError.t) result] and never a null value for it. *)
 let render_c_lit ~ret_shape buf lit =
@@ -61,14 +71,7 @@ let rec render_inline ~ret_shape ins buf fbs =
       | Text s ->
           escape_prose buf s;
           fbs'
-      | Code s ->
-          if String.contains s ']' then (
-            (* unbalanced code: fall back to escaped plain prose *)
-            escape_prose buf s;
-            Inline_code_unbalanced s :: fbs')
-          else (
-            emit_code_span buf s;
-            fbs')
+      | Code s -> emit_balanced_code buf s fbs'
       | Bold inner -> wrap ~ret_shape buf "{b " "}" inner fbs'
       | Italic inner -> wrap ~ret_shape buf "{i " "}" inner fbs'
       | Link { text; url } ->
@@ -85,9 +88,9 @@ let rec render_inline ~ret_shape ins buf fbs =
           (* always a code span: a bare @ would start an odoc tag *)
           emit_code_span buf name;
           fbs'
-      | Ref path ->
-          Buffer.add_string buf "{!";
-          Buffer.add_string buf path;
+      | Ref { path; text } ->
+          Buffer.add_string buf ("{{!" ^ path ^ "}");
+          let fbs' = emit_balanced_code buf text fbs' in
           Buffer.add_char buf '}';
           fbs'
       | C_lit lit ->

@@ -99,9 +99,10 @@ external set_group : t -> t option -> unit = "ml_gtk_check_button_set_group"
 
     Setting up groups in a cycle leads to undefined behavior.
 
-    Note that the same effect can be achieved via the [Gtk.Actionable] API, by
-    using the same action with parameter type and state type 's' for all buttons
-    in the group, and giving each button its own target value. *)
+    Note that the same effect can be achieved via the
+    {{!Ocgtk.Raw.Actionable}[Gtk.Actionable]} API, by using the same action with
+    parameter type and state type 's' for all buttons in the group, and giving
+    each button its own target value. *)
 
 external set_child :
   t ->

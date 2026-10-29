@@ -13,7 +13,8 @@
     A [GUnixFDList] contains a list of file descriptors. It owns the file
     descriptors that it contains, closing them when finalized.
 
-    It may be wrapped in a [GUnixFDMessage] and sent over a [Gio.Socket] in the
+    It may be wrapped in a [GUnixFDMessage] and sent over a
+    {{!Ocgio.Socket.class-type-socket_t}[Gio.Socket]} in the
     [G_SOCKET_FAMILY_UNIX] family by using [Gio.Socket.send_message] and
     received using [Gio.Socket.receive_message].
 
@@ -69,7 +70,8 @@ class unix_fd_list : Raw.Unix_fd_list.t -> unix_fd_list_t
     A [GUnixFDList] contains a list of file descriptors. It owns the file
     descriptors that it contains, closing them when finalized.
 
-    It may be wrapped in a [GUnixFDMessage] and sent over a [Gio.Socket] in the
+    It may be wrapped in a [GUnixFDMessage] and sent over a
+    {{!Ocgio.Socket.class-type-socket_t}[Gio.Socket]} in the
     [G_SOCKET_FAMILY_UNIX] family by using [Gio.Socket.send_message] and
     received using [Gio.Socket.receive_message].
 

@@ -1,0 +1,68 @@
+(* Doc_index — see doc_index.mli for the contract. *)
+
+open StdLabels
+open Types
+
+let empty = StringMap.empty
+
+let add_all ~f items map =
+  List.fold_left items ~init:map ~f:(fun map item ->
+      let name, value = f item in
+      StringMap.add name value map)
+
+let current_namespace ~classes ~interfaces ~records ~enums ~bitfields ~constants
+    =
+  let di_types =
+    StringMap.empty
+    |> add_all
+         ~f:(fun (c : gir_class) -> (c.class_name, Dk_class))
+         (List.filter ~f:Filtering.should_generate_class classes)
+    |> add_all
+         ~f:(fun (i : gir_interface) -> (i.interface_name, Dk_interface))
+         (List.filter ~f:Filtering.should_generate_interface interfaces)
+    |> add_all
+         ~f:(fun (r : gir_record) -> (r.record_name, Dk_record))
+         (List.filter ~f:Filtering.should_generate_record records)
+    |> add_all ~f:(fun (e : gir_enum) -> (e.enum_name, Dk_enum)) enums
+    |> add_all
+         ~f:(fun (b : gir_bitfield) -> (b.bitfield_name, Dk_bitfield))
+         bitfields
+  in
+  let di_constants =
+    add_all
+      ~f:(fun (c : gir_constant) ->
+        (c.constant_name, Constant_code.ocaml_name_of_constant c.constant_name))
+      (List.filter ~f:Constant_code.is_generated constants)
+      StringMap.empty
+  in
+  { di_types; di_constants }
+
+let of_cross_references (ncr : generation_context_namespace_cross_references) =
+  StringMap.fold
+    (fun _ (entity : cross_reference_entity) acc ->
+      let add_type kind =
+        { acc with di_types = StringMap.add entity.cr_name kind acc.di_types }
+      in
+      match entity.cr_type with
+      | Crt_Class _ -> add_type Dk_class
+      | Crt_Interface -> add_type Dk_interface
+      | Crt_Record _ -> add_type Dk_record
+      | Crt_Enum -> add_type Dk_enum
+      | Crt_Bitfield -> add_type Dk_bitfield
+      | Crt_Constant ->
+          {
+            acc with
+            di_constants =
+              StringMap.add entity.cr_name
+                (Constant_code.ocaml_name_of_constant entity.cr_name)
+                acc.di_constants;
+          })
+    ncr.ncr_entities
+    { di_types = StringMap.empty; di_constants = StringMap.empty }
+
+let build ~namespace ~classes ~interfaces ~records ~enums ~bitfields ~constants
+    ~cross_references =
+  StringMap.map of_cross_references cross_references
+  |> StringMap.add namespace
+       (current_namespace ~classes ~interfaces ~records ~enums ~bitfields
+          ~constants)

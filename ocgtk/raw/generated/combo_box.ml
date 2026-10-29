@@ -13,18 +13,19 @@
     specified in the form of a tree model, and the display of the choices can be
     adapted to the data in the model by using cell renderers, as you would in a
     tree view. This is possible since [GtkComboBox] implements the
-    [Gtk.CellLayout] interface. The tree model holding the valid choices is not
-    restricted to a flat list, it can be a real tree, and the popup will reflect
-    the tree structure.
+    {{!Ocgtk.Raw.Cell_layout}[Gtk.CellLayout]} interface. The tree model holding
+    the valid choices is not restricted to a flat list, it can be a real tree,
+    and the popup will reflect the tree structure.
 
     To allow the user to enter values not in the model, the
     [Gtk.ComboBox:has-entry] property allows the [GtkComboBox] to contain a
-    [Gtk.Entry]. This entry can be accessed by calling [Gtk.ComboBox.get_child]
-    on the combo box.
+    {{!Ocgtk.Raw.Entry}[Gtk.Entry]}. This entry can be accessed by calling
+    [Gtk.ComboBox.get_child] on the combo box.
 
     For a simple list of textual choices, the model-view API of [GtkComboBox]
-    can be a bit overwhelming. In this case, [Gtk.ComboBoxText] offers a simple
-    alternative. Both [GtkComboBox] and [GtkComboBoxText] can contain an entry.
+    can be a bit overwhelming. In this case,
+    {{!Ocgtk.Raw.Combo_box_text}[Gtk.ComboBoxText]} offers a simple alternative.
+    Both [GtkComboBox] and [GtkComboBoxText] can contain an entry.
 
     {b CSS nodes}
 
@@ -117,7 +118,8 @@ external set_entry_text_column : t -> int -> unit
 (** Sets the model column which [combo_box] should use to get strings from to be
     [text_column].
 
-    For this column no separate [Gtk.CellRenderer] is needed.
+    For this column no separate {{!Ocgtk.Raw.Cell_renderer}[Gtk.CellRenderer]}
+    is needed.
 
     The column [text_column] in the model of [combo_box] must be of type
     [G_TYPE_STRING].
@@ -240,8 +242,8 @@ external get_active : t -> int = "ml_gtk_combo_box_get_active"
 
     If the model is a non-flat treemodel, and the active item is not an
     immediate child of the root of the tree, this function returns
-    gtk_tree_path_get_indices (path)\[0\], where [path] is the [Gtk.TreePath] of
-    the active item. *)
+    gtk_tree_path_get_indices (path)\[0\], where [path] is the
+    {{!Ocgtk.Raw.Tree_path}[Gtk.TreePath]} of the active item. *)
 
 (* Properties *)
 

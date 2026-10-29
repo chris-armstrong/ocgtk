@@ -15,7 +15,8 @@
     [DMA_FORMAT_MOD_INVALID], indicating that {b _implicit modifiers_} may be
     used with this format.
 
-    See [Gdk.DmabufTextureBuilder] for more information about DMA buffers.
+    See {{!Ocgdk.Raw.Dmabuf_texture_builder}[Gdk.DmabufTextureBuilder]} for more
+    information about DMA buffers.
 
     Note that DMA buffers only exist on Linux.
 

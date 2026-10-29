@@ -49,7 +49,9 @@ end
      error conditions that may have occurred.\n\n\
      The [_finish()] function for an operation takes the generic result\n\
      (of type [GAsyncResult]) and returns the specific result that the\n\
-     operation in question yields (e.g. a [Gio.FileEnumerator] for a\n\
+     operation in question yields (e.g. a \
+     {{!Ocgio.File_enumerator.class-type-file_enumerator_t}[Gio.FileEnumerator]} \
+     for a\n\
      \"enumerate children\" operation). If the result or error status of the\n\
      operation is not needed, there is no need to call the [_finish()]\n\
      function; GIO will take care of cleaning up the result and error\n\
@@ -125,7 +127,9 @@ class async_result : Raw.Async_result.t -> async_result_t
  error conditions that may have occurred.\n\n\
  The [_finish()] function for an operation takes the generic result\n\
  (of type [GAsyncResult]) and returns the specific result that the\n\
- operation in question yields (e.g. a [Gio.FileEnumerator] for a\n\
+ operation in question yields (e.g. a \
+ {{!Ocgio.File_enumerator.class-type-file_enumerator_t}[Gio.FileEnumerator]} \
+ for a\n\
  \"enumerate children\" operation). If the result or error status of the\n\
  operation is not needed, there is no need to call the [_finish()]\n\
  function; GIO will take care of cleaning up the result and error\n\

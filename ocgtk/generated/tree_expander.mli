@@ -69,7 +69,8 @@ end
      Provides an expander for a tree-like list.\n\n\
      It is typically placed as a bottommost child into a [GtkListView]\n\
      to allow users to expand and collapse children in a list with a\n\
-     [Gtk.TreeListModel]. [GtkTreeExpander] provides the common UI\n\
+     {{!Ocgtk.Tree_list_model.class-type-tree_list_model_t}[Gtk.TreeListModel]}. \
+     [GtkTreeExpander] provides the common UI\n\
      elements, gestures and keybindings for this purpose.\n\n\
      On top of this, the \"listitem.expand\", \"listitem.collapse\" and\n\
      \"listitem.toggle-expand\" actions are provided to allow adding custom\n\
@@ -79,7 +80,9 @@ end
      widget, as you want the keyboard focus to be in the treexpander, and not\n\
      inside the list to make use of the keybindings.\n\n\
      The [GtkTreeListModel] must be set to not be passthrough. Then it\n\
-     will provide [Gtk.TreeListRow] items which can be set via\n\
+     will provide \
+     {{!Ocgtk.Tree_list_row.class-type-tree_list_row_t}[Gtk.TreeListRow]} \
+     items which can be set via\n\
      [Gtk.TreeExpander.set_list_row] on the expander.\n\
      The expander will then watch that row item automatically.\n\
      [Gtk.TreeExpander.set_child] sets the widget that displays\n\
@@ -135,7 +138,8 @@ class tree_expander : Raw.Tree_expander.t -> tree_expander_t
  Provides an expander for a tree-like list.\n\n\
  It is typically placed as a bottommost child into a [GtkListView]\n\
  to allow users to expand and collapse children in a list with a\n\
- [Gtk.TreeListModel]. [GtkTreeExpander] provides the common UI\n\
+ {{!Ocgtk.Tree_list_model.class-type-tree_list_model_t}[Gtk.TreeListModel]}. \
+ [GtkTreeExpander] provides the common UI\n\
  elements, gestures and keybindings for this purpose.\n\n\
  On top of this, the \"listitem.expand\", \"listitem.collapse\" and\n\
  \"listitem.toggle-expand\" actions are provided to allow adding custom\n\
@@ -145,7 +149,9 @@ class tree_expander : Raw.Tree_expander.t -> tree_expander_t
  widget, as you want the keyboard focus to be in the treexpander, and not\n\
  inside the list to make use of the keybindings.\n\n\
  The [GtkTreeListModel] must be set to not be passthrough. Then it\n\
- will provide [Gtk.TreeListRow] items which can be set via\n\
+ will provide \
+ {{!Ocgtk.Tree_list_row.class-type-tree_list_row_t}[Gtk.TreeListRow]} items \
+ which can be set via\n\
  [Gtk.TreeExpander.set_list_row] on the expander.\n\
  The expander will then watch that row item automatically.\n\
  [Gtk.TreeExpander.set_child] sets the widget that displays\n\

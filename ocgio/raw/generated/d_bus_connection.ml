@@ -6,7 +6,7 @@
 
     It is a low-level API that offers a lot of flexibility. For instance, it
     lets you establish a connection over any transport that can by represented
-    as a [Gio.IOStream].
+    as a {{!Ocgio.Raw.Io_stream}[Gio.IOStream]}.
 
     This class is rarely used directly in D-Bus clients. If you are writing a
     D-Bus client, it is often easier to use the [Gio.bus_own_name],
@@ -205,9 +205,9 @@ external send_message_with_reply_sync :
     [G_DBUS_MESSAGE_TYPE_ERROR]. Use g_dbus_message_to_gerror() to transcode
     this to a [GError].
 
-    See this \[server\][Gio.DBusConnection] and \[client\][Gio.DBusConnection]
-    for an example of how to use this low-level API to send and receive UNIX
-    file descriptors.
+    See this \[server\]{{!Ocgio.Raw.D_bus_connection}[Gio.DBusConnection]} and
+    \[client\]{{!Ocgio.Raw.D_bus_connection}[Gio.DBusConnection]} for an example
+    of how to use this low-level API to send and receive UNIX file descriptors.
 
     Note that [message] must be unlocked, unless [flags] contain the
     [G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL] flag. *)
@@ -223,9 +223,10 @@ external send_message_with_reply_finish :
     [G_DBUS_MESSAGE_TYPE_ERROR]. Use g_dbus_message_to_gerror() to transcode
     this to a [GError].
 
-    See this \[server\][Gio.DBusConnection] and \[client\][Gio.DBusConnection]
-    for an example of how to use this low-level API to send and receive UNIX
-    file descriptors. *)
+    See this \[server\]{{!Ocgio.Raw.D_bus_connection}[Gio.DBusConnection]} and
+    \[client\]{{!Ocgio.Raw.D_bus_connection}[Gio.DBusConnection]} for an example
+    of how to use this low-level API to send and receive UNIX file descriptors.
+*)
 
 external send_message :
   t ->
@@ -245,9 +246,9 @@ external send_message :
     [G_IO_ERROR_CLOSED]. If [message] is not well-formed, the operation fails
     with [G_IO_ERROR_INVALID_ARGUMENT].
 
-    See this \[server\][Gio.DBusConnection] and \[client\][Gio.DBusConnection]
-    for an example of how to use this low-level API to send and receive UNIX
-    file descriptors.
+    See this \[server\]{{!Ocgio.Raw.D_bus_connection}[Gio.DBusConnection]} and
+    \[client\]{{!Ocgio.Raw.D_bus_connection}[Gio.DBusConnection]} for an example
+    of how to use this low-level API to send and receive UNIX file descriptors.
 
     Note that [message] must be unlocked, unless [flags] contain the
     [G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL] flag. *)

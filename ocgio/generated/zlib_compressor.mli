@@ -1,4 +1,5 @@
-(** [GZlibCompressor] is an implementation of [Gio.Converter] that compresses
+(** [GZlibCompressor] is an implementation of
+    {{!Ocgio.Converter.class-type-converter_t}[Gio.Converter]} that compresses
     data using zlib.
 
     Its methods, signals and properties are on {!class-type-zlib_compressor_t}.
@@ -12,7 +13,8 @@
     Implements:
     - {{!Ocgio.Converter.class-type-converter_t}Ocgio.Converter}
 
-    [GZlibCompressor] is an implementation of [Gio.Converter] that compresses
+    [GZlibCompressor] is an implementation of
+    {{!Ocgio.Converter.class-type-converter_t}[Gio.Converter]} that compresses
     data using zlib. *)
 class type zlib_compressor_t = object
   inherit Converter.converter_t

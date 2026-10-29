@@ -115,7 +115,8 @@ end
      items,\n\
      it is possible to turn on _rubberband selection_, using\n\
      [Gtk.ListView:enable-rubberband].\n\n\
-     If you need multiple columns with headers, see [Gtk.ColumnView].\n\n\
+     If you need multiple columns with headers, see \
+     {{!Ocgtk.Column_view.class-type-column_view_t}[Gtk.ColumnView]}.\n\n\
      To learn more about the list widget framework, see the\n\
      overview.\n\n\
      An example of using [GtkListView]:\n\n\
@@ -204,7 +205,8 @@ class list_view : Raw.List_view.t -> list_view_t
  characteristics of the model. For models that allow multiple selected items,\n\
  it is possible to turn on _rubberband selection_, using\n\
  [Gtk.ListView:enable-rubberband].\n\n\
- If you need multiple columns with headers, see [Gtk.ColumnView].\n\n\
+ If you need multiple columns with headers, see \
+ {{!Ocgtk.Column_view.class-type-column_view_t}[Gtk.ColumnView]}.\n\n\
  To learn more about the list widget framework, see the\n\
  overview.\n\n\
  An example of using [GtkListView]:\n\n\

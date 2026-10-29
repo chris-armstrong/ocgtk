@@ -1,4 +1,5 @@
-(** The basic block in a scene graph to be rendered using [Gsk.Renderer].
+(** The basic block in a scene graph to be rendered using
+    {{!Ocgsk.Renderer.class-type-renderer_t}[Gsk.Renderer]}.
 
     Its methods, signals and properties are on {!class-type-render_node_t}. Its
     full description is under {!section-description}. Its constructors are under
@@ -9,7 +10,8 @@
 
 (** {b The methods, signals and properties of a [RenderNode].}
 
-    The basic block in a scene graph to be rendered using [Gsk.Renderer].
+    The basic block in a scene graph to be rendered using
+    {{!Ocgsk.Renderer.class-type-renderer_t}[Gsk.Renderer]}.
 
     Each node has a parent, except the top-level node; each node may have
     children nodes.
@@ -18,9 +20,10 @@
     rectangle set when creating it.
 
     Render nodes are meant to be transient; once they have been associated to a
-    [Gsk.Renderer] it's safe to release any reference you have on them. All
-    [Gsk.RenderNode]s are immutable, you can only specify their properties
-    during construction. *)
+    {{!Ocgsk.Renderer.class-type-renderer_t}[Gsk.Renderer]} it's safe to release
+    any reference you have on them. All
+    {{!Ocgsk.Render_node.class-type-render_node_t}[Gsk.RenderNode]}s are
+    immutable, you can only specify their properties during construction. *)
 class type render_node_t = object
   (** {2:methods Methods} *)
 
@@ -76,7 +79,8 @@ class render_node : Raw.Render_node.t -> render_node_t
 
 (** {1:description Description}
 
-    The basic block in a scene graph to be rendered using [Gsk.Renderer].
+    The basic block in a scene graph to be rendered using
+    {{!Ocgsk.Renderer.class-type-renderer_t}[Gsk.Renderer]}.
 
     Each node has a parent, except the top-level node; each node may have
     children nodes.
@@ -85,9 +89,10 @@ class render_node : Raw.Render_node.t -> render_node_t
     rectangle set when creating it.
 
     Render nodes are meant to be transient; once they have been associated to a
-    [Gsk.Renderer] it's safe to release any reference you have on them. All
-    [Gsk.RenderNode]s are immutable, you can only specify their properties
-    during construction. *)
+    {{!Ocgsk.Renderer.class-type-renderer_t}[Gsk.Renderer]} it's safe to release
+    any reference you have on them. All
+    {{!Ocgsk.Render_node.class-type-render_node_t}[Gsk.RenderNode]}s are
+    immutable, you can only specify their properties during construction. *)
 
 (** {1:constructors Constructors} *)
 

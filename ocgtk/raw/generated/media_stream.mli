@@ -4,7 +4,7 @@
 (** The integration point for media playback inside GTK.
 
     GTK provides an implementation of the [GtkMediaStream] interface that is
-    called [Gtk.MediaFile].
+    called {{!Ocgtk.Raw.Media_file}[Gtk.MediaFile]}.
 
     Apart from application-facing API for stream playback, [GtkMediaStream] has
     a number of APIs that are only useful for implementations and should not be
@@ -210,9 +210,9 @@ external get_error : t -> GError.t option = "ml_gtk_media_stream_get_error"
     [Gtk.MediaStream.play] or [Gtk.MediaStream.seek] will not have any effect.
 
     [GtkMediaStream] itself does not provide a way to unset an error, but
-    implementations may provide options. For example, a [Gtk.MediaFile] will
-    unset errors when a new source is set, e.g. with [Gtk.MediaFile.set_file].
-*)
+    implementations may provide options. For example, a
+    {{!Ocgtk.Raw.Media_file}[Gtk.MediaFile]} will unset errors when a new source
+    is set, e.g. with [Gtk.MediaFile.set_file]. *)
 
 external get_ended : t -> bool = "ml_gtk_media_stream_get_ended"
 (** Returns whether the streams playback is finished. *)

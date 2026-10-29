@@ -6,8 +6,10 @@
     The [GtkAdjustment] has an associated lower and upper bound. It also
     contains step and page increments, and a page size.
 
-    Adjustments are used within several GTK widgets, including [Gtk.SpinButton],
-    [Gtk.Viewport], [Gtk.Scrollbar] and [Gtk.Scale].
+    Adjustments are used within several GTK widgets, including
+    {{!Ocgtk.Raw.Spin_button}[Gtk.SpinButton]},
+    {{!Ocgtk.Raw.Viewport}[Gtk.Viewport]},
+    {{!Ocgtk.Raw.Scrollbar}[Gtk.Scrollbar]} and {{!Ocgtk.Raw.Scale}[Gtk.Scale]}.
 
     The [GtkAdjustment] object does not update the value itself. Instead it is
     left up to the owner of the [GtkAdjustment] to control the value.

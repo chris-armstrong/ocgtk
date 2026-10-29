@@ -1,5 +1,5 @@
 (** Makes it possible to use an object as source or target in a
-    [Gtk.Constraint].
+    {{!Ocgtk.Constraint.class-type-constraint__t}[Gtk.Constraint]}.
 
     Its methods, signals and properties are on
     {!class-type-constraint_target_t}. Its full description is under
@@ -11,7 +11,7 @@
 (** {b The methods, signals and properties of a [ConstraintTarget].}
 
     Makes it possible to use an object as source or target in a
-    [Gtk.Constraint].
+    {{!Ocgtk.Constraint.class-type-constraint__t}[Gtk.Constraint]}.
 
     Besides [GtkWidget], it is also implemented by [GtkConstraintGuide]. *)
 class type constraint_target_t = object
@@ -26,7 +26,7 @@ class constraint_target : Raw.Constraint_target.t -> constraint_target_t
 (** {1:description Description}
 
     Makes it possible to use an object as source or target in a
-    [Gtk.Constraint].
+    {{!Ocgtk.Constraint.class-type-constraint__t}[Gtk.Constraint]}.
 
     Besides [GtkWidget], it is also implemented by [GtkConstraintGuide]. *)
 

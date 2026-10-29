@@ -3,8 +3,10 @@
 
 (** Objects that describe one or more potential socket endpoints implement
     [GSocketConnectable]. Callers can then use [Gio.SocketConnectable.enumerate]
-    to get a [Gio.SocketAddressEnumerator] to try out each socket address in
-    turn until one succeeds, as shown in the sample code below.
+    to get a
+    {{!Ocgio.Raw.Socket_address_enumerator}[Gio.SocketAddressEnumerator]} to try
+    out each socket address in turn until one succeeds, as shown in the sample
+    code below.
 
     {[
     MyConnectionType *

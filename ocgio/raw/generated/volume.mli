@@ -5,23 +5,28 @@
     For example, a file system partition on a USB flash drive, or an optical
     disc inserted into a disc drive.
 
-    If a [GVolume] is currently mounted, the corresponding [Gio.Mount] can be
-    retrieved using [Gio.Volume.get_mount].
+    If a [GVolume] is currently mounted, the corresponding
+    {{!Ocgio.Raw.Mount}[Gio.Mount]} can be retrieved using
+    [Gio.Volume.get_mount].
 
     Mounting a [GVolume] instance is an asynchronous operation. For more
-    information about asynchronous operations, see [Gio.AsyncResult] and
-    [Gio.Task]. To mount a [GVolume], first call [Gio.Volume.mount] with (at
-    least) the [GVolume] instance, optionally a [Gio.MountOperation] object and
-    a [Gio.AsyncReadyCallback].
+    information about asynchronous operations, see
+    {{!Ocgio.Raw.Async_result}[Gio.AsyncResult]} and
+    {{!Ocgio.Raw.Task}[Gio.Task]}. To mount a [GVolume], first call
+    [Gio.Volume.mount] with (at least) the [GVolume] instance, optionally a
+    {{!Ocgio.Raw.Mount_operation}[Gio.MountOperation]} object and a
+    [Gio.AsyncReadyCallback].
 
-    Typically, one will only want to pass [None] for the [Gio.MountOperation] if
-    automounting all volumes when a desktop session starts since it’s not
-    desirable to put up a lot of dialogs asking for credentials.
+    Typically, one will only want to pass [None] for the
+    {{!Ocgio.Raw.Mount_operation}[Gio.MountOperation]} if automounting all
+    volumes when a desktop session starts since it’s not desirable to put up a
+    lot of dialogs asking for credentials.
 
     The callback will be fired when the operation has resolved (either with
-    success or failure), and a [Gio.AsyncResult] instance will be passed to the
-    callback. That callback should then call [Gio.Volume.mount_finish] with the
-    [GVolume] instance and the [Gio.AsyncResult] data to see if the operation
+    success or failure), and a {{!Ocgio.Raw.Async_result}[Gio.AsyncResult]}
+    instance will be passed to the callback. That callback should then call
+    [Gio.Volume.mount_finish] with the [GVolume] instance and the
+    {{!Ocgio.Raw.Async_result}[Gio.AsyncResult]} data to see if the operation
     was completed successfully. If a [GLib.Error] is present when
     [Gio.Volume.mount_finish] is called, then it will be filled with any error
     information.

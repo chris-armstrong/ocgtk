@@ -2,7 +2,7 @@
 (* InetSocketAddress: InetSocketAddress *)
 
 (** An IPv4 or IPv6 socket address. That is, the combination of a
-    [Gio.InetAddress] and a port number.
+    {{!Ocgio.Raw.Inet_address}[Gio.InetAddress]} and a port number.
 
     In UNIX terms, [GInetSocketAddress] corresponds to a [struct sockaddr_in6]
     or [struct sockaddr_in]).

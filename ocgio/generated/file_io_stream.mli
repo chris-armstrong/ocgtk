@@ -18,9 +18,10 @@
     [GFileIOStream] provides I/O streams that both read and write to the same
     file handle.
 
-    [GFileIOStream] implements [Gio.Seekable], which allows the I/O stream to
-    jump to arbitrary positions in the file and to truncate the file, provided
-    the filesystem of the file supports these operations.
+    [GFileIOStream] implements
+    {{!Ocgio.Seekable.class-type-seekable_t}[Gio.Seekable]}, which allows the
+    I/O stream to jump to arbitrary positions in the file and to truncate the
+    file, provided the filesystem of the file supports these operations.
 
     To find the position of a file I/O stream, use [Gio.Seekable.tell].
 
@@ -31,8 +32,8 @@
     [Gio.Seekable.truncate].
 
     The default implementation of all the [GFileIOStream] operations and the
-    implementation of [Gio.Seekable] just call into the same operations on the
-    output stream. *)
+    implementation of {{!Ocgio.Seekable.class-type-seekable_t}[Gio.Seekable]}
+    just call into the same operations on the output stream. *)
 class type file_io_stream_t = object
   inherit Io_stream.io_stream_t
   inherit Seekable.seekable_t
@@ -84,9 +85,10 @@ class file_io_stream : Raw.File_io_stream.t -> file_io_stream_t
     [GFileIOStream] provides I/O streams that both read and write to the same
     file handle.
 
-    [GFileIOStream] implements [Gio.Seekable], which allows the I/O stream to
-    jump to arbitrary positions in the file and to truncate the file, provided
-    the filesystem of the file supports these operations.
+    [GFileIOStream] implements
+    {{!Ocgio.Seekable.class-type-seekable_t}[Gio.Seekable]}, which allows the
+    I/O stream to jump to arbitrary positions in the file and to truncate the
+    file, provided the filesystem of the file supports these operations.
 
     To find the position of a file I/O stream, use [Gio.Seekable.tell].
 
@@ -97,8 +99,8 @@ class file_io_stream : Raw.File_io_stream.t -> file_io_stream_t
     [Gio.Seekable.truncate].
 
     The default implementation of all the [GFileIOStream] operations and the
-    implementation of [Gio.Seekable] just call into the same operations on the
-    output stream. *)
+    implementation of {{!Ocgio.Seekable.class-type-seekable_t}[Gio.Seekable]}
+    just call into the same operations on the output stream. *)
 
 (** {1:constructors Constructors} *)
 

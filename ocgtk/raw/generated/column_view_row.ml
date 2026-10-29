@@ -1,7 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ColumnViewRow: ColumnViewRow *)
 
-(** Configures how rows are displayed in a [Gtk.ColumnView].
+(** Configures how rows are displayed in a
+    {{!Ocgtk.Raw.Column_view}[Gtk.ColumnView]}.
 
     It is not used to set the widgets displayed in the individual cells. For
     that see [GtkColumnViewColumn.set_factory] and [GtkColumnViewCell].

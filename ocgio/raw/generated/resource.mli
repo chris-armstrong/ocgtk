@@ -5,7 +5,8 @@
 "Applications and libraries often contain binary or textual data that is\n\
  really part of the application, rather than user data. For instance\n\
  {{:https://docs.gtk.org/gtk4/class.Builder.html}[GtkBuilder]} [.ui] files,\n\
- splashscreen images, [Gio.Menu] markup XML, CSS files, icons, etc.\n\
+ splashscreen images, {{!Ocgio.Raw.Menu}[Gio.Menu]} markup XML, CSS files, \
+ icons, etc.\n\
  These are often shipped as files in [$datadir/appname], or manually\n\
  included as literal strings in the code.\n\n\
  The [GResource] API and the\n\
@@ -95,7 +96,7 @@
  [Gio.resources_open_stream] to stream the data or\n\
  [Gio.resources_lookup_data] to get a direct pointer to the data. You can\n\
  also use URIs like [resource:///org/gtk/Example/data/splashscreen.png] with\n\
- [Gio.File] to access the resource data.\n\n\
+ {{!Ocgio.Raw.File}[Gio.File]} to access the resource data.\n\n\
  Some higher-level APIs, such as \
  {{:https://docs.gtk.org/gtk4/class.Application.html}[GtkApplication]},\n\
  will automatically load resources from certain well-known paths in the\n\
@@ -151,7 +152,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_resource_get_type"
 
 external new_from_data : Glib_bytes.t -> (t, GError.t) result
   = "ml_g_resource_new_from_data"
-(** Creates a [Gio.Resource] from a reference to the binary resource bundle.
+(** Creates a {{!Ocgio.Raw.Resource}[Gio.Resource]} from a reference to the
+    binary resource bundle.
 
     This will keep a reference to [data] while the resource lives, so the data
     should not be modified or freed.
@@ -179,7 +181,7 @@ external open_stream :
   Ocgio_enums.resourcelookupflags ->
   (Input_stream.t, GError.t) result = "ml_g_resource_open_stream"
 (** Looks for a file at the specified [path] in the resource and returns a
-    [Gio.InputStream] that lets you read the data.
+    {{!Ocgio.Raw.Input_stream}[Gio.InputStream]} that lets you read the data.
 
     [lookup_flags] controls the behaviour of the lookup.
 
@@ -235,8 +237,9 @@ external enumerate_children :
     The return result is a null terminated list of strings which should be
     released with [GLib.strfreev].
 
-    If [path] is invalid or does not exist in the [Gio.Resource],
-    [G_RESOURCE_ERROR_NOT_FOUND] will be returned.
+    If [path] is invalid or does not exist in the
+    {{!Ocgio.Raw.Resource}[Gio.Resource]}, [G_RESOURCE_ERROR_NOT_FOUND] will be
+    returned.
 
     [lookup_flags] controls the behaviour of the lookup. *)
 

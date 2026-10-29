@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ZlibDecompressor: ZlibDecompressor *)
 
-(** [GZlibDecompressor] is an implementation of [Gio.Converter] that
-    decompresses data compressed with zlib.
+(** [GZlibDecompressor] is an implementation of
+    {{!Ocgio.Raw.Converter}[Gio.Converter]} that decompresses data compressed
+    with zlib.
 
     The class built on this module is in {!Ocgio.Zlib_decompressor}. *)
 

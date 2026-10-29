@@ -3,8 +3,8 @@
 
 (** A [GdkTexture] representing a DMA buffer.
 
-    To create a [GdkDmabufTexture], use the auxiliary [Gdk.DmabufTextureBuilder]
-    object.
+    To create a [GdkDmabufTexture], use the auxiliary
+    {{!Ocgdk.Raw.Dmabuf_texture_builder}[Gdk.DmabufTextureBuilder]} object.
 
     Dma-buf textures can only be created on Linux.
 

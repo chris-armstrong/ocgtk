@@ -1,5 +1,6 @@
-(** [GDBusMenuModel] is an implementation of [Gio.MenuModel] that can be used as
-    a proxy for a menu model that is exported over D-Bus with
+(** [GDBusMenuModel] is an implementation of
+    {{!Ocgio.Menu_model.class-type-menu_model_t}[Gio.MenuModel]} that can be
+    used as a proxy for a menu model that is exported over D-Bus with
     [Gio.DBusConnection.export_menu_model].
 
     Its methods, signals and properties are on {!class-type-d_bus_menu_model_t}.
@@ -12,8 +13,9 @@
 
     Inherits from: {{!Ocgio.Menu_model.class-type-menu_model_t}Ocgio.Menu_model}
 
-    [GDBusMenuModel] is an implementation of [Gio.MenuModel] that can be used as
-    a proxy for a menu model that is exported over D-Bus with
+    [GDBusMenuModel] is an implementation of
+    {{!Ocgio.Menu_model.class-type-menu_model_t}[Gio.MenuModel]} that can be
+    used as a proxy for a menu model that is exported over D-Bus with
     [Gio.DBusConnection.export_menu_model]. *)
 class type d_bus_menu_model_t = object
   inherit Menu_model.menu_model_t

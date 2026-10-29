@@ -16,8 +16,11 @@
     The [GtkAdjustment] has an associated lower and upper bound. It also
     contains step and page increments, and a page size.
 
-    Adjustments are used within several GTK widgets, including [Gtk.SpinButton],
-    [Gtk.Viewport], [Gtk.Scrollbar] and [Gtk.Scale].
+    Adjustments are used within several GTK widgets, including
+    {{!Ocgtk.Spin_button.class-type-spin_button_t}[Gtk.SpinButton]},
+    {{!Ocgtk.Viewport.class-type-viewport_t}[Gtk.Viewport]},
+    {{!Ocgtk.Scrollbar.class-type-scrollbar_t}[Gtk.Scrollbar]} and
+    {{!Ocgtk.Scale.class-type-scale_t}[Gtk.Scale]}.
 
     The [GtkAdjustment] object does not update the value itself. Instead it is
     left up to the owner of the [GtkAdjustment] to control the value. *)
@@ -148,8 +151,11 @@ class adjustment : Raw.Adjustment.t -> adjustment_t
     The [GtkAdjustment] has an associated lower and upper bound. It also
     contains step and page increments, and a page size.
 
-    Adjustments are used within several GTK widgets, including [Gtk.SpinButton],
-    [Gtk.Viewport], [Gtk.Scrollbar] and [Gtk.Scale].
+    Adjustments are used within several GTK widgets, including
+    {{!Ocgtk.Spin_button.class-type-spin_button_t}[Gtk.SpinButton]},
+    {{!Ocgtk.Viewport.class-type-viewport_t}[Gtk.Viewport]},
+    {{!Ocgtk.Scrollbar.class-type-scrollbar_t}[Gtk.Scrollbar]} and
+    {{!Ocgtk.Scale.class-type-scale_t}[Gtk.Scale]}.
 
     The [GtkAdjustment] object does not update the value itself. Instead it is
     left up to the owner of the [GtkAdjustment] to control the value. *)

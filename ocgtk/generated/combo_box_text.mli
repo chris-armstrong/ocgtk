@@ -99,7 +99,9 @@ end
      [Gtk.ComboBox:has-entry] property), its contents can be retrieved\n\
      using [Gtk.ComboBoxText.get_active_text].\n\n\
      You should not call [Gtk.ComboBox.set_model] or attempt to pack more\n\
-     cells into this combo box via its [Gtk.CellLayout] interface.\n\n\
+     cells into this combo box via its \
+     {{!Ocgtk.Cell_layout.class-type-cell_layout_t}[Gtk.CellLayout]} \
+     interface.\n\n\
      {b GtkComboBoxText as GtkBuildable}\n\n\
      The [GtkComboBoxText] implementation of the [GtkBuildable] interface \
      supports\n\
@@ -149,7 +151,8 @@ class combo_box_text : Raw.Combo_box_text.t -> combo_box_text_t
  [Gtk.ComboBox:has-entry] property), its contents can be retrieved\n\
  using [Gtk.ComboBoxText.get_active_text].\n\n\
  You should not call [Gtk.ComboBox.set_model] or attempt to pack more\n\
- cells into this combo box via its [Gtk.CellLayout] interface.\n\n\
+ cells into this combo box via its \
+ {{!Ocgtk.Cell_layout.class-type-cell_layout_t}[Gtk.CellLayout]} interface.\n\n\
  {b GtkComboBoxText as GtkBuildable}\n\n\
  The [GtkComboBoxText] implementation of the [GtkBuildable] interface supports\n\
  adding items directly using the [<items>] element and specifying [<item>]\n\

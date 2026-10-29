@@ -53,14 +53,15 @@
  availability via the [Gtk.DropTarget:value] property\n\n\
  However, [GtkDropTarget] is ultimately modeled in a synchronous way\n\
  and only supports data transferred via [GType]. If you want full control\n\
- over an ongoing drop, the [Gtk.DropTargetAsync] object gives you\n\
+ over an ongoing drop, the \
+ {{!Ocgtk.Raw.Drop_target_async}[Gtk.DropTargetAsync]} object gives you\n\
  this ability.\n\n\
  While a pointer is dragged over the drop target's widget and the drop\n\
  has not been rejected, that widget will receive the\n\
  [GTK_STATE_FLAG_DROP_ACTIVE] state, which can be used to style the widget.\n\n\
  If you are not interested in receiving the drop, but just want to update\n\
  UI state during a Drag-and-Drop operation (e.g. switching tabs), you can\n\
- use [Gtk.DropControllerMotion].\n\n\
+ use {{!Ocgtk.Raw.Drop_controller_motion}[Gtk.DropControllerMotion]}.\n\n\
  The class built on this module is in {!Ocgtk.Drop_target}."]
 
 type t = [ `drop_target | `event_controller | `object_ ] Gobject.obj

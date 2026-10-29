@@ -79,7 +79,7 @@ type inline = Doc_ast.inline =
       anchor : string option;
     }
   | Param_ref of string
-  | Ref of string
+  | Ref of { path : string; text : string }
   | C_lit of c_lit
   | C_prim of string
 

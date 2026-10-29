@@ -114,13 +114,16 @@ end
      choice.\n\n\
      The options are given to [GtkDropDown] in the form of [GListModel]\n\
      and how the individual options are represented is determined by\n\
-     a [Gtk.ListItemFactory]. The default factory displays simple strings,\n\
+     a \
+     {{!Ocgtk.List_item_factory.class-type-list_item_factory_t}[Gtk.ListItemFactory]}. \
+     The default factory displays simple strings,\n\
      and adds a checkmark to the selected item in the popup.\n\n\
      To set your own factory, use [Gtk.DropDown.set_factory]. It is\n\
      possible to use a separate factory for the items in the popup, with\n\
      [Gtk.DropDown.set_list_factory].\n\n\
      [GtkDropDown] knows how to obtain strings from the items in a\n\
-     [Gtk.StringList]; for other models, you have to provide an expression\n\
+     {{!Ocgtk.String_list.class-type-string_list_t}[Gtk.StringList]}; for \
+     other models, you have to provide an expression\n\
      to find the strings via [Gtk.DropDown.set_expression].\n\n\
      [GtkDropDown] can optionally allow search in the popup, which is\n\
      useful if the list of options is long. To enable the search entry,\n\
@@ -141,7 +144,8 @@ end
      ]}\n\n\
      If a [GtkDropDown] is created in this manner, or with\n\
      [Gtk.DropDown.new_from_strings], for instance, the object returned from\n\
-     [Gtk.DropDown.get_selected_item] will be a [Gtk.StringObject].\n\n\
+     [Gtk.DropDown.get_selected_item] will be a \
+     {{!Ocgtk.String_object.class-type-string_object_t}[Gtk.StringObject]}.\n\n\
      To learn more about the list widget framework, see the\n\
      overview.\n\n\
      {b CSS nodes}\n\n\
@@ -161,13 +165,16 @@ class drop_down : Raw.Drop_down.t -> drop_down_t
  choice.\n\n\
  The options are given to [GtkDropDown] in the form of [GListModel]\n\
  and how the individual options are represented is determined by\n\
- a [Gtk.ListItemFactory]. The default factory displays simple strings,\n\
+ a \
+ {{!Ocgtk.List_item_factory.class-type-list_item_factory_t}[Gtk.ListItemFactory]}. \
+ The default factory displays simple strings,\n\
  and adds a checkmark to the selected item in the popup.\n\n\
  To set your own factory, use [Gtk.DropDown.set_factory]. It is\n\
  possible to use a separate factory for the items in the popup, with\n\
  [Gtk.DropDown.set_list_factory].\n\n\
  [GtkDropDown] knows how to obtain strings from the items in a\n\
- [Gtk.StringList]; for other models, you have to provide an expression\n\
+ {{!Ocgtk.String_list.class-type-string_list_t}[Gtk.StringList]}; for other \
+ models, you have to provide an expression\n\
  to find the strings via [Gtk.DropDown.set_expression].\n\n\
  [GtkDropDown] can optionally allow search in the popup, which is\n\
  useful if the list of options is long. To enable the search entry,\n\
@@ -188,7 +195,8 @@ class drop_down : Raw.Drop_down.t -> drop_down_t
  ]}\n\n\
  If a [GtkDropDown] is created in this manner, or with\n\
  [Gtk.DropDown.new_from_strings], for instance, the object returned from\n\
- [Gtk.DropDown.get_selected_item] will be a [Gtk.StringObject].\n\n\
+ [Gtk.DropDown.get_selected_item] will be a \
+ {{!Ocgtk.String_object.class-type-string_object_t}[Gtk.StringObject]}.\n\n\
  To learn more about the list widget framework, see the\n\
  overview.\n\n\
  {b CSS nodes}\n\n\

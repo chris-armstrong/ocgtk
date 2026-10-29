@@ -4,12 +4,14 @@
 (** Describes a keyboard shortcut.
 
     It contains a description of how to trigger the shortcut via a
-    [Gtk.ShortcutTrigger] and a way to activate the shortcut on a widget via a
-    [Gtk.ShortcutAction].
+    {{!Ocgtk.Raw.Shortcut_trigger}[Gtk.ShortcutTrigger]} and a way to activate
+    the shortcut on a widget via a
+    {{!Ocgtk.Raw.Shortcut_action}[Gtk.ShortcutAction]}.
 
-    The actual work is usually done via [Gtk.ShortcutController], which decides
-    if and when to activate a shortcut. Using that controller directly however
-    is rarely necessary as various higher level convenience APIs exist on
+    The actual work is usually done via
+    {{!Ocgtk.Raw.Shortcut_controller}[Gtk.ShortcutController]}, which decides if
+    and when to activate a shortcut. Using that controller directly however is
+    rarely necessary as various higher level convenience APIs exist on
     [GtkWidget]s that make it easier to use shortcuts in GTK.
 
     [GtkShortcut] does provide functionality to make it easy for users to work

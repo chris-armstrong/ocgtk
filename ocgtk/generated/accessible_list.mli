@@ -1,4 +1,5 @@
-(** Wraps a list of references to [Gtk.Accessible] objects.
+(** Wraps a list of references to
+    {{!Ocgtk.Accessible.class-type-accessible_t}[Gtk.Accessible]} objects.
 
     Its methods, signals and properties are on {!class-type-accessible_list_t}.
     Its constructors are under {!section-constructors}. The functions it is
@@ -8,7 +9,8 @@
 
 (** {b The methods, signals and properties of a [AccessibleList].}
 
-    Wraps a list of references to [Gtk.Accessible] objects. *)
+    Wraps a list of references to
+    {{!Ocgtk.Accessible.class-type-accessible_t}[Gtk.Accessible]} objects. *)
 class type accessible_list_t = object
   (** {2:methods Methods} *)
 

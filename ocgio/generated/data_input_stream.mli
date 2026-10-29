@@ -1,5 +1,7 @@
-(** Data input stream implements [Gio.InputStream] and includes functions for
-    reading structured data directly from a binary input stream.
+(** Data input stream implements
+    {{!Ocgio.Input_stream.class-type-input_stream_t}[Gio.InputStream]} and
+    includes functions for reading structured data directly from a binary input
+    stream.
 
     Its methods, signals and properties are on
     {!class-type-data_input_stream_t}. Its constructors are under
@@ -16,8 +18,10 @@
     Implements:
     - {{!Ocgio.Seekable.class-type-seekable_t}Ocgio.Seekable}
 
-    Data input stream implements [Gio.InputStream] and includes functions for
-    reading structured data directly from a binary input stream. *)
+    Data input stream implements
+    {{!Ocgio.Input_stream.class-type-input_stream_t}[Gio.InputStream]} and
+    includes functions for reading structured data directly from a binary input
+    stream. *)
 class type data_input_stream_t = object
   inherit Buffered_input_stream.buffered_input_stream_t
 

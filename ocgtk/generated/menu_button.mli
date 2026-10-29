@@ -26,9 +26,9 @@
     The [GtkMenuButton] widget can show either an icon (set with the
     [Gtk.MenuButton:icon-name] property) or a label (set with the
     [Gtk.MenuButton:label] property). If neither is explicitly set, a
-    [Gtk.Image] is automatically created, using an arrow image oriented
-    according to [Gtk.MenuButton:direction] or the generic “open-menu-symbolic”
-    icon if the direction is not set.
+    {{!Ocgtk.Image.class-type-image_t}[Gtk.Image]} is automatically created,
+    using an arrow image oriented according to [Gtk.MenuButton:direction] or the
+    generic “open-menu-symbolic” icon if the direction is not set.
 
     The positioning of the popup is determined by the [Gtk.MenuButton:direction]
     property of the menu button.
@@ -225,9 +225,9 @@ class menu_button : Raw.Menu_button.t -> menu_button_t
     The [GtkMenuButton] widget can show either an icon (set with the
     [Gtk.MenuButton:icon-name] property) or a label (set with the
     [Gtk.MenuButton:label] property). If neither is explicitly set, a
-    [Gtk.Image] is automatically created, using an arrow image oriented
-    according to [Gtk.MenuButton:direction] or the generic “open-menu-symbolic”
-    icon if the direction is not set.
+    {{!Ocgtk.Image.class-type-image_t}[Gtk.Image]} is automatically created,
+    using an arrow image oriented according to [Gtk.MenuButton:direction] or the
+    generic “open-menu-symbolic” icon if the direction is not set.
 
     The positioning of the popup is determined by the [Gtk.MenuButton:direction]
     property of the menu button.

@@ -14,10 +14,12 @@
 
     An event controller tracking the pointer during Drag-and-Drop operations.
 
-    It is modeled after [Gtk.EventControllerMotion] so if you have used that,
-    this should feel really familiar.
+    It is modeled after
+    {{!Ocgtk.Event_controller_motion.class-type-event_controller_motion_t}[Gtk.EventControllerMotion]}
+    so if you have used that, this should feel really familiar.
 
-    This controller is not able to accept drops, use [Gtk.DropTarget] for that
+    This controller is not able to accept drops, use
+    {{!Ocgtk.Drop_target.class-type-drop_target_t}[Gtk.DropTarget]} for that
     purpose. *)
 class type drop_controller_motion_t = object
   inherit Event_controller.event_controller_t
@@ -70,10 +72,12 @@ class drop_controller_motion :
 
     An event controller tracking the pointer during Drag-and-Drop operations.
 
-    It is modeled after [Gtk.EventControllerMotion] so if you have used that,
-    this should feel really familiar.
+    It is modeled after
+    {{!Ocgtk.Event_controller_motion.class-type-event_controller_motion_t}[Gtk.EventControllerMotion]}
+    so if you have used that, this should feel really familiar.
 
-    This controller is not able to accept drops, use [Gtk.DropTarget] for that
+    This controller is not able to accept drops, use
+    {{!Ocgtk.Drop_target.class-type-drop_target_t}[Gtk.DropTarget]} for that
     purpose. *)
 
 (** {1:constructors Constructors} *)

@@ -16,8 +16,10 @@ class type draw_context_t = App_launch_context_cycle_de440b34.draw_context_t
     Base class for objects implementing different rendering methods.
 
     [GdkDrawContext] is the base object used by contexts implementing different
-    rendering methods, such as [Gdk.CairoContext] or [Gdk.GLContext]. It
-    provides shared functionality between those contexts.
+    rendering methods, such as
+    {{!Ocgdk.Cairo_context.class-type-cairo_context_t}[Gdk.CairoContext]} or
+    {{!Ocgdk.Gl_context.class-type-gl_context_t}[Gdk.GLContext]}. It provides
+    shared functionality between those contexts.
 
     You will always interact with one of those subclasses.
 
@@ -31,8 +33,10 @@ class draw_context : Raw.Draw_context.t -> draw_context_t
     Base class for objects implementing different rendering methods.
 
     [GdkDrawContext] is the base object used by contexts implementing different
-    rendering methods, such as [Gdk.CairoContext] or [Gdk.GLContext]. It
-    provides shared functionality between those contexts.
+    rendering methods, such as
+    {{!Ocgdk.Cairo_context.class-type-cairo_context_t}[Gdk.CairoContext]} or
+    {{!Ocgdk.Gl_context.class-type-gl_context_t}[Gdk.GLContext]}. It provides
+    shared functionality between those contexts.
 
     You will always interact with one of those subclasses.
 

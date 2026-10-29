@@ -1,8 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ListStore: ListStore *)
 
-(** [GListStore] is a simple implementation of [Gio.ListModel] that stores all
-    items in memory.
+(** [GListStore] is a simple implementation of
+    {{!Ocgio.Raw.List_model}[Gio.ListModel]} that stores all items in memory.
 
     It provides insertions, deletions, and lookups in logarithmic time with a
     fast path for the common case of iterating the list linearly.

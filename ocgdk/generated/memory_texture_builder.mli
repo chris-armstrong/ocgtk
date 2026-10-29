@@ -1,5 +1,5 @@
-(** Constructs [Gdk.Texture] objects from system memory provided via
-    [GLib.Bytes].
+(** Constructs {{!Ocgdk.Texture.class-type-texture_t}[Gdk.Texture]} objects from
+    system memory provided via [GLib.Bytes].
 
     Its methods, signals and properties are on
     {!class-type-memory_texture_builder_t}. Its full description is under
@@ -10,8 +10,8 @@
 
 (** {b The methods, signals and properties of a [MemoryTextureBuilder].}
 
-    Constructs [Gdk.Texture] objects from system memory provided via
-    [GLib.Bytes].
+    Constructs {{!Ocgdk.Texture.class-type-texture_t}[Gdk.Texture]} objects from
+    system memory provided via [GLib.Bytes].
 
     The operation is quite simple: Create a texture builder, set all the
     necessary properties - keep in mind that the properties
@@ -148,8 +148,8 @@ class memory_texture_builder :
 
 (** {1:description Description}
 
-    Constructs [Gdk.Texture] objects from system memory provided via
-    [GLib.Bytes].
+    Constructs {{!Ocgdk.Texture.class-type-texture_t}[Gdk.Texture]} objects from
+    system memory provided via [GLib.Bytes].
 
     The operation is quite simple: Create a texture builder, set all the
     necessary properties - keep in mind that the properties

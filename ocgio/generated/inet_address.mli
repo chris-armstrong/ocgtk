@@ -20,8 +20,8 @@
     [GInetAddress].
 
     To actually connect to a remote host, you will need a
-    [Gio.InetSocketAddress] (which includes a [GInetAddress] as well as a port
-    number). *)
+    {{!Ocgio.Inet_socket_address.class-type-inet_socket_address_t}[Gio.InetSocketAddress]}
+    (which includes a [GInetAddress] as well as a port number). *)
 class type inet_address_t = object
   (** {2:methods Methods} *)
 
@@ -96,8 +96,8 @@ class inet_address : Raw.Inet_address.t -> inet_address_t
     [GInetAddress].
 
     To actually connect to a remote host, you will need a
-    [Gio.InetSocketAddress] (which includes a [GInetAddress] as well as a port
-    number). *)
+    {{!Ocgio.Inet_socket_address.class-type-inet_socket_address_t}[Gio.InetSocketAddress]}
+    (which includes a [GInetAddress] as well as a port number). *)
 
 (** {1:constructors Constructors} *)
 

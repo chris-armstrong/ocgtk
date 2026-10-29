@@ -1,9 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SimpleAction: SimpleAction *)
 
-(** A [GSimpleAction] is the obvious simple implementation of the [Gio.Action]
-    interface. This is the easiest way to create an action for purposes of
-    adding it to a [Gio.SimpleActionGroup].
+(** A [GSimpleAction] is the obvious simple implementation of the
+    {{!Ocgio.Raw.Action}[Gio.Action]} interface. This is the easiest way to
+    create an action for purposes of adding it to a
+    {{!Ocgio.Raw.Simple_action_group}[Gio.SimpleActionGroup]}.
 
     The class built on this module is in {!Ocgio.Simple_action}. *)
 

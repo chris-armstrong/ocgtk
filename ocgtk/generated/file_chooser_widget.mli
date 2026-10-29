@@ -19,8 +19,10 @@
 
     [GtkFileChooserWidget] is a widget for choosing files.
 
-    It exposes the [Gtk.FileChooser] interface, and you should use the methods
-    of this interface to interact with the widget.
+    It exposes the
+    {{!Ocgtk.File_chooser.class-type-file_chooser_t}[Gtk.FileChooser]}
+    interface, and you should use the methods of this interface to interact with
+    the widget.
 
     {b Shortcuts and Gestures}
 
@@ -220,8 +222,10 @@ class file_chooser_widget : Raw.File_chooser_widget.t -> file_chooser_widget_t
 
     [GtkFileChooserWidget] is a widget for choosing files.
 
-    It exposes the [Gtk.FileChooser] interface, and you should use the methods
-    of this interface to interact with the widget.
+    It exposes the
+    {{!Ocgtk.File_chooser.class-type-file_chooser_t}[Gtk.FileChooser]}
+    interface, and you should use the methods of this interface to interact with
+    the widget.
 
     {b Shortcuts and Gestures}
 

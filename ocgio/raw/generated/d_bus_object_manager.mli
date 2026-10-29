@@ -5,8 +5,10 @@
     implementations of the standardized [org.freedesktop.DBus.ObjectManager]
     interface.
 
-    See [Gio.DBusObjectManagerClient] for the client-side implementation and
-    [Gio.DBusObjectManagerServer] for the service-side implementation.
+    See {{!Ocgio.Raw.D_bus_object_manager_client}[Gio.DBusObjectManagerClient]}
+    for the client-side implementation and
+    {{!Ocgio.Raw.D_bus_object_manager_server}[Gio.DBusObjectManagerServer]} for
+    the service-side implementation.
 
     The class built on this module is in {!Ocgio.D_bus_object_manager}. *)
 

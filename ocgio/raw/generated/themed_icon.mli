@@ -1,7 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ThemedIcon: ThemedIcon *)
 
-(** [GThemedIcon] is an implementation of [Gio.Icon] that supports icon themes.
+(** [GThemedIcon] is an implementation of {{!Ocgio.Raw.Icon}[Gio.Icon]} that
+    supports icon themes.
 
     [GThemedIcon] contains a list of all of the icons present in an icon theme,
     so that icons can be looked up quickly. [GThemedIcon] does not provide

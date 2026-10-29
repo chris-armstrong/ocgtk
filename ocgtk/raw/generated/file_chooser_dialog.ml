@@ -5,15 +5,20 @@
 "[GtkFileChooserDialog] is a dialog suitable for use with\n\
  “File Open” or “File Save” commands.\n\n\
  An example GtkFileChooserDialog\n\n\
- This widget works by putting a [Gtk.FileChooserWidget]\n\
- inside a [Gtk.Dialog]. It exposes the [Gtk.FileChooser]\n\
- interface, so you can use all of the [Gtk.FileChooser] functions\n\
- on the file chooser dialog as well as those for [Gtk.Dialog].\n\n\
+ This widget works by putting a \
+ {{!Ocgtk.Raw.File_chooser_widget}[Gtk.FileChooserWidget]}\n\
+ inside a {{!Ocgtk.Raw.Dialog}[Gtk.Dialog]}. It exposes the \
+ {{!Ocgtk.Raw.File_chooser}[Gtk.FileChooser]}\n\
+ interface, so you can use all of the \
+ {{!Ocgtk.Raw.File_chooser}[Gtk.FileChooser]} functions\n\
+ on the file chooser dialog as well as those for \
+ {{!Ocgtk.Raw.Dialog}[Gtk.Dialog]}.\n\n\
  Note that [GtkFileChooserDialog] does not have any methods of its\n\
  own. Instead, you should use the functions that work on a\n\
- [Gtk.FileChooser].\n\n\
+ {{!Ocgtk.Raw.File_chooser}[Gtk.FileChooser]}.\n\n\
  If you want to integrate well with the platform you should use the\n\
- [Gtk.FileChooserNative] API, which will use a platform-specific\n\
+ {{!Ocgtk.Raw.File_chooser_native}[Gtk.FileChooserNative]} API, which will use \
+ a platform-specific\n\
  dialog if available and fall back to [GtkFileChooserDialog]\n\
  otherwise.\n\n\
  {b Typical usage}\n\n\
@@ -100,7 +105,8 @@
  i.e. when you are doing a “Save As” command and you already have a file\n\
  saved somewhere.\n\n\
  {b Response Codes}\n\n\
- [GtkFileChooserDialog] inherits from [Gtk.Dialog], so buttons that\n\
+ [GtkFileChooserDialog] inherits from {{!Ocgtk.Raw.Dialog}[Gtk.Dialog]}, so \
+ buttons that\n\
  go in its action area have response codes such as [GTK_RESPONSE_ACCEPT] and\n\
  [GTK_RESPONSE_CANCEL]. For example, you could call\n\
  [Gtk.FileChooserDialog.new] as follows:\n\n\
@@ -117,9 +123,11 @@
 \                                      NULL);\n\
  ]}\n\n\
  This will create buttons for “Cancel” and “Open” that use predefined\n\
- response identifiers from [Gtk.ResponseType].  For most dialog\n\
+ response identifiers from \
+ {{!Ocgtk.Enums.type-responsetype}[Gtk.ResponseType]}.  For most dialog\n\
  boxes you can use your own custom response codes rather than the\n\
- ones in [Gtk.ResponseType], but [GtkFileChooserDialog] assumes that\n\
+ ones in {{!Ocgtk.Enums.type-responsetype}[Gtk.ResponseType]}, but \
+ [GtkFileChooserDialog] assumes that\n\
  its “accept”-type action, e.g. an “Open” or “Save” button,\n\
  will have one of the following response codes:\n\n\
  - [GTK_RESPONSE_ACCEPT]\n\

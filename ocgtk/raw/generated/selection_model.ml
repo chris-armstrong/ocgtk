@@ -7,8 +7,9 @@
     select and unselect various items.
 
     GTK provides default implementations of the most common selection modes such
-    as [Gtk.SingleSelection], so you will only need to implement this interface
-    if you want detailed control about how selections should be handled.
+    as {{!Ocgtk.Raw.Single_selection}[Gtk.SingleSelection]}, so you will only
+    need to implement this interface if you want detailed control about how
+    selections should be handled.
 
     A [GtkSelectionModel] supports a single boolean per item indicating if an
     item is selected or not. This can be queried via

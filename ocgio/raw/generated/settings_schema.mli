@@ -2,7 +2,8 @@
 (* SettingsSchema: SettingsSchema *)
 
 [@@@ocaml.text
-"The [Gio.SettingsSchemaSource] and [GSettingsSchema] APIs provide a\n\
+"The {{!Ocgio.Raw.Settings_schema_source}[Gio.SettingsSchemaSource]} and \
+ [GSettingsSchema] APIs provide a\n\
  mechanism for advanced control over the loading of schemas and a\n\
  mechanism for introspecting their content.\n\n\
  Plugin loading systems that wish to provide plugins a way to access\n\
@@ -10,7 +11,8 @@
  settings visible to GSettings.  Typically, a plugin will want to ship\n\
  the schema along with itself and it won't be installed into the\n\
  standard system directories for schemas.\n\n\
- [Gio.SettingsSchemaSource] provides a mechanism for dealing with this\n\
+ {{!Ocgio.Raw.Settings_schema_source}[Gio.SettingsSchemaSource]} provides a \
+ mechanism for dealing with this\n\
  by allowing the creation of a new ‘schema source’ from which schemas can\n\
  be acquired.  This schema source can then become part of the metadata\n\
  associated with the plugin and queried whenever the plugin requires\n\

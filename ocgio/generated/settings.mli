@@ -647,20 +647,25 @@ end
      [glib-compile-schemas] expects schema files to have the extension\n\
      [.gschema.override].\n\n\
      {b Delay-apply mode}\n\n\
-     By default, values set on a [Gio.Settings] instance immediately start\n\
+     By default, values set on a \
+     {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]} instance \
+     immediately start\n\
      to be written to the backend (although these writes may not complete by the\n\
      time that [Gio.Settings.set]) returns; see [Gio.Settings.sync]).\n\n\
      In order to allow groups of settings to be changed simultaneously and\n\
      atomically, GSettings also supports a ‘delay-apply’ mode. In this mode,\n\
-     updated values are kept locally in the [Gio.Settings] instance until\n\
+     updated values are kept locally in the \
+     {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]} instance until\n\
      they are explicitly applied by calling [Gio.Settings.apply].\n\n\
      For example, this could be useful for a preferences dialog where the\n\
      preferences all need to be applied simultaneously when the user clicks \
      ‘Save’.\n\n\
-     Switching a [Gio.Settings] instance to ‘delay-apply’ mode is a one-time\n\
+     Switching a {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]} \
+     instance to ‘delay-apply’ mode is a one-time\n\
      irreversible operation: from that point onwards, {i all} changes made to \
      that\n\
-     [Gio.Settings] have to be explicitly applied by calling\n\
+     {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]} have to be \
+     explicitly applied by calling\n\
      [Gio.Settings.apply]. The ‘delay-apply’ mode is also propagated to any\n\
      child settings objects subsequently created using\n\
      [Gio.Settings.get_child].\n\n\
@@ -981,19 +986,24 @@ class settings : Raw.Settings.t -> settings_t
  [glib-compile-schemas] expects schema files to have the extension\n\
  [.gschema.override].\n\n\
  {b Delay-apply mode}\n\n\
- By default, values set on a [Gio.Settings] instance immediately start\n\
+ By default, values set on a \
+ {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]} instance immediately \
+ start\n\
  to be written to the backend (although these writes may not complete by the\n\
  time that [Gio.Settings.set]) returns; see [Gio.Settings.sync]).\n\n\
  In order to allow groups of settings to be changed simultaneously and\n\
  atomically, GSettings also supports a ‘delay-apply’ mode. In this mode,\n\
- updated values are kept locally in the [Gio.Settings] instance until\n\
+ updated values are kept locally in the \
+ {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]} instance until\n\
  they are explicitly applied by calling [Gio.Settings.apply].\n\n\
  For example, this could be useful for a preferences dialog where the\n\
  preferences all need to be applied simultaneously when the user clicks \
  ‘Save’.\n\n\
- Switching a [Gio.Settings] instance to ‘delay-apply’ mode is a one-time\n\
+ Switching a {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]} instance \
+ to ‘delay-apply’ mode is a one-time\n\
  irreversible operation: from that point onwards, {i all} changes made to that\n\
- [Gio.Settings] have to be explicitly applied by calling\n\
+ {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]} have to be explicitly \
+ applied by calling\n\
  [Gio.Settings.apply]. The ‘delay-apply’ mode is also propagated to any\n\
  child settings objects subsequently created using\n\
  [Gio.Settings.get_child].\n\n\
@@ -1135,8 +1145,8 @@ class settings : Raw.Settings.t -> settings_t
 (** {1:constructors Constructors} *)
 
 val new_ : string -> settings_t
-(** Creates a new [Gio.Settings] object with the schema specified by
-    [schema_id].
+(** Creates a new {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]} object
+    with the schema specified by [schema_id].
 
     It is an error for the schema to not exist: schemas are an essential part of
     a program, as they provide type information. If schemas need to be
@@ -1144,14 +1154,16 @@ val new_ : string -> settings_t
     [Gio.SettingsSchemaSource.lookup] can be used to test for their existence
     before loading them.
 
-    Signals on the newly created [Gio.Settings] object will be dispatched via
-    the thread-default [GLib.MainContext] in effect at the time of the call to
-    [Gio.Settings.new]. The new [Gio.Settings] will hold a reference on the
-    context. See [GLib.MainContext.push_thread_default]. *)
+    Signals on the newly created
+    {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]} object will be
+    dispatched via the thread-default [GLib.MainContext] in effect at the time
+    of the call to [Gio.Settings.new]. The new
+    {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]} will hold a
+    reference on the context. See [GLib.MainContext.push_thread_default]. *)
 
 val new_with_path : string -> string -> settings_t
-(** Creates a new [Gio.Settings] object with the relocatable schema specified by
-    [schema_id] and a given path.
+(** Creates a new {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]} object
+    with the relocatable schema specified by [schema_id] and a given path.
 
     You only need to do this if you want to directly create a settings object
     with a schema that doesn’t have a specified path of its own. That’s quite

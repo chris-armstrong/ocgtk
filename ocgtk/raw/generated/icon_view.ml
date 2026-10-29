@@ -6,8 +6,9 @@
     An example GtkIconView
 
     [GtkIconView] provides an alternative view on a [GtkTreeModel]. It displays
-    the model as a grid of icons with labels. Like [Gtk.TreeView], it allows to
-    select one or multiple items (depending on the selection mode, see
+    the model as a grid of icons with labels. Like
+    {{!Ocgtk.Raw.Tree_view}[Gtk.TreeView]}, it allows to select one or multiple
+    items (depending on the selection mode, see
     [Gtk.IconView.set_selection_mode]). In addition to selection with the arrow
     keys, [GtkIconView] supports rubberband selection, which is controlled by
     dragging the pointer.

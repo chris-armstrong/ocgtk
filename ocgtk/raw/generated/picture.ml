@@ -20,11 +20,13 @@
  files, such as image files. See the documentation of [GResource] for details.\n\
  In this case, [Gtk.Picture.new_for_resource] and\n\
  [Gtk.Picture.set_resource] should be used.\n\n\
- [GtkPicture] displays an image at its natural size. See [Gtk.Image]\n\
+ [GtkPicture] displays an image at its natural size. See \
+ {{!Ocgtk.Raw.Image}[Gtk.Image]}\n\
  if you want to display a fixed-size image, such as an icon.\n\n\
  {b Sizing the paintable}\n\n\
  You can influence how the paintable is displayed inside the [GtkPicture]\n\
- by changing [Gtk.Picture:content-fit]. See [Gtk.ContentFit]\n\
+ by changing [Gtk.Picture:content-fit]. See \
+ {{!Ocgtk.Enums.type-contentfit}[Gtk.ContentFit]}\n\
  for details. [Gtk.Picture:can-shrink] can be unset to make sure\n\
  that paintables are never made smaller than their ideal size - but\n\
  be careful if you do not know the size of the paintable in use (like\n\
@@ -145,7 +147,7 @@ external set_content_fit : t -> Ocgtk_enums.contentfit -> unit
   = "ml_gtk_picture_set_content_fit"
 (** Sets how the content should be resized to fit the [GtkPicture].
 
-    See [Gtk.ContentFit] for details. *)
+    See {{!Ocgtk.Enums.type-contentfit}[Gtk.ContentFit]} for details. *)
 
 external set_can_shrink : t -> bool -> unit = "ml_gtk_picture_set_can_shrink"
 (** If set to [true], the [self] can be made smaller than its contents.
@@ -185,7 +187,7 @@ external get_content_fit : t -> Ocgtk_enums.contentfit
   = "ml_gtk_picture_get_content_fit"
 (** Returns the fit mode for the content of the [GtkPicture].
 
-    See [Gtk.ContentFit] for details. *)
+    See {{!Ocgtk.Enums.type-contentfit}[Gtk.ContentFit]} for details. *)
 
 external get_can_shrink : t -> bool = "ml_gtk_picture_get_can_shrink"
 (** Returns whether the [GtkPicture] respects its contents size. *)

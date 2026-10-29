@@ -1,4 +1,5 @@
-(** Used to download the contents of a [Gdk.Texture].
+(** Used to download the contents of a
+    {{!Ocgdk.Texture.class-type-texture_t}[Gdk.Texture]}.
 
     Its methods, signals and properties are on
     {!class-type-texture_downloader_t}. Its full description is under
@@ -9,7 +10,8 @@
 
 (** {b The methods, signals and properties of a [TextureDownloader].}
 
-    Used to download the contents of a [Gdk.Texture].
+    Used to download the contents of a
+    {{!Ocgdk.Texture.class-type-texture_t}[Gdk.Texture]}.
 
     It is intended to be created as a short-term object for a single download,
     but can be used for multiple downloads of different textures or with
@@ -54,7 +56,8 @@ class texture_downloader : Raw.Texture_downloader.t -> texture_downloader_t
 
 (** {1:description Description}
 
-    Used to download the contents of a [Gdk.Texture].
+    Used to download the contents of a
+    {{!Ocgdk.Texture.class-type-texture_t}[Gdk.Texture]}.
 
     It is intended to be created as a short-term object for a single download,
     but can be used for multiple downloads of different textures or with

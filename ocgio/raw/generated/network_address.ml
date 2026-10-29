@@ -9,8 +9,8 @@
     this object is kept alive which may have unexpected results if alive for too
     long.
 
-    See [Gio.SocketConnectable] for an example of using the connectable
-    interface.
+    See {{!Ocgio.Raw.Socket_connectable}[Gio.SocketConnectable]} for an example
+    of using the connectable interface.
 
     The class built on this module is in {!Ocgio.Network_address}. *)
 

@@ -82,7 +82,7 @@ val generate_combined_ml_modules :
 
 val generate_cycle_member_shim :
   output_mode:output_mode ->
-  namespace:string ->
+  refs:Doc_resolve.env ->
   combined_module_name:string ->
   member_name:string ->
   member_doc:string option ->

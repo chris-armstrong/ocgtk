@@ -3,9 +3,11 @@
 
 [@@@ocaml.text
 "[GActionMap] is an interface for action containers.\n\n\
- The [GActionMap] interface is implemented by [Gio.ActionGroup]\n\
+ The [GActionMap] interface is implemented by \
+ {{!Ocgio.Raw.Action_group}[Gio.ActionGroup]}\n\
  implementations that operate by containing a number of named\n\
- [Gio.Action] instances, such as [Gio.SimpleActionGroup].\n\n\
+ {{!Ocgio.Raw.Action}[Gio.Action]} instances, such as \
+ {{!Ocgio.Raw.Simple_action_group}[Gio.SimpleActionGroup]}.\n\n\
  One useful application of this interface is to map the\n\
  names of actions from various action groups to unique,\n\
  prefixed names (e.g. by prepending \"app.\" or \"win.\").\n\
@@ -22,7 +24,8 @@ external from_gobject : 'a Gobject.obj -> t = "ml_gio_action_map_from_gobject"
 external remove_action_entries : t -> Action_entry.t array -> int -> unit
   = "ml_g_action_map_remove_action_entries"
 [@@ocaml.doc
-  "Remove actions from a [Gio.ActionMap]. This is meant as the reverse of\n\
+  "Remove actions from a {{!Ocgio.Raw.Action_map}[Gio.ActionMap]}. This is \
+   meant as the reverse of\n\
    [Gio.ActionMap.add_action_entries].\n\n\
    {[\n\
    static const GActionEntry entries[] = {\n\

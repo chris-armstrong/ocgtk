@@ -1,5 +1,6 @@
-(** Converter output stream implements [Gio.OutputStream] and allows conversion
-    of data of various types during reading.
+(** Converter output stream implements
+    {{!Ocgio.Output_stream.class-type-output_stream_t}[Gio.OutputStream]} and
+    allows conversion of data of various types during reading.
 
     Its methods, signals and properties are on
     {!class-type-converter_output_stream_t}. Its full description is under
@@ -16,11 +17,13 @@
     Implements:
     - {{!Ocgio.Pollable_output_stream.class-type-pollable_output_stream_t}Ocgio.Pollable_output_stream}
 
-    Converter output stream implements [Gio.OutputStream] and allows conversion
-    of data of various types during reading.
+    Converter output stream implements
+    {{!Ocgio.Output_stream.class-type-output_stream_t}[Gio.OutputStream]} and
+    allows conversion of data of various types during reading.
 
     As of GLib 2.34, [GConverterOutputStream] implements
-    [Gio.PollableOutputStream]. *)
+    {{!Ocgio.Pollable_output_stream.class-type-pollable_output_stream_t}[Gio.PollableOutputStream]}.
+*)
 class type converter_output_stream_t = object
   inherit Filter_output_stream.filter_output_stream_t
   inherit Pollable_output_stream.pollable_output_stream_t
@@ -42,11 +45,13 @@ class converter_output_stream :
 
 (** {1:description Description}
 
-    Converter output stream implements [Gio.OutputStream] and allows conversion
-    of data of various types during reading.
+    Converter output stream implements
+    {{!Ocgio.Output_stream.class-type-output_stream_t}[Gio.OutputStream]} and
+    allows conversion of data of various types during reading.
 
     As of GLib 2.34, [GConverterOutputStream] implements
-    [Gio.PollableOutputStream]. *)
+    {{!Ocgio.Pollable_output_stream.class-type-pollable_output_stream_t}[Gio.PollableOutputStream]}.
+*)
 
 (** {1:constructors Constructors} *)
 

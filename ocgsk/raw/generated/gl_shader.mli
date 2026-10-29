@@ -10,7 +10,8 @@
  each instance of use). A shader can also receive up to 4\n\
  textures that it can use as input when producing the pixel data.\n\n\
  [GskGLShader] is usually used with gtk_snapshot_push_gl_shader()\n\
- to produce a [Gsk.GLShaderNode] in the rendering hierarchy,\n\
+ to produce a {{!Ocgsk.Raw.Gl_shader_node}[Gsk.GLShaderNode]} in the rendering \
+ hierarchy,\n\
  and then its input textures are constructed by rendering the child\n\
  nodes to textures before rendering the shader node itself. (You can\n\
  pass texture nodes as children if you want to directly use a texture\n\

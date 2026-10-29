@@ -456,6 +456,26 @@ type generation_context_namespace_cross_references = {
     is named differently from each (see [Module_paths]). *)
 type target_library = Raw_library | Main_library
 
+(** The kinds of type a doc reference can link to: those with a generated module
+    or enumeration type. *)
+type doc_type_kind =
+  | Dk_class
+  | Dk_interface
+  | Dk_record
+  | Dk_enum
+  | Dk_bitfield
+
+type doc_index_namespace = {
+  di_types : doc_type_kind StringMap.t;
+  di_constants : string StringMap.t;  (** GIR name to OCaml value name. *)
+}
+(** What a doc reference into one namespace can link to: its generated types and
+    constants, keyed by GIR name (see [Doc_index]). *)
+
+type doc_index = doc_index_namespace StringMap.t
+(** The namespaces a doc reference can link into, keyed by GIR namespace name:
+    the current one and those with a references file. *)
+
 type generation_context = {
   namespace : gir_namespace;
   repository : gir_repository;
@@ -472,4 +492,5 @@ type generation_context = {
   cross_references : generation_context_namespace_cross_references StringMap.t;
   target_library : target_library;
       (* Library the code being generated belongs to; decides module paths *)
+  doc_index : doc_index; (* What doc references can link to; see [Doc_index] *)
 }

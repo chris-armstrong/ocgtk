@@ -4,7 +4,8 @@
 (** The interface that is used to implement print preview.
 
     A [GtkPrintOperationPreview] object is passed to the
-    [Gtk.PrintOperation::preview] signal by [Gtk.PrintOperation].
+    [Gtk.PrintOperation::preview] signal by
+    {{!Ocgtk.Raw.Print_operation}[Gtk.PrintOperation]}.
 
     The class built on this module is in {!Ocgtk.Print_operation_preview}. *)
 

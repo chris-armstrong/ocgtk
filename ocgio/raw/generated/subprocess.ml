@@ -4,8 +4,10 @@
 (** [GSubprocess] allows the creation of and interaction with child processes.
 
     Processes can be communicated with using standard GIO-style APIs (ie:
-    [Gio.InputStream], [Gio.OutputStream]). There are GIO-style APIs to wait for
-    process termination (ie: cancellable and with an asynchronous variant).
+    {{!Ocgio.Raw.Input_stream}[Gio.InputStream]},
+    {{!Ocgio.Raw.Output_stream}[Gio.OutputStream]}). There are GIO-style APIs to
+    wait for process termination (ie: cancellable and with an asynchronous
+    variant).
 
     There is an API to force a process to terminate, as well as a race-free API
     for sending UNIX signals to a subprocess.
@@ -43,10 +45,11 @@
 
     [GSubprocess] attempts to have a very simple API for most uses (ie: spawning
     a subprocess with arguments and support for most typical kinds of input and
-    output redirection). See [Gio.Subprocess.new]. The [Gio.SubprocessLauncher]
-    API is provided for more complicated cases (advanced types of redirection,
-    environment variable manipulation, change of working directory, child setup
-    functions, etc).
+    output redirection). See [Gio.Subprocess.new]. The
+    {{!Ocgio.Raw.Subprocess_launcher}[Gio.SubprocessLauncher]} API is provided
+    for more complicated cases (advanced types of redirection, environment
+    variable manipulation, change of working directory, child setup functions,
+    etc).
 
     A typical use of [GSubprocess] will involve calling [Gio.Subprocess.new],
     followed by [Gio.Subprocess.wait_async] or [Gio.Subprocess.wait]. After the

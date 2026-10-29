@@ -20,15 +20,18 @@
 
     An example GtkVideo
 
-    The controls are available separately as [Gtk.MediaControls]. If you just
-    want to display a video without controls, you can treat it like any other
-    paintable and for example put it into a [Gtk.Picture].
+    The controls are available separately as
+    {{!Ocgtk.Media_controls.class-type-media_controls_t}[Gtk.MediaControls]}. If
+    you just want to display a video without controls, you can treat it like any
+    other paintable and for example put it into a
+    {{!Ocgtk.Picture.class-type-picture_t}[Gtk.Picture]}.
 
     [GtkVideo] aims to cover use cases such as previews, embedded animations,
     etc. It supports autoplay, looping, and simple media controls. It does not
     have support for video overlays, multichannel audio, device selection, or
     input. If you are writing a full-fledged video player, you may want to use
-    the [Gdk.Paintable] API and a media framework such as Gstreamer directly. *)
+    the {{!Ocgdk.Paintable.class-type-paintable_t}[Gdk.Paintable]} API and a
+    media framework such as Gstreamer directly. *)
 class type video_t = object
   inherit Widget.widget_t
 
@@ -100,15 +103,18 @@ class video : Raw.Video.t -> video_t
 
     An example GtkVideo
 
-    The controls are available separately as [Gtk.MediaControls]. If you just
-    want to display a video without controls, you can treat it like any other
-    paintable and for example put it into a [Gtk.Picture].
+    The controls are available separately as
+    {{!Ocgtk.Media_controls.class-type-media_controls_t}[Gtk.MediaControls]}. If
+    you just want to display a video without controls, you can treat it like any
+    other paintable and for example put it into a
+    {{!Ocgtk.Picture.class-type-picture_t}[Gtk.Picture]}.
 
     [GtkVideo] aims to cover use cases such as previews, embedded animations,
     etc. It supports autoplay, looping, and simple media controls. It does not
     have support for video overlays, multichannel audio, device selection, or
     input. If you are writing a full-fledged video player, you may want to use
-    the [Gdk.Paintable] API and a media framework such as Gstreamer directly. *)
+    the {{!Ocgdk.Paintable.class-type-paintable_t}[Gdk.Paintable]} API and a
+    media framework such as Gstreamer directly. *)
 
 (** {1:constructors Constructors} *)
 

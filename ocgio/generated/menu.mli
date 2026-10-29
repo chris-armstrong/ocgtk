@@ -1,5 +1,7 @@
-(** [GMenu] is a simple implementation of [Gio.MenuModel]. You populate a
-    [GMenu] by adding [Gio.MenuItem] instances to it.
+(** [GMenu] is a simple implementation of
+    {{!Ocgio.Menu_model.class-type-menu_model_t}[Gio.MenuModel]}. You populate a
+    [GMenu] by adding {{!Ocgio.Menu_item.class-type-menu_item_t}[Gio.MenuItem]}
+    instances to it.
 
     Its methods, signals and properties are on {!class-type-menu_t}. Its full
     description is under {!section-description}. Its constructors are under
@@ -12,13 +14,16 @@
 
     Inherits from: {{!Ocgio.Menu_model.class-type-menu_model_t}Ocgio.Menu_model}
 
-    [GMenu] is a simple implementation of [Gio.MenuModel]. You populate a
-    [GMenu] by adding [Gio.MenuItem] instances to it.
+    [GMenu] is a simple implementation of
+    {{!Ocgio.Menu_model.class-type-menu_model_t}[Gio.MenuModel]}. You populate a
+    [GMenu] by adding {{!Ocgio.Menu_item.class-type-menu_item_t}[Gio.MenuItem]}
+    instances to it.
 
     There are some convenience functions to allow you to directly add items
-    (avoiding [Gio.MenuItem]) for the common cases. To add a regular item, use
-    [Gio.Menu.insert]. To add a section, use [Gio.Menu.insert_section]. To add a
-    submenu, use [Gio.Menu.insert_submenu]. *)
+    (avoiding {{!Ocgio.Menu_item.class-type-menu_item_t}[Gio.MenuItem]}) for the
+    common cases. To add a regular item, use [Gio.Menu.insert]. To add a
+    section, use [Gio.Menu.insert_section]. To add a submenu, use
+    [Gio.Menu.insert_submenu]. *)
 class type menu_t = object
   inherit Menu_model.menu_model_t
 
@@ -131,13 +136,16 @@ class menu : Raw.Menu.t -> menu_t
 
 (** {1:description Description}
 
-    [GMenu] is a simple implementation of [Gio.MenuModel]. You populate a
-    [GMenu] by adding [Gio.MenuItem] instances to it.
+    [GMenu] is a simple implementation of
+    {{!Ocgio.Menu_model.class-type-menu_model_t}[Gio.MenuModel]}. You populate a
+    [GMenu] by adding {{!Ocgio.Menu_item.class-type-menu_item_t}[Gio.MenuItem]}
+    instances to it.
 
     There are some convenience functions to allow you to directly add items
-    (avoiding [Gio.MenuItem]) for the common cases. To add a regular item, use
-    [Gio.Menu.insert]. To add a section, use [Gio.Menu.insert_section]. To add a
-    submenu, use [Gio.Menu.insert_submenu]. *)
+    (avoiding {{!Ocgio.Menu_item.class-type-menu_item_t}[Gio.MenuItem]}) for the
+    common cases. To add a regular item, use [Gio.Menu.insert]. To add a
+    section, use [Gio.Menu.insert_section]. To add a submenu, use
+    [Gio.Menu.insert_submenu]. *)
 
 (** {1:constructors Constructors} *)
 

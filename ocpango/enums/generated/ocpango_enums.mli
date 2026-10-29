@@ -22,55 +22,129 @@ val alignment_to_int : alignment -> int
 
 type attrtype =
   [ `INVALID  (** does not happen *)
-  | `LANGUAGE  (** language ([Pango.AttrLanguage]) *)
-  | `FAMILY  (** font family name list ([Pango.AttrString]) *)
-  | `STYLE  (** font slant style ([Pango.AttrInt]) *)
-  | `WEIGHT  (** font weight ([Pango.AttrInt]) *)
-  | `VARIANT  (** font variant (normal or small caps) ([Pango.AttrInt]) *)
-  | `STRETCH  (** font stretch ([Pango.AttrInt]) *)
-  | `SIZE  (** font size in points scaled by [PANGO_SCALE] ([Pango.AttrInt]) *)
-  | `FONT_DESC  (** font description ([Pango.AttrFontDesc]) *)
-  | `FOREGROUND  (** foreground color ([Pango.AttrColor]) *)
-  | `BACKGROUND  (** background color ([Pango.AttrColor]) *)
-  | `UNDERLINE  (** whether the text has an underline ([Pango.AttrInt]) *)
-  | `STRIKETHROUGH  (** whether the text is struck-through ([Pango.AttrInt]) *)
-  | `RISE  (** baseline displacement ([Pango.AttrInt]) *)
-  | `SHAPE  (** shape ([Pango.AttrShape]) *)
-  | `SCALE  (** font size scale factor ([Pango.AttrFloat]) *)
-  | `FALLBACK  (** whether fallback is enabled ([Pango.AttrInt]) *)
+  | `LANGUAGE
+    (** language
+        ({{!Ocpango.Attr_language.class-type-attr_language_t}[Pango.AttrLanguage]})
+    *)
+  | `FAMILY
+    (** font family name list
+        ({{!Ocpango.Attr_string.class-type-attr_string_t}[Pango.AttrString]}) *)
+  | `STYLE
+    (** font slant style
+        ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]}) *)
+  | `WEIGHT
+    (** font weight ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]})
+    *)
+  | `VARIANT
+    (** font variant (normal or small caps)
+        ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]}) *)
+  | `STRETCH
+    (** font stretch
+        ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]}) *)
+  | `SIZE
+    (** font size in points scaled by [PANGO_SCALE]
+        ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]}) *)
+  | `FONT_DESC
+    (** font description
+        ({{!Ocpango.Attr_font_desc.class-type-attr_font_desc_t}[Pango.AttrFontDesc]})
+    *)
+  | `FOREGROUND
+    (** foreground color
+        ({{!Ocpango.Attr_color.class-type-attr_color_t}[Pango.AttrColor]}) *)
+  | `BACKGROUND
+    (** background color
+        ({{!Ocpango.Attr_color.class-type-attr_color_t}[Pango.AttrColor]}) *)
+  | `UNDERLINE
+    (** whether the text has an underline
+        ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]}) *)
+  | `STRIKETHROUGH
+    (** whether the text is struck-through
+        ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]}) *)
+  | `RISE
+    (** baseline displacement
+        ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]}) *)
+  | `SHAPE
+    (** shape ({{!Ocpango.Attr_shape.class-type-attr_shape_t}[Pango.AttrShape]})
+    *)
+  | `SCALE
+    (** font size scale factor
+        ({{!Ocpango.Attr_float.class-type-attr_float_t}[Pango.AttrFloat]}) *)
+  | `FALLBACK
+    (** whether fallback is enabled
+        ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]}) *)
   | `LETTER_SPACING  (** letter spacing ([PangoAttrInt]) *)
-  | `UNDERLINE_COLOR  (** underline color ([Pango.AttrColor]) *)
-  | `STRIKETHROUGH_COLOR  (** strikethrough color ([Pango.AttrColor]) *)
+  | `UNDERLINE_COLOR
+    (** underline color
+        ({{!Ocpango.Attr_color.class-type-attr_color_t}[Pango.AttrColor]}) *)
+  | `STRIKETHROUGH_COLOR
+    (** strikethrough color
+        ({{!Ocpango.Attr_color.class-type-attr_color_t}[Pango.AttrColor]}) *)
   | `ABSOLUTE_SIZE
-    (** font size in pixels scaled by [PANGO_SCALE] ([Pango.AttrInt]) *)
-  | `GRAVITY  (** base text gravity ([Pango.AttrInt]) *)
-  | `GRAVITY_HINT  (** gravity hint ([Pango.AttrInt]) *)
+    (** font size in pixels scaled by [PANGO_SCALE]
+        ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]}) *)
+  | `GRAVITY
+    (** base text gravity
+        ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]}) *)
+  | `GRAVITY_HINT
+    (** gravity hint
+        ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]}) *)
   | `FONT_FEATURES
-    (** OpenType font features ([Pango.AttrFontFeatures]). Since 1.38 *)
-  | `FOREGROUND_ALPHA  (** foreground alpha ([Pango.AttrInt]). Since 1.38 *)
-  | `BACKGROUND_ALPHA  (** background alpha ([Pango.AttrInt]). Since 1.38 *)
+    (** OpenType font features
+        ({{!Ocpango.Attr_font_features.class-type-attr_font_features_t}[Pango.AttrFontFeatures]}).
+        Since 1.38 *)
+  | `FOREGROUND_ALPHA
+    (** foreground alpha
+        ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]}). Since 1.38
+    *)
+  | `BACKGROUND_ALPHA
+    (** background alpha
+        ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]}). Since 1.38
+    *)
   | `ALLOW_BREAKS
-    (** whether breaks are allowed ([Pango.AttrInt]). Since 1.44 *)
+    (** whether breaks are allowed
+        ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]}). Since 1.44
+    *)
   | `SHOW
-    (** how to render invisible characters ([Pango.AttrInt]). Since 1.44 *)
+    (** how to render invisible characters
+        ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]}). Since 1.44
+    *)
   | `INSERT_HYPHENS
-    (** whether to insert hyphens at intra-word line breaks ([Pango.AttrInt]).
-        Since 1.44 *)
+    (** whether to insert hyphens at intra-word line breaks
+        ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]}). Since 1.44
+    *)
   | `OVERLINE
-    (** whether the text has an overline ([Pango.AttrInt]). Since 1.46 *)
-  | `OVERLINE_COLOR  (** overline color ([Pango.AttrColor]). Since 1.46 *)
-  | `LINE_HEIGHT  (** line height factor ([Pango.AttrFloat]). Since: 1.50 *)
-  | `ABSOLUTE_LINE_HEIGHT  (** line height ([Pango.AttrInt]). Since: 1.50 *)
+    (** whether the text has an overline
+        ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]}). Since 1.46
+    *)
+  | `OVERLINE_COLOR
+    (** overline color
+        ({{!Ocpango.Attr_color.class-type-attr_color_t}[Pango.AttrColor]}).
+        Since 1.46 *)
+  | `LINE_HEIGHT
+    (** line height factor
+        ({{!Ocpango.Attr_float.class-type-attr_float_t}[Pango.AttrFloat]}).
+        Since: 1.50 *)
+  | `ABSOLUTE_LINE_HEIGHT
+    (** line height
+        ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]}). Since:
+        1.50 *)
   | `TEXT_TRANSFORM
   | `WORD
     (** override segmentation to classify the range of the attribute as a single
-        word ([Pango.AttrInt]). Since 1.50 *)
+        word ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]}). Since
+        1.50 *)
   | `SENTENCE
     (** override segmentation to classify the range of the attribute as a single
-        sentence ([Pango.AttrInt]). Since 1.50 *)
-  | `BASELINE_SHIFT  (** baseline displacement ([Pango.AttrInt]). Since 1.50 *)
-  | `FONT_SCALE  (** font-relative size change ([Pango.AttrInt]). Since 1.50 *)
-  ]
+        sentence ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]}).
+        Since 1.50 *)
+  | `BASELINE_SHIFT
+    (** baseline displacement
+        ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]}). Since 1.50
+    *)
+  | `FONT_SCALE
+    (** font-relative size change
+        ({{!Ocpango.Attr_int.class-type-attr_int_t}[Pango.AttrInt]}). Since 1.50
+    *) ]
 (** The [PangoAttrType] distinguishes between different types of attributes.
 
     Along with the predefined values, it is possible to allocate additional
@@ -242,7 +316,8 @@ type gravity =
 (** [PangoGravity] represents the orientation of glyphs in a segment of text.
 
     This is useful when rendering vertical text layouts. In those situations,
-    the layout is rotated using a non-identity [Pango.Matrix], and then glyph
+    the layout is rotated using a non-identity
+    {{!Ocpango.Matrix.class-type-matrix_t}[Pango.Matrix]}, and then glyph
     orientation is controlled using [PangoGravity].
 
     Not every value in this enumeration makes sense for every usage of
@@ -250,7 +325,7 @@ type gravity =
     [Pango.Context.set_base_gravity] and can only be returned by
     [Pango.Context.get_base_gravity].
 
-    See also: [Pango.GravityHint]
+    See also: {{!Ocpango.Enums.type-gravityhint}[Pango.GravityHint]}
     @since 1.16 *)
 
 val gravity_of_int : int -> gravity
@@ -273,7 +348,7 @@ type gravityhint =
 
     That is, English excerpts in a vertical paragraph for example.
 
-    See also [Pango.Gravity]
+    See also {{!Ocpango.Enums.type-gravity}[Pango.Gravity]}
     @since 1.16 *)
 
 val gravityhint_of_int : int -> gravityhint

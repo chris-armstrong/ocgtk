@@ -11,7 +11,8 @@
  characteristics of the model. For models that allow multiple selected items,\n\
  it is possible to turn on _rubberband selection_, using\n\
  [Gtk.ListView:enable-rubberband].\n\n\
- If you need multiple columns with headers, see [Gtk.ColumnView].\n\n\
+ If you need multiple columns with headers, see \
+ {{!Ocgtk.Raw.Column_view}[Gtk.ColumnView]}.\n\n\
  To learn more about the list widget framework, see the\n\
  overview.\n\n\
  An example of using [GtkListView]:\n\n\
@@ -124,12 +125,12 @@ external set_model : t -> Selection_model.t option -> unit
   = "ml_gtk_list_view_set_model"
 (** Sets the model to use.
 
-    This must be a [Gtk.SelectionModel] to use. *)
+    This must be a {{!Ocgtk.Raw.Selection_model}[Gtk.SelectionModel]} to use. *)
 
 external set_header_factory : t -> List_item_factory.t option -> unit
   = "ml_gtk_list_view_set_header_factory"
-(** Sets the [GtkListItemFactory] to use for populating the [Gtk.ListHeader]
-    objects used in section headers.
+(** Sets the [GtkListItemFactory] to use for populating the
+    {{!Ocgtk.Raw.List_header}[Gtk.ListHeader]} objects used in section headers.
 
     If this factory is set to [None], the list will not show section headers. *)
 

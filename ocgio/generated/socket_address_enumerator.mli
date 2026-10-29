@@ -1,11 +1,14 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* Shim module for SocketAddressEnumerator from cyclic group Socket_address_and__socket_address_enumerator_and__socket_connectable *)
 
-(** [GSocketAddressEnumerator] is an enumerator type for [Gio.SocketAddress]
+(** [GSocketAddressEnumerator] is an enumerator type for
+    {{!Ocgio.Socket_address.class-type-socket_address_t}[Gio.SocketAddress]}
     instances. It is returned by enumeration functions such as
     [Gio.SocketConnectable.enumerate], which returns a
-    [GSocketAddressEnumerator] to list each [Gio.SocketAddress] which could be
-    used to connect to that [Gio.SocketConnectable].
+    [GSocketAddressEnumerator] to list each
+    {{!Ocgio.Socket_address.class-type-socket_address_t}[Gio.SocketAddress]}
+    which could be used to connect to that
+    {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}[Gio.SocketConnectable]}.
 
     Its methods, signals and properties are on
     {!class-type-socket_address_enumerator_t}. Its full description is under
@@ -20,11 +23,14 @@ class type socket_address_enumerator_t =
   .socket_address_enumerator_t
 (** {b The methods, signals and properties of a [SocketAddressEnumerator].}
 
-    [GSocketAddressEnumerator] is an enumerator type for [Gio.SocketAddress]
+    [GSocketAddressEnumerator] is an enumerator type for
+    {{!Ocgio.Socket_address.class-type-socket_address_t}[Gio.SocketAddress]}
     instances. It is returned by enumeration functions such as
     [Gio.SocketConnectable.enumerate], which returns a
-    [GSocketAddressEnumerator] to list each [Gio.SocketAddress] which could be
-    used to connect to that [Gio.SocketConnectable].
+    [GSocketAddressEnumerator] to list each
+    {{!Ocgio.Socket_address.class-type-socket_address_t}[Gio.SocketAddress]}
+    which could be used to connect to that
+    {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}[Gio.SocketConnectable]}.
 
     Enumeration is typically a blocking operation, so the asynchronous methods
     [Gio.SocketAddressEnumerator.next_async] and
@@ -42,11 +48,14 @@ class socket_address_enumerator :
 
 (** {1:description Description}
 
-    [GSocketAddressEnumerator] is an enumerator type for [Gio.SocketAddress]
+    [GSocketAddressEnumerator] is an enumerator type for
+    {{!Ocgio.Socket_address.class-type-socket_address_t}[Gio.SocketAddress]}
     instances. It is returned by enumeration functions such as
     [Gio.SocketConnectable.enumerate], which returns a
-    [GSocketAddressEnumerator] to list each [Gio.SocketAddress] which could be
-    used to connect to that [Gio.SocketConnectable].
+    [GSocketAddressEnumerator] to list each
+    {{!Ocgio.Socket_address.class-type-socket_address_t}[Gio.SocketAddress]}
+    which could be used to connect to that
+    {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}[Gio.SocketConnectable]}.
 
     Enumeration is typically a blocking operation, so the asynchronous methods
     [Gio.SocketAddressEnumerator.next_async] and

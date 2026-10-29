@@ -7,6 +7,8 @@ open Gir_gen_lib.Types
 module Signal_gen = Gir_gen_lib.Generate.Signal_gen
 module Signal_marshaller = Gir_gen_lib.Generate.Signal_marshaller
 
+let no_links = Gir_gen_lib.Generate.Doc_resolve.no_links ~namespace:"Gtk"
+
 (* ========================================================================= *)
 (* Shared context builders                                                    *)
 (* ========================================================================= *)
@@ -97,7 +99,9 @@ let test_void_zero_param_emits_val_in_l1_val () =
   let emission =
     expect_ok "clicked classify" (Signal_gen.classify ~ctx signal) Fun.id
   in
-  let l1_val = Signal_gen.emit_l1_val ~current_class:"Button" emission in
+  let l1_val =
+    Signal_gen.emit_l1_val ~refs:no_links ~current_class:"Button" emission
+  in
   let ast = Ml_ast_helpers.parse_interface l1_val in
   Helpers.assert_some "val on_clicked in interface"
     (Ml_ast_helpers.find_value_declaration_sig ast "on_clicked")
@@ -118,7 +122,7 @@ let documented_clicked_emission () =
 let test_signal_doc_on_l1_val () =
   let ast =
     Ml_ast_helpers.parse_interface
-      (Signal_gen.emit_l1_val ~current_class:"Button"
+      (Signal_gen.emit_l1_val ~refs:no_links ~current_class:"Button"
          (documented_clicked_emission ()))
   in
   Helpers.expect_some "val on_clicked"
@@ -131,7 +135,8 @@ let test_signal_doc_on_l1_val () =
 let test_signal_doc_on_l2_method () =
   let class_type =
     "class type button_t = object\n"
-    ^ Signal_gen.emit_l2_method_sig ~current_layer2_module:"Button"
+    ^ Signal_gen.emit_l2_method_sig ~refs:no_links
+        ~current_layer2_module:"Button"
         (documented_clicked_emission ())
     ^ "end\n"
   in
@@ -181,7 +186,9 @@ let test_void_primitive_params_uses_closure_create () =
          "create")
   then Alcotest.fail "on_pressed body should call Gobject.Closure.create";
   (* The l1_val callback type must have labelled params n_press:int, x:float, y:float *)
-  let l1_val = Signal_gen.emit_l1_val ~current_class:"Button" emission in
+  let l1_val =
+    Signal_gen.emit_l1_val ~refs:no_links ~current_class:"Button" emission
+  in
   let val_ast = Ml_ast_helpers.parse_interface l1_val in
   Helpers.expect_some "on_pressed val declaration"
     (Ml_ast_helpers.find_value_declaration_sig val_ast "on_pressed")
@@ -240,7 +247,9 @@ let test_bool_return_zero_param_uses_closure_create () =
          "create")
   then Alcotest.fail "on_close_request body should call Gobject.Closure.create";
   (* L1 val callback type must have a bool return type *)
-  let l1_val = Signal_gen.emit_l1_val ~current_class:"Button" emission in
+  let l1_val =
+    Signal_gen.emit_l1_val ~refs:no_links ~current_class:"Button" emission
+  in
   let val_ast = Ml_ast_helpers.parse_interface l1_val in
   Helpers.expect_some "on_close_request val declaration"
     (Ml_ast_helpers.find_value_declaration_sig val_ast "on_close_request")
@@ -538,7 +547,9 @@ let test_l1_obj_is_positional_not_labelled () =
   let emission =
     expect_ok "clicked classify" (Signal_gen.classify ~ctx signal) Fun.id
   in
-  let l1_val = Signal_gen.emit_l1_val ~current_class:"Button" emission in
+  let l1_val =
+    Signal_gen.emit_l1_val ~refs:no_links ~current_class:"Button" emission
+  in
   let ast = Ml_ast_helpers.parse_interface l1_val in
   Helpers.expect_some "on_clicked val declaration"
     (Ml_ast_helpers.find_value_declaration_sig ast "on_clicked")

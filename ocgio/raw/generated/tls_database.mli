@@ -9,7 +9,8 @@
     All implementations are required to be fully thread-safe.
 
     Most common client applications will not directly interact with
-    [GTlsDatabase]. It is used internally by [Gio.TlsConnection].
+    [GTlsDatabase]. It is used internally by
+    {{!Ocgio.Raw.Tls_connection}[Gio.TlsConnection]}.
 
     The class built on this module is in {!Ocgio.Tls_database}. *)
 

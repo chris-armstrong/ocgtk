@@ -204,8 +204,8 @@ and Layout_manager : sig
   (** Measures the size of the [widget] using [manager], for the given
       [orientation] and size.
 
-      See the [Gtk.Widget] documentation on layout management for more details.
-  *)
+      See the {{!Ocgtk.Raw.Widget}[Gtk.Widget]} documentation on layout
+      management for more details. *)
 
   external layout_changed : t -> unit = "ml_gtk_layout_manager_layout_changed"
   (** Queues a resize on the [GtkWidget] using [manager], if any.
@@ -250,8 +250,8 @@ end = struct
   (** Measures the size of the [widget] using [manager], for the given
       [orientation] and size.
 
-      See the [Gtk.Widget] documentation on layout management for more details.
-  *)
+      See the {{!Ocgtk.Raw.Widget}[Gtk.Widget]} documentation on layout
+      management for more details. *)
 
   external layout_changed : t -> unit = "ml_gtk_layout_manager_layout_changed"
   (** Queues a resize on the [GtkWidget] using [manager], if any.
@@ -526,7 +526,8 @@ and Widget : sig
       allocation of its parent.
 
       This is false for invisible children, but also for children that have
-      their own surface, such as [Gtk.Popover] instances. *)
+      their own surface, such as {{!Ocgtk.Raw.Popover}[Gtk.Popover]} instances.
+  *)
 
   external set_visible : t -> bool -> unit = "ml_gtk_widget_set_visible"
   (** Sets the visibility state of [widget].
@@ -644,7 +645,8 @@ and Widget : sig
   (** Sets how the widget treats content that is drawn outside the it's content
       area.
 
-      See the definition of [Gtk.Overflow] for details.
+      See the definition of {{!Ocgtk.Enums.type-overflow}[Gtk.Overflow]} for
+      details.
 
       This setting is provided for widget implementations and should not be used
       by application code.
@@ -668,10 +670,10 @@ and Widget : sig
       translucent, since it is ultimatively rendered on that toplevel. The
       opacity value itself is not inherited by child widgets (since that would
       make widgets deeper in the hierarchy progressively more translucent). As a
-      consequence, [Gtk.Popover] instances and other [Gtk.Native] widgets with
-      their own surface will use their own opacity value, and thus by default
-      appear non-translucent, even if they are attached to a toplevel that is
-      translucent. *)
+      consequence, {{!Ocgtk.Raw.Popover}[Gtk.Popover]} instances and other
+      {{!Ocgtk.Raw.Native}[Gtk.Native]} widgets with their own surface will use
+      their own opacity value, and thus by default appear non-translucent, even
+      if they are attached to a toplevel that is translucent. *)
 
   external set_name : t -> string -> unit = "ml_gtk_widget_set_name"
   (** Sets a widgets name.
@@ -679,7 +681,7 @@ and Widget : sig
       Setting a name allows you to refer to the widget from a CSS file. You can
       apply a style to widgets with a particular name in the CSS file. See the
       documentation for the CSS syntax (on the same page as the docs for
-      [Gtk.StyleContext].
+      {{!Ocgtk.Raw.Style_context}[Gtk.StyleContext]}.
 
       Note that the CSS syntax has certain special characters to delimit and
       represent elements in a selector (period, #, >, *...), so using these will
@@ -929,8 +931,9 @@ and Widget : sig
   (** Flags a widget to have its size renegotiated.
 
       This should be called when a widget for some reason has a new size
-      request. For example, when you change the text in a [Gtk.Label], the label
-      queues a resize to ensure there’s enough space for the new text.
+      request. For example, when you change the text in a
+      {{!Ocgtk.Raw.Label}[Gtk.Label]}, the label queues a resize to ensure
+      there’s enough space for the new text.
 
       Note that you cannot call gtk_widget_queue_resize() on a widget from
       inside its implementation of the [Gtk.Widget.size_allocate] virtual
@@ -1046,7 +1049,8 @@ and Widget : sig
 
       The default [Gtk.Widget::keynav-failed] handler returns false for
       [Gtk.DirectionType.tab-forward] and [Gtk.DirectionType.tab-backward]. For
-      the other values of [Gtk.DirectionType] it returns true.
+      the other values of {{!Ocgtk.Enums.type-directiontype}[Gtk.DirectionType]}
+      it returns true.
 
       Whenever the default handler returns true, it also calls
       [Gtk.Widget.error_bell] to notify the user of the failed keyboard
@@ -1054,9 +1058,9 @@ and Widget : sig
 
       A use case for providing an own implementation of [::keynav-failed]
       (either by connecting to it or by overriding it) would be a row of
-      [Gtk.Entry] widgets where the user should be able to navigate the entire
-      row with the cursor keys, as e.g. known from user interfaces that require
-      entering license keys. *)
+      {{!Ocgtk.Raw.Entry}[Gtk.Entry]} widgets where the user should be able to
+      navigate the entire row with the cursor keys, as e.g. known from user
+      interfaces that require entering license keys. *)
 
   external is_visible : t -> bool = "ml_gtk_widget_is_visible"
   (** Determines whether the widget and all its parents are marked as visible.
@@ -1129,8 +1133,9 @@ and Widget : sig
     = "ml_gtk_widget_insert_action_group"
   (** Inserts an action group into the widget's actions.
 
-      Children of [widget] that implement [Gtk.Actionable] can then be
-      associated with actions in [group] by setting their “action-name” to
+      Children of [widget] that implement
+      {{!Ocgtk.Raw.Actionable}[Gtk.Actionable]} can then be associated with
+      actions in [group] by setting their “action-name” to
       [prefix].[action-name].
 
       Note that inheritance is defined for individual actions. I.e. even if you
@@ -1283,8 +1288,9 @@ and Widget : sig
       state will be returned, that is, also based on parent insensitivity, even
       if [widget] itself is sensitive.
 
-      Also note that if you are looking for a way to obtain the [Gtk.StateFlags]
-      to pass to a [Gtk.StyleContext] method, you should look at
+      Also note that if you are looking for a way to obtain the
+      {{!Ocgtk.Enums.type-stateflags}[Gtk.StateFlags]} to pass to a
+      {{!Ocgtk.Raw.Style_context}[Gtk.StyleContext]} method, you should look at
       [Gtk.StyleContext.get_state]. *)
 
   external get_size_request : t -> int * int = "ml_gtk_widget_get_size_request"
@@ -1308,8 +1314,8 @@ and Widget : sig
       This is equivalent to calling [Gtk.Widget.get_width] for
       [Gtk.Orientation.horizontal] or [Gtk.Widget.get_height] for
       [Gtk.Orientation.vertical], but can be used when writing
-      orientation-independent code, such as when implementing [Gtk.Orientable]
-      widgets.
+      orientation-independent code, such as when implementing
+      {{!Ocgtk.Raw.Orientable}[Gtk.Orientable]} widgets.
 
       To learn more about widget sizes, see the coordinate system overview. *)
 
@@ -1867,7 +1873,7 @@ and Widget : sig
       the widget.
 
       You will usually want to call this function right after creating any kind
-      of [Gtk.EventController]. *)
+      of {{!Ocgtk.Raw.Event_controller}[Gtk.EventController]}. *)
 
   external activate_default : t -> unit = "ml_gtk_widget_activate_default"
   (** Activates the [default.activate] action for the widget.
@@ -2129,7 +2135,8 @@ end = struct
       allocation of its parent.
 
       This is false for invisible children, but also for children that have
-      their own surface, such as [Gtk.Popover] instances. *)
+      their own surface, such as {{!Ocgtk.Raw.Popover}[Gtk.Popover]} instances.
+  *)
 
   external set_visible : t -> bool -> unit = "ml_gtk_widget_set_visible"
   (** Sets the visibility state of [widget].
@@ -2247,7 +2254,8 @@ end = struct
   (** Sets how the widget treats content that is drawn outside the it's content
       area.
 
-      See the definition of [Gtk.Overflow] for details.
+      See the definition of {{!Ocgtk.Enums.type-overflow}[Gtk.Overflow]} for
+      details.
 
       This setting is provided for widget implementations and should not be used
       by application code.
@@ -2271,10 +2279,10 @@ end = struct
       translucent, since it is ultimatively rendered on that toplevel. The
       opacity value itself is not inherited by child widgets (since that would
       make widgets deeper in the hierarchy progressively more translucent). As a
-      consequence, [Gtk.Popover] instances and other [Gtk.Native] widgets with
-      their own surface will use their own opacity value, and thus by default
-      appear non-translucent, even if they are attached to a toplevel that is
-      translucent. *)
+      consequence, {{!Ocgtk.Raw.Popover}[Gtk.Popover]} instances and other
+      {{!Ocgtk.Raw.Native}[Gtk.Native]} widgets with their own surface will use
+      their own opacity value, and thus by default appear non-translucent, even
+      if they are attached to a toplevel that is translucent. *)
 
   external set_name : t -> string -> unit = "ml_gtk_widget_set_name"
   (** Sets a widgets name.
@@ -2282,7 +2290,7 @@ end = struct
       Setting a name allows you to refer to the widget from a CSS file. You can
       apply a style to widgets with a particular name in the CSS file. See the
       documentation for the CSS syntax (on the same page as the docs for
-      [Gtk.StyleContext].
+      {{!Ocgtk.Raw.Style_context}[Gtk.StyleContext]}.
 
       Note that the CSS syntax has certain special characters to delimit and
       represent elements in a selector (period, #, >, *...), so using these will
@@ -2532,8 +2540,9 @@ end = struct
   (** Flags a widget to have its size renegotiated.
 
       This should be called when a widget for some reason has a new size
-      request. For example, when you change the text in a [Gtk.Label], the label
-      queues a resize to ensure there’s enough space for the new text.
+      request. For example, when you change the text in a
+      {{!Ocgtk.Raw.Label}[Gtk.Label]}, the label queues a resize to ensure
+      there’s enough space for the new text.
 
       Note that you cannot call gtk_widget_queue_resize() on a widget from
       inside its implementation of the [Gtk.Widget.size_allocate] virtual
@@ -2649,7 +2658,8 @@ end = struct
 
       The default [Gtk.Widget::keynav-failed] handler returns false for
       [Gtk.DirectionType.tab-forward] and [Gtk.DirectionType.tab-backward]. For
-      the other values of [Gtk.DirectionType] it returns true.
+      the other values of {{!Ocgtk.Enums.type-directiontype}[Gtk.DirectionType]}
+      it returns true.
 
       Whenever the default handler returns true, it also calls
       [Gtk.Widget.error_bell] to notify the user of the failed keyboard
@@ -2657,9 +2667,9 @@ end = struct
 
       A use case for providing an own implementation of [::keynav-failed]
       (either by connecting to it or by overriding it) would be a row of
-      [Gtk.Entry] widgets where the user should be able to navigate the entire
-      row with the cursor keys, as e.g. known from user interfaces that require
-      entering license keys. *)
+      {{!Ocgtk.Raw.Entry}[Gtk.Entry]} widgets where the user should be able to
+      navigate the entire row with the cursor keys, as e.g. known from user
+      interfaces that require entering license keys. *)
 
   external is_visible : t -> bool = "ml_gtk_widget_is_visible"
   (** Determines whether the widget and all its parents are marked as visible.
@@ -2732,8 +2742,9 @@ end = struct
     = "ml_gtk_widget_insert_action_group"
   (** Inserts an action group into the widget's actions.
 
-      Children of [widget] that implement [Gtk.Actionable] can then be
-      associated with actions in [group] by setting their “action-name” to
+      Children of [widget] that implement
+      {{!Ocgtk.Raw.Actionable}[Gtk.Actionable]} can then be associated with
+      actions in [group] by setting their “action-name” to
       [prefix].[action-name].
 
       Note that inheritance is defined for individual actions. I.e. even if you
@@ -2886,8 +2897,9 @@ end = struct
       state will be returned, that is, also based on parent insensitivity, even
       if [widget] itself is sensitive.
 
-      Also note that if you are looking for a way to obtain the [Gtk.StateFlags]
-      to pass to a [Gtk.StyleContext] method, you should look at
+      Also note that if you are looking for a way to obtain the
+      {{!Ocgtk.Enums.type-stateflags}[Gtk.StateFlags]} to pass to a
+      {{!Ocgtk.Raw.Style_context}[Gtk.StyleContext]} method, you should look at
       [Gtk.StyleContext.get_state]. *)
 
   external get_size_request : t -> int * int = "ml_gtk_widget_get_size_request"
@@ -2911,8 +2923,8 @@ end = struct
       This is equivalent to calling [Gtk.Widget.get_width] for
       [Gtk.Orientation.horizontal] or [Gtk.Widget.get_height] for
       [Gtk.Orientation.vertical], but can be used when writing
-      orientation-independent code, such as when implementing [Gtk.Orientable]
-      widgets.
+      orientation-independent code, such as when implementing
+      {{!Ocgtk.Raw.Orientable}[Gtk.Orientable]} widgets.
 
       To learn more about widget sizes, see the coordinate system overview. *)
 
@@ -3470,7 +3482,7 @@ end = struct
       the widget.
 
       You will usually want to call this function right after creating any kind
-      of [Gtk.EventController]. *)
+      of {{!Ocgtk.Raw.Event_controller}[Gtk.EventController]}. *)
 
   external activate_default : t -> unit = "ml_gtk_widget_activate_default"
   (** Activates the [default.activate] action for the widget.

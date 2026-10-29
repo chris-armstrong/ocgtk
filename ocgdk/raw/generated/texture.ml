@@ -7,8 +7,8 @@
     frames, and will be used for a long time.
 
     There are various ways to create [GdkTexture] objects from a
-    [GdkPixbuf.Pixbuf], or from bytes stored in memory, a file, or a
-    [Gio.Resource].
+    {{!Ocgdkpixbuf.Raw.Pixbuf}[GdkPixbuf.Pixbuf]}, or from bytes stored in
+    memory, a file, or a {{!Ocgio.Raw.Resource}[Gio.Resource]}.
 
     The ownership of the pixel data is transferred to the [GdkTexture] instance;
     you can only make a copy of it, via [Gdk.Texture.download].
@@ -147,7 +147,7 @@ external save_to_png : t -> string -> bool = "ml_gdk_texture_save_to_png"
 
     This is a utility function intended for debugging and testing. If you want
     more control over formats, proper error handling or want to store to a
-    [Gio.File] or other location, you might want to use
+    {{!Ocgio.Raw.File}[Gio.File]} or other location, you might want to use
     [Gdk.Texture.save_to_png_bytes] or look into the libglycin library. *)
 
 external get_width : t -> int = "ml_gdk_texture_get_width"

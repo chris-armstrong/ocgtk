@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* TlsServerConnection: TlsServerConnection *)
 
-(** [GTlsServerConnection] is the server-side subclass of [Gio.TlsConnection],
-    representing a server-side TLS connection.
+(** [GTlsServerConnection] is the server-side subclass of
+    {{!Ocgio.Raw.Tls_connection}[Gio.TlsConnection]}, representing a server-side
+    TLS connection.
 
     The class built on this module is in {!Ocgio.Tls_server_connection}. *)
 

@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DataInputStream: DataInputStream *)
 
-(** Data input stream implements [Gio.InputStream] and includes functions for
-    reading structured data directly from a binary input stream.
+(** Data input stream implements {{!Ocgio.Raw.Input_stream}[Gio.InputStream]}
+    and includes functions for reading structured data directly from a binary
+    input stream.
 
     The class built on this module is in {!Ocgio.Data_input_stream}. *)
 

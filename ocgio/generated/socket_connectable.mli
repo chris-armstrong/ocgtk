@@ -3,8 +3,10 @@
 
 (** Objects that describe one or more potential socket endpoints implement
     [GSocketConnectable]. Callers can then use [Gio.SocketConnectable.enumerate]
-    to get a [Gio.SocketAddressEnumerator] to try out each socket address in
-    turn until one succeeds, as shown in the sample code below.
+    to get a
+    {{!Ocgio.Socket_address_enumerator.class-type-socket_address_enumerator_t}[Gio.SocketAddressEnumerator]}
+    to try out each socket address in turn until one succeeds, as shown in the
+    sample code below.
 
     Its methods, signals and properties are on
     {!class-type-socket_connectable_t}. Its full description is under
@@ -20,8 +22,10 @@ class type socket_connectable_t =
 
     Objects that describe one or more potential socket endpoints implement
     [GSocketConnectable]. Callers can then use [Gio.SocketConnectable.enumerate]
-    to get a [Gio.SocketAddressEnumerator] to try out each socket address in
-    turn until one succeeds, as shown in the sample code below.
+    to get a
+    {{!Ocgio.Socket_address_enumerator.class-type-socket_address_enumerator_t}[Gio.SocketAddressEnumerator]}
+    to try out each socket address in turn until one succeeds, as shown in the
+    sample code below.
 
     {[
     MyConnectionType *
@@ -82,8 +86,10 @@ class socket_connectable : Raw.Socket_connectable.t -> socket_connectable_t
 
     Objects that describe one or more potential socket endpoints implement
     [GSocketConnectable]. Callers can then use [Gio.SocketConnectable.enumerate]
-    to get a [Gio.SocketAddressEnumerator] to try out each socket address in
-    turn until one succeeds, as shown in the sample code below.
+    to get a
+    {{!Ocgio.Socket_address_enumerator.class-type-socket_address_enumerator_t}[Gio.SocketAddressEnumerator]}
+    to try out each socket address in turn until one succeeds, as shown in the
+    sample code below.
 
     {[
     MyConnectionType *

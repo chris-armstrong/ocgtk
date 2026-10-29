@@ -15,7 +15,7 @@
     The integration point for media playback inside GTK.
 
     GTK provides an implementation of the [GtkMediaStream] interface that is
-    called [Gtk.MediaFile].
+    called {{!Ocgtk.Media_file.class-type-media_file_t}[Gtk.MediaFile]}.
 
     Apart from application-facing API for stream playback, [GtkMediaStream] has
     a number of APIs that are only useful for implementations and should not be
@@ -253,7 +253,7 @@ class media_stream : Raw.Media_stream.t -> media_stream_t
     The integration point for media playback inside GTK.
 
     GTK provides an implementation of the [GtkMediaStream] interface that is
-    called [Gtk.MediaFile].
+    called {{!Ocgtk.Media_file.class-type-media_file_t}[Gtk.MediaFile]}.
 
     Apart from application-facing API for stream playback, [GtkMediaStream] has
     a number of APIs that are only useful for implementations and should not be

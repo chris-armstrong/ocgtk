@@ -464,14 +464,18 @@ end
      The typical way to use the high-level printing API is to create\n\
      a [GtkPrintOperation] object with [Gtk.PrintOperation.new]\n\
      when the user selects to print. Then you set some properties on it,\n\
-     e.g. the page size, any [Gtk.PrintSettings] from previous print\n\
+     e.g. the page size, any \
+     {{!Ocgtk.Print_settings.class-type-print_settings_t}[Gtk.PrintSettings]} \
+     from previous print\n\
      operations, the number of pages, the current page, etc.\n\n\
      Then you start the print operation by calling [Gtk.PrintOperation.run].\n\
      It will then show a dialog, let the user select a printer and options.\n\
      When the user finished the dialog, various signals will be emitted on\n\
      the [GtkPrintOperation], the main one being\n\
      [Gtk.PrintOperation::draw-page], which you are supposed to handle\n\
-     and render the page on the provided [Gtk.PrintContext] using Cairo.\n\n\
+     and render the page on the provided \
+     {{!Ocgtk.Print_context.class-type-print_context_t}[Gtk.PrintContext]} \
+     using Cairo.\n\n\
      {b The high-level printing API}\n\n\
      {[\n\
      static GtkPrintSettings *settings = NULL;\n\n\
@@ -522,14 +526,18 @@ class print_operation : Raw.Print_operation.t -> print_operation_t
  The typical way to use the high-level printing API is to create\n\
  a [GtkPrintOperation] object with [Gtk.PrintOperation.new]\n\
  when the user selects to print. Then you set some properties on it,\n\
- e.g. the page size, any [Gtk.PrintSettings] from previous print\n\
+ e.g. the page size, any \
+ {{!Ocgtk.Print_settings.class-type-print_settings_t}[Gtk.PrintSettings]} from \
+ previous print\n\
  operations, the number of pages, the current page, etc.\n\n\
  Then you start the print operation by calling [Gtk.PrintOperation.run].\n\
  It will then show a dialog, let the user select a printer and options.\n\
  When the user finished the dialog, various signals will be emitted on\n\
  the [GtkPrintOperation], the main one being\n\
  [Gtk.PrintOperation::draw-page], which you are supposed to handle\n\
- and render the page on the provided [Gtk.PrintContext] using Cairo.\n\n\
+ and render the page on the provided \
+ {{!Ocgtk.Print_context.class-type-print_context_t}[Gtk.PrintContext]} using \
+ Cairo.\n\n\
  {b The high-level printing API}\n\n\
  {[\n\
  static GtkPrintSettings *settings = NULL;\n\n\

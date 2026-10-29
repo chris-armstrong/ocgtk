@@ -4,8 +4,9 @@
 (** An event controller to receive Drag-and-Drop operations, asynchronously.
 
     It is the more complete but also more complex method of handling drop
-    operations compared to [Gtk.DropTarget], and you should only use it if
-    [GtkDropTarget] doesn't provide all the features you need.
+    operations compared to {{!Ocgtk.Raw.Drop_target}[Gtk.DropTarget]}, and you
+    should only use it if [GtkDropTarget] doesn't provide all the features you
+    need.
 
     To use a [GtkDropTargetAsync] to receive drops on a widget, you create a
     [GtkDropTargetAsync] object, configure which data formats and actions you
@@ -138,5 +139,6 @@ val on_drop :
     let the source know that the drop is done. The call to [Gdk.Drop.finish]
     must only be done when all data has been received.
 
-    To receive the data, use one of the read functions provided by [Gdk.Drop]
-    such as [Gdk.Drop.read_async] or [Gdk.Drop.read_value_async]. *)
+    To receive the data, use one of the read functions provided by
+    {{!Ocgdk.Raw.Drop}[Gdk.Drop]} such as [Gdk.Drop.read_async] or
+    [Gdk.Drop.read_value_async]. *)

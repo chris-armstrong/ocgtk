@@ -3,7 +3,8 @@
 
 (** Sorts items by comparing strings.
 
-    To obtain the strings to compare, this sorter evaluates a [Gtk.Expression].
+    To obtain the strings to compare, this sorter evaluates a
+    {{!Ocgtk.Raw.Expression}[Gtk.Expression]}.
 
     It does the comparison in a linguistically correct way using the current
     locale by normalizing Unicode strings and possibly case-folding them before

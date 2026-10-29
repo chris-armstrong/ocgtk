@@ -30,7 +30,7 @@
     Optionally, it can offer a way to reveal the contents in clear text.
 
     [GtkPasswordEntry] provides only minimal API and should be used with the
-    [Gtk.Editable] API.
+    {{!Ocgtk.Editable.class-type-editable_t}[Gtk.Editable]} API.
 
     {b CSS Nodes}
 
@@ -118,7 +118,7 @@ class password_entry : Raw.Password_entry.t -> password_entry_t
     Optionally, it can offer a way to reveal the contents in clear text.
 
     [GtkPasswordEntry] provides only minimal API and should be used with the
-    [Gtk.Editable] API.
+    {{!Ocgtk.Editable.class-type-editable_t}[Gtk.Editable]} API.
 
     {b CSS Nodes}
 

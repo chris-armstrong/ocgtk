@@ -1,13 +1,15 @@
 # M3 Odoc Translation Slice — emission, wiring, doc HTML diff, PR doc preview
 
-**Status: Phases 0–10 implemented (per-phase status below). The C code-block
+**Status: Phases 0–11 implemented (per-phase status below). The C code-block
 translation phases (formerly 11–14) are dropped from this leg. Phases 11–13,
-cross-reference resolution (PRD §7), added 2026-10-28; not started.** Phase 0 and 1: PRs #188 and #190, merged into
+cross-reference resolution (PRD §7), added 2026-10-28; Phase 11 done, 12 and
+13 not started. Phase 14,
+property doc fallbacks, added 2026-10-29; not started.** Phase 0 and 1: PRs #188 and #190, merged into
 `m3`. Phase 2 and the start of Phase 5: PR #191 (branch `m3-p2`). Phase 4:
 PR #193 (branch `m3-p4`), landed before Phase 3 because the workflow does not
 need it. Conventions page: PR #194. Phase 3: PR #207 (branch
 `m3-phase3`). Phase 5: PR #208 (branch `m3-phase5`). Phase 6: PR #209
-(branch `m3-phase6`). Phase 7: PR #211 (branch `m3-phase7`). Phase 8: branch `m3-phase8`. Phase 9: PR #215 (branch `m3-phase9`). Phase 10: branch `m3-phase10`. Phase 7 onwards: one branch and PR per phase (see the rules below).
+(branch `m3-phase6`). Phase 7: PR #211 (branch `m3-phase7`). Phase 8: branch `m3-phase8`. Phase 9: PR #215 (branch `m3-phase9`). Phase 10: PR #216 (branch `m3-phase10`). Phase 11: branch `m3-phase11`. Phase 7 onwards: one branch and PR per phase (see the rules below).
 **Created: 2026-09-08; revised: 2026-10-05 (both layers in this leg; phases
 renumbered plainly from 3; cache driver and preview moved up to Phases 3 and 4;
 one PR per phase); 2026-10-07 (Phase 4: preview action replaced, previews
@@ -1168,6 +1170,72 @@ TODO counts, not silently dropped.
 
 ### Phase 11 — Cross-references I: the resolver, and links to types and constants
 
+**Status: done** (branch `m3-phase11`). `Doc_index` builds the index from
+the context and the references files; `Doc_resolve` rewrites `Sym_ref` to
+`Ref { path; text }`; `Doc_emit.translate` (parse, resolve, render) is the
+one translation emission sites use, and every site passes `~refs`. A fresh
+`@doc` build has 0 odoc warnings and no unresolved link; 2,808 references
+render as links (the summary's L2 count of linked fragments: Gtk 533,
+Gio 365, Gdk 47, Pango 45, Gsk 20, GdkPixbuf 4). `doc_diff` against
+`m3-phase10` shows only code spans becoming links in every binding package.
+The acceptance links are as planned: `Ocgtk.Button`'s `[Gtk.ToggleButton]`
+goes to `Ocgtk/Toggle_button/class-type-toggle_button_t/` (L2) and to
+`Ocgtk_raw/Toggle_button/` (L1, through `Ocgtk.Raw.Toggle_button`), and
+`Ocgtk.Drag_source`'s `[Gdk.ContentProvider]` links into `ocgdk`.
+Departures from the plan below:
+
+- **No links in class member docs.** odoc 3.2.1 resolves no reference in
+  the doc of a method of a `class` or `class type`: a probe showed every
+  form (another module, a type, a value, a module, `{!method-…}` in the
+  same class type) rendered as `xref-unresolved`, with no warning. The
+  class type's own doc and `val` docs resolve. So L2 method, signal and
+  property accessor docs resolve with `Doc_resolve.class_member`, which
+  links nothing, and their references stay code. The first build without
+  it had 0 warnings but over 400 unresolved links, all in such docs.
+  *Root cause* (odoc 3.2.1 source; `master` is the same): compiling a
+  class or class type builds an `expansion`, a copy of its class signature
+  with the method docs (`src/xref2/compile.ml`), and the HTML page is
+  rendered from that copy (`src/document/generator.ml`). The link step
+  (`class_type` and `class_` in `src/xref2/link.ml`) links the declared
+  signature and the top doc but never the expansion, so the rendered
+  method docs are unlinked. Warnings come from linking the declared
+  signature, which is why a missing target warns but a valid one is still
+  shown unresolved. Linking the expansion too (one line in each function)
+  fixes it: a locally built odoc with that change renders the links, and
+  reports a missing target twice. A bare `{!method-m}` naming a method of
+  the same class type still fails, a separate limitation that full paths
+  avoid. When odoc links the expansion, the three `class_member` sites can
+  pass the normal refs.
+  **Phase 12 is affected:** member links can be made from L1 docs and from
+  L2 module, class type, enum and constant docs, but not from L2 member
+  docs, until odoc resolves them.
+- **Index type in `Types`.** The context carries the index, and `Types`
+  cannot depend on `generate/`, so `Types.doc_index` is the data
+  (namespace → GIR name → kind, and constant → OCaml name) and `Doc_index`
+  builds it. Entries hold no C names yet (Phase 13 adds them) and no OCaml
+  module names: the resolver derives them through `Module_paths`.
+- **PRD §14 question 10.** The references files list only generated
+  classes and records, and all interfaces, enums and bitfields, which are
+  all generated. They listed every constant, including those the
+  generator skips because their type has no OCaml literal form; they now
+  list only generated ones (`Constant_code.is_generated`).
+- **Outcomes, not fallbacks.** `render` cannot know why a `Sym_ref` was not
+  resolved, so it still reports `Sym_ref_degraded`. `resolve` returns one
+  outcome per reference (linked, or a miss reason) instead of a
+  `Sym_ref_unresolved` fallback. `Member_in_other_namespace` is reported
+  already.
+- **The summary is a pure pass.** `generate` prints it per namespace from
+  every GIR doc of the namespace's generated types, enums, bitfields and
+  constants, resolved as L2 docs, rather than counting at the emission
+  sites. It ends with the distinct `Unknown_target` endpoints. Named
+  exceptions, all correct misses: `Gio.SettingsBackend`,
+  `Gtk.PrintUnixDialog` and `Gtk.License` (not generated),
+  `Gio.AsyncReadyCallback` (a callback named with `[type@]`),
+  `PangoAttrInt` and `GtkColumnViewCell` (C names), and
+  ``GdkPixbuf.PixbufLoader` `` (a stray backtick upstream).
+- **Explicit kinds in paths.** Enum and bitfield links use
+  `Enums.type-<e>`, so they cannot resolve to a value of the same name.
+
 *Goal:* gi-docgen fragments that name a type or a constant become odoc links,
 from both layers, to every generated namespace (decision 11). The resolver,
 its index and the wiring to every emission site land here; Phases 12 and 13
@@ -1335,6 +1403,70 @@ warnings; the resolution summary per origin; in the PR's preview, a
 `%GDK_KEY_*` sigil in a Gtk doc links into `Ocgdk.Constants`, and a
 `gtk_widget_*()` call in a Gtk doc links to the method.
 
+### Phase 14 — Property doc fallbacks: accessor method docs and a fuller canned line
+
+*Goal:* fewer properties fall back to the bare `Get/Set property: <name>`
+text, and the ones that still do tell the reader the type, the default and
+where the upstream docs are. Added 2026-10-29.
+
+*Corpus anchors* (bundled GIR): Gtk has 1,289 properties, and 89 of them have
+no `<doc>`. Of those 89, 34 name a `getter=` or `setter=` method and 79 have
+a `default-value=`. Gio and GdkPixbuf have one undocumented property each;
+the other namespaces have none. The committed Gtk L2 `.mli` files have 50
+`Get property:` fallbacks. Example: `Gtk.TreeView:enable-grid-lines` has no
+doc and no `getter=`/`setter=`, so it is covered by change 2 but not by
+change 1.
+
+*Changes:*
+1. **Accessor method docs.** The parser records the property's `getter=`,
+   `setter=` and `default-value=` attributes on `Types.gir_property`
+   (`prop_getter`, `prop_setter`, `prop_default`; all `string option`). When
+   `prop_doc` is absent, `Entity_doc.property` uses the doc of the class's
+   method named by `getter=` for the getter, and of the method named by
+   `setter=` for the setter. If the property names only one of them, both
+   accessors use that method's doc. The lookup goes through the class's (or
+   interface's) own method list. A method that is not found, or has no
+   doc, falls through to change 2. Method docs are translated in the
+   `Member` context as now. Check in the regeneration diff whether `@param`
+   names in setter docs (`@enabled`) read badly on a property setter. If
+   they do, strip the parameter sigil to plain code for docs borrowed this
+   way.
+   No heuristic name matching (`enable-grid-lines` → `get_grid_lines`):
+   only the GIR attributes are used.
+2. **A fuller canned line.** The fallback becomes, for example,
+   ``Get property: [enable-grid-lines] ([TreeViewGridLines], default
+   [GTK_TREE_VIEW_GRID_LINES_NONE]). See {{:…/property.TreeView.enable-grid-lines.html}upstream docs}.``
+   - The type is the GIR type name as code. It is not an OCaml link until
+     Phase 11's resolver can produce one, so this phase does not depend on it.
+   - The default is `default-value=` as code, left out when absent.
+     The attribute is a bare C value, not a `%` sigil, so it does not go
+     through the translator: `TRUE`, `FALSE` and `NULL` are mapped with
+     `Doc_c_idiom`'s literal names (`true`, `false`, `None`); any other
+     value (an enum member's C name, a number, a string) is shown as is.
+   - The link uses `upstream_base_url`, as the constructor fallback does:
+     `property.<Class>.<prop-name>.html`. Namespaces without a gi-docgen site
+     get no link. gi-docgen writes a page for every property, documented or
+     not, so the link never points at a missing page. Check this for one
+     undocumented property before wiring.
+   - The setter line also says "Construct-only." when `construct_only` is set.
+   `Entity_doc.property` takes `~namespace` and `~class_name` for the link.
+   Both call sites (`layer1_property.ml`, `class_gen_property.ml`) already
+   have them in scope.
+
+*Tests:* `entity_doc` tests for each case: a property with a doc
+(unchanged); no doc with `getter=` and `setter=` (each accessor takes its
+own method's doc); no doc with only `getter=` (both use it); `getter=` naming
+a method with no doc (canned line); no attributes, with and without a
+default; a namespace without an upstream site (no link); a construct-only
+setter. A parser test for the three new attributes.
+
+*Acceptance:* the standing invariant; `dune build @doc` with 0 odoc
+warnings; the count of `Get property:` lines in the committed Gtk L2 `.mli`
+files falls from 50, and every one left has a type and a link; `doc_diff`
+against the phase's base shows only property accessor docs changing; in the
+PR's preview, `Ocgtk.Tree_view`'s `enable_grid_lines` shows the fuller line
+with a working upstream link at L1 and L2.
+
 ### Phase dependencies
 
 - 0 blocks everything (baseline).
@@ -1359,6 +1491,10 @@ warnings; the resolution summary per origin; in the PR's preview, a
 - 12 (members) needs 11.
 - 13 (sigils) needs 12 (member tables) and 8 (`%TRUE`, `%NULL` and `#gint`
   are no longer `Sym_ref`, so they are never looked up).
+- 14 (property fallbacks) needs 6 (property doc wiring) and 8 (C literal
+  rewrites for defaults). It is independent of 11–13 and can land before
+  them. Once 11 lands, the type in the canned line could become a link; that
+  is a follow-up, not part of 14.
 
 ## Verification for the whole leg (after all phases)
 

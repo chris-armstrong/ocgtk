@@ -1,6 +1,7 @@
-(** [GTlsFileDatabase] is implemented by [Gio.TlsDatabase] objects which load
-    their certificate information from a file. It is an interface which TLS
-    library specific subtypes implement.
+(** [GTlsFileDatabase] is implemented by
+    {{!Ocgio.Tls_database.class-type-tls_database_t}[Gio.TlsDatabase]} objects
+    which load their certificate information from a file. It is an interface
+    which TLS library specific subtypes implement.
 
     Its methods, signals and properties are on
     {!class-type-tls_file_database_t}. Its constructors are under
@@ -14,9 +15,10 @@
     Requires:
     - {{!Ocgio.Tls_database.class-type-tls_database_t}Ocgio.Tls_database}
 
-    [GTlsFileDatabase] is implemented by [Gio.TlsDatabase] objects which load
-    their certificate information from a file. It is an interface which TLS
-    library specific subtypes implement. *)
+    [GTlsFileDatabase] is implemented by
+    {{!Ocgio.Tls_database.class-type-tls_database_t}[Gio.TlsDatabase]} objects
+    which load their certificate information from a file. It is an interface
+    which TLS library specific subtypes implement. *)
 class type tls_file_database_t = object
   (** {2:properties Properties} *)
 

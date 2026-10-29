@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* DBusMenuModel: DBusMenuModel *)
 
-(** [GDBusMenuModel] is an implementation of [Gio.MenuModel] that can be used as
-    a proxy for a menu model that is exported over D-Bus with
+(** [GDBusMenuModel] is an implementation of
+    {{!Ocgio.Raw.Menu_model}[Gio.MenuModel]} that can be used as a proxy for a
+    menu model that is exported over D-Bus with
     [Gio.DBusConnection.export_menu_model].
 
     The class built on this module is in {!Ocgio.D_bus_menu_model}. *)

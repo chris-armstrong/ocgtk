@@ -41,7 +41,7 @@
     [GtkFlowBoxChild] widget will automatically be inserted between the box and
     the widget.
 
-    Also see [Gtk.ListBox].
+    Also see {{!Ocgtk.List_box.class-type-list_box_t}[Gtk.ListBox]}.
 
     {b Shortcuts and Gestures}
 
@@ -338,7 +338,7 @@ class flow_box : Raw.Flow_box.t -> flow_box_t
     [GtkFlowBoxChild] widget will automatically be inserted between the box and
     the widget.
 
-    Also see [Gtk.ListBox].
+    Also see {{!Ocgtk.List_box.class-type-list_box_t}[Gtk.ListBox]}.
 
     {b Shortcuts and Gestures}
 

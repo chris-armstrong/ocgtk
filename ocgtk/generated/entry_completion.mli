@@ -17,8 +17,10 @@
     [GtkEntryCompletion] is an auxiliary object to provide completion
     functionality for [GtkEntry].
 
-    It implements the [Gtk.CellLayout] interface, to allow the user to add extra
-    cells to the [GtkTreeView] with completion matches.
+    It implements the
+    {{!Ocgtk.Cell_layout.class-type-cell_layout_t}[Gtk.CellLayout]} interface,
+    to allow the user to add extra cells to the [GtkTreeView] with completion
+    matches.
 
     “Completion functionality” means that when the user modifies the text in the
     entry, [GtkEntryCompletion] checks which rows in the model match the current
@@ -37,9 +39,11 @@
 
     To add completion functionality to an entry, use [Gtk.Entry.set_completion].
 
-    [GtkEntryCompletion] uses a [Gtk.TreeModelFilter] model to represent the
-    subset of the entire model that is currently matching. While the
-    [GtkEntryCompletion] signals [Gtk.EntryCompletion::match-selected] and
+    [GtkEntryCompletion] uses a
+    {{!Ocgtk.Tree_model_filter.class-type-tree_model_filter_t}[Gtk.TreeModelFilter]}
+    model to represent the subset of the entire model that is currently
+    matching. While the [GtkEntryCompletion] signals
+    [Gtk.EntryCompletion::match-selected] and
     [Gtk.EntryCompletion::cursor-on-match] take the original model and an iter
     pointing to that model as arguments, other callbacks and signals (such as
     [GtkCellLayoutDataFunc] or [Gtk.CellArea::apply-attributes)] will generally
@@ -202,8 +206,10 @@ class entry_completion : Raw.Entry_completion.t -> entry_completion_t
     [GtkEntryCompletion] is an auxiliary object to provide completion
     functionality for [GtkEntry].
 
-    It implements the [Gtk.CellLayout] interface, to allow the user to add extra
-    cells to the [GtkTreeView] with completion matches.
+    It implements the
+    {{!Ocgtk.Cell_layout.class-type-cell_layout_t}[Gtk.CellLayout]} interface,
+    to allow the user to add extra cells to the [GtkTreeView] with completion
+    matches.
 
     “Completion functionality” means that when the user modifies the text in the
     entry, [GtkEntryCompletion] checks which rows in the model match the current
@@ -222,9 +228,11 @@ class entry_completion : Raw.Entry_completion.t -> entry_completion_t
 
     To add completion functionality to an entry, use [Gtk.Entry.set_completion].
 
-    [GtkEntryCompletion] uses a [Gtk.TreeModelFilter] model to represent the
-    subset of the entire model that is currently matching. While the
-    [GtkEntryCompletion] signals [Gtk.EntryCompletion::match-selected] and
+    [GtkEntryCompletion] uses a
+    {{!Ocgtk.Tree_model_filter.class-type-tree_model_filter_t}[Gtk.TreeModelFilter]}
+    model to represent the subset of the entire model that is currently
+    matching. While the [GtkEntryCompletion] signals
+    [Gtk.EntryCompletion::match-selected] and
     [Gtk.EntryCompletion::cursor-on-match] take the original model and an iter
     pointing to that model as arguments, other callbacks and signals (such as
     [GtkCellLayoutDataFunc] or [Gtk.CellArea::apply-attributes)] will generally

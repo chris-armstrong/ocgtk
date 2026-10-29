@@ -1,7 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ListItem: ListItem *)
 
-(** Used by list widgets to represent items in a [Gio.ListModel].
+(** Used by list widgets to represent items in a
+    {{!Ocgio.Raw.List_model}[Gio.ListModel]}.
 
     [GtkListItem] objects are managed by the list widget (with its factory) and
     cannot be created by applications, but they need to be populated by

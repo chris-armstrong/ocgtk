@@ -1,11 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ConverterOutputStream: ConverterOutputStream *)
 
-(** Converter output stream implements [Gio.OutputStream] and allows conversion
-    of data of various types during reading.
+(** Converter output stream implements
+    {{!Ocgio.Raw.Output_stream}[Gio.OutputStream]} and allows conversion of data
+    of various types during reading.
 
     As of GLib 2.34, [GConverterOutputStream] implements
-    [Gio.PollableOutputStream].
+    {{!Ocgio.Raw.Pollable_output_stream}[Gio.PollableOutputStream]}.
 
     The class built on this module is in {!Ocgio.Converter_output_stream}. *)
 

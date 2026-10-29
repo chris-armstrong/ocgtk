@@ -1,7 +1,9 @@
-(** Like [Gio.NetworkAddress] does with hostnames, [GNetworkService] provides an
-    easy way to resolve a SRV record, and then attempt to connect to one of the
-    hosts that implements that service, handling service priority/weighting,
-    multiple IP addresses, and multiple address families.
+(** Like
+    {{!Ocgio.Network_address.class-type-network_address_t}[Gio.NetworkAddress]}
+    does with hostnames, [GNetworkService] provides an easy way to resolve a SRV
+    record, and then attempt to connect to one of the hosts that implements that
+    service, handling service priority/weighting, multiple IP addresses, and
+    multiple address families.
 
     Its methods, signals and properties are on {!class-type-network_service_t}.
     Its full description is under {!section-description}. Its constructors are
@@ -15,14 +17,17 @@
     Implements:
     - {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}Ocgio.Socket_connectable}
 
-    Like [Gio.NetworkAddress] does with hostnames, [GNetworkService] provides an
-    easy way to resolve a SRV record, and then attempt to connect to one of the
-    hosts that implements that service, handling service priority/weighting,
-    multiple IP addresses, and multiple address families.
+    Like
+    {{!Ocgio.Network_address.class-type-network_address_t}[Gio.NetworkAddress]}
+    does with hostnames, [GNetworkService] provides an easy way to resolve a SRV
+    record, and then attempt to connect to one of the hosts that implements that
+    service, handling service priority/weighting, multiple IP addresses, and
+    multiple address families.
 
-    See [Gio.SrvTarget] for more information about SRV records, and see
-    [Gio.SocketConnectable] for an example of using the connectable interface.
-*)
+    See {{!Ocgio.Srv_target.class-type-srv_target_t}[Gio.SrvTarget]} for more
+    information about SRV records, and see
+    {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}[Gio.SocketConnectable]}
+    for an example of using the connectable interface. *)
 class type network_service_t = object
   inherit Socket_connectable.socket_connectable_t
 
@@ -56,14 +61,17 @@ class network_service : Raw.Network_service.t -> network_service_t
 
 (** {1:description Description}
 
-    Like [Gio.NetworkAddress] does with hostnames, [GNetworkService] provides an
-    easy way to resolve a SRV record, and then attempt to connect to one of the
-    hosts that implements that service, handling service priority/weighting,
-    multiple IP addresses, and multiple address families.
+    Like
+    {{!Ocgio.Network_address.class-type-network_address_t}[Gio.NetworkAddress]}
+    does with hostnames, [GNetworkService] provides an easy way to resolve a SRV
+    record, and then attempt to connect to one of the hosts that implements that
+    service, handling service priority/weighting, multiple IP addresses, and
+    multiple address families.
 
-    See [Gio.SrvTarget] for more information about SRV records, and see
-    [Gio.SocketConnectable] for an example of using the connectable interface.
-*)
+    See {{!Ocgio.Srv_target.class-type-srv_target_t}[Gio.SrvTarget]} for more
+    information about SRV records, and see
+    {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}[Gio.SocketConnectable]}
+    for an example of using the connectable interface. *)
 
 (** {1:constructors Constructors} *)
 

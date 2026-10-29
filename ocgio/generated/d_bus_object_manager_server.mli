@@ -1,4 +1,5 @@
-(** [GDBusObjectManagerServer] is used to export [Gio.DBusObject] instances
+(** [GDBusObjectManagerServer] is used to export
+    {{!Ocgio.D_bus_object.class-type-d_bus_object_t}[Gio.DBusObject]} instances
     using the standardized [org.freedesktop.DBus.ObjectManager] interface. For
     example, remote D-Bus clients can get all objects and properties in a single
     call. Additionally, any change in the object hierarchy is broadcast using
@@ -18,7 +19,8 @@
     Implements:
     - {{!Ocgio.D_bus_object_manager.class-type-d_bus_object_manager_t}Ocgio.D_bus_object_manager}
 
-    [GDBusObjectManagerServer] is used to export [Gio.DBusObject] instances
+    [GDBusObjectManagerServer] is used to export
+    {{!Ocgio.D_bus_object.class-type-d_bus_object_t}[Gio.DBusObject]} instances
     using the standardized [org.freedesktop.DBus.ObjectManager] interface. For
     example, remote D-Bus clients can get all objects and properties in a single
     call. Additionally, any change in the object hierarchy is broadcast using
@@ -35,9 +37,11 @@
     It is supported, but not recommended, to export an object manager at the
     root path, [/].
 
-    See [Gio.DBusObjectManagerClient] for the client-side code that is intended
-    to be used with [GDBusObjectManagerServer] or any D-Bus object implementing
-    the [org.freedesktop.DBus.ObjectManager] interface. *)
+    See
+    {{!Ocgio.D_bus_object_manager_client.class-type-d_bus_object_manager_client_t}
+     [Gio.DBusObjectManagerClient]} for the client-side code that is intended to
+    be used with [GDBusObjectManagerServer] or any D-Bus object implementing the
+    [org.freedesktop.DBus.ObjectManager] interface. *)
 class type d_bus_object_manager_server_t = object
   inherit D_bus_object_manager.d_bus_object_manager_t
 
@@ -95,7 +99,8 @@ class d_bus_object_manager_server :
 
 (** {1:description Description}
 
-    [GDBusObjectManagerServer] is used to export [Gio.DBusObject] instances
+    [GDBusObjectManagerServer] is used to export
+    {{!Ocgio.D_bus_object.class-type-d_bus_object_t}[Gio.DBusObject]} instances
     using the standardized [org.freedesktop.DBus.ObjectManager] interface. For
     example, remote D-Bus clients can get all objects and properties in a single
     call. Additionally, any change in the object hierarchy is broadcast using
@@ -112,9 +117,11 @@ class d_bus_object_manager_server :
     It is supported, but not recommended, to export an object manager at the
     root path, [/].
 
-    See [Gio.DBusObjectManagerClient] for the client-side code that is intended
-    to be used with [GDBusObjectManagerServer] or any D-Bus object implementing
-    the [org.freedesktop.DBus.ObjectManager] interface. *)
+    See
+    {{!Ocgio.D_bus_object_manager_client.class-type-d_bus_object_manager_client_t}
+     [Gio.DBusObjectManagerClient]} for the client-side code that is intended to
+    be used with [GDBusObjectManagerServer] or any D-Bus object implementing the
+    [org.freedesktop.DBus.ObjectManager] interface. *)
 
 (** {1:constructors Constructors} *)
 

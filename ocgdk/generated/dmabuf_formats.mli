@@ -23,7 +23,9 @@
     [DMA_FORMAT_MOD_INVALID], indicating that {b _implicit modifiers_} may be
     used with this format.
 
-    See [Gdk.DmabufTextureBuilder] for more information about DMA buffers.
+    See
+    {{!Ocgdk.Dmabuf_texture_builder.class-type-dmabuf_texture_builder_t}[Gdk.DmabufTextureBuilder]}
+    for more information about DMA buffers.
 
     Note that DMA buffers only exist on Linux. *)
 class type dmabuf_formats_t = object
@@ -69,7 +71,9 @@ class dmabuf_formats : Raw.Dmabuf_formats.t -> dmabuf_formats_t
     [DMA_FORMAT_MOD_INVALID], indicating that {b _implicit modifiers_} may be
     used with this format.
 
-    See [Gdk.DmabufTextureBuilder] for more information about DMA buffers.
+    See
+    {{!Ocgdk.Dmabuf_texture_builder.class-type-dmabuf_texture_builder_t}[Gdk.DmabufTextureBuilder]}
+    for more information about DMA buffers.
 
     Note that DMA buffers only exist on Linux. *)
 

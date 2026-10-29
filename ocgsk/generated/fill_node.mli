@@ -1,5 +1,6 @@
-(** A render node filling the area given by [Gsk.Path] and [Gsk.FillRule] with
-    the child node.
+(** A render node filling the area given by
+    {{!Ocgsk.Path.class-type-path_t}[Gsk.Path]} and
+    {{!Ocgsk.Enums.type-fillrule}[Gsk.FillRule]} with the child node.
 
     Its methods, signals and properties are on {!class-type-fill_node_t}. Its
     constructors are under {!section-constructors}. The functions it is built on
@@ -12,8 +13,9 @@
     Inherits from:
     {{!Ocgsk.Render_node.class-type-render_node_t}Ocgsk.Render_node}
 
-    A render node filling the area given by [Gsk.Path] and [Gsk.FillRule] with
-    the child node. *)
+    A render node filling the area given by
+    {{!Ocgsk.Path.class-type-path_t}[Gsk.Path]} and
+    {{!Ocgsk.Enums.type-fillrule}[Gsk.FillRule]} with the child node. *)
 class type fill_node_t = object
   inherit Render_node.render_node_t
 

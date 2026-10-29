@@ -139,8 +139,10 @@ end
      An example GtkPopover\n\n\
      It is primarily meant to provide context-dependent information\n\
      or options. Popovers are attached to a parent widget. The parent widget\n\
-     must support popover children, as [Gtk.MenuButton] and\n\
-     [Gtk.PopoverMenuBar] do. If you want to make a custom widget that\n\
+     must support popover children, as \
+     {{!Ocgtk.Menu_button.class-type-menu_button_t}[Gtk.MenuButton]} and\n\
+     {{!Ocgtk.Popover_menu_bar.class-type-popover_menu_bar_t}[Gtk.PopoverMenuBar]} \
+     do. If you want to make a custom widget that\n\
      has an attached popover, you need to call [Gtk.Popover.present]\n\
      in your [Gtk.Widget.size_allocate] vfunc, in order to update the\n\
      positioning of the popover.\n\n\
@@ -156,7 +158,9 @@ end
      tweak its behavior.\n\n\
      {b GtkPopover as menu replacement}\n\n\
      [GtkPopover] is often used to replace menus. The best way to do this\n\
-     is to use the [Gtk.PopoverMenu] subclass which supports being\n\
+     is to use the \
+     {{!Ocgtk.Popover_menu.class-type-popover_menu_t}[Gtk.PopoverMenu]} \
+     subclass which supports being\n\
      populated from a [GMenuModel] with [Gtk.PopoverMenu.new_from_model].\n\n\
      {[\n\
      <section>\n\
@@ -196,7 +200,8 @@ end
      and another node for the content named [contents]. The [popover] node \
      always\n\
      gets the [.background] style class. It also gets the [.menu] style class\n\
-     if the popover is menu-like, e.g. is a [Gtk.PopoverMenu].\n\n\
+     if the popover is menu-like, e.g. is a \
+     {{!Ocgtk.Popover_menu.class-type-popover_menu_t}[Gtk.PopoverMenu]}.\n\n\
      Particular uses of [GtkPopover], such as touch selection popups or\n\
      magnifiers in [GtkEntry] or [GtkTextView] get style classes like\n\
      [.touch-selection] or [.magnifier] to differentiate from plain popovers.\n\n\
@@ -224,8 +229,10 @@ class popover : Raw.Popover.t -> popover_t
  An example GtkPopover\n\n\
  It is primarily meant to provide context-dependent information\n\
  or options. Popovers are attached to a parent widget. The parent widget\n\
- must support popover children, as [Gtk.MenuButton] and\n\
- [Gtk.PopoverMenuBar] do. If you want to make a custom widget that\n\
+ must support popover children, as \
+ {{!Ocgtk.Menu_button.class-type-menu_button_t}[Gtk.MenuButton]} and\n\
+ {{!Ocgtk.Popover_menu_bar.class-type-popover_menu_bar_t}[Gtk.PopoverMenuBar]} \
+ do. If you want to make a custom widget that\n\
  has an attached popover, you need to call [Gtk.Popover.present]\n\
  in your [Gtk.Widget.size_allocate] vfunc, in order to update the\n\
  positioning of the popover.\n\n\
@@ -241,7 +248,9 @@ class popover : Raw.Popover.t -> popover_t
  tweak its behavior.\n\n\
  {b GtkPopover as menu replacement}\n\n\
  [GtkPopover] is often used to replace menus. The best way to do this\n\
- is to use the [Gtk.PopoverMenu] subclass which supports being\n\
+ is to use the \
+ {{!Ocgtk.Popover_menu.class-type-popover_menu_t}[Gtk.PopoverMenu]} subclass \
+ which supports being\n\
  populated from a [GMenuModel] with [Gtk.PopoverMenu.new_from_model].\n\n\
  {[\n\
  <section>\n\
@@ -279,7 +288,8 @@ class popover : Raw.Popover.t -> popover_t
  [GtkPopover] has a main node with name [popover], an arrow with name [arrow],\n\
  and another node for the content named [contents]. The [popover] node always\n\
  gets the [.background] style class. It also gets the [.menu] style class\n\
- if the popover is menu-like, e.g. is a [Gtk.PopoverMenu].\n\n\
+ if the popover is menu-like, e.g. is a \
+ {{!Ocgtk.Popover_menu.class-type-popover_menu_t}[Gtk.PopoverMenu]}.\n\n\
  Particular uses of [GtkPopover], such as touch selection popups or\n\
  magnifiers in [GtkEntry] or [GtkTextView] get style classes like\n\
  [.touch-selection] or [.magnifier] to differentiate from plain popovers.\n\n\

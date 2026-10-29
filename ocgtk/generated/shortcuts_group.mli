@@ -25,11 +25,14 @@
     application, which can be used to show only relevant shortcuts depending on
     the application context.
 
-    This widget is only meant to be used with [Gtk.ShortcutsWindow].
+    This widget is only meant to be used with
+    {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t}[Gtk.ShortcutsWindow]}.
 
     The recommended way to construct a [GtkShortcutsGroup] is with
-    [Gtk.Builder], by using the [<child>] tag to populate a [GtkShortcutsGroup]
-    with one or more [Gtk.ShortcutsShortcut] instances.
+    {{!Ocgtk.Builder.class-type-builder_t}[Gtk.Builder]}, by using the [<child>]
+    tag to populate a [GtkShortcutsGroup] with one or more
+    {{!Ocgtk.Shortcuts_shortcut.class-type-shortcuts_shortcut_t}[Gtk.ShortcutsShortcut]}
+    instances.
 
     If you need to add a shortcut programmatically, use
     [Gtk.ShortcutsGroup.add_shortcut]. *)
@@ -103,11 +106,14 @@ class shortcuts_group : Raw.Shortcuts_group.t -> shortcuts_group_t
     application, which can be used to show only relevant shortcuts depending on
     the application context.
 
-    This widget is only meant to be used with [Gtk.ShortcutsWindow].
+    This widget is only meant to be used with
+    {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t}[Gtk.ShortcutsWindow]}.
 
     The recommended way to construct a [GtkShortcutsGroup] is with
-    [Gtk.Builder], by using the [<child>] tag to populate a [GtkShortcutsGroup]
-    with one or more [Gtk.ShortcutsShortcut] instances.
+    {{!Ocgtk.Builder.class-type-builder_t}[Gtk.Builder]}, by using the [<child>]
+    tag to populate a [GtkShortcutsGroup] with one or more
+    {{!Ocgtk.Shortcuts_shortcut.class-type-shortcuts_shortcut_t}[Gtk.ShortcutsShortcut]}
+    instances.
 
     If you need to add a shortcut programmatically, use
     [Gtk.ShortcutsGroup.add_shortcut]. *)

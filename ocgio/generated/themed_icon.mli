@@ -1,4 +1,5 @@
-(** [GThemedIcon] is an implementation of [Gio.Icon] that supports icon themes.
+(** [GThemedIcon] is an implementation of
+    {{!Ocgio.Icon.class-type-icon_t}[Gio.Icon]} that supports icon themes.
 
     Its methods, signals and properties are on {!class-type-themed_icon_t}. Its
     full description is under {!section-description}. Its constructors are under
@@ -12,7 +13,8 @@
     Implements:
     - {{!Ocgio.Icon.class-type-icon_t}Ocgio.Icon}
 
-    [GThemedIcon] is an implementation of [Gio.Icon] that supports icon themes.
+    [GThemedIcon] is an implementation of
+    {{!Ocgio.Icon.class-type-icon_t}[Gio.Icon]} that supports icon themes.
 
     [GThemedIcon] contains a list of all of the icons present in an icon theme,
     so that icons can be looked up quickly. [GThemedIcon] does not provide
@@ -68,7 +70,8 @@ class themed_icon : Raw.Themed_icon.t -> themed_icon_t
 
 (** {1:description Description}
 
-    [GThemedIcon] is an implementation of [Gio.Icon] that supports icon themes.
+    [GThemedIcon] is an implementation of
+    {{!Ocgio.Icon.class-type-icon_t}[Gio.Icon]} that supports icon themes.
 
     [GThemedIcon] contains a list of all of the icons present in an icon theme,
     so that icons can be looked up quickly. [GThemedIcon] does not provide

@@ -55,7 +55,8 @@ module rec Column_view : sig
     = "ml_gtk_column_view_set_row_factory"
   (** Sets the factory used for configuring rows.
 
-      The factory must be for configuring [Gtk.ColumnViewRow] objects.
+      The factory must be for configuring
+      {{!Ocgtk.Raw.Column_view_row}[Gtk.ColumnViewRow]} objects.
 
       If this factory is not set - which is the default - then the defaults will
       be used.
@@ -72,12 +73,13 @@ module rec Column_view : sig
     = "ml_gtk_column_view_set_model"
   (** Sets the model to use.
 
-      This must be a [Gtk.SelectionModel]. *)
+      This must be a {{!Ocgtk.Raw.Selection_model}[Gtk.SelectionModel]}. *)
 
   external set_header_factory : t -> List_item_factory.t option -> unit
     = "ml_gtk_column_view_set_header_factory"
-  (** Sets the factory to use for populating the [Gtk.ListHeader] objects used
-      in section headers.
+  (** Sets the factory to use for populating the
+      {{!Ocgtk.Raw.List_header}[Gtk.ListHeader]} objects used in section
+      headers.
 
       If this factory is set to [None], the list will not show section headers.
   *)
@@ -244,7 +246,8 @@ end = struct
     = "ml_gtk_column_view_set_row_factory"
   (** Sets the factory used for configuring rows.
 
-      The factory must be for configuring [Gtk.ColumnViewRow] objects.
+      The factory must be for configuring
+      {{!Ocgtk.Raw.Column_view_row}[Gtk.ColumnViewRow]} objects.
 
       If this factory is not set - which is the default - then the defaults will
       be used.
@@ -261,12 +264,13 @@ end = struct
     = "ml_gtk_column_view_set_model"
   (** Sets the model to use.
 
-      This must be a [Gtk.SelectionModel]. *)
+      This must be a {{!Ocgtk.Raw.Selection_model}[Gtk.SelectionModel]}. *)
 
   external set_header_factory : t -> List_item_factory.t option -> unit
     = "ml_gtk_column_view_set_header_factory"
-  (** Sets the factory to use for populating the [Gtk.ListHeader] objects used
-      in section headers.
+  (** Sets the factory to use for populating the
+      {{!Ocgtk.Raw.List_header}[Gtk.ListHeader]} objects used in section
+      headers.
 
       If this factory is set to [None], the list will not show section headers.
   *)
@@ -424,7 +428,7 @@ and Column_view_column : sig
       calling [Gtk.ColumnView.sort_by_column].
 
       See [Gtk.ColumnView.get_sorter] for the necessary steps for setting up
-      customizable sorting for [Gtk.ColumnView]. *)
+      customizable sorting for {{!Ocgtk.Raw.Column_view}[Gtk.ColumnView]}. *)
 
   external set_resizable : t -> bool -> unit
     = "ml_gtk_column_view_column_set_resizable"
@@ -548,7 +552,7 @@ end = struct
       calling [Gtk.ColumnView.sort_by_column].
 
       See [Gtk.ColumnView.get_sorter] for the necessary steps for setting up
-      customizable sorting for [Gtk.ColumnView]. *)
+      customizable sorting for {{!Ocgtk.Raw.Column_view}[Gtk.ColumnView]}. *)
 
   external set_resizable : t -> bool -> unit
     = "ml_gtk_column_view_column_set_resizable"

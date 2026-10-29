@@ -22,7 +22,8 @@
  [Gtk.Image.new_from_resource], and [Gtk.Image.set_from_resource]\n\
  should be used.\n\n\
  [GtkImage] displays its image as an icon, with a size that is determined\n\
- by the application. See [Gtk.Picture] if you want to show an image\n\
+ by the application. See {{!Ocgtk.Raw.Picture}[Gtk.Picture]} if you want to \
+ show an image\n\
  at is actual size.\n\n\
  {b CSS nodes}\n\n\
  [GtkImage] has a single CSS node with the name [image]. The style classes\n\
@@ -81,10 +82,11 @@ external new_from_paintable : Ocgdk_raw.Paintable.t option -> t
 
     Note that paintables are still subject to the icon size that is set on the
     image. If you want to display a paintable at its intrinsic size, use
-    [Gtk.Picture] instead.
+    {{!Ocgtk.Raw.Picture}[Gtk.Picture]} instead.
 
-    If [paintable] is a [Gtk.SymbolicPaintable], then it will be recolored with
-    the symbolic palette from the theme. *)
+    If [paintable] is a
+    {{!Ocgtk.Raw.Symbolic_paintable}[Gtk.SymbolicPaintable]}, then it will be
+    recolored with the symbolic palette from the theme. *)
 
 external new_from_pixbuf : Ocgdkpixbuf_raw.Pixbuf.t option -> t
   = "ml_gtk_image_new_from_pixbuf"

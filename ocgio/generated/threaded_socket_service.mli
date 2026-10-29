@@ -1,7 +1,8 @@
-(** A [GThreadedSocketService] is a simple subclass of [Gio.SocketService] that
-    handles incoming connections by creating a worker thread and dispatching the
-    connection to it by emitting the \[signal@Gio.ThreadedSocketService::run
-    signal\] in the new thread.
+(** A [GThreadedSocketService] is a simple subclass of
+    {{!Ocgio.Socket_service.class-type-socket_service_t}[Gio.SocketService]}
+    that handles incoming connections by creating a worker thread and
+    dispatching the connection to it by emitting the
+    \[signal@Gio.ThreadedSocketService::run signal\] in the new thread.
 
     Its methods, signals and properties are on
     {!class-type-threaded_socket_service_t}. Its full description is under
@@ -15,22 +16,25 @@
     Inherits from:
     {{!Ocgio.Socket_service.class-type-socket_service_t}Ocgio.Socket_service}
 
-    A [GThreadedSocketService] is a simple subclass of [Gio.SocketService] that
-    handles incoming connections by creating a worker thread and dispatching the
-    connection to it by emitting the \[signal@Gio.ThreadedSocketService::run
-    signal\] in the new thread.
+    A [GThreadedSocketService] is a simple subclass of
+    {{!Ocgio.Socket_service.class-type-socket_service_t}[Gio.SocketService]}
+    that handles incoming connections by creating a worker thread and
+    dispatching the connection to it by emitting the
+    \[signal@Gio.ThreadedSocketService::run signal\] in the new thread.
 
     The signal handler may perform blocking I/O and need not return until the
     connection is closed.
 
     The service is implemented using a thread pool, so there is a limited amount
     of threads available to serve incoming requests. The service automatically
-    stops the [Gio.SocketService] from accepting new connections when all
-    threads are busy.
+    stops the
+    {{!Ocgio.Socket_service.class-type-socket_service_t}[Gio.SocketService]}
+    from accepting new connections when all threads are busy.
 
-    As with [Gio.SocketService], you may connect to
-    [Gio.ThreadedSocketService::run], or subclass and override the default
-    handler. *)
+    As with
+    {{!Ocgio.Socket_service.class-type-socket_service_t}[Gio.SocketService]},
+    you may connect to [Gio.ThreadedSocketService::run], or subclass and
+    override the default handler. *)
 class type threaded_socket_service_t = object
   inherit Socket_service.socket_service_t
 
@@ -51,22 +55,25 @@ class threaded_socket_service :
 
 (** {1:description Description}
 
-    A [GThreadedSocketService] is a simple subclass of [Gio.SocketService] that
-    handles incoming connections by creating a worker thread and dispatching the
-    connection to it by emitting the \[signal@Gio.ThreadedSocketService::run
-    signal\] in the new thread.
+    A [GThreadedSocketService] is a simple subclass of
+    {{!Ocgio.Socket_service.class-type-socket_service_t}[Gio.SocketService]}
+    that handles incoming connections by creating a worker thread and
+    dispatching the connection to it by emitting the
+    \[signal@Gio.ThreadedSocketService::run signal\] in the new thread.
 
     The signal handler may perform blocking I/O and need not return until the
     connection is closed.
 
     The service is implemented using a thread pool, so there is a limited amount
     of threads available to serve incoming requests. The service automatically
-    stops the [Gio.SocketService] from accepting new connections when all
-    threads are busy.
+    stops the
+    {{!Ocgio.Socket_service.class-type-socket_service_t}[Gio.SocketService]}
+    from accepting new connections when all threads are busy.
 
-    As with [Gio.SocketService], you may connect to
-    [Gio.ThreadedSocketService::run], or subclass and override the default
-    handler. *)
+    As with
+    {{!Ocgio.Socket_service.class-type-socket_service_t}[Gio.SocketService]},
+    you may connect to [Gio.ThreadedSocketService::run], or subclass and
+    override the default handler. *)
 
 (** {1:constructors Constructors} *)
 

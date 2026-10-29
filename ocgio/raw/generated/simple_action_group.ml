@@ -1,8 +1,10 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* SimpleActionGroup: SimpleActionGroup *)
 
-(** [GSimpleActionGroup] is a hash table filled with [Gio.Action] objects,
-    implementing the [Gio.ActionGroup] and [Gio.ActionMap] interfaces.
+(** [GSimpleActionGroup] is a hash table filled with
+    {{!Ocgio.Raw.Action}[Gio.Action]} objects, implementing the
+    {{!Ocgio.Raw.Action_group}[Gio.ActionGroup]} and
+    {{!Ocgio.Raw.Action_map}[Gio.ActionMap]} interfaces.
 
     The class built on this module is in {!Ocgio.Simple_action_group}. *)
 

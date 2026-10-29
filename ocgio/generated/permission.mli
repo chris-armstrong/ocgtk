@@ -20,10 +20,10 @@
     it.
 
     As an example, a [GPermission] might represent the ability for the user to
-    write to a [Gio.Settings] object. This [GPermission] object could then be
-    used to decide if it is appropriate to show a “Click here to unlock” button
-    in a dialog and to provide the mechanism to invoke when that button is
-    clicked. *)
+    write to a {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]} object.
+    This [GPermission] object could then be used to decide if it is appropriate
+    to show a “Click here to unlock” button in a dialog and to provide the
+    mechanism to invoke when that button is clicked. *)
 class type permission_t = object
   (** {2:methods Methods} *)
 
@@ -117,10 +117,10 @@ class permission : Raw.Permission.t -> permission_t
     it.
 
     As an example, a [GPermission] might represent the ability for the user to
-    write to a [Gio.Settings] object. This [GPermission] object could then be
-    used to decide if it is appropriate to show a “Click here to unlock” button
-    in a dialog and to provide the mechanism to invoke when that button is
-    clicked. *)
+    write to a {{!Ocgio.Settings.class-type-settings_t}[Gio.Settings]} object.
+    This [GPermission] object could then be used to decide if it is appropriate
+    to show a “Click here to unlock” button in a dialog and to provide the
+    mechanism to invoke when that button is clicked. *)
 
 (** {1:constructors Constructors} *)
 

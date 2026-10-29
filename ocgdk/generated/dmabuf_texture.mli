@@ -18,7 +18,8 @@
 
     A [GdkTexture] representing a DMA buffer.
 
-    To create a [GdkDmabufTexture], use the auxiliary [Gdk.DmabufTextureBuilder]
+    To create a [GdkDmabufTexture], use the auxiliary
+    {{!Ocgdk.Dmabuf_texture_builder.class-type-dmabuf_texture_builder_t}[Gdk.DmabufTextureBuilder]}
     object.
 
     Dma-buf textures can only be created on Linux. *)
@@ -37,7 +38,8 @@ class dmabuf_texture : Raw.Dmabuf_texture.t -> dmabuf_texture_t
 
     A [GdkTexture] representing a DMA buffer.
 
-    To create a [GdkDmabufTexture], use the auxiliary [Gdk.DmabufTextureBuilder]
+    To create a [GdkDmabufTexture], use the auxiliary
+    {{!Ocgdk.Dmabuf_texture_builder.class-type-dmabuf_texture_builder_t}[Gdk.DmabufTextureBuilder]}
     object.
 
     Dma-buf textures can only be created on Linux. *)

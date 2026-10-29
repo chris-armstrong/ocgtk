@@ -4,8 +4,10 @@
 (** [GtkAppChooser] is an interface for widgets which allow the user to choose
     an application.
 
-    The main objects that implement this interface are [Gtk.AppChooserWidget],
-    [Gtk.AppChooserDialog] and [Gtk.AppChooserButton].
+    The main objects that implement this interface are
+    {{!Ocgtk.Raw.App_chooser_widget}[Gtk.AppChooserWidget]},
+    {{!Ocgtk.Raw.App_chooser_dialog}[Gtk.AppChooserDialog]} and
+    {{!Ocgtk.Raw.App_chooser_button}[Gtk.AppChooserButton]}.
 
     Applications are represented by GIO [GAppInfo] objects here. GIO has a
     concept of recommended and fallback applications for a given content type.

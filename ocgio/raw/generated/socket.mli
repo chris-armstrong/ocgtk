@@ -7,15 +7,17 @@
 
     [GSocket] is the platform independent base upon which the higher level
     network primitives are based. Applications are not typically meant to use it
-    directly, but rather through classes like [Gio.SocketClient],
-    [Gio.SocketService] and [Gio.SocketConnection]. However there may be cases
-    where direct use of [GSocket] is useful.
+    directly, but rather through classes like
+    {{!Ocgio.Raw.Socket_client}[Gio.SocketClient]},
+    {{!Ocgio.Raw.Socket_service}[Gio.SocketService]} and
+    {{!Ocgio.Raw.Socket_connection}[Gio.SocketConnection]}. However there may be
+    cases where direct use of [GSocket] is useful.
 
-    [GSocket] implements the [Gio.Initable] interface, so if it is manually
-    constructed by e.g. [GObject.Object.new] you must call [Gio.Initable.init]
-    and check the results before using the object. This is done automatically in
-    [Gio.Socket.new] and [Gio.Socket.new_from_fd], so these functions can return
-    [None].
+    [GSocket] implements the {{!Ocgio.Raw.Initable}[Gio.Initable]} interface, so
+    if it is manually constructed by e.g. [GObject.Object.new] you must call
+    [Gio.Initable.init] and check the results before using the object. This is
+    done automatically in [Gio.Socket.new] and [Gio.Socket.new_from_fd], so
+    these functions can return [None].
 
     Sockets operate in two general modes, blocking or non-blocking. When in
     blocking mode all operations (which don’t take an explicit blocking

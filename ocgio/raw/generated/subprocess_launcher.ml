@@ -5,9 +5,10 @@
     where its standard input and output will be directed, the argument list, the
     environment, and more.
 
-    While the [Gio.Subprocess] class has high level functions covering popular
-    cases, use of this class allows access to more advanced options. It can also
-    be used to launch multiple subprocesses with a similar configuration.
+    While the {{!Ocgio.Raw.Subprocess}[Gio.Subprocess]} class has high level
+    functions covering popular cases, use of this class allows access to more
+    advanced options. It can also be used to launch multiple subprocesses with a
+    similar configuration.
 
     The class built on this module is in {!Ocgio.Subprocess_launcher}. *)
 

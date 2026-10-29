@@ -113,7 +113,8 @@ end
      By default, expressions are not paying attention to changes and \
      evaluation is\n\
      just a snapshot of the current state at a given time. To get informed about\n\
-     changes, an expression needs to be \"watched\" via a [Gtk.ExpressionWatch],\n\
+     changes, an expression needs to be \"watched\" via a \
+     {{!Ocgtk.Expression_watch.class-type-expression_watch_t}[Gtk.ExpressionWatch]},\n\
      which will cause a callback to be called whenever the value of the \
      expression may\n\
      have changed; [Gtk.Expression.watch] starts watching an expression, and\n\
@@ -176,7 +177,8 @@ end
      itself be an expression, this means that [<lookup>] tags can also be \
      nested.\n\
      This is a common idiom when dealing with [GtkListItem]s. See\n\
-     [Gtk.BuilderListItemFactory] for an example of this technique.\n\n\
+     {{!Ocgtk.Builder_list_item_factory.class-type-builder_list_item_factory_t}[Gtk.BuilderListItemFactory]} \
+     for an example of this technique.\n\n\
      To create a constant expression, use the [<constant>] element. If the \
      type attribute\n\
      is specified, the element content is interpreted as a value of that type. \
@@ -194,7 +196,8 @@ end
     \  <constant type='gchararray' translatable='yes'>I'm \
      translatable!</constant>\n\
      ]}\n\n\
-     As with other translatable strings in [Gtk.Builder], constants can\n\
+     As with other translatable strings in \
+     {{!Ocgtk.Builder.class-type-builder_t}[Gtk.Builder]}, constants can\n\
      also have a context and/or translation comment:\n\n\
      {[\n\
     \  <constant type='gchararray'\n\
@@ -279,7 +282,8 @@ class expression : Raw.Expression.t -> expression_t
  [GtkStringFilter] is using a [GtkExpression] for similar reasons.\n\n\
  By default, expressions are not paying attention to changes and evaluation is\n\
  just a snapshot of the current state at a given time. To get informed about\n\
- changes, an expression needs to be \"watched\" via a [Gtk.ExpressionWatch],\n\
+ changes, an expression needs to be \"watched\" via a \
+ {{!Ocgtk.Expression_watch.class-type-expression_watch_t}[Gtk.ExpressionWatch]},\n\
  which will cause a callback to be called whenever the value of the expression \
  may\n\
  have changed; [Gtk.Expression.watch] starts watching an expression, and\n\
@@ -337,7 +341,8 @@ class expression : Raw.Expression.t -> expression_t
  Since the [<lookup>] element creates an expression and its element content can\n\
  itself be an expression, this means that [<lookup>] tags can also be nested.\n\
  This is a common idiom when dealing with [GtkListItem]s. See\n\
- [Gtk.BuilderListItemFactory] for an example of this technique.\n\n\
+ {{!Ocgtk.Builder_list_item_factory.class-type-builder_list_item_factory_t}[Gtk.BuilderListItemFactory]} \
+ for an example of this technique.\n\n\
  To create a constant expression, use the [<constant>] element. If the type \
  attribute\n\
  is specified, the element content is interpreted as a value of that type. \
@@ -353,7 +358,8 @@ class expression : Raw.Expression.t -> expression_t
  {[\n\
 \  <constant type='gchararray' translatable='yes'>I'm translatable!</constant>\n\
  ]}\n\n\
- As with other translatable strings in [Gtk.Builder], constants can\n\
+ As with other translatable strings in \
+ {{!Ocgtk.Builder.class-type-builder_t}[Gtk.Builder]}, constants can\n\
  also have a context and/or translation comment:\n\n\
  {[\n\
 \  <constant type='gchararray'\n\

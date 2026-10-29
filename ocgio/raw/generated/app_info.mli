@@ -21,10 +21,12 @@
  of course cannot be mapped to a POSIX path (in GVfs there’s no FUSE mount\n\
  for it); such URIs will be passed unmodified to the application.\n\n\
  Specifically for GVfs 2.26 and later, the POSIX URI will be mapped\n\
- back to the GIO URI in the [Gio.File] constructors (since GVfs\n\
+ back to the GIO URI in the {{!Ocgio.Raw.File}[Gio.File]} constructors (since \
+ GVfs\n\
  implements the GVfs extension point). As such, if the application\n\
  needs to examine the URI, it needs to use [Gio.File.get_uri]\n\
- or similar on [Gio.File]. In other words, an application cannot\n\
+ or similar on {{!Ocgio.Raw.File}[Gio.File]}. In other words, an application \
+ cannot\n\
  assume that the URI passed to e.g. [Gio.File.new_for_commandline_arg]\n\
  is equal to the result of [Gio.File.get_uri]. The following snippet\n\
  illustrates this:\n\n\

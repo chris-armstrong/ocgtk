@@ -42,7 +42,7 @@
  ]}\n\n\
  In order to retrieve the list of recently used files, you can use\n\
  [Gtk.RecentManager.get_items], which returns a list of\n\
- [Gtk.RecentInfo].\n\n\
+ {{!Ocgtk.Raw.Recent_info}[Gtk.RecentInfo]}.\n\n\
  Note that the maximum age of the recently used files list is\n\
  controllable through the [Gtk.Settings:gtk-recent-files-max-age]\n\
  property.\n\n\

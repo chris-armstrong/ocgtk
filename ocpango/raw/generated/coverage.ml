@@ -2,7 +2,7 @@
 (* Coverage: Coverage *)
 
 (** A [PangoCoverage] structure is a map from Unicode characters to
-    [Pango.CoverageLevel] values.
+    {{!Ocpango.Enums.type-coveragelevel}[Pango.CoverageLevel]} values.
 
     It is often necessary in Pango to determine if a particular font can
     represent a particular character, and also how well it can represent that

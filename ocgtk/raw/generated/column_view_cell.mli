@@ -1,12 +1,12 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ColumnViewCell: ColumnViewCell *)
 
-(** Represents items in a cell in [Gtk.ColumnView].
+(** Represents items in a cell in {{!Ocgtk.Raw.Column_view}[Gtk.ColumnView]}.
 
-    The [GtkColumnViewCell]s are managed by the [Gtk.ColumnView] widget (with
-    its factory) and cannot be created by applications, but they need to be
-    populated by application code. This is done by calling
-    [Gtk.ColumnViewCell.set_child].
+    The [GtkColumnViewCell]s are managed by the
+    {{!Ocgtk.Raw.Column_view}[Gtk.ColumnView]} widget (with its factory) and
+    cannot be created by applications, but they need to be populated by
+    application code. This is done by calling [Gtk.ColumnViewCell.set_child].
 
     [GtkColumnViewCell]s exist in 2 stages:
 

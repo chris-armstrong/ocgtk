@@ -82,7 +82,9 @@ end
      subtype of a mime type, so you can e.g. filter for image/*.\n\n\
      Normally, file filters are used by adding them to a file chooser\n\
      (see [Gtk.FileDialog.set_filters]), but it is also possible to\n\
-     manually use a file filter on any [Gtk.FilterListModel] containing\n\
+     manually use a file filter on any \
+     {{!Ocgtk.Filter_list_model.class-type-filter_list_model_t}[Gtk.FilterListModel]} \
+     containing\n\
      [GFileInfo] objects.\n\n\
      {b GtkFileFilter as GtkBuildable}\n\n\
      The [GtkFileFilter] implementation of the [GtkBuildable] interface\n\
@@ -128,7 +130,9 @@ class file_filter : Raw.File_filter.t -> file_filter_t
  subtype of a mime type, so you can e.g. filter for image/*.\n\n\
  Normally, file filters are used by adding them to a file chooser\n\
  (see [Gtk.FileDialog.set_filters]), but it is also possible to\n\
- manually use a file filter on any [Gtk.FilterListModel] containing\n\
+ manually use a file filter on any \
+ {{!Ocgtk.Filter_list_model.class-type-filter_list_model_t}[Gtk.FilterListModel]} \
+ containing\n\
  [GFileInfo] objects.\n\n\
  {b GtkFileFilter as GtkBuildable}\n\n\
  The [GtkFileFilter] implementation of the [GtkBuildable] interface\n\

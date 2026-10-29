@@ -1,8 +1,8 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* PopupLayout: PopupLayout *)
 
-(** Contains information that is necessary position a [Gdk.Popup] relative to
-    its parent.
+(** Contains information that is necessary position a
+    {{!Ocgdk.Raw.Popup}[Gdk.Popup]} relative to its parent.
 
     The positioning requires a negotiation with the windowing system, since it
     depends on external constraints, such as the position of the parent surface,

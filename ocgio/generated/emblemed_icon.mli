@@ -1,5 +1,6 @@
-(** [GEmblemedIcon] is an implementation of [Gio.Icon] that supports adding an
-    emblem to an icon. Adding multiple emblems to an icon is ensured via
+(** [GEmblemedIcon] is an implementation of
+    {{!Ocgio.Icon.class-type-icon_t}[Gio.Icon]} that supports adding an emblem
+    to an icon. Adding multiple emblems to an icon is ensured via
     [Gio.EmblemedIcon.add_emblem].
 
     Its methods, signals and properties are on {!class-type-emblemed_icon_t}.
@@ -14,12 +15,14 @@
     Implements:
     - {{!Ocgio.Icon.class-type-icon_t}Ocgio.Icon}
 
-    [GEmblemedIcon] is an implementation of [Gio.Icon] that supports adding an
-    emblem to an icon. Adding multiple emblems to an icon is ensured via
+    [GEmblemedIcon] is an implementation of
+    {{!Ocgio.Icon.class-type-icon_t}[Gio.Icon]} that supports adding an emblem
+    to an icon. Adding multiple emblems to an icon is ensured via
     [Gio.EmblemedIcon.add_emblem].
 
     Note that [GEmblemedIcon] allows no control over the position of the
-    emblems. See also [Gio.Emblem] for more information. *)
+    emblems. See also {{!Ocgio.Emblem.class-type-emblem_t}[Gio.Emblem]} for more
+    information. *)
 class type emblemed_icon_t = object
   inherit Icon.icon_t
 
@@ -52,12 +55,14 @@ class emblemed_icon : Raw.Emblemed_icon.t -> emblemed_icon_t
 
 (** {1:description Description}
 
-    [GEmblemedIcon] is an implementation of [Gio.Icon] that supports adding an
-    emblem to an icon. Adding multiple emblems to an icon is ensured via
+    [GEmblemedIcon] is an implementation of
+    {{!Ocgio.Icon.class-type-icon_t}[Gio.Icon]} that supports adding an emblem
+    to an icon. Adding multiple emblems to an icon is ensured via
     [Gio.EmblemedIcon.add_emblem].
 
     Note that [GEmblemedIcon] allows no control over the position of the
-    emblems. See also [Gio.Emblem] for more information. *)
+    emblems. See also {{!Ocgio.Emblem.class-type-emblem_t}[Gio.Emblem]} for more
+    information. *)
 
 (** {1:constructors Constructors} *)
 

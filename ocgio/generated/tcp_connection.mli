@@ -1,5 +1,6 @@
-(** This is the subclass of [Gio.SocketConnection] that is created for TCP/IP
-    sockets.
+(** This is the subclass of
+    {{!Ocgio.Socket_connection.class-type-socket_connection_t}[Gio.SocketConnection]}
+    that is created for TCP/IP sockets.
 
     Its methods, signals and properties are on {!class-type-tcp_connection_t}.
     Its constructors are under {!section-constructors}. The functions it is
@@ -12,8 +13,9 @@
     Inherits from:
     {{!Ocgio.Socket_connection.class-type-socket_connection_t}Ocgio.Socket_connection}
 
-    This is the subclass of [Gio.SocketConnection] that is created for TCP/IP
-    sockets. *)
+    This is the subclass of
+    {{!Ocgio.Socket_connection.class-type-socket_connection_t}[Gio.SocketConnection]}
+    that is created for TCP/IP sockets. *)
 class type tcp_connection_t = object
   inherit Socket_connection.socket_connection_t
 

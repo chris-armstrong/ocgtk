@@ -24,17 +24,22 @@
     If your application needs multiple sections, you should give each section a
     unique [Gtk.ShortcutsSection:section-name] and a
     [Gtk.ShortcutsSection:title] that can be shown in the section selector of
-    the [Gtk.ShortcutsWindow].
+    the
+    {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t}[Gtk.ShortcutsWindow]}.
 
     The [Gtk.ShortcutsSection:max-height] property can be used to influence how
     the groups in the section are distributed over pages and columns.
 
-    This widget is only meant to be used with [Gtk.ShortcutsWindow].
+    This widget is only meant to be used with
+    {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t}[Gtk.ShortcutsWindow]}.
 
     The recommended way to construct a [GtkShortcutsSection] is with
-    [Gtk.Builder], by using the [<child>] tag to populate a
-    [GtkShortcutsSection] with one or more [Gtk.ShortcutsGroup] instances, which
-    in turn contain one or more [Gtk.ShortcutsShortcut] objects.
+    {{!Ocgtk.Builder.class-type-builder_t}[Gtk.Builder]}, by using the [<child>]
+    tag to populate a [GtkShortcutsSection] with one or more
+    {{!Ocgtk.Shortcuts_group.class-type-shortcuts_group_t}[Gtk.ShortcutsGroup]}
+    instances, which in turn contain one or more
+    {{!Ocgtk.Shortcuts_shortcut.class-type-shortcuts_shortcut_t}[Gtk.ShortcutsShortcut]}
+    objects.
 
     If you need to add a group programmatically, use
     [Gtk.ShortcutsSection.add_group].
@@ -148,17 +153,22 @@ class shortcuts_section : Raw.Shortcuts_section.t -> shortcuts_section_t
     If your application needs multiple sections, you should give each section a
     unique [Gtk.ShortcutsSection:section-name] and a
     [Gtk.ShortcutsSection:title] that can be shown in the section selector of
-    the [Gtk.ShortcutsWindow].
+    the
+    {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t}[Gtk.ShortcutsWindow]}.
 
     The [Gtk.ShortcutsSection:max-height] property can be used to influence how
     the groups in the section are distributed over pages and columns.
 
-    This widget is only meant to be used with [Gtk.ShortcutsWindow].
+    This widget is only meant to be used with
+    {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t}[Gtk.ShortcutsWindow]}.
 
     The recommended way to construct a [GtkShortcutsSection] is with
-    [Gtk.Builder], by using the [<child>] tag to populate a
-    [GtkShortcutsSection] with one or more [Gtk.ShortcutsGroup] instances, which
-    in turn contain one or more [Gtk.ShortcutsShortcut] objects.
+    {{!Ocgtk.Builder.class-type-builder_t}[Gtk.Builder]}, by using the [<child>]
+    tag to populate a [GtkShortcutsSection] with one or more
+    {{!Ocgtk.Shortcuts_group.class-type-shortcuts_group_t}[Gtk.ShortcutsGroup]}
+    instances, which in turn contain one or more
+    {{!Ocgtk.Shortcuts_shortcut.class-type-shortcuts_shortcut_t}[Gtk.ShortcutsShortcut]}
+    objects.
 
     If you need to add a group programmatically, use
     [Gtk.ShortcutsSection.add_group].

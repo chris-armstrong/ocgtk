@@ -24,7 +24,8 @@ class type tls_database_t =
     All implementations are required to be fully thread-safe.
 
     Most common client applications will not directly interact with
-    [GTlsDatabase]. It is used internally by [Gio.TlsConnection]. *)
+    [GTlsDatabase]. It is used internally by
+    {{!Ocgio.Tls_connection.class-type-tls_connection_t}[Gio.TlsConnection]}. *)
 
 class tls_database : Raw.Tls_database.t -> tls_database_t
 (** Wraps a raw handle of {!Ocgio.Raw.Tls_database.t}. *)
@@ -39,7 +40,8 @@ class tls_database : Raw.Tls_database.t -> tls_database_t
     All implementations are required to be fully thread-safe.
 
     Most common client applications will not directly interact with
-    [GTlsDatabase]. It is used internally by [Gio.TlsConnection]. *)
+    [GTlsDatabase]. It is used internally by
+    {{!Ocgio.Tls_connection.class-type-tls_connection_t}[Gio.TlsConnection]}. *)
 
 (** {1:constructors Constructors} *)
 

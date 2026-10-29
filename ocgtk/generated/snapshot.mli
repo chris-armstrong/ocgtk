@@ -1,4 +1,6 @@
-(** Assists in creating [Gsk.RenderNode]s for widgets.
+(** Assists in creating
+    {{!Ocgsk.Render_node.class-type-render_node_t}[Gsk.RenderNode]}s for
+    widgets.
 
     Its methods, signals and properties are on {!class-type-snapshot_t}. Its
     full description is under {!section-description}. Its constructors are under
@@ -11,7 +13,9 @@
 
     Inherits from: {{!Ocgdk.Snapshot.class-type-snapshot_t}Ocgdk.Snapshot}
 
-    Assists in creating [Gsk.RenderNode]s for widgets.
+    Assists in creating
+    {{!Ocgsk.Render_node.class-type-render_node_t}[Gsk.RenderNode]}s for
+    widgets.
 
     It functions in a similar way to a cairo context, and maintains a stack of
     render nodes and their associated transformations.
@@ -453,7 +457,9 @@ class snapshot : Raw.Snapshot.t -> snapshot_t
 
 (** {1:description Description}
 
-    Assists in creating [Gsk.RenderNode]s for widgets.
+    Assists in creating
+    {{!Ocgsk.Render_node.class-type-render_node_t}[Gsk.RenderNode]}s for
+    widgets.
 
     It functions in a similar way to a cairo context, and maintains a stack of
     render nodes and their associated transformations.

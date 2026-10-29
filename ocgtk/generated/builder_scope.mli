@@ -24,8 +24,9 @@
     C language which can be created via [Gtk.BuilderCScope.new].
 
     If you implement [GtkBuilderScope] for a language binding, you may want to
-    (partially) derive from or fall back to a [Gtk.BuilderCScope], as that class
-    implements support for automatic lookups from C symbols. *)
+    (partially) derive from or fall back to a
+    {{!Ocgtk.Builder_c_scope.class-type-builder_c_scope_t}[Gtk.BuilderCScope]},
+    as that class implements support for automatic lookups from C symbols. *)
 class type builder_scope_t = object
   (** {2:conversions Conversions} *)
 
@@ -52,8 +53,9 @@ class builder_scope : Raw.Builder_scope.t -> builder_scope_t
     C language which can be created via [Gtk.BuilderCScope.new].
 
     If you implement [GtkBuilderScope] for a language binding, you may want to
-    (partially) derive from or fall back to a [Gtk.BuilderCScope], as that class
-    implements support for automatic lookups from C symbols. *)
+    (partially) derive from or fall back to a
+    {{!Ocgtk.Builder_c_scope.class-type-builder_c_scope_t}[Gtk.BuilderCScope]},
+    as that class implements support for automatic lookups from C symbols. *)
 
 (** {1:constructors Constructors} *)
 

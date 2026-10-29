@@ -214,13 +214,13 @@ let l2_callback_type ~current_layer2_module (e : signal_emission) : string =
 (* emit_l1_val                                                        *)
 (* ================================================================= *)
 
-let with_signal_doc ~indent (e : signal_emission) declaration =
+let with_signal_doc ~refs ~indent (e : signal_emission) declaration =
   Doc_emit.around
-    (Doc_emit.item_doc ~indent ~context:Doc_translate.Member e.signal.doc)
+    (Doc_emit.item_doc ~indent ~refs ~context:Doc_translate.Member e.signal.doc)
     declaration
 
-let emit_l1_val ~current_class (e : signal_emission) : string =
-  with_signal_doc ~indent:"" e
+let emit_l1_val ~refs ~current_class (e : signal_emission) : string =
+  with_signal_doc ~refs ~indent:"" e
     (Fmt.str
        "val %s : ?after:bool -> t -> callback:(%s) -> Gobject.Signal.handler_id\n"
        e.method_name
@@ -369,8 +369,9 @@ let emit_l2_method ~current_layer2_module ~layer1_module_name ~class_snake
 (** Emit a class type method signature for insertion into a generated L2 class
     type body (.mli / class type definition). Unlike [emit_l2_method] (which
     emits a concrete method body), this emits only the method type. *)
-let emit_l2_method_sig ~current_layer2_module (e : signal_emission) : string =
-  with_signal_doc ~indent:"    " e
+let emit_l2_method_sig ~refs ~current_layer2_module (e : signal_emission) :
+    string =
+  with_signal_doc ~refs ~indent:"    " e
     (Fmt.str
        "    method %s : ?after:bool -> callback:(%s) -> unit -> \
         Gobject.Signal.handler_id\n"

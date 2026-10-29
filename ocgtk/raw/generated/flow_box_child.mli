@@ -3,8 +3,8 @@
 
 (** The kind of widget that can be added to a [GtkFlowBox].
 
-    [Gtk.FlowBox] will automatically wrap its children in a [GtkFlowBoxChild]
-    when necessary.
+    {{!Ocgtk.Raw.Flow_box}[Gtk.FlowBox]} will automatically wrap its children in
+    a [GtkFlowBoxChild] when necessary.
 
     The class built on this module is in {!Ocgtk.Flow_box_child}. *)
 

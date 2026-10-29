@@ -376,6 +376,7 @@ let generate_method_signatures ~ctx ~property_method_names:_
     let doc =
       Doc_emit.item_doc ~indent:"    "
         ~ret_shape:(Doc_translate.ret_shape_of_throws meth.throws)
+        ~refs:(Doc_resolve.class_member (Doc_resolve.env_of_ctx ctx))
         ~context:Doc_translate.Member meth.doc
     in
     let quantifier = if has_type_var then "'a. " else "" in

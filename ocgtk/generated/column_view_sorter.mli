@@ -1,4 +1,5 @@
-(** Sorts [Gtk.ColumnView] columns.
+(** Sorts {{!Ocgtk.Column_view.class-type-column_view_t}[Gtk.ColumnView]}
+    columns.
 
     Its methods, signals and properties are on
     {!class-type-column_view_sorter_t}. Its full description is under
@@ -11,7 +12,8 @@
 
     Inherits from: {{!Ocgtk.Sorter.class-type-sorter_t}Ocgtk.Sorter}
 
-    Sorts [Gtk.ColumnView] columns.
+    Sorts {{!Ocgtk.Column_view.class-type-column_view_t}[Gtk.ColumnView]}
+    columns.
 
     The sorter returned by [Gtk.ColumnView.get_sorter] is a
     [GtkColumnViewSorter].
@@ -81,7 +83,8 @@ class column_view_sorter : Raw.Column_view_sorter.t -> column_view_sorter_t
 
 (** {1:description Description}
 
-    Sorts [Gtk.ColumnView] columns.
+    Sorts {{!Ocgtk.Column_view.class-type-column_view_t}[Gtk.ColumnView]}
+    columns.
 
     The sorter returned by [Gtk.ColumnView.get_sorter] is a
     [GtkColumnViewSorter].
