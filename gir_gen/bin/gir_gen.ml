@@ -1440,8 +1440,9 @@ let generate_bindings filter_file gir_file output_dir reference_files
 
 (* The references file of a loaded namespace: what it generates, for the
    namespaces that depend on it *)
-let write_references ~output_file ({ ctx; _ } : Gir_gen_lib.Namespace_loader.t)
-    =
+let write_references ~output_file
+    ({ ctx; entities; _ } : Gir_gen_lib.Namespace_loader.t) =
+  let open Gir_gen_lib.Generate in
   let {
     namespace;
     repository;
@@ -1456,56 +1457,53 @@ let write_references ~output_file ({ ctx; _ } : Gir_gen_lib.Namespace_loader.t)
     ctx
   in
   Fmt.pr "References will be written to: %s\n" output_file;
+  let generated =
+    List.fold_left entities ~init:StringMap.empty ~f:(fun map (e : entity) ->
+        StringMap.add e.name e map)
+  in
+  let entity ?members ?enum_members ~cr_name ~cr_c_type cr_type =
+    {
+      cr_name;
+      cr_type;
+      cr_c_type;
+      cr_members = members;
+      cr_enum_members = enum_members;
+    }
+  in
+  (* A class, interface or record that is not generated emits no members *)
+  let typed ~cr_name =
+    entity
+      ?members:
+        (StringMap.find_opt cr_name generated
+        |> Option.map (Doc_index.cross_reference_members ~ctx))
+      ~cr_name
+  in
   let entities =
     (classes
-    |> List.filter ~f:Gir_gen_lib.Generate.Filtering.should_generate_class
+    |> List.filter ~f:Filtering.should_generate_class
     |> List.map ~f:(fun cls ->
-        {
-          cr_name = cls.class_name;
-          cr_type =
-            Crt_Class { parent = cls.parent; implements = cls.implements };
-          cr_c_type = cls.c_type;
-        }))
-    @ (interfaces
-      |> List.map ~f:(fun intf ->
-          {
-            cr_name = intf.interface_name;
-            cr_type = Crt_Interface;
-            cr_c_type = intf.c_type;
-          }))
-    @ List.map
-        ~f:(fun enms ->
-          {
-            cr_name = enms.enum_name;
-            cr_type = Crt_Enum;
-            cr_c_type = enms.enum_c_type;
-          })
-        enums
-    @ List.map
-        ~f:(fun bitfield ->
-          {
-            cr_name = bitfield.bitfield_name;
-            cr_type = Crt_Bitfield;
-            cr_c_type = bitfield.bitfield_c_type;
-          })
-        bitfields
-    @ (records
-      |> List.map ~f:(fun rec_ ->
-          {
-            cr_name = rec_.record_name;
-            cr_type =
-              Crt_Record
-                { opaque = rec_.opaque; get_type_func = rec_.glib_get_type };
-            cr_c_type = rec_.c_type;
-          }))
+        typed ~cr_name:cls.class_name ~cr_c_type:cls.c_type
+          (Crt_Class { parent = cls.parent; implements = cls.implements })))
+    @ List.map interfaces ~f:(fun intf ->
+        typed ~cr_name:intf.interface_name ~cr_c_type:intf.c_type Crt_Interface)
+    @ List.map enums ~f:(fun enms ->
+        entity ~cr_name:enms.enum_name ~cr_c_type:enms.enum_c_type
+          ~enum_members:(Doc_index.enum_members enms)
+          Crt_Enum)
+    @ List.map bitfields ~f:(fun bitfield ->
+        entity ~cr_name:bitfield.bitfield_name
+          ~cr_c_type:bitfield.bitfield_c_type
+          ~enum_members:(Doc_index.bitfield_members bitfield)
+          Crt_Bitfield)
+    @ List.map records ~f:(fun rec_ ->
+        typed ~cr_name:rec_.record_name ~cr_c_type:rec_.c_type
+          (Crt_Record
+             { opaque = rec_.opaque; get_type_func = rec_.glib_get_type }))
     @ (constants
-      |> List.filter ~f:Gir_gen_lib.Generate.Constant_code.is_generated
+      |> List.filter ~f:Constant_code.is_generated
       |> List.map ~f:(fun cst ->
-          {
-            cr_name = cst.constant_name;
-            cr_type = Crt_Constant;
-            cr_c_type = cst.constant_c_type;
-          }))
+          entity ~cr_name:cst.constant_name ~cr_c_type:cst.constant_c_type
+            Crt_Constant))
   in
   let crns =
     Gir_gen_lib.Types.

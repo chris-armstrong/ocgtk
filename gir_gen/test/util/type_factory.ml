@@ -340,8 +340,9 @@ let make_cross_reference_type ?parent = function
   | `Constant -> Crt_Constant
 
 let make_cross_reference_entity ?(cr_name = "TestEntity")
-    ?(cr_type = Crt_Interface) ?(cr_c_type = "TestEntity") () =
-  { cr_name; cr_type; cr_c_type }
+    ?(cr_type = Crt_Interface) ?(cr_c_type = "TestEntity") ?cr_members
+    ?cr_enum_members () =
+  { cr_name; cr_type; cr_c_type; cr_members; cr_enum_members }
 
 let make_cross_reference_namespace ?(cr_namespace_name = "Test")
     ?(cr_namespace_packages = []) ?(cr_namespace_includes = [])

@@ -32,4 +32,5 @@ let () =
          classification, so it lives with the integration suite. *)
       ("Signal Corpus", Signal_corpus.tests);
       ("Signal Corpus Regression", Signal_corpus_tests.tests);
+      ("References Consistency", References_consistency_tests.tests);
     ]

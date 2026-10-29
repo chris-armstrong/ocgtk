@@ -159,10 +159,13 @@
   ; Signal corpus — uses cross-namespace reference files produced by
   ; gir_gen.exe references rules in corpus/dune.
   signal_corpus
-  signal_corpus_tests)
+  signal_corpus_tests
+  ; References files against the tables generation computes
+  references_consistency_tests)
  (deps
   %{exe:../bin/gir_gen.exe}
   (source_tree %{workspace_root}/gir)
+  (source_tree %{workspace_root}/overrides)
   corpus/signal_corpus_baseline.sexp
   corpus/cairo-references.sexp
   corpus/gio-references.sexp
@@ -177,7 +180,10 @@
   (setenv
    "GIR_DATA_DIR"
    "%{workspace_root}/gir"
-   (run %{test})))
+   (setenv
+    "OVERRIDES_DIR"
+    "%{workspace_root}/overrides"
+    (run %{test}))))
  (preprocess
   (pps ppx_sexp_conv))
  (libraries

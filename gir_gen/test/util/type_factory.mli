@@ -272,6 +272,8 @@ val make_cross_reference_entity :
   ?cr_name:string ->
   ?cr_type:Gir_gen_lib.Types.cross_reference_type ->
   ?cr_c_type:string ->
+  ?cr_members:Gir_gen_lib.Types.cross_reference_members ->
+  ?cr_enum_members:(string * string) list ->
   unit ->
   Gir_gen_lib.Types.cross_reference_entity
 

@@ -1,6 +1,6 @@
 # Cross-namespace member references in generated docs
 
-**Status: Phase 1 done (2026-10-29); Phases 2 and 3 not started.** Branch
+**Status: Phases 1 and 2 done (2026-10-29); Phase 3 not started.** Branch
 `cross-ns-member-refs`. Follows the odoc leg
 ([m3-odoc-emission-and-artifacts](m3-odoc-emission-and-artifacts.md)), whose
 decision 11 links members only within the doc's own namespace, and lists
@@ -146,6 +146,34 @@ both of its output streams to `%{null}`.
 *Acceptance:* the regeneration diff is empty (the resolver doesn't use the
 new tables yet); the references files' sizes, before and after, are
 recorded; tests pass.
+
+*Done.* `cross_reference_entity` has `cr_members` (classes, interfaces and
+records that are generated) and `cr_enum_members` (enumerations and
+bitfields), both `[@sexp.option]`, so a file without them still loads and
+lists no members. `Doc_index` builds every table through `add_type_members`
+and `add_enum_members`, from the current namespace (`current_namespace`,
+`with_members`) and from a references file (`of_cross_references`), and
+`cross_reference_members` writes the tables `with_members` put in the index.
+The C identifier lists hold every method and constructor, emitted or not, as
+the current namespace's `di_c_symbols` does. The consistency test is
+`test/corpus/references_consistency_tests.ml`; it fails when, for example,
+Gdk is loaded without its dependency references. The regeneration diff was
+empty, and generating Gsk with references files written before this change
+gave the same bindings.
+
+References file sizes, in bytes, before and after:
+
+| Namespace | Before | After |
+|---|---:|---:|
+| cairo | 3,928 | 11,851 |
+| gio | 43,183 | 292,823 |
+| graphene | 3,330 | 38,590 |
+| gdkpixbuf | 1,901 | 15,232 |
+| pango | 8,509 | 59,568 |
+| pangocairo | 329 | 1,252 |
+| gdk | 228,243 | 319,959 |
+| gsk | 6,531 | 47,112 |
+| gtk | 65,214 | 700,048 |
 
 ### Phase 3 — The resolver links members of other namespaces
 
