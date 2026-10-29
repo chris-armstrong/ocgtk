@@ -1310,6 +1310,81 @@ the PR's preview, `Ocgtk.Button`'s class doc links `[Gtk.ToggleButton]` to
 
 ### Phase 12 — Cross-references II: members in the current namespace
 
+**Status: done** (branch `m3-phase12`). `Emitted_members` selects what each
+class, interface and record emits at each layer, the L1 and L2 emitters take
+their member lists from it, and the commit that moved them left the
+regeneration diff empty. `Doc_index.with_members` adds per-type member tables
+from it, and `Doc_resolve` links methods, constructors, signals, properties,
+and enumeration and bitfield members of the current namespace. A clean `@doc`
+build has 0 odoc warnings and no unresolved doc reference. The resolution
+summary (as L2 docs, all namespaces) goes from 1,014 to 3,755 linked
+references of 7,211; per kind, linked of total: method 1,594 of 2,085, signal
+382 of 457, property 519 of 535, ctor 113 of 141, enum 178 of 185, flags 12 of
+12. `doc_diff` against `m3-phase11` shows, outside `gir_gen`'s own pages, only
+code spans becoming links. The acceptance links are as planned:
+`[signal@Gtk.Button::activate]` goes to
+`Ocgtk/Button/class-type-button_t/#method-on_activate` from L2 docs and to
+`Ocgtk_raw/Button/#val-on_activate` from L1 docs, and
+`[Gtk.MenuButton:direction]` links to `Ocgtk.Raw.Menu_button.val-get_direction`
+from L1 docs and stays code in L2 docs. Notes and departures:
+
+- **Inventory of drops and renames** (also in `emitted_members.mli`):
+  - methods, both layers: `Filtering.should_skip_method_binding` (unknown
+    types, varargs, not introspectable, unsupported arrays and out arrays,
+    record copy, free and unref);
+  - methods, L2 only: an out parameter (`Class_gen_helpers.should_skip_method`);
+    a name an ancestor or an implemented interface declares
+    (`collect_inherited_method_names`, which also holds the ancestors'
+    property accessor names); a name an earlier method of the same entity
+    took;
+  - methods, renamed: `Utils.ocaml_function_name` at L1 and
+    `Class_gen_helpers.ocaml_method_name` at L2 (keywords get a `_`);
+  - constructors, both layers: `Filtering.should_generate_constructor`;
+    renamed by `Utils.ocaml_constructor_name` (`new` → `new_`);
+  - signals, both layers: `Signal_gen.classify` errors (out parameters,
+    unsupported boxed or primitive types); renamed `on_<s>`;
+  - properties, both layers: `Filtering.should_generate_property` (array
+    type, no type mapping, or claimed by a method's `get-property` or
+    `set-property`); L2 only: a getter or setter whose name is already
+    declared; named `get_<p>`/`set_<p>` at L1, `<p>`/`set_<p>` at L2;
+  - C stubs: the `Failure` catches in `c_stub_helpers.ml` skip a stub but not
+    its OCaml declaration, and none fires on the bundled GIR, so they do not
+    change what the modules declare.
+- **The L2 conflict comment is unreachable.** `detect_method_conflicts` and
+  `collect_inherited_method_names` both read the same ancestors, so a method
+  whose name an ancestor declares with another signature is dropped as
+  inherited before the conflict check. No generated file has a `CONFLICT`
+  comment. `Emitted_members.l2_method` keeps the `conflict` flag so the
+  emitters' behaviour is unchanged; removing the dead branch is left out of
+  this phase.
+- **Explicit kinds in member paths.** Values are `val-<name>` (L1 externals
+  and L2 constructors), methods `class-type-<t>_t.method-<name>`, and
+  enumeration members `type-<e>.constructor-<TAG>` (`type-<f>_flag` for a
+  bitfield). An odoc probe confirmed each, including `val-` on an `external`
+  and a method reached through a cyclic shim's class type alias.
+- **Separators in endpoints.** Signal and property names are looked up with
+  hyphens and enumeration members in upper case with underscores, whichever
+  separator the doc uses (`[enum@Gtk.DirectionType.tab-forward]`).
+- **The property target falls back to a setter** whenever no getter is
+  emitted at the layer, not only for write-only properties: the link still
+  goes to an emitted accessor of the property.
+- **The member index needs the context.** Deciding what an entity emits needs
+  type mappings, so `Doc_index.build` still makes the type-level index when
+  the context is created, and `Doc_index.with_members` adds the member tables
+  once the context, with its module groups, exists.
+- **More generator output.** Building the member tables runs the method
+  filter once more per method, and `Exclude_list` prints its `Skipping
+  method` line to stderr again; those lines were already repeated per
+  emitter.
+- **L2 member docs still link nothing** (Phase 11's odoc limitation): member
+  links appear in L1 docs and in L2 module, class type, constructor, enum and
+  constant docs.
+- Remaining `unknown-target` misses are members the doc's layer does not
+  emit: async methods (callback parameters), L2 methods with out parameters,
+  varargs, skipped signals, and members of types that are not generated
+  (class structs such as `Gtk.WidgetClass`, `Gtk.License`). A stray `)` in
+  upstream `[signal@Gtk.CellArea::apply-attributes)` is a named exception.
+
 *Goal:* method, constructor, signal, property and enum-member fragments link
 when they name the current namespace, from both layers.
 
