@@ -14,8 +14,10 @@ external alloc : unit -> t = "ml_graphene_point_alloc"
 
     The coordinates of the returned point are (0, 0).
 
-    It's possible to chain this function with graphene_point_init() or
-    graphene_point_init_from_point(), e.g.:
+    It's possible to chain this function with
+    {{!Ocgraphene.Raw.Point.val-init}[graphene_point_init ()]} or
+    {{!Ocgraphene.Raw.Point.val-init_from_point}[graphene_point_init_from_point
+                                                 ()]}, e.g.:
 
     {[
       graphene_point_t *
@@ -60,8 +62,8 @@ external equal : t -> t -> bool = "ml_graphene_point_equal"
 (** Checks if the two points [a] and [b] point to the same coordinates.
 
     This function accounts for floating point fluctuations; if you want to
-    control the fuzziness of the match, you can use graphene_point_near()
-    instead. *)
+    control the fuzziness of the match, you can use
+    {{!Ocgraphene.Raw.Point.val-near}[graphene_point_near ()]} instead. *)
 
 external distance : t -> t -> float * float * float
   = "ml_graphene_point_distance"

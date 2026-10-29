@@ -38,8 +38,9 @@ external get_connectable :
 
 external get_default_port : t -> int
   = "ml_g_proxy_address_enumerator_get_default_port"
-(** The default port to use if [GProxyAddressEnumerator:uri] does not specify
-    one. *)
+(** The default port to use if
+    {{!Ocgio.Raw.Proxy_address_enumerator.val-get_uri}[GProxyAddressEnumerator:uri]}
+    does not specify one. *)
 
 external get_proxy_resolver : t -> Proxy_resolver.t
   = "ml_g_proxy_address_enumerator_get_proxy_resolver"

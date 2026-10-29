@@ -107,8 +107,11 @@ end
      {{!Ocgtk.Level_bar.class-type-level_bar_t.method-add_offset_value}[Gtk.LevelBar.add_offset_value]} \
      to set the value offsets at which\n\
      the bar will be considered in a different state. GTK will add a few\n\
-     offsets by default on the level bar: [GTK_LEVEL_BAR_OFFSET_LOW],\n\
-     [GTK_LEVEL_BAR_OFFSET_HIGH] and [GTK_LEVEL_BAR_OFFSET_FULL], with\n\
+     offsets by default on the level bar: \
+     {{!Ocgtk.Constants.level_bar_offset_low}[GTK_LEVEL_BAR_OFFSET_LOW]},\n\
+     {{!Ocgtk.Constants.level_bar_offset_high}[GTK_LEVEL_BAR_OFFSET_HIGH]} and \
+     {{!Ocgtk.Constants.level_bar_offset_full}[GTK_LEVEL_BAR_OFFSET_FULL]}, \
+     with\n\
      values 0.25, 0.75 and 1.0 respectively.\n\n\
      Note that it is your responsibility to update preexisting offsets\n\
      when changing the minimum or maximum value. GTK will simply clamp\n\
@@ -147,7 +150,9 @@ end
      The value will be always drawn in\n\
      proportion to the admissible interval, i.e. a value of 15 with a specified\n\
      interval between 10 and 20 is equivalent to a value of 0.5 with an interval\n\
-     between 0 and 1. When [GTK_LEVEL_BAR_MODE_DISCRETE] is used, the bar level\n\
+     between 0 and 1. When \
+     {{!Ocgtk.Enums.type-levelbarmode.constructor-DISCRETE}[GTK_LEVEL_BAR_MODE_DISCRETE]} \
+     is used, the bar level\n\
      is rendered as a finite number of separated blocks instead of a single one.\n\
      The number of blocks that will be rendered is equal to the number of units\n\
      specified by the admissible interval.\n\n\
@@ -201,8 +206,10 @@ class level_bar : Raw.Level_bar.t -> level_bar_t
  {{!Ocgtk.Level_bar.class-type-level_bar_t.method-add_offset_value}[Gtk.LevelBar.add_offset_value]} \
  to set the value offsets at which\n\
  the bar will be considered in a different state. GTK will add a few\n\
- offsets by default on the level bar: [GTK_LEVEL_BAR_OFFSET_LOW],\n\
- [GTK_LEVEL_BAR_OFFSET_HIGH] and [GTK_LEVEL_BAR_OFFSET_FULL], with\n\
+ offsets by default on the level bar: \
+ {{!Ocgtk.Constants.level_bar_offset_low}[GTK_LEVEL_BAR_OFFSET_LOW]},\n\
+ {{!Ocgtk.Constants.level_bar_offset_high}[GTK_LEVEL_BAR_OFFSET_HIGH]} and \
+ {{!Ocgtk.Constants.level_bar_offset_full}[GTK_LEVEL_BAR_OFFSET_FULL]}, with\n\
  values 0.25, 0.75 and 1.0 respectively.\n\n\
  Note that it is your responsibility to update preexisting offsets\n\
  when changing the minimum or maximum value. GTK will simply clamp\n\
@@ -241,7 +248,9 @@ class level_bar : Raw.Level_bar.t -> level_bar_t
  The value will be always drawn in\n\
  proportion to the admissible interval, i.e. a value of 15 with a specified\n\
  interval between 10 and 20 is equivalent to a value of 0.5 with an interval\n\
- between 0 and 1. When [GTK_LEVEL_BAR_MODE_DISCRETE] is used, the bar level\n\
+ between 0 and 1. When \
+ {{!Ocgtk.Enums.type-levelbarmode.constructor-DISCRETE}[GTK_LEVEL_BAR_MODE_DISCRETE]} \
+ is used, the bar level\n\
  is rendered as a finite number of separated blocks instead of a single one.\n\
  The number of blocks that will be rendered is equal to the number of units\n\
  specified by the admissible interval.\n\n\

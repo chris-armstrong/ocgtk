@@ -6,7 +6,7 @@ class type fixed_t = object
   method get_child_transform :
     Widget.widget_t -> Ocgsk.Transform.transform_t option
   (** Retrieves the transformation for [widget] set using
-      gtk_fixed_set_child_transform(). *)
+      [gtk_fixed_set_child_transform ()]. *)
 
   method move : Widget.widget_t -> float -> float -> unit
   (** Sets a translation transformation to the given [x] and [y] coordinates to

@@ -41,10 +41,10 @@ class type box_layout_t = object
   (** {2:methods Methods} *)
 
   method get_baseline_child : unit -> int
-  (** Gets the value set by gtk_box_layout_set_baseline_child(). *)
+  (** Gets the value set by [gtk_box_layout_set_baseline_child ()]. *)
 
   method get_baseline_position : unit -> Enums.baselineposition
-  (** Gets the value set by gtk_box_layout_set_baseline_position(). *)
+  (** Gets the value set by [gtk_box_layout_set_baseline_position ()]. *)
 
   method get_homogeneous : unit -> bool
   (** Returns whether the layout is set to be homogeneous. *)

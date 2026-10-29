@@ -24,11 +24,14 @@ external start_editing : t -> Ocgdk_raw.Event.t option -> unit
 (** Begins editing on a [cell_editable].
 
     The [GtkCellRenderer] for the cell creates and returns a [GtkCellEditable]
-    from gtk_cell_renderer_start_editing(), configured for the [GtkCellRenderer]
-    type.
+    from
+    {{!Ocgtk.Raw.Cell_renderer.val-start_editing}[gtk_cell_renderer_start_editing
+                                                  ()]}, configured for the
+    [GtkCellRenderer] type.
 
-    gtk_cell_editable_start_editing() can then set up [cell_editable] suitably
-    for editing a cell, e.g. making the Esc key emit
+    {{!Ocgtk.Raw.Cell_editable.val-start_editing}[gtk_cell_editable_start_editing
+                                                  ()]} can then set up
+    [cell_editable] suitably for editing a cell, e.g. making the Esc key emit
     [GtkCellEditable::editing-done].
 
     Note that the [cell_editable] is created on-demand for the current edit; its
@@ -62,8 +65,9 @@ val on_editing_done :
     are to capture the edited value, disconnect the [cell_editable] from signals
     on the [GtkCellRenderer], etc.
 
-    gtk_cell_editable_editing_done() is a convenience method for emitting
-    [GtkCellEditable::editing-done]. *)
+    {{!Ocgtk.Raw.Cell_editable.val-editing_done}[gtk_cell_editable_editing_done
+                                                 ()]} is a convenience method
+    for emitting [GtkCellEditable::editing-done]. *)
 
 val on_remove_widget :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
@@ -75,5 +79,6 @@ val on_remove_widget :
     [GtkCellEditable::editing-done] signal, to give the cell renderer a chance
     to update the cell's value before the widget is removed.
 
-    gtk_cell_editable_remove_widget() is a convenience method for emitting
-    [GtkCellEditable::remove-widget]. *)
+    {{!Ocgtk.Raw.Cell_editable.val-remove_widget}[gtk_cell_editable_remove_widget
+                                                  ()]} is a convenience method
+    for emitting [GtkCellEditable::remove-widget]. *)

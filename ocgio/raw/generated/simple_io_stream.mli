@@ -22,8 +22,9 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_simple_io_stream_get_type"
 
 external new_ : Input_stream.t -> Output_stream.t -> t
   = "ml_g_simple_io_stream_new"
-(** Creates a new [GSimpleIOStream] wrapping [input_stream] and [output_stream].
-    See also [GIOStream]. *)
+(** Creates a new {{!Ocgio.Raw.Simple_io_stream}[GSimpleIOStream]} wrapping
+    [input_stream] and [output_stream]. See also
+    {{!Ocgio.Raw.Io_stream}[GIOStream]}. *)
 
 (* Methods *)
 (* Properties *)

@@ -28,8 +28,8 @@ class type editable_t = object
 
       The default handler for this signal will normally be responsible for
       deleting the text, so by connecting to this signal and then stopping the
-      signal with g_signal_stop_emission(), it is possible to modify the range
-      of deleted text, or prevent it from being deleted entirely.
+      signal with [g_signal_stop_emission ()], it is possible to modify the
+      range of deleted text, or prevent it from being deleted entirely.
 
       The [start_pos] and [end_pos] parameters are interpreted as for
       [Gtk.Editable.delete_text]. *)

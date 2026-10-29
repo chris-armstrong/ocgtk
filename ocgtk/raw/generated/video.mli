@@ -79,7 +79,8 @@ external set_graphics_offload : t -> Ocgtk_enums.graphicsoffloadenabled -> unit
 external set_filename : t -> string option -> unit = "ml_gtk_video_set_filename"
 (** Makes [self] play the given [filename].
 
-    This is a utility function that calls gtk_video_set_file(), *)
+    This is a utility function that calls
+    {{!Ocgtk.Raw.Video.val-set_file}[gtk_video_set_file ()]}, *)
 
 external set_file : t -> Ocgio_raw.File.t option -> unit
   = "ml_gtk_video_set_file"

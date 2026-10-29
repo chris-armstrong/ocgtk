@@ -69,7 +69,7 @@ class type notification_t = object
      application-wide action (starting with \"app.\"). If [detailed_action]\n\
      contains a target, the action will be activated with that target as\n\
      its parameter.\n\n\
-     See g_action_parse_detailed_name() for a description of the format\n\
+     See [g_action_parse_detailed_name ()] for a description of the format\n\
      for [detailed_action]."]
 
   method add_button_with_target_value :
@@ -101,7 +101,7 @@ class type notification_t = object
      The action in [detailed_action] must be an application-wide action (it\n\
      must start with \"app.\"). If [detailed_action] contains a target, the\n\
      given action will be activated with that target as its parameter.\n\
-     See g_action_parse_detailed_name() for a description of the format\n\
+     See [g_action_parse_detailed_name ()] for a description of the format\n\
      for [detailed_action].\n\n\
      When no default action is set, the application that the notification\n\
      was sent on is activated."]
@@ -128,7 +128,7 @@ class type notification_t = object
   (** Sets the title of [notification] to [title]. *)
 
   method set_urgent : bool -> unit
-  (** Deprecated in favor of g_notification_set_priority(). *)
+  (** Deprecated in favor of [g_notification_set_priority ()]. *)
 
   (** {2:conversions Conversions} *)
 
@@ -192,9 +192,13 @@ class notification : Raw.Notification.t -> notification_t
 (** {1:constructors Constructors} *)
 
 val new_ : string -> notification_t
-(** Creates a new [GNotification] with [title] as its title.
+(** Creates a new
+    {{!Ocgio.Notification.class-type-notification_t}[GNotification]} with
+    [title] as its title.
 
     After populating [notification] with more details, it can be sent to the
-    desktop shell with g_application_send_notification(). Changing any
-    properties after this call will not have any effect until resending
-    [notification]. *)
+    desktop shell with
+    {{!Ocgio.Application.class-type-application_t.method-send_notification}[g_application_send_notification
+                                                                            ()]}.
+    Changing any properties after this call will not have any effect until
+    resending [notification]. *)

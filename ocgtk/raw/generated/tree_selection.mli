@@ -12,12 +12,13 @@
     [GtkTreeView] widget instead of a separate function.
 
     The [GtkTreeSelection] object is gotten from a [GtkTreeView] by calling
-    gtk_tree_view_get_selection(). It can be manipulated to check the selection
-    status of the tree, as well as select and deselect individual rows.
-    Selection is done completely view side. As a result, multiple views of the
-    same model can have completely different selections. Additionally, you
-    cannot change the selection of a row on the model that is not currently
-    displayed by the view without expanding its parents first.
+    {{!Ocgtk.Raw.Tree_view.val-get_selection}[gtk_tree_view_get_selection ()]}.
+    It can be manipulated to check the selection status of the tree, as well as
+    select and deselect individual rows. Selection is done completely view side.
+    As a result, multiple views of the same model can have completely different
+    selections. Additionally, you cannot change the selection of a row on the
+    model that is not currently displayed by the view without expanding its
+    parents first.
 
     One of the important things to remember when monitoring the selection of a
     view is that the [GtkTreeSelection]::changed signal is mostly a hint. That

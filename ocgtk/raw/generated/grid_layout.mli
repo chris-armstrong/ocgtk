@@ -54,7 +54,9 @@ external set_baseline_row : t -> int -> unit
     is global, meaning it will be the baseline in the parent of the [grid]. *)
 
 external get_row_spacing : t -> int = "ml_gtk_grid_layout_get_row_spacing"
-(** Retrieves the spacing set with gtk_grid_layout_set_row_spacing(). *)
+(** Retrieves the spacing set with
+    {{!Ocgtk.Raw.Grid_layout.val-set_row_spacing}[gtk_grid_layout_set_row_spacing
+                                                  ()]}. *)
 
 external get_row_homogeneous : t -> bool
   = "ml_gtk_grid_layout_get_row_homogeneous"
@@ -66,16 +68,22 @@ external get_row_baseline_position : t -> int -> Ocgtk_enums.baselineposition
 
     If no value has been set with
     {{!Ocgtk.Raw.Grid_layout.val-set_row_baseline_position}[Gtk.GridLayout.set_row_baseline_position]},
-    the default value of [GTK_BASELINE_POSITION_CENTER] is returned. *)
+    the default value of
+    {{!Ocgtk.Enums.type-baselineposition.constructor-CENTER}[GTK_BASELINE_POSITION_CENTER]}
+    is returned. *)
 
 external get_column_spacing : t -> int = "ml_gtk_grid_layout_get_column_spacing"
-(** Retrieves the spacing set with gtk_grid_layout_set_column_spacing(). *)
+(** Retrieves the spacing set with
+    {{!Ocgtk.Raw.Grid_layout.val-set_column_spacing}[gtk_grid_layout_set_column_spacing
+                                                     ()]}. *)
 
 external get_column_homogeneous : t -> bool
   = "ml_gtk_grid_layout_get_column_homogeneous"
 (** Checks whether all columns of [grid] should have the same width. *)
 
 external get_baseline_row : t -> int = "ml_gtk_grid_layout_get_baseline_row"
-(** Retrieves the row set with gtk_grid_layout_set_baseline_row(). *)
+(** Retrieves the row set with
+    {{!Ocgtk.Raw.Grid_layout.val-set_baseline_row}[gtk_grid_layout_set_baseline_row
+                                                   ()]}. *)
 
 (* Properties *)

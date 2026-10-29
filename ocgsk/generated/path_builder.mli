@@ -54,7 +54,8 @@ class type path_builder_t = object
   method add_cairo_path : Occairo.Path.path_t -> unit
   (** Adds a Cairo path to the builder.
 
-      You can use cairo_copy_path() to access the path from a Cairo context. *)
+      You can use [cairo_copy_path ()] to access the path from a Cairo context.
+  *)
 
   method add_circle : Ocgraphene.Point.point_t -> float -> unit
   (** Adds a circle as a new contour.

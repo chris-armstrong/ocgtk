@@ -6,7 +6,7 @@ class type seekable_t = object
 
   method can_truncate : unit -> bool
   (** Tests if the length of the stream can be adjusted with
-      g_seekable_truncate(). *)
+      [g_seekable_truncate ()]. *)
 
   method tell : unit -> int64
   (** Tells the current position within the stream. *)

@@ -63,7 +63,7 @@ class type popover_menu_bar_t = object
 
   method remove_child : Widget.widget_t -> bool
   (** Removes a widget that has previously been added with
-      gtk_popover_menu_bar_add_child(). *)
+      [gtk_popover_menu_bar_add_child ()]. *)
 
   method set_menu_model : Ocgio.Menu_model.menu_model_t option -> unit
   (** Sets a menu model from which [bar] should take its contents. *)

@@ -12,7 +12,8 @@
     request and render groups of data rows. However, it’s important that the
     same context which was used to request sizes for a given [GtkTreeModel] row
     also be used for the same row when calling other [GtkCellArea] APIs such as
-    gtk_cell_area_render() and gtk_cell_area_event().
+    [gtk_cell_area_render ()] and
+    {{!Ocgtk.Raw.Cell_area.val-event}[gtk_cell_area_event ()]}.
 
     The class built on this module is in {!Ocgtk.Cell_area_context}. *)
 

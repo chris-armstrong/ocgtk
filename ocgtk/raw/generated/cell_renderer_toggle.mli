@@ -19,10 +19,10 @@ external gtype : unit -> Gobject.Type.t = "ml_gtk_cell_renderer_toggle_get_type"
 external new_ : unit -> t = "ml_gtk_cell_renderer_toggle_new"
 (** Creates a new [GtkCellRendererToggle]. Adjust rendering parameters using
     object properties. Object properties can be set globally (with
-    g_object_set()). Also, with [GtkTreeViewColumn], you can bind a property to
-    a value in a [GtkTreeModel]. For example, you can bind the “active” property
-    on the cell renderer to a boolean value in the model, thus causing the check
-    button to reflect the state of the model. *)
+    [g_object_set ()]). Also, with [GtkTreeViewColumn], you can bind a property
+    to a value in a [GtkTreeModel]. For example, you can bind the “active”
+    property on the cell renderer to a boolean value in the model, thus causing
+    the check button to reflect the state of the model. *)
 
 (* Methods *)
 
@@ -47,12 +47,14 @@ external get_radio : t -> bool = "ml_gtk_cell_renderer_toggle_get_radio"
 
 external get_active : t -> bool = "ml_gtk_cell_renderer_toggle_get_active"
 (** Returns whether the cell renderer is active. See
-    gtk_cell_renderer_toggle_set_active(). *)
+    {{!Ocgtk.Raw.Cell_renderer_toggle.val-set_active}[gtk_cell_renderer_toggle_set_active
+                                                      ()]}. *)
 
 external get_activatable : t -> bool
   = "ml_gtk_cell_renderer_toggle_get_activatable"
 (** Returns whether the cell renderer is activatable. See
-    gtk_cell_renderer_toggle_set_activatable(). *)
+    {{!Ocgtk.Raw.Cell_renderer_toggle.val-set_activatable}[gtk_cell_renderer_toggle_set_activatable
+                                                           ()]}. *)
 
 (* Properties *)
 

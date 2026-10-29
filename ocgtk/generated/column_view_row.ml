@@ -9,11 +9,11 @@ class type column_view_row_t = object
 
   method get_activatable : unit -> bool
   (** Checks if the row has been set to be activatable via
-      gtk_column_view_row_set_activatable(). *)
+      [gtk_column_view_row_set_activatable ()]. *)
 
   method get_focusable : unit -> bool
   (** Checks if a row item has been set to be focusable via
-      gtk_column_view_row_set_focusable(). *)
+      [gtk_column_view_row_set_focusable ()]. *)
 
   method get_item : unit -> [ `object_ ] Gobject.obj option
   (** Gets the model item that associated with [self].
@@ -27,7 +27,7 @@ class type column_view_row_t = object
 
   method get_selectable : unit -> bool
   (** Checks if the row has been set to be selectable via
-      gtk_column_view_row_set_selectable().
+      [gtk_column_view_row_set_selectable ()].
 
       Do not confuse this function with [Gtk.ColumnViewRow.get_selected]. *)
 
@@ -49,7 +49,7 @@ class type column_view_row_t = object
   (** Sets [self] to be activatable.
 
       If a row is activatable, double-clicking on the row, using the Return key
-      or calling gtk_widget_activate() will activate the row. Activating
+      or calling [gtk_widget_activate ()] will activate the row. Activating
       instructs the containing columnview to emit the [Gtk.ColumnView::activate]
       signal.
 

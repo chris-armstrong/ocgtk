@@ -8,10 +8,10 @@ class type charset_converter_t = object
   (** Gets the number of fallbacks that [converter] has applied so far. *)
 
   method get_use_fallback : unit -> bool
-  (** Gets the [GCharsetConverter:use]-fallback property. *)
+  (** Gets the [GCharsetConverter:use-fallback] property. *)
 
   method set_use_fallback : bool -> unit
-  (** Sets the [GCharsetConverter:use]-fallback property. *)
+  (** Sets the [GCharsetConverter:use-fallback] property. *)
 
   (** {2:properties Properties} *)
 

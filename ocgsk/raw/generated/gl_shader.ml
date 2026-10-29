@@ -9,7 +9,7 @@
  uniforms (as they are uniform over all the calls to your shader in\n\
  each instance of use). A shader can also receive up to 4\n\
  textures that it can use as input when producing the pixel data.\n\n\
- [GskGLShader] is usually used with gtk_snapshot_push_gl_shader()\n\
+ [GskGLShader] is usually used with [gtk_snapshot_push_gl_shader ()]\n\
  to produce a {{!Ocgsk.Raw.Gl_shader_node}[Gsk.GLShaderNode]} in the rendering \
  hierarchy,\n\
  and then its input textures are constructed by rendering the child\n\
@@ -54,7 +54,7 @@
  (i.e. u_texture1 to u_texture4) as well as any custom uniforms\n\
  you want of types int, uint, bool, float, vec2, vec3 or vec4.\n\n\
  All textures sources contain premultiplied alpha colors, but if some\n\
- there are outer sources of colors there is a gsk_premultiply() helper\n\
+ there are outer sources of colors there is a [gsk_premultiply ()] helper\n\
  to compute premultiplication when needed.\n\n\
  Note that GTK parses the uniform declarations, so each uniform has to\n\
  be on a line by itself with no other code, like so:\n\n\

@@ -92,8 +92,8 @@ external close : t -> Cancellable.t option -> (bool, GError.t) result
     the individual input and output streams, if they are not already closed.
 
     Once the stream is closed, all other operations will return
-    [G_IO_ERROR_CLOSED]. Closing a stream multiple times will not return an
-    error.
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-CLOSED}[G_IO_ERROR_CLOSED]}.
+    Closing a stream multiple times will not return an error.
 
     Closing a stream will automatically flush any outstanding buffers in the
     stream.
@@ -108,15 +108,18 @@ external close : t -> Cancellable.t option -> (bool, GError.t) result
 
     On failure the first error that happened will be reported, but the close
     operation will finish as much as possible. A stream that failed to close
-    will still return [G_IO_ERROR_CLOSED] for all operations. Still, it is
-    important to check and report the error to the user, otherwise there might
-    be a loss of data as all data might not be written.
+    will still return
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-CLOSED}[G_IO_ERROR_CLOSED]} for
+    all operations. Still, it is important to check and report the error to the
+    user, otherwise there might be a loss of data as all data might not be
+    written.
 
     If [cancellable] is not NULL, then the operation can be cancelled by
     triggering the cancellable object from another thread. If the operation was
-    cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. Cancelling a
-    close will still leave the stream closed, but some streams can use a faster
-    close that doesn't block to e.g. check errors.
+    cancelled, the error
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-CANCELLED}[G_IO_ERROR_CANCELLED]}
+    will be returned. Cancelling a close will still leave the stream closed, but
+    some streams can use a faster close that doesn't block to e.g. check errors.
 
     The default implementation of this method just calls close on the individual
     input/output streams. *)

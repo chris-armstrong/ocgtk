@@ -12,7 +12,7 @@ class type cell_editable_t = object
       ::editing-done are to capture the edited value, disconnect the
       [cell_editable] from signals on the [GtkCellRenderer], etc.
 
-      gtk_cell_editable_editing_done() is a convenience method for emitting
+      [gtk_cell_editable_editing_done ()] is a convenience method for emitting
       [GtkCellEditable::editing-done]. *)
 
   method on_remove_widget :
@@ -26,7 +26,7 @@ class type cell_editable_t = object
       [GtkCellEditable::editing-done] signal, to give the cell renderer a chance
       to update the cell's value before the widget is removed.
 
-      gtk_cell_editable_remove_widget() is a convenience method for emitting
+      [gtk_cell_editable_remove_widget ()] is a convenience method for emitting
       [GtkCellEditable::remove-widget]. *)
 
   (** {2:methods Methods} *)
@@ -41,11 +41,11 @@ class type cell_editable_t = object
   (** Begins editing on a [cell_editable].
 
       The [GtkCellRenderer] for the cell creates and returns a [GtkCellEditable]
-      from gtk_cell_renderer_start_editing(), configured for the
+      from [gtk_cell_renderer_start_editing ()], configured for the
       [GtkCellRenderer] type.
 
-      gtk_cell_editable_start_editing() can then set up [cell_editable] suitably
-      for editing a cell, e.g. making the Esc key emit
+      [gtk_cell_editable_start_editing ()] can then set up [cell_editable]
+      suitably for editing a cell, e.g. making the Esc key emit
       [GtkCellEditable::editing-done].
 
       Note that the [cell_editable] is created on-demand for the current edit;

@@ -46,7 +46,7 @@ class type list_store_t = object
 
   method set_valuesv :
     Raw.Tree_iter.t -> int array -> Gobject.Value.t array -> int -> unit
-  (** A variant of gtk_list_store_set_valist() which takes the columns and
+  (** A variant of [gtk_list_store_set_valist ()] which takes the columns and
       values as two arrays, instead of varargs. This function is mainly intended
       for language-bindings and in case the number of columns to change is not
       known until run-time. *)

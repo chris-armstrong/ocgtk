@@ -102,25 +102,34 @@ let classes = [ widget; button; menu_button ]
 
 let enums =
   [
-    make_gir_enum ~enum_name:"Orientation"
+    make_gir_enum ~enum_name:"Orientation" ~enum_c_type:"GtkOrientation"
       ~members:
         [
-          make_gir_enum_member ~member_name:"horizontal" ();
-          make_gir_enum_member ~member_name:"vertical" ~member_value:1 ();
+          make_gir_enum_member ~member_name:"horizontal"
+            ~c_identifier:"GTK_ORIENTATION_HORIZONTAL" ();
+          make_gir_enum_member ~member_name:"vertical" ~member_value:1
+            ~c_identifier:"GTK_ORIENTATION_VERTICAL" ();
         ]
       ();
-    make_gir_enum ~enum_name:"DirectionType"
-      ~members:[ make_gir_enum_member ~member_name:"tab_forward" () ]
+    make_gir_enum ~enum_name:"DirectionType" ~enum_c_type:"GtkDirectionType"
+      ~members:
+        [
+          make_gir_enum_member ~member_name:"tab_forward"
+            ~c_identifier:"GTK_DIR_TAB_FORWARD" ();
+        ]
       ();
   ]
 
 let bitfields =
   [
     make_gir_bitfield ~bitfield_name:"StateFlags"
+      ~bitfield_c_type:"GtkStateFlags"
       ~flags:
         [
-          make_gir_bitfield_member ~flag_name:"active" ();
-          make_gir_bitfield_member ~flag_name:"dir_ltr" ~flag_value:1 ();
+          make_gir_bitfield_member ~flag_name:"active"
+            ~flag_c_identifier:"GTK_STATE_FLAG_ACTIVE" ();
+          make_gir_bitfield_member ~flag_name:"dir_ltr" ~flag_value:1
+            ~flag_c_identifier:"GTK_STATE_FLAG_DIR_LTR" ();
         ]
       ();
   ]

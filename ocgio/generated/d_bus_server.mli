@@ -49,14 +49,15 @@ class type d_bus_server_t = object
     unit ->
     Gobject.Signal.handler_id
   (** Emitted when a new authenticated connection has been made. Use
-      g_dbus_connection_get_peer_credentials() to figure out what identity (if
-      any), was authenticated.
+      [g_dbus_connection_get_peer_credentials ()] to figure out what identity
+      (if any), was authenticated.
 
       If you want to accept the connection, take a reference to the [connection]
       object and return [true]. When you are done with the connection call
-      g_dbus_connection_close() and give up your reference. Note that the other
-      peer may disconnect at any time - a typical thing to do when accepting a
-      connection is to listen to the [GDBusConnection::closed] signal.
+      [g_dbus_connection_close ()] and give up your reference. Note that the
+      other peer may disconnect at any time - a typical thing to do when
+      accepting a connection is to listen to the [GDBusConnection::closed]
+      signal.
 
       If [GDBusServer:flags] contains [G_DBUS_SERVER_FLAGS_RUN_IN_THREAD] then
       the signal is emitted in a new thread dedicated to the connection.
@@ -66,8 +67,8 @@ class type d_bus_server_t = object
 
       You are guaranteed that signal handlers for this signal runs before
       incoming messages on [connection] are processed. This means that it's
-      suitable to call g_dbus_connection_register_object() or similar from the
-      signal handler. *)
+      suitable to call [g_dbus_connection_register_object ()] or similar from
+      the signal handler. *)
 
   (** {2:methods Methods} *)
 
@@ -83,7 +84,7 @@ class type d_bus_server_t = object
   (** Gets the flags for [server]. *)
 
   method get_guid : unit -> string
-  (** Gets the GUID for [server], as provided to g_dbus_server_new_sync(). *)
+  (** Gets the GUID for [server], as provided to [g_dbus_server_new_sync ()]. *)
 
   method is_active : unit -> bool
   (** Gets whether [server] is active. *)
@@ -147,20 +148,27 @@ val new_sync :
 (** Creates a new D-Bus server that listens on the first address in [address]
     that works.
 
-    Once constructed, you can use g_dbus_server_get_client_address() to get a
-    D-Bus address string that clients can use to connect.
+    Once constructed, you can use
+    {{!Ocgio.D_bus_server.class-type-d_bus_server_t.method-get_client_address}[g_dbus_server_get_client_address
+                                                                               ()]}
+    to get a D-Bus address string that clients can use to connect.
 
     To have control over the available authentication mechanisms and the users
     that are authorized to connect, it is strongly recommended to provide a
-    non-[None] [GDBusAuthObserver].
+    non-[None]
+    {{!Ocgio.D_bus_auth_observer.class-type-d_bus_auth_observer_t}[GDBusAuthObserver]}.
 
-    Connect to the [GDBusServer::new]-connection signal to handle incoming
-    connections.
+    Connect to the
+    {{!Ocgio.D_bus_server.class-type-d_bus_server_t.method-on_new_connection}[GDBusServer::new-connection]}
+    signal to handle incoming connections.
 
-    The returned [GDBusServer] isn't active - you have to start it with
-    g_dbus_server_start().
+    The returned {{!Ocgio.D_bus_server.class-type-d_bus_server_t}[GDBusServer]}
+    isn't active - you have to start it with
+    {{!Ocgio.D_bus_server.class-type-d_bus_server_t.method-start}[g_dbus_server_start
+                                                                  ()]}.
 
-    [GDBusServer] is used in this
+    {{!Ocgio.D_bus_server.class-type-d_bus_server_t}[GDBusServer]} is used in
+    this
     {{:https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gdbus-example-peer.c}example}.
 
     This is a synchronous failable constructor. There is currently no

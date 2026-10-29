@@ -30,7 +30,7 @@ class type print_settings_t = object
       associated with [key], or [default_val] if the value does not represent a
       floating point number.
 
-      Floating point numbers are parsed with g_ascii_strtod(). *)
+      Floating point numbers are parsed with [g_ascii_strtod ()]. *)
 
   method get_duplex : unit -> Enums.printduplex
   (** Gets the value of [GTK_PRINT_SETTINGS_DUPLEX]. *)

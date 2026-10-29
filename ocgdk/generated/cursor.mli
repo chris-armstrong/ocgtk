@@ -21,7 +21,7 @@
     or
     {{!Ocgdk.Surface.class-type-surface_t.method-set_device_cursor}[Gdk.Surface.set_device_cursor]}.
     Applications will typically use higher-level GTK functions such as
-    gtk_widget_set_cursor() instead.
+    [gtk_widget_set_cursor ()] instead.
 
     Cursors are not bound to a given
     {{!Ocgdk.Display.class-type-display_t}[Gdk.Display]}, so they can be shared.
@@ -110,7 +110,7 @@ class cursor : Raw.Cursor.t -> cursor_t
     or
     {{!Ocgdk.Surface.class-type-surface_t.method-set_device_cursor}[Gdk.Surface.set_device_cursor]}.
     Applications will typically use higher-level GTK functions such as
-    gtk_widget_set_cursor() instead.
+    [gtk_widget_set_cursor ()] instead.
 
     Cursors are not bound to a given
     {{!Ocgdk.Display.class-type-display_t}[Gdk.Display]}, so they can be shared.

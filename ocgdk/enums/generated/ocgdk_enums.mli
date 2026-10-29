@@ -720,7 +720,7 @@ type scrolldirection =
   | `RIGHT  (** the surface is scrolled to the right. *)
   | `SMOOTH
     (** the scrolling is determined by the delta values in scroll events. See
-        gdk_scroll_event_get_deltas() *) ]
+        [gdk_scroll_event_get_deltas ()] *) ]
 (** Specifies the direction for scroll events. *)
 
 val scrolldirection_of_int : int -> scrolldirection
@@ -747,16 +747,19 @@ type scrollunit =
     (** The delta is in surface pixels to scroll directly on screen. *) ]
 (** Specifies the unit of scroll deltas.
 
-    When you get [GDK_SCROLL_UNIT_WHEEL], a delta of 1.0 means 1 wheel detent
-    click in the south direction, 2.0 means 2 wheel detent clicks in the south
-    direction... This is the same logic for negative values but in the north
-    direction.
+    When you get
+    {{!Ocgdk.Enums.type-scrollunit.constructor-WHEEL}[GDK_SCROLL_UNIT_WHEEL]}, a
+    delta of 1.0 means 1 wheel detent click in the south direction, 2.0 means 2
+    wheel detent clicks in the south direction... This is the same logic for
+    negative values but in the north direction.
 
-    If you get [GDK_SCROLL_UNIT_SURFACE], are managing a scrollable view and get
-    a value of 123, you have to scroll 123 surface logical pixels right if it's
-    [delta_x] or down if it's [delta_y]. This is the same logic for negative
-    values but you have to scroll left instead of right if it's [delta_x] and up
-    instead of down if it's [delta_y].
+    If you get
+    {{!Ocgdk.Enums.type-scrollunit.constructor-SURFACE}[GDK_SCROLL_UNIT_SURFACE]},
+    are managing a scrollable view and get a value of 123, you have to scroll
+    123 surface logical pixels right if it's [delta_x] or down if it's
+    [delta_y]. This is the same logic for negative values but you have to scroll
+    left instead of right if it's [delta_x] and up instead of down if it's
+    [delta_y].
 
     1 surface logical pixel is equal to 1 real screen pixel multiplied by the
     final scale factor of your graphical interface (the product of the desktop
@@ -835,21 +838,22 @@ type touchpadgesturephase =
 (** Specifies the current state of a touchpad gesture.
 
     All gestures are guaranteed to begin with an event with phase
-    [GDK_TOUCHPAD_GESTURE_PHASE_BEGIN], followed by 0 or several events with
-    phase [GDK_TOUCHPAD_GESTURE_PHASE_UPDATE].
+    {{!Ocgdk.Enums.type-touchpadgesturephase.constructor-BEGIN}[GDK_TOUCHPAD_GESTURE_PHASE_BEGIN]},
+    followed by 0 or several events with phase
+    {{!Ocgdk.Enums.type-touchpadgesturephase.constructor-UPDATE}[GDK_TOUCHPAD_GESTURE_PHASE_UPDATE]}.
 
     A finished gesture may have 2 possible outcomes, an event with phase
-    [GDK_TOUCHPAD_GESTURE_PHASE_END] will be emitted when the gesture is
-    considered successful, this should be used as the hint to perform any
-    permanent changes.
+    {{!Ocgdk.Enums.type-touchpadgesturephase.constructor-END}[GDK_TOUCHPAD_GESTURE_PHASE_END]}
+    will be emitted when the gesture is considered successful, this should be
+    used as the hint to perform any permanent changes.
 
     Cancelled gestures may be so for a variety of reasons, due to hardware or
     the compositor, or due to the gesture recognition layers hinting the gesture
     did not finish resolutely (eg. a 3rd finger being added during a pinch
     gesture). In these cases, the last event will report the phase
-    [GDK_TOUCHPAD_GESTURE_PHASE_CANCEL], this should be used as a hint to undo
-    any visible/permanent changes that were done throughout the progress of the
-    gesture. *)
+    {{!Ocgdk.Enums.type-touchpadgesturephase.constructor-CANCEL}[GDK_TOUCHPAD_GESTURE_PHASE_CANCEL]},
+    this should be used as a hint to undo any visible/permanent changes that
+    were done throughout the progress of the gesture. *)
 
 val touchpadgesturephase_of_int : int -> touchpadgesturephase
 val touchpadgesturephase_to_int : touchpadgesturephase -> int
@@ -882,13 +886,20 @@ type anchorhints_flag =
     These hints determine how the surface should be positioned in the case that
     the surface would fall off-screen if placed in its ideal position.
 
-    For example, [GDK_ANCHOR_FLIP_X] will replace [GDK_GRAVITY_NORTH_WEST] with
-    [GDK_GRAVITY_NORTH_EAST] and vice versa if the surface extends beyond the
-    left or right edges of the monitor.
+    For example,
+    {{!Ocgdk.Enums.type-anchorhints_flag.constructor-FLIP_X}[GDK_ANCHOR_FLIP_X]}
+    will replace
+    {{!Ocgdk.Enums.type-gravity.constructor-NORTH_WEST}[GDK_GRAVITY_NORTH_WEST]}
+    with
+    {{!Ocgdk.Enums.type-gravity.constructor-NORTH_EAST}[GDK_GRAVITY_NORTH_EAST]}
+    and vice versa if the surface extends beyond the left or right edges of the
+    monitor.
 
-    If [GDK_ANCHOR_SLIDE_X] is set, the surface can be shifted horizontally to
-    fit on-screen. If [GDK_ANCHOR_RESIZE_X] is set, the surface can be shrunken
-    horizontally to fit.
+    If
+    {{!Ocgdk.Enums.type-anchorhints_flag.constructor-SLIDE_X}[GDK_ANCHOR_SLIDE_X]}
+    is set, the surface can be shifted horizontally to fit on-screen. If
+    {{!Ocgdk.Enums.type-anchorhints_flag.constructor-RESIZE_X}[GDK_ANCHOR_RESIZE_X]}
+    is set, the surface can be shrunken horizontally to fit.
 
     In general, when multiple flags are set, flipping should take precedence
     over sliding, which should take precedence over resizing. *)
@@ -1011,7 +1022,8 @@ type modifiertype_flag =
 
     Note that GDK may add internal values to events which include values outside
     of this enumeration. Your code should preserve and ignore them. You can use
-    [GDK_MODIFIER_MASK] to remove all private values. *)
+    {{!Ocgdk.Constants.modifier_mask}[GDK_MODIFIER_MASK]} to remove all private
+    values. *)
 
 type modifiertype = modifiertype_flag list
 
@@ -1114,10 +1126,10 @@ type toplevelstate_flag =
 (** Specifies the state of a toplevel surface.
 
     On platforms that support information about individual edges, the
-    [GDK_TOPLEVEL_STATE_TILED] state will be set whenever any of the individual
-    tiled states is set. On platforms that lack that support, the tiled state
-    will give an indication of tiledness without any of the per-edge states
-    being set. *)
+    {{!Ocgdk.Enums.type-toplevelstate_flag.constructor-TILED}[GDK_TOPLEVEL_STATE_TILED]}
+    state will be set whenever any of the individual tiled states is set. On
+    platforms that lack that support, the tiled state will give an indication of
+    tiledness without any of the per-edge states being set. *)
 
 type toplevelstate = toplevelstate_flag list
 

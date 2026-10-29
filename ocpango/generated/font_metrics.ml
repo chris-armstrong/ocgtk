@@ -14,7 +14,7 @@ class type font_metrics_t = object
       This is merely a representative value useful, for example, for determining
       the initial size for a window. Actual digits in text can be wider or
       narrower than this, though this value is generally somewhat more accurate
-      than the result of pango_font_metrics_get_approximate_char_width() for
+      than the result of [pango_font_metrics_get_approximate_char_width ()] for
       digits. *)
 
   method get_ascent : unit -> int

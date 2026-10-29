@@ -2,10 +2,10 @@ class type debug_controller_t = object
   (** {2:methods Methods} *)
 
   method get_debug_enabled : unit -> bool
-  (** Get the value of [GDebugController:debug]-enabled. *)
+  (** Get the value of [GDebugController:debug-enabled]. *)
 
   method set_debug_enabled : bool -> unit
-  (** Set the value of [GDebugController:debug]-enabled. *)
+  (** Set the value of [GDebugController:debug-enabled]. *)
 
   (** {2:conversions Conversions} *)
 

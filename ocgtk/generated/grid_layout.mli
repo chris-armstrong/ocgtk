@@ -13,13 +13,13 @@ class type grid_layout_t = object
   (** {2:methods Methods} *)
 
   method get_baseline_row : unit -> int
-  (** Retrieves the row set with gtk_grid_layout_set_baseline_row(). *)
+  (** Retrieves the row set with [gtk_grid_layout_set_baseline_row ()]. *)
 
   method get_column_homogeneous : unit -> bool
   (** Checks whether all columns of [grid] should have the same width. *)
 
   method get_column_spacing : unit -> int
-  (** Retrieves the spacing set with gtk_grid_layout_set_column_spacing(). *)
+  (** Retrieves the spacing set with [gtk_grid_layout_set_column_spacing ()]. *)
 
   method get_row_baseline_position : int -> Enums.baselineposition
   (** Returns the baseline position of [row].
@@ -31,7 +31,7 @@ class type grid_layout_t = object
   (** Checks whether all rows of [grid] should have the same height. *)
 
   method get_row_spacing : unit -> int
-  (** Retrieves the spacing set with gtk_grid_layout_set_row_spacing(). *)
+  (** Retrieves the spacing set with [gtk_grid_layout_set_row_spacing ()]. *)
 
   method set_baseline_row : int -> unit
   (** Sets which row defines the global baseline for the entire grid.

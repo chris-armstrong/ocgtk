@@ -79,10 +79,14 @@
  keeping the iter around.\n\n\
  {b Atomic Operations}\n\n\
  It is important to note that only the methods\n\
- gtk_list_store_insert_with_values() and gtk_list_store_insert_with_valuesv()\n\
+ [gtk_list_store_insert_with_values ()] and \
+ {{!Ocgtk.Raw.List_store.val-insert_with_valuesv}[gtk_list_store_insert_with_valuesv \
+ ()]}\n\
  are atomic, in the sense that the row is being appended to the store and the\n\
  values filled in in a single operation with regard to [GtkTreeModel] signaling.\n\
- In contrast, using e.g. gtk_list_store_append() and then gtk_list_store_set()\n\
+ In contrast, using e.g. \
+ {{!Ocgtk.Raw.List_store.val-append}[gtk_list_store_append ()]} and then \
+ [gtk_list_store_set ()]\n\
  will first create a row, which triggers the [GtkTreeModel::row-inserted] signal\n\
  on [GtkListStore]. The row, however, is still empty, and any signal handler\n\
  connecting to [GtkTreeModel::row-inserted] on this particular store should be \
@@ -151,10 +155,10 @@ external swap : t -> Tree_iter.t -> Tree_iter.t -> unit
 external set_valuesv :
   t -> Tree_iter.t -> int array -> Gobject.Value.t array -> int -> unit
   = "ml_gtk_list_store_set_valuesv"
-(** A variant of gtk_list_store_set_valist() which takes the columns and values
-    as two arrays, instead of varargs. This function is mainly intended for
-    language-bindings and in case the number of columns to change is not known
-    until run-time. *)
+(** A variant of [gtk_list_store_set_valist ()] which takes the columns and
+    values as two arrays, instead of varargs. This function is mainly intended
+    for language-bindings and in case the number of columns to change is not
+    known until run-time. *)
 
 external set_value : t -> Tree_iter.t -> int -> Gobject.Value.t -> unit
   = "ml_gtk_list_store_set_value"
@@ -179,8 +183,8 @@ external remove : t -> Tree_iter.t -> bool = "ml_gtk_list_store_remove"
 external prepend : t -> Tree_iter.t = "ml_gtk_list_store_prepend"
 (** Prepends a new row to [list_store]. [iter] will be changed to point to this
     new row. The row will be empty after this function is called. To fill in
-    values, you need to call gtk_list_store_set() or gtk_list_store_set_value().
-*)
+    values, you need to call [gtk_list_store_set ()] or
+    {{!Ocgtk.Raw.List_store.val-set_value}[gtk_list_store_set_value ()]}. *)
 
 external move_before : t -> Tree_iter.t -> Tree_iter.t option -> unit
   = "ml_gtk_list_store_move_before"
@@ -203,8 +207,8 @@ external iter_is_valid : t -> Tree_iter.t -> bool
 external insert_with_valuesv :
   t -> int -> int array -> Gobject.Value.t array -> int -> Tree_iter.t
   = "ml_gtk_list_store_insert_with_valuesv"
-(** A variant of gtk_list_store_insert_with_values() which takes the columns and
-    values as two arrays, instead of varargs.
+(** A variant of [gtk_list_store_insert_with_values ()] which takes the columns
+    and values as two arrays, instead of varargs.
 
     This function is mainly intended for language-bindings. *)
 
@@ -213,23 +217,24 @@ external insert_before : t -> Tree_iter.t option -> Tree_iter.t
 (** Inserts a new row before [sibling]. If [sibling] is [None], then the row
     will be appended to the end of the list. [iter] will be changed to point to
     this new row. The row will be empty after this function is called. To fill
-    in values, you need to call gtk_list_store_set() or
-    gtk_list_store_set_value(). *)
+    in values, you need to call [gtk_list_store_set ()] or
+    {{!Ocgtk.Raw.List_store.val-set_value}[gtk_list_store_set_value ()]}. *)
 
 external insert_after : t -> Tree_iter.t option -> Tree_iter.t
   = "ml_gtk_list_store_insert_after"
 (** Inserts a new row after [sibling]. If [sibling] is [None], then the row will
     be prepended to the beginning of the list. [iter] will be changed to point
     to this new row. The row will be empty after this function is called. To
-    fill in values, you need to call gtk_list_store_set() or
-    gtk_list_store_set_value(). *)
+    fill in values, you need to call [gtk_list_store_set ()] or
+    {{!Ocgtk.Raw.List_store.val-set_value}[gtk_list_store_set_value ()]}. *)
 
 external insert : t -> int -> Tree_iter.t = "ml_gtk_list_store_insert"
 (** Creates a new row at [position]. [iter] will be changed to point to this new
     row. If [position] is -1 or is larger than the number of rows on the list,
     then the new row will be appended to the list. The row will be empty after
     this function is called. To fill in values, you need to call
-    gtk_list_store_set() or gtk_list_store_set_value(). *)
+    [gtk_list_store_set ()] or
+    {{!Ocgtk.Raw.List_store.val-set_value}[gtk_list_store_set_value ()]}. *)
 
 external clear : t -> unit = "ml_gtk_list_store_clear"
 (** Removes all rows from the list store. *)
@@ -237,5 +242,5 @@ external clear : t -> unit = "ml_gtk_list_store_clear"
 external append : t -> Tree_iter.t = "ml_gtk_list_store_append"
 (** Appends a new row to [list_store]. [iter] will be changed to point to this
     new row. The row will be empty after this function is called. To fill in
-    values, you need to call gtk_list_store_set() or gtk_list_store_set_value().
-*)
+    values, you need to call [gtk_list_store_set ()] or
+    {{!Ocgtk.Raw.List_store.val-set_value}[gtk_list_store_set_value ()]}. *)

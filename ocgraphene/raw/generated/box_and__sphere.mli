@@ -27,14 +27,14 @@ module rec Box : sig
   (** Intersects the two given #graphene_box_t.
 
       If the two boxes do not intersect, [res] will contain a degenerate box
-      initialized with graphene_box_empty(). *)
+      initialized with [graphene_box_empty ()]. *)
 
   external init_from_vectors : t -> int -> Vec3_and__vec4.Vec3.t array -> t
     = "ml_graphene_box_init_from_vectors"
   (** Initializes the given #graphene_box_t with the given array of vertices.
 
       If [n_vectors] is 0, the returned box is initialized with
-      graphene_box_empty(). *)
+      [graphene_box_empty ()]. *)
 
   external init_from_vec3 :
     t -> Vec3_and__vec4.Vec3.t option -> Vec3_and__vec4.Vec3.t option -> t
@@ -47,7 +47,7 @@ module rec Box : sig
   (** Initializes the given #graphene_box_t with the given array of vertices.
 
       If [n_points] is 0, the returned box is initialized with
-      graphene_box_empty(). *)
+      [graphene_box_empty ()]. *)
 
   external init_from_box : t -> t -> t = "ml_graphene_box_init_from_box"
   (** Initializes the given #graphene_box_t with the vertices of another

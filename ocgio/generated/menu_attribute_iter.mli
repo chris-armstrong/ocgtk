@@ -1,5 +1,5 @@
-(** [GMenuAttributeIter] is an opaque structure type. You must access it using
-    the functions below.
+(** {{!Ocgio.Menu_attribute_iter.class-type-menu_attribute_iter_t}[GMenuAttributeIter]}
+    is an opaque structure type. You must access it using the functions below.
 
     Its methods, signals and properties are on
     {!class-type-menu_attribute_iter_t}. Its constructors are under
@@ -10,8 +10,9 @@
 
 (** {b The methods, signals and properties of a [MenuAttributeIter].}
 
-    [GMenuAttributeIter] is an opaque structure type. You must access it using
-    the functions below. *)
+    {{!Ocgio.Menu_attribute_iter.class-type-menu_attribute_iter_t}[GMenuAttributeIter]}
+    is an opaque structure type. You must access it using the functions below.
+*)
 class type menu_attribute_iter_t = object
   (** {2:methods Methods} *)
 

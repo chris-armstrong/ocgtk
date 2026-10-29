@@ -32,10 +32,14 @@ external from_gobject : 'a Gobject.obj -> t
 
 external set_debug_enabled : t -> bool -> unit
   = "ml_g_debug_controller_set_debug_enabled"
-(** Set the value of [GDebugController:debug]-enabled. *)
+(** Set the value of
+    {{!Ocgio.Raw.Debug_controller.val-get_debug_enabled}[GDebugController:debug-enabled]}.
+*)
 
 external get_debug_enabled : t -> bool
   = "ml_g_debug_controller_get_debug_enabled"
-(** Get the value of [GDebugController:debug]-enabled. *)
+(** Get the value of
+    {{!Ocgio.Raw.Debug_controller.val-get_debug_enabled}[GDebugController:debug-enabled]}.
+*)
 
 (* Properties *)

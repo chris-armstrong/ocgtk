@@ -64,7 +64,9 @@ external get_show_peek_icon : t -> bool
 
 external get_extra_menu : t -> Ocgio_raw.Menu_model.t option
   = "ml_gtk_password_entry_get_extra_menu"
-(** Gets the menu model set with gtk_password_entry_set_extra_menu(). *)
+(** Gets the menu model set with
+    {{!Ocgtk.Raw.Password_entry.val-set_extra_menu}[gtk_password_entry_set_extra_menu
+                                                    ()]}. *)
 
 (* Properties *)
 

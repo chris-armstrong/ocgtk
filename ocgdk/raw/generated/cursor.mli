@@ -12,7 +12,7 @@
     {{!Ocgdk.Raw.Surface.val-set_cursor}[Gdk.Surface.set_cursor]} or
     {{!Ocgdk.Raw.Surface.val-set_device_cursor}[Gdk.Surface.set_device_cursor]}.
     Applications will typically use higher-level GTK functions such as
-    gtk_widget_set_cursor() instead.
+    [gtk_widget_set_cursor ()] instead.
 
     Cursors are not bound to a given {{!Ocgdk.Raw.Display}[Gdk.Display]}, so
     they can be shared. However, the appearance of cursors may vary when used on

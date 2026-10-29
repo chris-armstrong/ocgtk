@@ -8,7 +8,8 @@
     {{!Ocgtk.Raw.Gesture_single.val-get_current_sequence}[Gtk.GestureSingle.get_current_sequence]}
     while the gesture is being interacted with.
 
-    By default gestures react to both [GDK_BUTTON_PRIMARY] and touch events.
+    By default gestures react to both
+    {{!Ocgdk.Constants.button_primary}[GDK_BUTTON_PRIMARY]} and touch events.
     {{!Ocgtk.Raw.Gesture_single.val-set_touch_only}[Gtk.GestureSingle.set_touch_only]}
     can be used to change the touch behavior. Callers may also specify a
     different mouse button number to interact with through

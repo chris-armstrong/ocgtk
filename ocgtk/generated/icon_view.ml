@@ -11,7 +11,7 @@ class type icon_view_t = object
       activates the currently focused item.
 
       Applications should not connect to it, but may emit it with
-      g_signal_emit_by_name() if they need to control activation
+      [g_signal_emit_by_name ()] if they need to control activation
       programmatically.
 
       The default bindings for this signal are Space, Return and Enter. *)
@@ -31,7 +31,7 @@ class type icon_view_t = object
      \\[keybinding signal\\][Gtk.SignalAction]\n\
      which gets emitted when the user initiates a cursor movement.\n\n\
      Applications should not connect to it, but may emit it with\n\
-     g_signal_emit_by_name() if they need to control the cursor\n\
+     [g_signal_emit_by_name ()] if they need to control the cursor\n\
      programmatically.\n\n\
      The default bindings for this signal include\n\n\
      - Arrow keys which move by individual steps\n\
@@ -46,7 +46,7 @@ class type icon_view_t = object
       selects all items.
 
       Applications should not connect to it, but may emit it with
-      g_signal_emit_by_name() if they need to control selection
+      [g_signal_emit_by_name ()] if they need to control selection
       programmatically.
 
       The default binding for this signal is Ctrl-a. *)
@@ -57,7 +57,7 @@ class type icon_view_t = object
       selects the item that is currently focused.
 
       Applications should not connect to it, but may emit it with
-      g_signal_emit_by_name() if they need to control selection
+      [g_signal_emit_by_name ()] if they need to control selection
       programmatically.
 
       There is no default binding for this signal. *)
@@ -74,7 +74,7 @@ class type icon_view_t = object
       effect of this depend on the selection mode.
 
       Applications should not connect to it, but may emit it with
-      g_signal_emit_by_name() if they need to control selection
+      [g_signal_emit_by_name ()] if they need to control selection
       programmatically.
 
       There is no default binding for this signal is Ctrl-Space. *)
@@ -85,7 +85,7 @@ class type icon_view_t = object
       unselects all items.
 
       Applications should not connect to it, but may emit it with
-      g_signal_emit_by_name() if they need to control selection
+      [g_signal_emit_by_name ()] if they need to control selection
       programmatically.
 
       The default binding for this signal is Ctrl-Shift-a. *)
@@ -111,7 +111,8 @@ class type icon_view_t = object
       method sets [GtkIconView]:reorderable to [false]. *)
 
   method get_activate_on_single_click : unit -> bool
-  (** Gets the setting set by gtk_icon_view_set_activate_on_single_click(). *)
+  (** Gets the setting set by [gtk_icon_view_set_activate_on_single_click ()].
+  *)
 
   method get_column_spacing : unit -> int
   (** Returns the value of the ::column-spacing property. *)
@@ -155,7 +156,7 @@ class type icon_view_t = object
 
   method get_reorderable : unit -> bool
   (** Retrieves whether the user can reorder the list via drag-and-drop. See
-      gtk_icon_view_set_reorderable(). *)
+      [gtk_icon_view_set_reorderable ()]. *)
 
   method get_row_spacing : unit -> int
   (** Returns the value of the ::row-spacing property. *)
@@ -164,7 +165,7 @@ class type icon_view_t = object
   (** Creates a list of paths of all selected items. Additionally, if you are
       planning on modifying the model after calling this function, you may want
       to convert the returned list into a list of [GtkTreeRowReferences]. To do
-      this, you can use gtk_tree_row_reference_new().
+      this, you can use [gtk_tree_row_reference_new ()].
 
       {[
       GtkWidget *icon_view = gtk_icon_view_new ();
@@ -259,7 +260,7 @@ class type icon_view_t = object
   (** Sets the column with markup information for [icon_view] to be [column].
       The markup column must be of type [G_TYPE_STRING]. If the markup column is
       set to something, it overrides the text column set by
-      gtk_icon_view_set_text_column(). *)
+      [gtk_icon_view_set_text_column ()]. *)
 
   method set_model : Tree_model.tree_model_t option -> unit
   (** Sets the model for a [GtkIconView]. If the [icon_view] already has a model
@@ -305,9 +306,10 @@ class type icon_view_t = object
     Cell_renderer.cell_renderer_t option ->
     unit
   (** Sets the tip area of [tooltip] to the area which [cell] occupies in the
-      item pointed to by [path]. See also gtk_tooltip_set_tip_area().
+      item pointed to by [path]. See also [gtk_tooltip_set_tip_area ()].
 
-      See also gtk_icon_view_set_tooltip_column() for a simpler alternative. *)
+      See also [gtk_icon_view_set_tooltip_column ()] for a simpler alternative.
+  *)
 
   method set_tooltip_column : int -> unit
   (** If you only plan to have simple (text-only) tooltips on full items, you
@@ -318,13 +320,14 @@ class type icon_view_t = object
       When enabled, [GtkWidget:has-tooltip] will be set to [true] and
       [icon_view] will connect a [GtkWidget::query-tooltip] signal handler.
 
-      Note that the signal handler sets the text with gtk_tooltip_set_markup(),
-      so &, <, etc have to be escaped in the text. *)
+      Note that the signal handler sets the text with
+      [gtk_tooltip_set_markup ()], so &, <, etc have to be escaped in the text.
+  *)
 
   method set_tooltip_item : Tooltip.tooltip_t -> Raw.Tree_path.t -> unit
   (** Sets the tip area of [tooltip] to be the area covered by the item at
-      [path]. See also gtk_icon_view_set_tooltip_column() for a simpler
-      alternative. See also gtk_tooltip_set_tip_area(). *)
+      [path]. See also [gtk_icon_view_set_tooltip_column ()] for a simpler
+      alternative. See also [gtk_tooltip_set_tip_area ()]. *)
 
   method unselect_all : unit -> unit
   (** Unselects all the icons. *)
@@ -333,11 +336,11 @@ class type icon_view_t = object
   (** Unselects the row at [path]. *)
 
   method unset_model_drag_dest : unit -> unit
-  (** Undoes the effect of gtk_icon_view_enable_model_drag_dest(). Calling this
-      method sets [GtkIconView]:reorderable to [false]. *)
+  (** Undoes the effect of [gtk_icon_view_enable_model_drag_dest ()]. Calling
+      this method sets [GtkIconView]:reorderable to [false]. *)
 
   method unset_model_drag_source : unit -> unit
-  (** Undoes the effect of gtk_icon_view_enable_model_drag_source(). Calling
+  (** Undoes the effect of [gtk_icon_view_enable_model_drag_source ()]. Calling
       this method sets [GtkIconView]:reorderable to [false]. *)
 
   (** {2:properties Properties} *)
@@ -346,7 +349,7 @@ class type icon_view_t = object
   (** The [GtkCellArea] used to layout cell renderers for this view.
 
       If no area is specified when creating the icon view with
-      gtk_icon_view_new_with_area() a [GtkCellAreaBox] will be used. *)
+      [gtk_icon_view_new_with_area ()] a [GtkCellAreaBox] will be used. *)
 
   (** {2:conversions Conversions} *)
 

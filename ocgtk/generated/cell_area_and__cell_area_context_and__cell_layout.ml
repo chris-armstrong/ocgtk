@@ -130,7 +130,7 @@ class type cell_area_t = object
   method get_current_path_string : unit -> string
   (** Gets the current [GtkTreePath] string for the currently applied
       [GtkTreeIter], this is implicitly updated when
-      gtk_cell_area_apply_attributes() is called and can be used to interact
+      [gtk_cell_area_apply_attributes ()] is called and can be used to interact
       with renderers from [GtkCellArea] subclasses. *)
 
   method get_edit_widget : unit -> Cell_editable.cell_editable_t option
@@ -171,7 +171,7 @@ class type cell_area_t = object
   method is_focus_sibling :
     Cell_renderer.cell_renderer_t -> Cell_renderer.cell_renderer_t -> bool
   (** Returns whether [sibling] is one of [renderer]’s focus siblings (see
-      gtk_cell_area_add_focus_sibling()). *)
+      [gtk_cell_area_add_focus_sibling ()]). *)
 
   method remove : Cell_renderer.cell_renderer_t -> unit
   (** Removes [renderer] from [area]. *)
@@ -179,14 +179,14 @@ class type cell_area_t = object
   method remove_focus_sibling :
     Cell_renderer.cell_renderer_t -> Cell_renderer.cell_renderer_t -> unit
   (** Removes [sibling] from [renderer]’s focus sibling list (see
-      gtk_cell_area_add_focus_sibling()). *)
+      [gtk_cell_area_add_focus_sibling ()]). *)
 
   method set_focus_cell : Cell_renderer.cell_renderer_t option -> unit
   (** Explicitly sets the currently focused cell to [renderer].
 
       This is generally called by implementations of [GtkCellAreaClass.focus()]
       or [GtkCellAreaClass.event()], however it can also be used to implement
-      functions such as gtk_tree_view_set_cursor_on_cell(). *)
+      functions such as [gtk_tree_view_set_cursor_on_cell ()]. *)
 
   method snapshot :
     cell_area_context_t ->
@@ -207,8 +207,8 @@ class type cell_area_t = object
       ::editing-canceled signal, otherwise the the ::editing-done signal will be
       emitted on the current edit widget.
 
-      See gtk_cell_area_get_edited_cell() and gtk_cell_area_get_edit_widget().
-  *)
+      See [gtk_cell_area_get_edited_cell ()] and
+      [gtk_cell_area_get_edit_widget ()]. *)
 
   (** {2:conversions Conversions} *)
 
@@ -246,7 +246,7 @@ and cell_area_context_t = object
 
       This is used by [GtkCellAreaContext] implementations during the request
       process over a series of [GtkTreeModel] rows to progressively push the
-      requested height over a series of gtk_cell_area_get_preferred_height()
+      requested height over a series of [gtk_cell_area_get_preferred_height ()]
       requests. *)
 
   method push_preferred_width : int -> int -> unit
@@ -255,7 +255,7 @@ and cell_area_context_t = object
 
       This is used by [GtkCellAreaContext] implementations during the request
       process over a series of [GtkTreeModel] rows to progressively push the
-      requested width over a series of gtk_cell_area_get_preferred_width()
+      requested width over a series of [gtk_cell_area_get_preferred_width ()]
       requests. *)
 
   method reset : unit -> unit
@@ -266,7 +266,7 @@ and cell_area_context_t = object
       only allowed to grow (this is usually an option for views rendering large
       data stores as a measure of optimization), then only the row that changed
       or was inserted needs to be (re)requested with
-      gtk_cell_area_get_preferred_width().
+      [gtk_cell_area_get_preferred_width ()].
 
       When the new overall size of the context requires that the allocated size
       changes (or whenever this allocation changes at all), the variable row
@@ -275,29 +275,29 @@ and cell_area_context_t = object
       For instance, if the rows are displayed all with the same width from top
       to bottom then a change in the allocated width necessitates a
       recalculation of all the displayed row heights using
-      gtk_cell_area_get_preferred_height_for_width(). *)
+      [gtk_cell_area_get_preferred_height_for_width ()]. *)
 
   (** {2:properties Properties} *)
 
   method minimum_height : int
   (** The minimum height for the [GtkCellArea] in this context for all
       [GtkTreeModel] rows that this context was requested for using
-      gtk_cell_area_get_preferred_height(). *)
+      [gtk_cell_area_get_preferred_height ()]. *)
 
   method minimum_width : int
   (** The minimum width for the [GtkCellArea] in this context for all
       [GtkTreeModel] rows that this context was requested for using
-      gtk_cell_area_get_preferred_width(). *)
+      [gtk_cell_area_get_preferred_width ()]. *)
 
   method natural_height : int
   (** The natural height for the [GtkCellArea] in this context for all
       [GtkTreeModel] rows that this context was requested for using
-      gtk_cell_area_get_preferred_height(). *)
+      [gtk_cell_area_get_preferred_height ()]. *)
 
   method natural_width : int
   (** The natural width for the [GtkCellArea] in this context for all
       [GtkTreeModel] rows that this context was requested for using
-      gtk_cell_area_get_preferred_width(). *)
+      [gtk_cell_area_get_preferred_width ()]. *)
 
   (** {2:conversions Conversions} *)
 
@@ -322,7 +322,7 @@ and cell_layout_t = object
 
   method clear_attributes : Cell_renderer.cell_renderer_t -> unit
   (** Clears all existing attributes previously set with
-      gtk_cell_layout_set_attributes(). *)
+      [gtk_cell_layout_set_attributes ()]. *)
 
   method get_area : unit -> cell_area_t option
   (** Returns the underlying [GtkCellArea] which might be [cell_layout] if

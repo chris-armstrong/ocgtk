@@ -57,13 +57,17 @@ external set_max_size : t -> int -> int -> unit
 
 external get_strength : t -> Ocgtk_enums.constraintstrength
   = "ml_gtk_constraint_guide_get_strength"
-(** Retrieves the strength set using gtk_constraint_guide_set_strength(). *)
+(** Retrieves the strength set using
+    {{!Ocgtk.Raw.Constraint_guide.val-set_strength}[gtk_constraint_guide_set_strength
+                                                    ()]}. *)
 
 external get_nat_size : t -> int * int = "ml_gtk_constraint_guide_get_nat_size"
 (** Gets the natural size of [guide]. *)
 
 external get_name : t -> string option = "ml_gtk_constraint_guide_get_name"
-(** Retrieves the name set using gtk_constraint_guide_set_name(). *)
+(** Retrieves the name set using
+    {{!Ocgtk.Raw.Constraint_guide.val-set_name}[gtk_constraint_guide_set_name
+                                                ()]}. *)
 
 external get_min_size : t -> int * int = "ml_gtk_constraint_guide_get_min_size"
 (** Gets the minimum size of [guide]. *)

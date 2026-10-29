@@ -36,19 +36,19 @@ class type memory_output_stream_t = object
 
   method get_size : unit -> Gsize.t
   (** Gets the size of the currently allocated data area (available from
-      g_memory_output_stream_get_data()).
+      [g_memory_output_stream_get_data ()]).
 
       You probably don't want to use this function on resizable streams. See
-      g_memory_output_stream_get_data_size() instead. For resizable streams the
-      size returned by this function is an implementation detail and may be
+      [g_memory_output_stream_get_data_size ()] instead. For resizable streams
+      the size returned by this function is an implementation detail and may be
       change at any time in response to operations on the stream.
 
       If the stream is fixed-sized (ie: no realloc was passed to
-      g_memory_output_stream_new()) then this is the maximum size of the stream
-      and further writes will return [G_IO_ERROR_NO_SPACE].
+      [g_memory_output_stream_new ()]) then this is the maximum size of the
+      stream and further writes will return [G_IO_ERROR_NO_SPACE].
 
       In any case, if you want the number of bytes currently written to the
-      stream, use g_memory_output_stream_get_data_size(). *)
+      stream, use [g_memory_output_stream_get_data_size ()]. *)
 
   method steal_as_bytes : unit -> Glib_bytes.t
   (** Returns data from the [ostream] as a [GBytes]. [ostream] must be closed
@@ -76,5 +76,6 @@ class memory_output_stream :
 (** {1:constructors Constructors} *)
 
 val new_resizable : unit -> memory_output_stream_t
-(** Creates a new [GMemoryOutputStream], using g_realloc() and g_free() for
-    memory allocation. *)
+(** Creates a new
+    {{!Ocgio.Memory_output_stream.class-type-memory_output_stream_t}[GMemoryOutputStream]},
+    using [g_realloc ()] and [g_free ()] for memory allocation. *)

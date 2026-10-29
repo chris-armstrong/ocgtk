@@ -34,11 +34,11 @@ class type d_bus_auth_observer_t = object
   (** {2:methods Methods} *)
 
   method allow_mechanism : string -> bool
-  (** Emits the [GDBusAuthObserver::allow]-mechanism signal on [observer]. *)
+  (** Emits the [GDBusAuthObserver::allow-mechanism] signal on [observer]. *)
 
   method authorize_authenticated_peer :
     Io_stream.io_stream_t -> Credentials.credentials_t option -> bool
-  (** Emits the [GDBusAuthObserver::authorize]-authenticated-peer signal on
+  (** Emits the [GDBusAuthObserver::authorize-authenticated-peer] signal on
       [observer]. *)
 
   (** {2:conversions Conversions} *)
@@ -168,4 +168,6 @@ class d_bus_auth_observer : Raw.D_bus_auth_observer.t -> d_bus_auth_observer_t
 (** {1:constructors Constructors} *)
 
 val new_ : unit -> d_bus_auth_observer_t
-(** Creates a new [GDBusAuthObserver] object. *)
+(** Creates a new
+    {{!Ocgio.D_bus_auth_observer.class-type-d_bus_auth_observer_t}[GDBusAuthObserver]}
+    object. *)

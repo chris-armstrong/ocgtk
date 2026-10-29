@@ -19,6 +19,6 @@ external new_ : App_info_cycle_64c425a0.File.t -> t = "ml_g_file_icon_new"
 
 external get_file : t -> App_info_cycle_64c425a0.File.t
   = "ml_g_file_icon_get_file"
-(** Gets the [GFile] associated with the given [icon]. *)
+(** Gets the {{!Ocgio.Raw.File}[GFile]} associated with the given [icon]. *)
 
 (* Properties *)

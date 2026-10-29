@@ -77,7 +77,7 @@ class type tree_store_t = object
 
   method set_valuesv :
     Raw.Tree_iter.t -> int array -> Gobject.Value.t array -> int -> unit
-  (** A variant of gtk_tree_store_set_valist() which takes the columns and
+  (** A variant of [gtk_tree_store_set_valist ()] which takes the columns and
       values as two arrays, instead of using variadic arguments.
 
       This function is mainly intended for language bindings or in case the

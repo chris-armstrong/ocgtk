@@ -440,8 +440,8 @@ val priority_resize : int
 (** Use this priority for functionality related to size allocation.
 
     It is used internally by GTK+ to compute the sizes of widgets. This priority
-    is higher than [GDK_PRIORITY_REDRAW] to avoid resizing a widget which was
-    just redrawn. *)
+    is higher than {{!Ocgdk.Constants.priority_redraw}[GDK_PRIORITY_REDRAW]} to
+    avoid resizing a widget which was just redrawn. *)
 
 val style_provider_priority_application : int
 (** A priority that can be used when adding a [GtkStyleProvider] for
@@ -458,8 +458,9 @@ val style_provider_priority_fallback : int
 val style_provider_priority_settings : int
 (** The priority used for style information provided via [GtkSettings].
 
-    This priority is higher than [GTK_STYLE_PROVIDER_PRIORITY_THEME] to let
-    settings override themes. *)
+    This priority is higher than
+    {{!Ocgtk.Constants.style_provider_priority_theme}[GTK_STYLE_PROVIDER_PRIORITY_THEME]}
+    to let settings override themes. *)
 
 val style_provider_priority_theme : int
 (** The priority used for style information provided by themes. *)

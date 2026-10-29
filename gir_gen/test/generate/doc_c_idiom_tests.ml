@@ -39,7 +39,15 @@ let test_literal_guards () =
     [ Code "@sibling == %NULL" ]
     (paragraph_of "expression" "`@sibling == %NULL`");
   check_inlines "constant whose name starts with a literal stays a sigil"
-    [ Sym_ref { kind = None; endpoint = "NULL_HANDLE"; anchor = None } ]
+    [
+      Sym_ref
+        {
+          origin = Percent;
+          kind = None;
+          endpoint = "NULL_HANDLE";
+          anchor = None;
+        };
+    ]
     (paragraph_of "constant" "%NULL_HANDLE")
 
 let test_literals_rendered () =

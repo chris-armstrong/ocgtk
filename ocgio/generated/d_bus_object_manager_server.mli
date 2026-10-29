@@ -60,10 +60,10 @@ class type d_bus_object_manager_server_t = object
       exported. *)
 
   method export_uniquely : D_bus_object_skeleton.d_bus_object_skeleton_t -> unit
-  (** Like g_dbus_object_manager_server_export() but appends a string of the
+  (** Like [g_dbus_object_manager_server_export ()] but appends a string of the
       form _N (with N being a natural number) to [object]'s object path if an
       object with the given path already exists. As such, the
-      [GDBusObjectProxy:g]-object-path property of [object] may be modified. *)
+      [GDBusObjectProxy:g-object-path] property of [object] may be modified. *)
 
   method get_connection : unit -> D_bus_connection.d_bus_connection_t option
   (** Gets the [GDBusConnection] used by [manager]. *)
@@ -126,9 +126,12 @@ class d_bus_object_manager_server :
 (** {1:constructors Constructors} *)
 
 val new_ : string -> d_bus_object_manager_server_t
-(** Creates a new [GDBusObjectManagerServer] object.
+(** Creates a new
+    {{!Ocgio.D_bus_object_manager_server.class-type-d_bus_object_manager_server_t}
+     [GDBusObjectManagerServer]} object.
 
     The returned server isn't yet exported on any connection. To do so, use
-    g_dbus_object_manager_server_set_connection(). Normally you want to export
-    all of your objects before doing so to avoid InterfacesAdded signals being
-    emitted. *)
+    {{!Ocgio.D_bus_object_manager_server.class-type-d_bus_object_manager_server_t.method-set_connection}
+     [g_dbus_object_manager_server_set_connection ()]}. Normally you want to
+    export all of your objects before doing so to avoid InterfacesAdded signals
+    being emitted. *)

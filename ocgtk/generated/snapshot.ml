@@ -275,8 +275,8 @@ class type snapshot_t = object
       After that call, the source image will be recorded until the second call
       to [Gtk.Snapshot.pop].
 
-      Calling this function requires 2 subsequent calls to gtk_snapshot_pop().
-  *)
+      Calling this function requires 2 subsequent calls to
+      [gtk_snapshot_pop ()]. *)
 
   method push_opacity : float -> unit
   (** Modifies the opacity of an image.

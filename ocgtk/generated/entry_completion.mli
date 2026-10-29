@@ -184,8 +184,8 @@ class type entry_completion_t = object
 
       This functions creates and adds a [GtkCellRendererText] for the selected
       column. If you need to set the text column, but don't want the cell
-      renderer, use g_object_set() to set the [Gtk.EntryCompletion:text-column]
-      property directly. *)
+      renderer, use [g_object_set ()] to set the
+      [Gtk.EntryCompletion:text-column] property directly. *)
 
   (** {2:properties Properties} *)
 

@@ -24,8 +24,11 @@ external is_stop : t -> bool = "ml_gdk_scroll_event_is_stop"
 external get_unit : t -> Ocgdk_enums.scrollunit = "ml_gdk_scroll_event_get_unit"
 (** Extracts the scroll delta unit of a scroll event.
 
-    The unit will always be [GDK_SCROLL_UNIT_WHEEL] if the scroll direction is
-    not [GDK_SCROLL_SMOOTH]. *)
+    The unit will always be
+    {{!Ocgdk.Enums.type-scrollunit.constructor-WHEEL}[GDK_SCROLL_UNIT_WHEEL]} if
+    the scroll direction is not
+    {{!Ocgdk.Enums.type-scrolldirection.constructor-SMOOTH}[GDK_SCROLL_SMOOTH]}.
+*)
 
 external get_direction : t -> Ocgdk_enums.scrolldirection
   = "ml_gdk_scroll_event_get_direction"
@@ -34,7 +37,8 @@ external get_direction : t -> Ocgdk_enums.scrolldirection
 external get_deltas : t -> float * float = "ml_gdk_scroll_event_get_deltas"
 (** Extracts the scroll deltas of a scroll event.
 
-    The deltas will be zero unless the scroll direction is [GDK_SCROLL_SMOOTH].
+    The deltas will be zero unless the scroll direction is
+    {{!Ocgdk.Enums.type-scrolldirection.constructor-SMOOTH}[GDK_SCROLL_SMOOTH]}.
 
     For the representation unit of these deltas, see
     {{!Ocgdk.Raw.Scroll_event.val-get_unit}[Gdk.ScrollEvent.get_unit]}. *)

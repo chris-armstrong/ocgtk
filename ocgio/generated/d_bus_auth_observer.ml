@@ -22,11 +22,11 @@ class type d_bus_auth_observer_t = object
   (** {2:methods Methods} *)
 
   method allow_mechanism : string -> bool
-  (** Emits the [GDBusAuthObserver::allow]-mechanism signal on [observer]. *)
+  (** Emits the [GDBusAuthObserver::allow-mechanism] signal on [observer]. *)
 
   method authorize_authenticated_peer :
     Io_stream.io_stream_t -> Credentials.credentials_t option -> bool
-  (** Emits the [GDBusAuthObserver::authorize]-authenticated-peer signal on
+  (** Emits the [GDBusAuthObserver::authorize-authenticated-peer] signal on
       [observer]. *)
 
   (** {2:conversions Conversions} *)

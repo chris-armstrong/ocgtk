@@ -94,7 +94,7 @@ class cell_renderer_combo : Raw.Cell_renderer_combo.t -> cell_renderer_combo_t
 
 val new_ : unit -> cell_renderer_combo_t
 (** Creates a new [GtkCellRendererCombo]. Adjust how text is drawn using object
-    properties. Object properties can be set globally (with g_object_set()).
+    properties. Object properties can be set globally (with [g_object_set ()]).
     Also, with [GtkTreeViewColumn], you can bind a property to a value in a
     [GtkTreeModel]. For example, you can bind the “text” property on the cell
     renderer to a string value in the model, thus rendering a different string

@@ -26,7 +26,8 @@ external split : t -> string -> int -> t option = "ml_pango_glyph_item_split"
     length of [orig] (that is, there must be at least one byte assigned to each
     item, you can't create a zero-length item).
 
-    This function is similar in function to pango_item_split() (and uses it
+    This function is similar in function to
+    {{!Ocpango.Raw.Item.val-split}[pango_item_split ()]} (and uses it
     internally.) *)
 
 external apply_attrs : t -> string -> Attr_list.t -> t list

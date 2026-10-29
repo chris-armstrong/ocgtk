@@ -68,10 +68,14 @@ class inet_socket_address : Raw.Inet_socket_address.t -> inet_socket_address_t
 (** {1:constructors Constructors} *)
 
 val new_ : Inet_address.inet_address_t -> UInt16.t -> inet_socket_address_t
-(** Creates a new [GInetSocketAddress] for [address] and [port]. *)
+(** Creates a new
+    {{!Ocgio.Inet_socket_address.class-type-inet_socket_address_t}[GInetSocketAddress]}
+    for [address] and [port]. *)
 
 val new_from_string : string -> int -> inet_socket_address_t
-(** Creates a new [GInetSocketAddress] for [address] and [port].
+(** Creates a new
+    {{!Ocgio.Inet_socket_address.class-type-inet_socket_address_t}[GInetSocketAddress]}
+    for [address] and [port].
 
     If [address] is an IPv6 address, it can also contain a scope ID (separated
     from the address by a [%]). Note that currently this behavior is platform

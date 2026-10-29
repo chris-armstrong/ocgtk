@@ -7,7 +7,7 @@ class type cell_renderer_t = object
       cell. For example, an editable cell renderer could be written to cancel
       editing when the user presses Escape.
 
-      See also: gtk_cell_renderer_stop_editing(). *)
+      See also: [gtk_cell_renderer_stop_editing ()]. *)
 
   method on_editing_started :
     ?after:bool ->
@@ -18,8 +18,8 @@ class type cell_renderer_t = object
       of this signal is to do special setup on [editable], e.g. adding a
       [GtkEntryCompletion] or setting up additional columns in a [GtkComboBox].
 
-      See gtk_cell_editable_start_editing() for information on the lifecycle of
-      the [editable] and a way to do setup that doesn’t depend on the
+      See [gtk_cell_editable_start_editing ()] for information on the lifecycle
+      of the [editable] and a way to do setup that doesn’t depend on the
       [renderer].
 
       Note that GTK doesn't guarantee that cell renderers will continue to use

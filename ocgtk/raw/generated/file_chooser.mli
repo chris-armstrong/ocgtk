@@ -57,7 +57,9 @@ external set_select_multiple : t -> bool -> unit
 (** Sets whether multiple files can be selected in the file chooser.
 
     This is only relevant if the action is set to be
-    [GTK_FILE_CHOOSER_ACTION_OPEN] or [GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER].
+    {{!Ocgtk.Enums.type-filechooseraction.constructor-OPEN}[GTK_FILE_CHOOSER_ACTION_OPEN]}
+    or
+    {{!Ocgtk.Enums.type-filechooseraction.constructor-SELECT_FOLDER}[GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER]}.
 *)
 
 external set_filter : t -> File_filter.t -> unit
@@ -77,7 +79,9 @@ external set_file : t -> Ocgio_raw.File.t -> (bool, GError.t) result
 [@@ocaml.doc
   "Sets [file] as the current filename for the file chooser.\n\n\
    This includes changing to the file’s parent folder and actually selecting\n\
-   the file in list. If the [chooser] is in [GTK_FILE_CHOOSER_ACTION_SAVE] mode,\n\
+   the file in list. If the [chooser] is in \
+   {{!Ocgtk.Enums.type-filechooseraction.constructor-SAVE}[GTK_FILE_CHOOSER_ACTION_SAVE]} \
+   mode,\n\
    the file’s base name will also appear in the dialog’s file name entry.\n\n\
    If the file name isn’t in the current folder of [chooser], then the current\n\
    folder of [chooser] will be changed to the folder containing [file].\n\n\
@@ -138,13 +142,14 @@ external set_create_folders : t -> bool -> unit
 (** Sets whether file chooser will offer to create new folders.
 
     This is only relevant if the action is not set to be
-    [GTK_FILE_CHOOSER_ACTION_OPEN]. *)
+    {{!Ocgtk.Enums.type-filechooseraction.constructor-OPEN}[GTK_FILE_CHOOSER_ACTION_OPEN]}.
+*)
 
 external set_choice : t -> string -> string -> unit
   = "ml_gtk_file_chooser_set_choice"
 [@@ocaml.doc
   "Selects an option in a 'choice' that has been added with\n\
-   gtk_file_chooser_add_choice().\n\n\
+   {{!Ocgtk.Raw.File_chooser.val-add_choice}[gtk_file_chooser_add_choice ()]}.\n\n\
    For a boolean choice, the possible options are \"true\" and \"false\"."]
 
 external set_action : t -> Ocgtk_enums.filechooseraction -> unit
@@ -154,8 +159,11 @@ external set_action : t -> Ocgtk_enums.filechooseraction -> unit
     The user interface is adapted to suit the selected action.
 
     For example, an option to create a new folder might be shown if the action
-    is [GTK_FILE_CHOOSER_ACTION_SAVE] but not if the action is
-    [GTK_FILE_CHOOSER_ACTION_OPEN]. *)
+    is
+    {{!Ocgtk.Enums.type-filechooseraction.constructor-SAVE}[GTK_FILE_CHOOSER_ACTION_SAVE]}
+    but not if the action is
+    {{!Ocgtk.Enums.type-filechooseraction.constructor-OPEN}[GTK_FILE_CHOOSER_ACTION_OPEN]}.
+*)
 
 external remove_shortcut_folder :
   t -> Ocgio_raw.File.t -> (bool, GError.t) result
@@ -169,7 +177,8 @@ external remove_filter : t -> File_filter.t -> unit
 
 external remove_choice : t -> string -> unit
   = "ml_gtk_file_chooser_remove_choice"
-(** Removes a 'choice' that has been added with gtk_file_chooser_add_choice().
+(** Removes a 'choice' that has been added with
+    {{!Ocgtk.Raw.File_chooser.val-add_choice}[gtk_file_chooser_add_choice ()]}.
 *)
 
 external get_shortcut_folders : t -> Ocgio_raw.List_model.t

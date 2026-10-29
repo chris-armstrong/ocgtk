@@ -21,7 +21,7 @@ class type string_list_t = object
       If [self] does not contain [position] items, [None] is returned.
 
       This function returns the const char *. To get the object wrapping it, use
-      g_list_model_get_item(). *)
+      [g_list_model_get_item ()]. *)
 
   method remove : int -> unit
   (** Removes the string at [position] from [self].

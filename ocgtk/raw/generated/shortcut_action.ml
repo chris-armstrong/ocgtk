@@ -18,15 +18,17 @@
     GTK provides various actions:
 
     - {{!Ocgtk.Raw.Mnemonic_action}[Gtk.MnemonicAction]}: a shortcut action that
-      calls gtk_widget_mnemonic_activate()
+      calls
+      {{!Ocgtk.Raw.Widget.val-mnemonic_activate}[gtk_widget_mnemonic_activate
+                                                 ()]}
     - {{!Ocgtk.Raw.Callback_action}[Gtk.CallbackAction]}: a shortcut action that
       invokes a given callback
     - {{!Ocgtk.Raw.Signal_action}[Gtk.SignalAction]}: a shortcut action that
       emits a given signal
     - {{!Ocgtk.Raw.Activate_action}[Gtk.ActivateAction]}: a shortcut action that
-      calls gtk_widget_activate()
+      calls {{!Ocgtk.Raw.Widget.val-activate}[gtk_widget_activate ()]}
     - {{!Ocgtk.Raw.Named_action}[Gtk.NamedAction]}: a shortcut action that calls
-      gtk_widget_activate_action()
+      [gtk_widget_activate_action ()]
     - {{!Ocgtk.Raw.Nothing_action}[Gtk.NothingAction]}: a shortcut action that
       does nothing
 

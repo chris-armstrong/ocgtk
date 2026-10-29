@@ -23,7 +23,7 @@ class type tls_password_t = object
   method get_warning : unit -> string
   (** Get a user readable translated warning. Usually this warning is a
       representation of the password flags returned from
-      g_tls_password_get_flags(). *)
+      [g_tls_password_get_flags ()]. *)
 
   method set_description : string -> unit
   (** Set a description string about what the password will be used for. *)
@@ -34,7 +34,7 @@ class type tls_password_t = object
   method set_warning : string -> unit
   (** Set a user readable translated warning. Usually this warning is a
       representation of the password flags returned from
-      g_tls_password_get_flags(). *)
+      [g_tls_password_get_flags ()]. *)
 
   (** {2:conversions Conversions} *)
 
@@ -47,4 +47,5 @@ class tls_password : Raw.Tls_password.t -> tls_password_t
 (** {1:constructors Constructors} *)
 
 val new_ : Enums.tlspasswordflags -> string -> tls_password_t
-(** Create a new [GTlsPassword] object. *)
+(** Create a new {{!Ocgio.Tls_password.class-type-tls_password_t}[GTlsPassword]}
+    object. *)

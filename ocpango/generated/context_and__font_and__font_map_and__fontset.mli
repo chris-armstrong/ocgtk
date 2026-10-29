@@ -274,7 +274,7 @@ and font_map_t = object
 
       If you are using Pango as part of a higher-level system, that system may
       have it's own way of create a [PangoContext]. For instance, the GTK
-      toolkit has, among others, gtk_widget_get_pango_context(). Use those
+      toolkit has, among others, [gtk_widget_get_pango_context ()]. Use those
       instead. *)
 
   method get_family : string -> Font_family.font_family_t option

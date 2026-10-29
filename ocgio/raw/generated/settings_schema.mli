@@ -115,7 +115,8 @@ external get_key : t -> string -> Settings_schema_key.t
 (** Gets the key named [name] from [schema].
 
     It is a programmer error to request a key that does not exist. See
-    g_settings_schema_list_keys(). *)
+    {{!Ocgio.Raw.Settings_schema.val-list_keys}[g_settings_schema_list_keys ()]}.
+*)
 
 external get_id : t -> string = "ml_g_settings_schema_get_id"
 (** Get the ID of [schema]. *)

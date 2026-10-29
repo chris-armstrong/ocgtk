@@ -63,19 +63,23 @@ type t = [ `d_bus_auth_observer | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gio_d_bus_auth_observer_get_type"
 
 external new_ : unit -> t = "ml_g_dbus_auth_observer_new"
-(** Creates a new [GDBusAuthObserver] object. *)
+(** Creates a new {{!Ocgio.Raw.D_bus_auth_observer}[GDBusAuthObserver]} object.
+*)
 
 (* Methods *)
 
 external authorize_authenticated_peer :
   t -> Io_stream.t -> Credentials.t option -> bool
   = "ml_g_dbus_auth_observer_authorize_authenticated_peer"
-(** Emits the [GDBusAuthObserver::authorize]-authenticated-peer signal on
-    [observer]. *)
+(** Emits the
+    {{!Ocgio.Raw.D_bus_auth_observer.val-on_authorize_authenticated_peer}[GDBusAuthObserver::authorize-authenticated-peer]}
+    signal on [observer]. *)
 
 external allow_mechanism : t -> string -> bool
   = "ml_g_dbus_auth_observer_allow_mechanism"
-(** Emits the [GDBusAuthObserver::allow]-mechanism signal on [observer]. *)
+(** Emits the
+    {{!Ocgio.Raw.D_bus_auth_observer.val-on_allow_mechanism}[GDBusAuthObserver::allow-mechanism]}
+    signal on [observer]. *)
 
 let on_allow_mechanism ?after obj ~callback =
   let closure =

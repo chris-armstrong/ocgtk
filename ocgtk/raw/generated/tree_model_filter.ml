@@ -81,9 +81,10 @@ external set_visible_column : t -> int -> unit
     [G_TYPE_BOOLEAN], where [true] means that a row is visible, and [false] if
     not.
 
-    Note that gtk_tree_model_filter_set_visible_func() or
-    gtk_tree_model_filter_set_visible_column() can only be called once for a
-    given filter model. *)
+    Note that [gtk_tree_model_filter_set_visible_func ()] or
+    {{!Ocgtk.Raw.Tree_model_filter.val-set_visible_column}[gtk_tree_model_filter_set_visible_column
+                                                           ()]} can only be
+    called once for a given filter model. *)
 
 external refilter : t -> unit = "ml_gtk_tree_model_filter_refilter"
 (** Emits ::row_changed for each row in the child model, which causes the filter
@@ -119,10 +120,11 @@ external convert_child_iter_to_iter : t -> Tree_iter.t -> bool * Tree_iter.t
 
 external clear_cache : t -> unit = "ml_gtk_tree_model_filter_clear_cache"
 (** This function should almost never be called. It clears the [filter] of any
-    cached iterators that haven’t been reffed with gtk_tree_model_ref_node().
-    This might be useful if the child model being filtered is static (and
-    doesn’t change often) and there has been a lot of unreffed access to nodes.
-    As a side effect of this function, all unreffed iters will be invalid. *)
+    cached iterators that haven’t been reffed with
+    {{!Ocgtk.Raw.Tree_model.val-ref_node}[gtk_tree_model_ref_node ()]}. This
+    might be useful if the child model being filtered is static (and doesn’t
+    change often) and there has been a lot of unreffed access to nodes. As a
+    side effect of this function, all unreffed iters will be invalid. *)
 
 (* Properties *)
 

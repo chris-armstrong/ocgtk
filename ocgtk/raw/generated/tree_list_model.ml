@@ -36,7 +36,7 @@ external get_row : t -> int -> Tree_list_row.t option
     removed.
 
     If [self] is set to not be passthrough, this function is equivalent to
-    calling g_list_model_get_item().
+    calling [g_list_model_get_item ()].
 
     Do not confuse this function with
     {{!Ocgtk.Raw.Tree_list_model.val-get_child_row}[Gtk.TreeListModel.get_child_row]}.

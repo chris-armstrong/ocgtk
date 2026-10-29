@@ -7,7 +7,7 @@ class type themed_icon_t = object
   (** Append a name to the list of icons from within [icon].
 
       Note that doing so invalidates the hash computed by prior calls to
-      g_icon_hash(). *)
+      [g_icon_hash ()]. *)
 
   method get_names : unit -> string array
   (** Gets the names of icons from within [icon]. *)
@@ -16,7 +16,7 @@ class type themed_icon_t = object
   (** Prepend a name to the list of icons from within [icon].
 
       Note that doing so invalidates the hash computed by prior calls to
-      g_icon_hash(). *)
+      [g_icon_hash ()]. *)
 
   (** {2:properties Properties} *)
 

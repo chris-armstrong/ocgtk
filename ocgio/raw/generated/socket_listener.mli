@@ -26,18 +26,24 @@ type t = [ `socket_listener | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gio_socket_listener_get_type"
 
 external new_ : unit -> t = "ml_g_socket_listener_new"
-(** Creates a new [GSocketListener] with no sockets to listen for. New listeners
-    can be added with e.g. g_socket_listener_add_address() or
-    g_socket_listener_add_inet_port(). *)
+(** Creates a new {{!Ocgio.Raw.Socket_listener}[GSocketListener]} with no
+    sockets to listen for. New listeners can be added with e.g.
+    [g_socket_listener_add_address ()] or
+    {{!Ocgio.Raw.Socket_listener.val-add_inet_port}[g_socket_listener_add_inet_port
+                                                    ()]}. *)
 
 (* Methods *)
 
 external set_backlog : t -> int -> unit = "ml_g_socket_listener_set_backlog"
 (** Sets the listen backlog on the sockets in the listener. This must be called
-    before adding any sockets, addresses or ports to the [GSocketListener] (for
-    example, by calling g_socket_listener_add_inet_port()) to be effective.
+    before adding any sockets, addresses or ports to the
+    {{!Ocgio.Raw.Socket_listener}[GSocketListener]} (for example, by calling
+    {{!Ocgio.Raw.Socket_listener.val-add_inet_port}[g_socket_listener_add_inet_port
+                                                    ()]}) to be effective.
 
-    See g_socket_set_listen_backlog() for details *)
+    See
+    {{!Ocgio.Raw.Socket.val-set_listen_backlog}[g_socket_set_listen_backlog ()]}
+    for details *)
 
 external close : t -> unit = "ml_g_socket_listener_close"
 (** Closes all the sockets in the listener. *)
@@ -67,7 +73,7 @@ external add_socket :
 external add_inet_port :
   t -> UInt16.t -> [ `object_ ] Gobject.obj option -> (bool, GError.t) result
   = "ml_g_socket_listener_add_inet_port"
-(** Helper function for g_socket_listener_add_address() that creates a TCP/IP
+(** Helper function for [g_socket_listener_add_address ()] that creates a TCP/IP
     socket listening on IPv4 and IPv6 (if supported) on the specified port on
     all interfaces.
 
@@ -86,9 +92,9 @@ external add_inet_port :
     multiple addresses and do different things depending on what address is
     connected to.
 
-    Call g_socket_listener_close() to stop listening on [port]; this will not be
-    done automatically when you drop your final reference to [listener], as
-    references may be held internally. *)
+    Call {{!Ocgio.Raw.Socket_listener.val-close}[g_socket_listener_close ()]} to
+    stop listening on [port]; this will not be done automatically when you drop
+    your final reference to [listener], as references may be held internally. *)
 
 external add_any_inet_port :
   t -> [ `object_ ] Gobject.obj option -> (UInt16.t, GError.t) result

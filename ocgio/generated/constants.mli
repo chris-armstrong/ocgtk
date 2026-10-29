@@ -31,44 +31,58 @@ val debug_controller_extension_point_name : string
     @since 2.72 *)
 
 val drive_identifier_kind_unix_device : string
-(** The string used to obtain a Unix device path with g_drive_get_identifier().
+(** The string used to obtain a Unix device path with
+    {{!Ocgio.Drive.class-type-drive_t.method-get_identifier}[g_drive_get_identifier
+                                                             ()]}.
     @since 2.58 *)
 
 val file_attribute_access_can_delete : string
 [@@ocaml.doc
   "A key in the \"access\" namespace for checking deletion privileges.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN].\n\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}.\n\n\
    This attribute will be [true] if the user is able to delete the file."]
 
 val file_attribute_access_can_execute : string
 [@@ocaml.doc
   "A key in the \"access\" namespace for getting execution privileges.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN].\n\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}.\n\n\
    This attribute will be [true] if the user is able to execute the file."]
 
 val file_attribute_access_can_read : string
 [@@ocaml.doc
   "A key in the \"access\" namespace for getting read privileges.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN].\n\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}.\n\n\
    This attribute will be [true] if the user is able to read the file."]
 
 val file_attribute_access_can_rename : string
 [@@ocaml.doc
   "A key in the \"access\" namespace for checking renaming privileges.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN].\n\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}.\n\n\
    This attribute will be [true] if the user is able to rename the file."]
 
 val file_attribute_access_can_trash : string
 [@@ocaml.doc
   "A key in the \"access\" namespace for checking trashing privileges.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN].\n\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}.\n\n\
    This attribute will be [true] if the user is able to move the file to\n\
    the trash."]
 
 val file_attribute_access_can_write : string
 [@@ocaml.doc
   "A key in the \"access\" namespace for getting write privileges.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN].\n\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}.\n\n\
    This attribute will be [true] if the user is able to write to the file."]
 
 val file_attribute_dos_is_archive : string
@@ -77,7 +91,9 @@ val file_attribute_dos_is_archive : string
    is set.\n\n\
    This attribute is [true] if the archive flag is set.\n\n\
    This attribute is only available for DOS file systems.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}."]
 
 val file_attribute_dos_is_mountpoint : string
 [@@ocaml.doc
@@ -86,7 +102,9 @@ val file_attribute_dos_is_mountpoint : string
    This attribute is [true] if file is a reparse point of type\n\
    {{:https://msdn.microsoft.com/en-us/library/dd541667.aspx}IO_REPARSE_TAG_MOUNT_POINT}.\n\n\
    This attribute is only available for DOS file systems.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}.\n\
   \    @since 2.60"]
 
 val file_attribute_dos_is_system : string
@@ -95,7 +113,9 @@ val file_attribute_dos_is_system : string
    is set.\n\n\
    This attribute is [true] if the backup flag is set.\n\n\
    This attribute is only available for DOS file systems.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}."]
 
 val file_attribute_dos_reparse_point_tag : string
 [@@ocaml.doc
@@ -104,51 +124,69 @@ val file_attribute_dos_reparse_point_tag : string
    See the {{:https://msdn.microsoft.com/en-us/library/dd541667.aspx}Reparse \
    Tags}\n\
    page for possible reparse tag values.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT32].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT32}[G_FILE_ATTRIBUTE_TYPE_UINT32]}.\n\
   \    @since 2.60"]
 
 val file_attribute_etag_value : string
 [@@ocaml.doc
   "A key in the \"etag\" namespace for getting the value of the file's\n\
    entity tag.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_STRING]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-STRING}[G_FILE_ATTRIBUTE_TYPE_STRING]}."]
 
 val file_attribute_filesystem_free : string
 [@@ocaml.doc
   "A key in the \"filesystem\" namespace for getting the number of bytes\n\
    of free space left on the file system.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT64]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT64}[G_FILE_ATTRIBUTE_TYPE_UINT64]}."]
 
 val file_attribute_filesystem_readonly : string
 [@@ocaml.doc
   "A key in the \"filesystem\" namespace for checking if the file system\n\
    is read only.\n\n\
    Is set to [true] if the file system is read only.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}."]
 
 val file_attribute_filesystem_remote : string
 [@@ocaml.doc
   "A key in the \"filesystem\" namespace for checking if the file system\n\
    is remote.\n\n\
    Is set to [true] if the file system is remote.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}."]
 
 val file_attribute_filesystem_size : string
 [@@ocaml.doc
   "A key in the \"filesystem\" namespace for getting the total size (in\n\
-   bytes) of the file system, used in g_file_query_filesystem_info().\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT64]."]
+   bytes) of the file system, used in \
+   {{!Ocgio.File.class-type-file_t.method-query_filesystem_info}[g_file_query_filesystem_info \
+   ()]}.\n\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT64}[G_FILE_ATTRIBUTE_TYPE_UINT64]}."]
 
 val file_attribute_filesystem_type : string
 [@@ocaml.doc
   "A key in the \"filesystem\" namespace for getting the file system's type.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_STRING]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-STRING}[G_FILE_ATTRIBUTE_TYPE_STRING]}."]
 
 val file_attribute_filesystem_used : string
 [@@ocaml.doc
   "A key in the \"filesystem\" namespace for getting the number of bytes\n\
    used by data on the file system.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT64].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT64}[G_FILE_ATTRIBUTE_TYPE_UINT64]}.\n\
   \    @since 2.32"]
 
 val file_attribute_filesystem_use_preview : string
@@ -156,25 +194,32 @@ val file_attribute_filesystem_use_preview : string
   "A key in the \"filesystem\" namespace for hinting a file manager\n\
    application whether it should preview (e.g. thumbnail) files on the\n\
    file system.\n\n\
-   The value for this key contain a [GFilesystemPreviewType]."]
+   The value for this key contain a \
+   {{!Ocgio.Enums.type-filesystempreviewtype}[GFilesystemPreviewType]}."]
 
 val file_attribute_gvfs_backend : string
 [@@ocaml.doc
   "A key in the \"gvfs\" namespace that gets the name of the current\n\
    GVFS backend in use.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_STRING]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-STRING}[G_FILE_ATTRIBUTE_TYPE_STRING]}."]
 
 val file_attribute_id_file : string
 [@@ocaml.doc
   "A key in the \"id\" namespace for getting a file identifier.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_STRING].\n\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-STRING}[G_FILE_ATTRIBUTE_TYPE_STRING]}.\n\n\
    An example use would be during listing files, to avoid recursive\n\
    directory scanning."]
 
 val file_attribute_id_filesystem : string
 [@@ocaml.doc
   "A key in the \"id\" namespace for getting the file system identifier.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_STRING].\n\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-STRING}[G_FILE_ATTRIBUTE_TYPE_STRING]}.\n\n\
    An example use would be during drag and drop to see if the source\n\
    and target are on the same filesystem (default to move) or not (default\n\
    to copy)."]
@@ -183,117 +228,156 @@ val file_attribute_mountable_can_eject : string
 [@@ocaml.doc
   "A key in the \"mountable\" namespace for checking if a file (of\n\
    type G_FILE_TYPE_MOUNTABLE) can be ejected.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}."]
 
 val file_attribute_mountable_can_mount : string
 [@@ocaml.doc
   "A key in the \"mountable\" namespace for checking if a file (of\n\
    type G_FILE_TYPE_MOUNTABLE) is mountable.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}."]
 
 val file_attribute_mountable_can_poll : string
 [@@ocaml.doc
   "A key in the \"mountable\" namespace for checking if a file (of\n\
    type G_FILE_TYPE_MOUNTABLE) can be polled.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}.\n\
   \    @since 2.22"]
 
 val file_attribute_mountable_can_start : string
 [@@ocaml.doc
   "A key in the \"mountable\" namespace for checking if a file (of\n\
    type G_FILE_TYPE_MOUNTABLE) can be started.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}.\n\
   \    @since 2.22"]
 
 val file_attribute_mountable_can_start_degraded : string
 [@@ocaml.doc
   "A key in the \"mountable\" namespace for checking if a file (of\n\
    type G_FILE_TYPE_MOUNTABLE) can be started degraded.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}.\n\
   \    @since 2.22"]
 
 val file_attribute_mountable_can_stop : string
 [@@ocaml.doc
   "A key in the \"mountable\" namespace for checking if a file (of\n\
    type G_FILE_TYPE_MOUNTABLE) can be stopped.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}.\n\
   \    @since 2.22"]
 
 val file_attribute_mountable_can_unmount : string
 [@@ocaml.doc
   "A key in the \"mountable\" namespace for checking if a file (of\n\
    type G_FILE_TYPE_MOUNTABLE)  is unmountable.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}."]
 
 val file_attribute_mountable_hal_udi : string
 [@@ocaml.doc
   "A key in the \"mountable\" namespace for getting the HAL UDI for the \
    mountable\n\
    file.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_STRING]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-STRING}[G_FILE_ATTRIBUTE_TYPE_STRING]}."]
 
 val file_attribute_mountable_is_media_check_automatic : string
 [@@ocaml.doc
   "A key in the \"mountable\" namespace for checking if a file (of\n\
    type G_FILE_TYPE_MOUNTABLE) is automatically polled for media.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}.\n\
   \    @since 2.22"]
 
 val file_attribute_mountable_start_stop_type : string
 [@@ocaml.doc
-  "A key in the \"mountable\" namespace for getting the [GDriveStartStopType].\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT32].\n\
+  "A key in the \"mountable\" namespace for getting the \
+   {{!Ocgio.Enums.type-drivestartstoptype}[GDriveStartStopType]}.\n\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT32}[G_FILE_ATTRIBUTE_TYPE_UINT32]}.\n\
   \    @since 2.22"]
 
 val file_attribute_mountable_unix_device : string
 [@@ocaml.doc
   "A key in the \"mountable\" namespace for getting the unix device.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT32]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT32}[G_FILE_ATTRIBUTE_TYPE_UINT32]}."]
 
 val file_attribute_mountable_unix_device_file : string
 [@@ocaml.doc
   "A key in the \"mountable\" namespace for getting the unix device file.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_STRING].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-STRING}[G_FILE_ATTRIBUTE_TYPE_STRING]}.\n\
   \    @since 2.22"]
 
 val file_attribute_owner_group : string
 [@@ocaml.doc
   "A key in the \"owner\" namespace for getting the file owner's group.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_STRING]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-STRING}[G_FILE_ATTRIBUTE_TYPE_STRING]}."]
 
 val file_attribute_owner_user : string
 [@@ocaml.doc
   "A key in the \"owner\" namespace for getting the user name of the\n\
    file's owner.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_STRING]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-STRING}[G_FILE_ATTRIBUTE_TYPE_STRING]}."]
 
 val file_attribute_owner_user_real : string
 [@@ocaml.doc
   "A key in the \"owner\" namespace for getting the real name of the\n\
    user that owns the file.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_STRING]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-STRING}[G_FILE_ATTRIBUTE_TYPE_STRING]}."]
 
 val file_attribute_preview_icon : string
 [@@ocaml.doc
-  "A key in the \"preview\" namespace for getting a [GIcon] that can be\n\
+  "A key in the \"preview\" namespace for getting a \
+   {{!Ocgio.Icon.class-type-icon_t}[GIcon]} that can be\n\
    used to get preview of the file.\n\n\
    For example, it may be a low resolution thumbnail without metadata.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_OBJECT].\n\n\
-   The value for this key should contain a [GIcon].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-OBJECT}[G_FILE_ATTRIBUTE_TYPE_OBJECT]}.\n\n\
+   The value for this key should contain a \
+   {{!Ocgio.Icon.class-type-icon_t}[GIcon]}.\n\
   \    @since 2.20"]
 
 val file_attribute_recent_modified : string
 [@@ocaml.doc
   "A key in the \"recent\" namespace for getting time, when the metadata for the\n\
    file in [recent:///] was last changed.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_INT64].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-INT64}[G_FILE_ATTRIBUTE_TYPE_INT64]}.\n\
   \    @since 2.52"]
 
 val file_attribute_selinux_context : string
 [@@ocaml.doc
   "A key in the \"selinux\" namespace for getting the file's SELinux\n\
    context.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_STRING].\n\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-STRING}[G_FILE_ATTRIBUTE_TYPE_STRING]}.\n\n\
    Note that this attribute is only available if GLib has been built\n\
    with SELinux support."]
 
@@ -303,14 +387,18 @@ val file_attribute_standard_allocated_size : string
    that is consumed by the file (in bytes).\n\n\
    This will generally be larger than the file size (due to block size\n\
    overhead) but can occasionally be smaller (for example, for sparse files).\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT64].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT64}[G_FILE_ATTRIBUTE_TYPE_UINT64]}.\n\
   \    @since 2.20"]
 
 val file_attribute_standard_content_type : string
 [@@ocaml.doc
   "A key in the \"standard\" namespace for getting the content type of the \
    file.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_STRING].\n\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-STRING}[G_FILE_ATTRIBUTE_TYPE_STRING]}.\n\n\
    The value for this key should contain a valid content type."]
 
 val file_attribute_standard_copy_name : string
@@ -323,7 +411,9 @@ val file_attribute_standard_copy_name : string
    might have a different encoding. If the filename is not a valid string in the\n\
    encoding selected for the filesystem it is in then the copy name will not \
    be set.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_STRING]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-STRING}[G_FILE_ATTRIBUTE_TYPE_STRING]}."]
 
 val file_attribute_standard_description : string
 [@@ocaml.doc
@@ -336,7 +426,9 @@ val file_attribute_standard_description : string
    trash)\"\n\
    for a file in the trash. This is useful for instance as the window title\n\
    when displaying a directory or for a bookmarks menu.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_STRING]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-STRING}[G_FILE_ATTRIBUTE_TYPE_STRING]}."]
 
 val file_attribute_standard_display_name : string
 [@@ocaml.doc
@@ -344,7 +436,9 @@ val file_attribute_standard_display_name : string
    file.\n\n\
    A display name is guaranteed to be in UTF-8 and can thus be displayed in\n\
    the UI. It is guaranteed to be set on every file.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_STRING]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-STRING}[G_FILE_ATTRIBUTE_TYPE_STRING]}."]
 
 val file_attribute_standard_edit_name : string
 [@@ocaml.doc
@@ -353,7 +447,9 @@ val file_attribute_standard_edit_name : string
    used when you want to rename the file in the UI. The display name\n\
    might contain information you don't want in the new filename (such as\n\
    \"(invalid unicode)\" if the filename was in an invalid encoding).\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_STRING]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-STRING}[G_FILE_ATTRIBUTE_TYPE_STRING]}."]
 
 val file_attribute_standard_fast_content_type : string
 [@@ocaml.doc
@@ -361,24 +457,33 @@ val file_attribute_standard_fast_content_type : string
    The fast content type isn't as reliable as the regular one, as it\n\
    only uses the filename to guess it, but it is faster to calculate than the\n\
    regular content type.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_STRING]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-STRING}[G_FILE_ATTRIBUTE_TYPE_STRING]}."]
 
 val file_attribute_standard_icon : string
 [@@ocaml.doc
   "A key in the \"standard\" namespace for getting the icon for the file.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_OBJECT].\n\n\
-   The value for this key should contain a [GIcon]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-OBJECT}[G_FILE_ATTRIBUTE_TYPE_OBJECT]}.\n\n\
+   The value for this key should contain a \
+   {{!Ocgio.Icon.class-type-icon_t}[GIcon]}."]
 
 val file_attribute_standard_is_backup : string
 [@@ocaml.doc
   "A key in the \"standard\" namespace for checking if a file is a backup \
    file.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}."]
 
 val file_attribute_standard_is_hidden : string
 [@@ocaml.doc
   "A key in the \"standard\" namespace for checking if a file is hidden.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}."]
 
 val file_attribute_standard_is_symlink : string
 [@@ocaml.doc
@@ -386,20 +491,28 @@ val file_attribute_standard_is_symlink : string
    Typically the actual type is something else, if we followed the symlink\n\
    to get the type.\n\n\
    On Windows NTFS mountpoints are considered to be symlinks as well.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}."]
 
 val file_attribute_standard_is_virtual : string
 [@@ocaml.doc
   "A key in the \"standard\" namespace for checking if a file is virtual.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}."]
 
 val file_attribute_standard_is_volatile : string
 [@@ocaml.doc
   "A key in the \"standard\" namespace for checking if a file is\n\
    volatile. This is meant for opaque, non-POSIX-like backends to\n\
    indicate that the URI is not persistent. Applications should look\n\
-   at [G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET] for the persistent URI.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN].\n\
+   at \
+   {{!Ocgio.Constants.file_attribute_standard_symlink_target}[G_FILE_ATTRIBUTE_STANDARD_SYMLINK_TARGET]} \
+   for the persistent URI.\n\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}.\n\
   \    @since 2.46"]
 
 val file_attribute_standard_name : string
@@ -408,19 +521,27 @@ val file_attribute_standard_name : string
    The name is the on-disk filename which may not be in any known encoding,\n\
    and can thus not be generally displayed as is. It is guaranteed to be set on\n\
    every file.\n\n\
-   Use [G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME] if you need to display the\n\
+   Use \
+   {{!Ocgio.Constants.file_attribute_standard_display_name}[G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME]} \
+   if you need to display the\n\
    name in a user interface.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BYTE_STRING]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BYTE_STRING}[G_FILE_ATTRIBUTE_TYPE_BYTE_STRING]}."]
 
 val file_attribute_standard_size : string
 [@@ocaml.doc
   "A key in the \"standard\" namespace for getting the file's size (in bytes).\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT64]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT64}[G_FILE_ATTRIBUTE_TYPE_UINT64]}."]
 
 val file_attribute_standard_sort_order : string
 [@@ocaml.doc
   "A key in the \"standard\" namespace for setting the sort order of a file.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_INT32].\n\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-INT32}[G_FILE_ATTRIBUTE_TYPE_INT32]}.\n\n\
    An example use would be in file managers, which would use this key\n\
    to set the order files are displayed. Files with smaller sort order\n\
    should be sorted first, and files without sort order as if sort order\n\
@@ -430,8 +551,11 @@ val file_attribute_standard_symbolic_icon : string
 [@@ocaml.doc
   "A key in the \"standard\" namespace for getting the symbolic icon for the \
    file.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_OBJECT].\n\n\
-   The value for this key should contain a [GIcon].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-OBJECT}[G_FILE_ATTRIBUTE_TYPE_OBJECT]}.\n\n\
+   The value for this key should contain a \
+   {{!Ocgio.Icon.class-type-icon_t}[GIcon]}.\n\
   \    @since 2.34"]
 
 val file_attribute_standard_symlink_target : string
@@ -439,33 +563,48 @@ val file_attribute_standard_symlink_target : string
   "A key in the \"standard\" namespace for getting the symlink target, if the \
    file\n\
    is a symlink.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BYTE_STRING]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BYTE_STRING}[G_FILE_ATTRIBUTE_TYPE_BYTE_STRING]}."]
 
 val file_attribute_standard_target_uri : string
 [@@ocaml.doc
   "A key in the \"standard\" namespace for getting the target URI for the \
    file, in\n\
-   the case of [G_FILE_TYPE_SHORTCUT] or [G_FILE_TYPE_MOUNTABLE] files.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_STRING]."]
+   the case of \
+   {{!Ocgio.Enums.type-filetype.constructor-SHORTCUT}[G_FILE_TYPE_SHORTCUT]} \
+   or \
+   {{!Ocgio.Enums.type-filetype.constructor-MOUNTABLE}[G_FILE_TYPE_MOUNTABLE]} \
+   files.\n\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-STRING}[G_FILE_ATTRIBUTE_TYPE_STRING]}."]
 
 val file_attribute_standard_type : string
 [@@ocaml.doc
   "A key in the \"standard\" namespace for storing file types.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT32].\n\n\
-   The value for this key should contain a [GFileType]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT32}[G_FILE_ATTRIBUTE_TYPE_UINT32]}.\n\n\
+   The value for this key should contain a \
+   {{!Ocgio.Enums.type-filetype}[GFileType]}."]
 
 val file_attribute_thumbnailing_failed : string
 [@@ocaml.doc
   "A key in the \"thumbnail\" namespace for checking if thumbnailing failed.\n\n\
    This attribute is [true] if thumbnailing failed.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}."]
 
 val file_attribute_thumbnailing_failed_large : string
 [@@ocaml.doc
   "A key in the \"thumbnail\" namespace for checking if thumbnailing failed\n\
    for the large image.\n\n\
    This attribute is [true] if thumbnailing failed.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}.\n\
   \    @since 2.76"]
 
 val file_attribute_thumbnailing_failed_normal : string
@@ -473,7 +612,9 @@ val file_attribute_thumbnailing_failed_normal : string
   "A key in the \"thumbnail\" namespace for checking if thumbnailing failed\n\
    for the normal image.\n\n\
    This attribute is [true] if thumbnailing failed.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}.\n\
   \    @since 2.76"]
 
 val file_attribute_thumbnailing_failed_xlarge : string
@@ -481,7 +622,9 @@ val file_attribute_thumbnailing_failed_xlarge : string
   "A key in the \"thumbnail\" namespace for checking if thumbnailing failed\n\
    for the x-large image.\n\n\
    This attribute is [true] if thumbnailing failed.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}.\n\
   \    @since 2.76"]
 
 val file_attribute_thumbnailing_failed_xxlarge : string
@@ -489,7 +632,9 @@ val file_attribute_thumbnailing_failed_xxlarge : string
   "A key in the \"thumbnail\" namespace for checking if thumbnailing failed\n\
    for the xx-large image.\n\n\
    This attribute is [true] if thumbnailing failed.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}.\n\
   \    @since 2.76"]
 
 val file_attribute_thumbnail_is_valid : string
@@ -500,10 +645,13 @@ val file_attribute_thumbnail_is_valid : string
    represents,\n\
    and [false] if the file has been modified since the thumbnail was \
    generated.\n\n\
-   If [G_FILE_ATTRIBUTE_THUMBNAILING_FAILED] is [true] and this attribute is \
-   [false],\n\
+   If \
+   {{!Ocgio.Constants.file_attribute_thumbnailing_failed}[G_FILE_ATTRIBUTE_THUMBNAILING_FAILED]} \
+   is [true] and this attribute is [false],\n\
    it indicates that thumbnailing may be attempted again and may succeed.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}.\n\
   \    @since 2.40"]
 
 val file_attribute_thumbnail_is_valid_large : string
@@ -513,10 +661,14 @@ val file_attribute_thumbnail_is_valid_large : string
    This attribute is [true] if the large thumbnail is up-to-date with the file\n\
    it represents, and [false] if the file has been modified since the thumbnail\n\
    was generated.\n\n\
-   If [G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_LARGE] is [true] and this attribute\n\
+   If \
+   {{!Ocgio.Constants.file_attribute_thumbnailing_failed_large}[G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_LARGE]} \
+   is [true] and this attribute\n\
    is [false], it indicates that thumbnailing may be attempted again and may\n\
    succeed.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}.\n\
   \    @since 2.76"]
 
 val file_attribute_thumbnail_is_valid_normal : string
@@ -526,10 +678,14 @@ val file_attribute_thumbnail_is_valid_normal : string
    This attribute is [true] if the normal thumbnail is up-to-date with the file\n\
    it represents, and [false] if the file has been modified since the thumbnail\n\
    was generated.\n\n\
-   If [G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_NORMAL] is [true] and this attribute\n\
+   If \
+   {{!Ocgio.Constants.file_attribute_thumbnailing_failed_normal}[G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_NORMAL]} \
+   is [true] and this attribute\n\
    is [false], it indicates that thumbnailing may be attempted again and may\n\
    succeed.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}.\n\
   \    @since 2.76"]
 
 val file_attribute_thumbnail_is_valid_xlarge : string
@@ -539,10 +695,14 @@ val file_attribute_thumbnail_is_valid_xlarge : string
    This attribute is [true] if the x-large thumbnail is up-to-date with the file\n\
    it represents, and [false] if the file has been modified since the thumbnail\n\
    was generated.\n\n\
-   If [G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_XLARGE] is [true] and this attribute\n\
+   If \
+   {{!Ocgio.Constants.file_attribute_thumbnailing_failed_xlarge}[G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_XLARGE]} \
+   is [true] and this attribute\n\
    is [false], it indicates that thumbnailing may be attempted again and may\n\
    succeed.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}.\n\
   \    @since 2.76"]
 
 val file_attribute_thumbnail_is_valid_xxlarge : string
@@ -552,52 +712,68 @@ val file_attribute_thumbnail_is_valid_xxlarge : string
    This attribute is [true] if the x-large thumbnail is up-to-date with the file\n\
    it represents, and [false] if the file has been modified since the thumbnail\n\
    was generated.\n\n\
-   If [G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_XXLARGE] is [true] and this \
-   attribute\n\
+   If \
+   {{!Ocgio.Constants.file_attribute_thumbnailing_failed_xxlarge}[G_FILE_ATTRIBUTE_THUMBNAILING_FAILED_XXLARGE]} \
+   is [true] and this attribute\n\
    is [false], it indicates that thumbnailing may be attempted again and may\n\
    succeed.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}.\n\
   \    @since 2.76"]
 
 val file_attribute_thumbnail_path : string
 [@@ocaml.doc
   "A key in the \"thumbnail\" namespace for getting the path to the thumbnail\n\
    image with the biggest size available.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BYTE_STRING]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BYTE_STRING}[G_FILE_ATTRIBUTE_TYPE_BYTE_STRING]}."]
 
 val file_attribute_thumbnail_path_large : string
 [@@ocaml.doc
   "A key in the \"thumbnail\" namespace for getting the path to the large\n\
    thumbnail image.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BYTE_STRING].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BYTE_STRING}[G_FILE_ATTRIBUTE_TYPE_BYTE_STRING]}.\n\
   \    @since 2.76"]
 
 val file_attribute_thumbnail_path_normal : string
 [@@ocaml.doc
   "A key in the \"thumbnail\" namespace for getting the path to the normal\n\
    thumbnail image.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BYTE_STRING].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BYTE_STRING}[G_FILE_ATTRIBUTE_TYPE_BYTE_STRING]}.\n\
   \    @since 2.76"]
 
 val file_attribute_thumbnail_path_xlarge : string
 [@@ocaml.doc
   "A key in the \"thumbnail\" namespace for getting the path to the x-large\n\
    thumbnail image.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BYTE_STRING].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BYTE_STRING}[G_FILE_ATTRIBUTE_TYPE_BYTE_STRING]}.\n\
   \    @since 2.76"]
 
 val file_attribute_thumbnail_path_xxlarge : string
 [@@ocaml.doc
   "A key in the \"thumbnail\" namespace for getting the path to the xx-large\n\
    thumbnail image.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BYTE_STRING].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BYTE_STRING}[G_FILE_ATTRIBUTE_TYPE_BYTE_STRING]}.\n\
   \    @since 2.76"]
 
 val file_attribute_time_access : string
 [@@ocaml.doc
   "A key in the \"time\" namespace for getting the time the file was last\n\
    accessed.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT64], and\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT64}[G_FILE_ATTRIBUTE_TYPE_UINT64]}, \
+   and\n\
    contains the time since the file was last accessed, in seconds since the\n\
    UNIX epoch."]
 
@@ -605,22 +781,28 @@ val file_attribute_time_access_nsec : string
 [@@ocaml.doc
   "A key in the \"time\" namespace for getting the nanoseconds of the time\n\
    the file was last accessed. This should be used in conjunction with\n\
-   [G_FILE_ATTRIBUTE_TIME_ACCESS]. Corresponding [GFileAttributeType] is\n\
-   [G_FILE_ATTRIBUTE_TYPE_UINT32].\n\
+   [G_FILE_ATTRIBUTE_TIME_ACCESS]. Corresponding \
+   {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} is\n\
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT32}[G_FILE_ATTRIBUTE_TYPE_UINT32]}.\n\
   \    @since 2.74"]
 
 val file_attribute_time_access_usec : string
 [@@ocaml.doc
   "A key in the \"time\" namespace for getting the microseconds of the time\n\
    the file was last accessed.\n\n\
-   This should be used in conjunction with [G_FILE_ATTRIBUTE_TIME_ACCESS].\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT32]."]
+   This should be used in conjunction with \
+   {{!Ocgio.Constants.file_attribute_time_access}[G_FILE_ATTRIBUTE_TIME_ACCESS]}.\n\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT32}[G_FILE_ATTRIBUTE_TYPE_UINT32]}."]
 
 val file_attribute_time_changed : string
 [@@ocaml.doc
   "A key in the \"time\" namespace for getting the time the file was last\n\
    changed.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT64],\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT64}[G_FILE_ATTRIBUTE_TYPE_UINT64]},\n\
    and contains the time since the file was last changed, in seconds since\n\
    the UNIX epoch.\n\n\
    This corresponds to the traditional UNIX ctime."]
@@ -629,21 +811,27 @@ val file_attribute_time_changed_nsec : string
 [@@ocaml.doc
   "A key in the \"time\" namespace for getting the nanoseconds of the time\n\
    the file was last changed. This should be used in conjunction with\n\
-   [G_FILE_ATTRIBUTE_TIME_CHANGED]. Corresponding [GFileAttributeType] is\n\
-   [G_FILE_ATTRIBUTE_TYPE_UINT32].\n\
+   [G_FILE_ATTRIBUTE_TIME_CHANGED]. Corresponding \
+   {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} is\n\
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT32}[G_FILE_ATTRIBUTE_TYPE_UINT32]}.\n\
   \    @since 2.74"]
 
 val file_attribute_time_changed_usec : string
 [@@ocaml.doc
   "A key in the \"time\" namespace for getting the microseconds of the time\n\
    the file was last changed.\n\n\
-   This should be used in conjunction with [G_FILE_ATTRIBUTE_TIME_CHANGED].\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT32]."]
+   This should be used in conjunction with \
+   {{!Ocgio.Constants.file_attribute_time_changed}[G_FILE_ATTRIBUTE_TIME_CHANGED]}.\n\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT32}[G_FILE_ATTRIBUTE_TYPE_UINT32]}."]
 
 val file_attribute_time_created : string
 [@@ocaml.doc
   "A key in the \"time\" namespace for getting the time the file was created.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT64],\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT64}[G_FILE_ATTRIBUTE_TYPE_UINT64]},\n\
    and contains the time since the file was created, in seconds since the UNIX\n\
    epoch.\n\n\
    This may correspond to Linux [stx_btime], FreeBSD [st_birthtim], NetBSD\n\
@@ -653,22 +841,29 @@ val file_attribute_time_created_nsec : string
 [@@ocaml.doc
   "A key in the \"time\" namespace for getting the nanoseconds of the time\n\
    the file was created. This should be used in conjunction with\n\
-   [G_FILE_ATTRIBUTE_TIME_CREATED]. Corresponding [GFileAttributeType] is\n\
-   [G_FILE_ATTRIBUTE_TYPE_UINT32].\n\
+   [G_FILE_ATTRIBUTE_TIME_CREATED]. Corresponding \
+   {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} is\n\
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT32}[G_FILE_ATTRIBUTE_TYPE_UINT32]}.\n\
   \    @since 2.74"]
 
 val file_attribute_time_created_usec : string
 [@@ocaml.doc
   "A key in the \"time\" namespace for getting the microseconds of the time\n\
    the file was created.\n\n\
-   This should be used in conjunction with [G_FILE_ATTRIBUTE_TIME_CREATED].\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT32]."]
+   This should be used in conjunction with \
+   {{!Ocgio.Constants.file_attribute_time_created}[G_FILE_ATTRIBUTE_TIME_CREATED]}.\n\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT32}[G_FILE_ATTRIBUTE_TYPE_UINT32]}."]
 
 val file_attribute_time_modified : string
 [@@ocaml.doc
   "A key in the \"time\" namespace for getting the time the file was last\n\
    modified.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT64], and\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT64}[G_FILE_ATTRIBUTE_TYPE_UINT64]}, \
+   and\n\
    contains the time since the file was modified, in seconds since the UNIX\n\
    epoch."]
 
@@ -676,36 +871,46 @@ val file_attribute_time_modified_nsec : string
 [@@ocaml.doc
   "A key in the \"time\" namespace for getting the nanoseconds of the time\n\
    the file was last modified. This should be used in conjunction with\n\
-   [G_FILE_ATTRIBUTE_TIME_MODIFIED]. Corresponding [GFileAttributeType] is\n\
-   [G_FILE_ATTRIBUTE_TYPE_UINT32].\n\
+   [G_FILE_ATTRIBUTE_TIME_MODIFIED]. Corresponding \
+   {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} is\n\
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT32}[G_FILE_ATTRIBUTE_TYPE_UINT32]}.\n\
   \    @since 2.74"]
 
 val file_attribute_time_modified_usec : string
 [@@ocaml.doc
   "A key in the \"time\" namespace for getting the microseconds of the time\n\
    the file was last modified.\n\n\
-   This should be used in conjunction with [G_FILE_ATTRIBUTE_TIME_MODIFIED].\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT32]."]
+   This should be used in conjunction with \
+   {{!Ocgio.Constants.file_attribute_time_modified}[G_FILE_ATTRIBUTE_TIME_MODIFIED]}.\n\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT32}[G_FILE_ATTRIBUTE_TYPE_UINT32]}."]
 
 val file_attribute_trash_deletion_date : string
 [@@ocaml.doc
   "A key in the \"trash\" namespace for getting the deletion date and time\n\
    of a file inside the [trash:///] folder.\n\n\
    The format of the returned string is [YYYY-MM-DDThh:mm:ss].\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_STRING].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-STRING}[G_FILE_ATTRIBUTE_TYPE_STRING]}.\n\
   \    @since 2.24"]
 
 val file_attribute_trash_item_count : string
 [@@ocaml.doc
   "A key in the \"trash\" namespace for getting the number of (toplevel) items\n\
    that are present in the [trash:///] folder.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT32]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT32}[G_FILE_ATTRIBUTE_TYPE_UINT32]}."]
 
 val file_attribute_trash_orig_path : string
 [@@ocaml.doc
   "A key in the \"trash\" namespace for getting the original path of a file\n\
    inside the [trash:///] folder before it was trashed.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BYTE_STRING].\n\
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BYTE_STRING}[G_FILE_ATTRIBUTE_TYPE_BYTE_STRING]}.\n\
   \    @since 2.24"]
 
 val file_attribute_unix_blocks : string
@@ -713,33 +918,43 @@ val file_attribute_unix_blocks : string
   "A key in the \"unix\" namespace for getting the number of blocks allocated\n\
    for the file.\n\n\
    This attribute is only available for UNIX file systems.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT64]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT64}[G_FILE_ATTRIBUTE_TYPE_UINT64]}."]
 
 val file_attribute_unix_block_size : string
 [@@ocaml.doc
   "A key in the \"unix\" namespace for getting the block size for the file\n\
    system.\n\n\
    This attribute is only available for UNIX file systems.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT32]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT32}[G_FILE_ATTRIBUTE_TYPE_UINT32]}."]
 
 val file_attribute_unix_device : string
 [@@ocaml.doc
   "A key in the \"unix\" namespace for getting the device id of the device the\n\
    file is located on (see stat() documentation).\n\n\
    This attribute is only available for UNIX file systems.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT32]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT32}[G_FILE_ATTRIBUTE_TYPE_UINT32]}."]
 
 val file_attribute_unix_gid : string
 [@@ocaml.doc
   "A key in the \"unix\" namespace for getting the group ID for the file.\n\n\
    This attribute is only available for UNIX file systems.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT32]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT32}[G_FILE_ATTRIBUTE_TYPE_UINT32]}."]
 
 val file_attribute_unix_inode : string
 [@@ocaml.doc
   "A key in the \"unix\" namespace for getting the inode of the file.\n\n\
    This attribute is only available for UNIX file systems.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT64]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT64}[G_FILE_ATTRIBUTE_TYPE_UINT64]}."]
 
 val file_attribute_unix_is_mountpoint : string
 [@@ocaml.doc
@@ -748,7 +963,9 @@ val file_attribute_unix_is_mountpoint : string
    This attribute is [true] if the file is a UNIX mount point.\n\n\
    Since 2.58, [/] is considered to be a mount point.\n\n\
    This attribute is only available for UNIX file systems.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_BOOLEAN]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-BOOLEAN}[G_FILE_ATTRIBUTE_TYPE_BOOLEAN]}."]
 
 val file_attribute_unix_mode : string
 [@@ocaml.doc
@@ -758,7 +975,9 @@ val file_attribute_unix_mode : string
    the [st_mode] member of [struct stat], and includes both the file type\n\
    and permissions.\n\n\
    This attribute is only available for UNIX file systems.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT32]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT32}[G_FILE_ATTRIBUTE_TYPE_UINT32]}."]
 
 val file_attribute_unix_nlink : string
 [@@ocaml.doc
@@ -766,7 +985,9 @@ val file_attribute_unix_nlink : string
    for a file.\n\n\
    See the documentation for [lstat()].\n\n\
    This attribute is only available for UNIX file systems.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT32]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT32}[G_FILE_ATTRIBUTE_TYPE_UINT32]}."]
 
 val file_attribute_unix_rdev : string
 [@@ocaml.doc
@@ -774,13 +995,17 @@ val file_attribute_unix_rdev : string
    (if it is a special file).\n\n\
    See the documentation for [lstat()].\n\n\
    This attribute is only available for UNIX file systems.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT32]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT32}[G_FILE_ATTRIBUTE_TYPE_UINT32]}."]
 
 val file_attribute_unix_uid : string
 [@@ocaml.doc
   "A key in the \"unix\" namespace for getting the user ID for the file.\n\n\
    This attribute is only available for UNIX file systems.\n\n\
-   Corresponding [GFileAttributeType] is [G_FILE_ATTRIBUTE_TYPE_UINT32]."]
+   Corresponding {{!Ocgio.Enums.type-fileattributetype}[GFileAttributeType]} \
+   is \
+   {{!Ocgio.Enums.type-fileattributetype.constructor-UINT32}[G_FILE_ATTRIBUTE_TYPE_UINT32]}."]
 
 val memory_monitor_extension_point_name : string
 (** Extension point for memory usage monitoring functionality. See Extending
@@ -794,7 +1019,8 @@ val menu_attribute_action : string
    action resides. For example, \"win.\" for window-specific actions and \
    \"app.\"\n\
    for application-wide actions.\n\n\
-   See also g_menu_model_get_item_attribute() and g_menu_item_set_attribute().\n\
+   See also [g_menu_model_get_item_attribute ()] and \
+   [g_menu_item_set_attribute ()].\n\
   \    @since 2.32"]
 
 val menu_attribute_action_namespace : string
@@ -805,7 +1031,8 @@ val menu_attribute_action_namespace : string
 val menu_attribute_icon : string
 (** The menu item attribute which holds the icon of the item.
 
-    The icon is stored in the format returned by g_icon_serialize().
+    The icon is stored in the format returned by
+    {{!Ocgio.Icon.class-type-icon_t.method-serialize}[g_icon_serialize ()]}.
 
     This attribute is intended only to represent 'noun' icons such as favicons
     for a webpage, or application icons. It should not be used for 'verbs' (ie:
@@ -820,12 +1047,13 @@ val menu_attribute_target : string
 (** The menu item attribute which holds the target with which the item's action
     will be activated.
 
-    See also g_menu_item_set_action_and_target()
+    See also [g_menu_item_set_action_and_target ()]
     @since 2.32 *)
 
 val menu_exporter_max_section_size : int
 (** The maximum number of entries in a menu section supported by
-    g_dbus_connection_export_menu_model().
+    {{!Ocgio.D_bus_connection.class-type-d_bus_connection_t.method-export_menu_model}
+     [g_dbus_connection_export_menu_model ()]}.
 
     The exact value of the limit may change in future GLib versions.
     @since 2.76 *)
@@ -835,13 +1063,17 @@ val menu_link_section : string
     menu will usually be shown in place of the menu item, using the item's label
     as a header.
 
-    See also g_menu_item_set_link().
+    See also
+    {{!Ocgio.Menu_item.class-type-menu_item_t.method-set_link}[g_menu_item_set_link
+                                                               ()]}.
     @since 2.32 *)
 
 val menu_link_submenu : string
 (** The name of the link that associates a menu item with a submenu.
 
-    See also g_menu_item_set_link().
+    See also
+    {{!Ocgio.Menu_item.class-type-menu_item_t.method-set_link}[g_menu_item_set_link
+                                                               ()]}.
     @since 2.32 *)
 
 val native_volume_monitor_extension_point_name : string
@@ -867,8 +1099,9 @@ val settings_backend_extension_point_name : string
 (** Extension point for [GSettingsBackend] functionality. *)
 
 val tls_backend_extension_point_name : string
-(** Extension point for TLS functionality via [GTlsBackend]. See Extending GIO.
-*)
+(** Extension point for TLS functionality via
+    {{!Ocgio.Tls_backend.class-type-tls_backend_t}[GTlsBackend]}. See Extending
+    GIO. *)
 
 val tls_database_purpose_authenticate_client : string
 (** The purpose used to verify the client certificate in a TLS connection. Used
@@ -879,34 +1112,46 @@ val tls_database_purpose_authenticate_server : string
     is the most common purpose in use. Used by TLS clients. *)
 
 val vfs_extension_point_name : string
-(** Extension point for [GVfs] functionality. See Extending GIO. *)
+(** Extension point for {{!Ocgio.Vfs.class-type-vfs_t}[GVfs]} functionality. See
+    Extending GIO. *)
 
 val volume_identifier_kind_class : string
 [@@ocaml.doc
-  "The string used to obtain the volume class with g_volume_get_identifier().\n\n\
+  "The string used to obtain the volume class with \
+   {{!Ocgio.Volume.class-type-volume_t.method-get_identifier}[g_volume_get_identifier \
+   ()]}.\n\n\
    Known volume classes include [device], [network], and [loop]. Other\n\
    classes may be added in the future.\n\n\
-   This is intended to be used by applications to classify [GVolume]\n\
+   This is intended to be used by applications to classify \
+   {{!Ocgio.Volume.class-type-volume_t}[GVolume]}\n\
    instances into different sections - for example a file manager or\n\
    file chooser can use this information to show [network] volumes under\n\
    a \"Network\" heading and [device] volumes under a \"Devices\" heading."]
 
 val volume_identifier_kind_hal_udi : string
-(** The string used to obtain a Hal UDI with g_volume_get_identifier(). *)
+(** The string used to obtain a Hal UDI with
+    {{!Ocgio.Volume.class-type-volume_t.method-get_identifier}[g_volume_get_identifier
+                                                               ()]}. *)
 
 val volume_identifier_kind_label : string
-(** The string used to obtain a filesystem label with g_volume_get_identifier().
-*)
+(** The string used to obtain a filesystem label with
+    {{!Ocgio.Volume.class-type-volume_t.method-get_identifier}[g_volume_get_identifier
+                                                               ()]}. *)
 
 val volume_identifier_kind_nfs_mount : string
-(** The string used to obtain a NFS mount with g_volume_get_identifier(). *)
+(** The string used to obtain a NFS mount with
+    {{!Ocgio.Volume.class-type-volume_t.method-get_identifier}[g_volume_get_identifier
+                                                               ()]}. *)
 
 val volume_identifier_kind_unix_device : string
-(** The string used to obtain a Unix device path with g_volume_get_identifier().
-*)
+(** The string used to obtain a Unix device path with
+    {{!Ocgio.Volume.class-type-volume_t.method-get_identifier}[g_volume_get_identifier
+                                                               ()]}. *)
 
 val volume_identifier_kind_uuid : string
-(** The string used to obtain a UUID with g_volume_get_identifier(). *)
+(** The string used to obtain a UUID with
+    {{!Ocgio.Volume.class-type-volume_t.method-get_identifier}[g_volume_get_identifier
+                                                               ()]}. *)
 
 val volume_monitor_extension_point_name : string
 (** Extension point for volume monitor functionality. See Extending GIO. *)

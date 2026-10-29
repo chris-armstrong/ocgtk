@@ -7,7 +7,11 @@
    every namespace with a references file, which lists only generated types.
    Members are listed for the current namespace only: the members of each
    generated type at each layer, from [Emitted_members], and the members of
-   each enumeration and bitfield. *)
+   each enumeration and bitfield.
+
+   Legacy sigils and C calls name C symbols, so types and constants are also
+   listed by C name, and, for the current namespace, enumeration and bitfield
+   members, methods and constructors by C identifier. *)
 
 open Types
 
@@ -30,6 +34,7 @@ val build :
     ones. *)
 
 val with_members : ctx:generation_context -> entity list -> doc_index
-(** [ctx.doc_index] with the member tables of [entities], the generated classes,
+(** [ctx.doc_index] with the member tables of [entities], and their methods and
+    constructors by C identifier. [entities] are the generated classes,
     interfaces and records of the current namespace. Deciding what an entity
     emits needs the generation context, so this is a second step. *)

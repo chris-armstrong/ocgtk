@@ -158,7 +158,7 @@ class type d_bus_object_manager_client_t = object
   method get_name_owner : unit -> string option
   (** The unique name that owns the name that [manager] is for or [None] if
       no-one currently owns that name. You can connect to the [GObject::notify]
-      signal to track changes to the [GDBusObjectManagerClient:name]-owner
+      signal to track changes to the [GDBusObjectManagerClient:name-owner]
       property. *)
 
   (** {2:properties Properties} *)
@@ -281,10 +281,10 @@ class d_bus_object_manager_client :
 val new_finish :
   Async_result.async_result_t ->
   (d_bus_object_manager_client_t, GError.t) result
-(** Finishes an operation started with g_dbus_object_manager_client_new(). *)
+(** Finishes an operation started with [g_dbus_object_manager_client_new ()]. *)
 
 val new_for_bus_finish :
   Async_result.async_result_t ->
   (d_bus_object_manager_client_t, GError.t) result
 (** Finishes an operation started with
-    g_dbus_object_manager_client_new_for_bus(). *)
+    [g_dbus_object_manager_client_new_for_bus ()]. *)

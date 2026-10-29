@@ -55,22 +55,27 @@ external set_sort_order : t -> Ocgtk_enums.sorttype -> unit
 (** Changes the appearance of the sort indicator.
 
     This does not actually sort the model. Use
-    gtk_tree_view_column_set_sort_column_id() if you want automatic sorting
-    support. This function is primarily for custom sorting behavior, and should
-    be used in conjunction with gtk_tree_sortable_set_sort_column_id() to do
-    that. For custom models, the mechanism will vary.
+    {{!Ocgtk.Raw.Tree_view_column.val-set_sort_column_id}[gtk_tree_view_column_set_sort_column_id
+                                                          ()]} if you want
+    automatic sorting support. This function is primarily for custom sorting
+    behavior, and should be used in conjunction with
+    {{!Ocgtk.Raw.Tree_sortable.val-set_sort_column_id}[gtk_tree_sortable_set_sort_column_id
+                                                       ()]} to do that. For
+    custom models, the mechanism will vary.
 
     The sort indicator changes direction to indicate normal sort or reverse
     sort. Note that you must have the sort indicator enabled to see anything
-    when calling this function; see gtk_tree_view_column_set_sort_indicator().
-*)
+    when calling this function; see
+    {{!Ocgtk.Raw.Tree_view_column.val-set_sort_indicator}[gtk_tree_view_column_set_sort_indicator
+                                                          ()]}. *)
 
 external set_sort_indicator : t -> bool -> unit
   = "ml_gtk_tree_view_column_set_sort_indicator"
 (** Call this function with a [setting] of [true] to display an arrow in the
     header button indicating the column is sorted. Call
-    gtk_tree_view_column_set_sort_order() to change the direction of the arrow.
-*)
+    {{!Ocgtk.Raw.Tree_view_column.val-set_sort_order}[gtk_tree_view_column_set_sort_order
+                                                      ()]} to change the
+    direction of the arrow. *)
 
 external set_sort_column_id : t -> int -> unit
   = "ml_gtk_tree_view_column_set_sort_column_id"
@@ -87,8 +92,10 @@ external set_resizable : t -> bool -> unit
     grabbing the outer edge of the column button.
 
     If resizable is [true] and sizing mode of the column is
-    [GTK_TREE_VIEW_COLUMN_AUTOSIZE], then the sizing mode is changed to
-    [GTK_TREE_VIEW_COLUMN_GROW_ONLY]. *)
+    {{!Ocgtk.Enums.type-treeviewcolumnsizing.constructor-AUTOSIZE}[GTK_TREE_VIEW_COLUMN_AUTOSIZE]},
+    then the sizing mode is changed to
+    {{!Ocgtk.Enums.type-treeviewcolumnsizing.constructor-GROW_ONLY}[GTK_TREE_VIEW_COLUMN_GROW_ONLY]}.
+*)
 
 external set_reorderable : t -> bool -> unit
   = "ml_gtk_tree_view_column_set_reorderable"
@@ -113,10 +120,12 @@ external set_fixed_width : t -> int -> unit
     unsets it. The effective value of [fixed_width] is clamped between the
     minimum and maximum width of the column; however, the value stored in the
     “fixed-width” property is not clamped. If the column sizing is
-    [GTK_TREE_VIEW_COLUMN_GROW_ONLY] or [GTK_TREE_VIEW_COLUMN_AUTOSIZE], setting
-    a fixed width overrides the automatically calculated width. Note that
-    [fixed_width] is only a hint to GTK; the width actually allocated to the
-    column may be greater or less than requested.
+    {{!Ocgtk.Enums.type-treeviewcolumnsizing.constructor-GROW_ONLY}[GTK_TREE_VIEW_COLUMN_GROW_ONLY]}
+    or
+    {{!Ocgtk.Enums.type-treeviewcolumnsizing.constructor-AUTOSIZE}[GTK_TREE_VIEW_COLUMN_AUTOSIZE]},
+    setting a fixed width overrides the automatically calculated width. Note
+    that [fixed_width] is only a hint to GTK; the width actually allocated to
+    the column may be greater or less than requested.
 
     Along with “expand”, the “fixed-width” property changes when the column is
     resized by the user. *)
@@ -193,11 +202,15 @@ external get_spacing : t -> int = "ml_gtk_tree_view_column_get_spacing"
 
 external get_sort_order : t -> Ocgtk_enums.sorttype
   = "ml_gtk_tree_view_column_get_sort_order"
-(** Gets the value set by gtk_tree_view_column_set_sort_order(). *)
+(** Gets the value set by
+    {{!Ocgtk.Raw.Tree_view_column.val-set_sort_order}[gtk_tree_view_column_set_sort_order
+                                                      ()]}. *)
 
 external get_sort_indicator : t -> bool
   = "ml_gtk_tree_view_column_get_sort_indicator"
-(** Gets the value set by gtk_tree_view_column_set_sort_indicator(). *)
+(** Gets the value set by
+    {{!Ocgtk.Raw.Tree_view_column.val-set_sort_indicator}[gtk_tree_view_column_set_sort_indicator
+                                                          ()]}. *)
 
 external get_sort_column_id : t -> int
   = "ml_gtk_tree_view_column_get_sort_column_id"
@@ -228,7 +241,9 @@ external get_max_width : t -> int = "ml_gtk_tree_view_column_get_max_width"
 
 external get_fixed_width : t -> int = "ml_gtk_tree_view_column_get_fixed_width"
 (** Gets the fixed width of the column. This may not be the actual displayed
-    width of the column; for that, use gtk_tree_view_column_get_width(). *)
+    width of the column; for that, use
+    {{!Ocgtk.Raw.Tree_view_column.val-get_width}[gtk_tree_view_column_get_width
+                                                 ()]}. *)
 
 external get_expand : t -> bool = "ml_gtk_tree_view_column_get_expand"
 (** Returns [true] if the column expands to fill available space. *)
@@ -259,7 +274,7 @@ external clicked : t -> unit = "ml_gtk_tree_view_column_clicked"
 external clear_attributes : t -> Cell_renderer.t -> unit
   = "ml_gtk_tree_view_column_clear_attributes"
 (** Clears all existing attributes previously set with
-    gtk_tree_view_column_set_attributes(). *)
+    [gtk_tree_view_column_set_attributes ()]. *)
 
 external clear : t -> unit = "ml_gtk_tree_view_column_clear"
 (** Unsets all the mappings on all renderers on the [tree_column]. *)
@@ -275,7 +290,8 @@ external cell_set_cell_data :
 external cell_is_visible : t -> bool = "ml_gtk_tree_view_column_cell_is_visible"
 (** Returns [true] if any of the cells packed into the [tree_column] are
     visible. For this to be meaningful, you must first initialize the cells with
-    gtk_tree_view_column_cell_set_cell_data() *)
+    {{!Ocgtk.Raw.Tree_view_column.val-cell_set_cell_data}[gtk_tree_view_column_cell_set_cell_data
+                                                          ()]} *)
 
 external cell_get_size : t -> int * int * int * int
   = "ml_gtk_tree_view_column_cell_get_size"
@@ -306,8 +322,9 @@ external get_cell_area :
 (** The [GtkCellArea] used to layout cell renderers for this column.
 
     If no area is specified when creating the tree view column with
-    gtk_tree_view_column_new_with_area() a horizontally oriented
-    [GtkCellAreaBox] will be used. *)
+    {{!Ocgtk.Raw.Tree_view_column.val-new_with_area}[gtk_tree_view_column_new_with_area
+                                                     ()]} a horizontally
+    oriented [GtkCellAreaBox] will be used. *)
 
 let on_clicked ?after obj ~callback =
   Gobject.Signal.connect_simple obj ~name:"clicked" ~callback

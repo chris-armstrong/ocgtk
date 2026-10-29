@@ -29,7 +29,9 @@ external get_model_for_item : t -> int -> Ocgio_raw.List_model.t option
 
 external get_model : t -> Ocgio_raw.List_model.t option
   = "ml_gtk_flatten_list_model_get_model"
-(** Gets the model set via gtk_flatten_list_model_set_model(). *)
+(** Gets the model set via
+    {{!Ocgtk.Raw.Flatten_list_model.val-set_model}[gtk_flatten_list_model_set_model
+                                                   ()]}. *)
 
 (* Properties *)
 

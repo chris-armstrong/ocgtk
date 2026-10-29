@@ -51,5 +51,6 @@ class simple_permission : Raw.Simple_permission.t -> simple_permission_t
 (** {1:constructors Constructors} *)
 
 val new_ : bool -> simple_permission_t
-(** Creates a new [GPermission] instance that represents an action that is
-    either always or never allowed. *)
+(** Creates a new {{!Ocgio.Permission.class-type-permission_t}[GPermission]}
+    instance that represents an action that is either always or never allowed.
+*)

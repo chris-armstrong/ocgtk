@@ -11,7 +11,8 @@ module rec Vec3 : sig
 
       The contents of the returned structure are undefined.
 
-      Use graphene_vec3_init() to initialize the vector. *)
+      Use {{!Ocgraphene.Raw.Vec3.val-init}[graphene_vec3_init ()]} to initialize
+      the vector. *)
 
   (* Methods *)
 
@@ -122,7 +123,8 @@ end = struct
 
       The contents of the returned structure are undefined.
 
-      Use graphene_vec3_init() to initialize the vector. *)
+      Use {{!Ocgraphene.Raw.Vec3.val-init}[graphene_vec3_init ()]} to initialize
+      the vector. *)
 
   (* Methods *)
 
@@ -235,7 +237,8 @@ and Vec4 : sig
 
       The contents of the returned structure are undefined.
 
-      Use graphene_vec4_init() to initialize the vector. *)
+      Use {{!Ocgraphene.Raw.Vec4.val-init}[graphene_vec4_init ()]} to initialize
+      the vector. *)
 
   (* Methods *)
 
@@ -350,7 +353,8 @@ end = struct
 
       The contents of the returned structure are undefined.
 
-      Use graphene_vec4_init() to initialize the vector. *)
+      Use {{!Ocgraphene.Raw.Vec4.val-init}[graphene_vec4_init ()]} to initialize
+      the vector. *)
 
   (* Methods *)
 

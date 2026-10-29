@@ -46,7 +46,8 @@
  a specific model. It is a generic struct with an integer and three\n\
  generic pointers. These are filled in by the model in a model-specific\n\
  way. One can convert a path to an iterator by calling\n\
- gtk_tree_model_get_iter(). These iterators are the primary way\n\
+ {{!Ocgtk.Raw.Tree_model.val-get_iter}[gtk_tree_model_get_iter ()]}. These \
+ iterators are the primary way\n\
  of accessing a model and are similar to the iterators used by\n\
  [GtkTextBuffer]. They are generally statically allocated on the\n\
  stack and only used for a short time. The model interface defines\n\
@@ -68,7 +69,9 @@
  Although generally uninteresting, as one always has to allow for\n\
  the case where iterators do not persist beyond a signal, some very\n\
  important performance enhancements were made in the sort model.\n\
- As a result, the [GTK_TREE_MODEL_ITERS_PERSIST] flag was added to\n\
+ As a result, the \
+ {{!Ocgtk.Enums.type-treemodelflags_flag.constructor-ITERS_PERSIST}[GTK_TREE_MODEL_ITERS_PERSIST]} \
+ flag was added to\n\
  indicate this behavior.\n\n\
  To help show some common operation of a model, some examples are\n\
  provided. The first example shows three ways of getting the iter at\n\
@@ -101,7 +104,7 @@
  ]}\n\n\
  This second example shows a quick way of iterating through a list\n\
  and getting a string and an integer from each row. The\n\
- populate_model() function used below is not\n\
+ [populate_model ()] function used below is not\n\
  shown, as it is specific to the [GtkListStore]. For information on\n\
  how to write such a function, see the [GtkListStore] documentation.\n\n\
  {b Reading data from a [GtkTreeModel]}\n\n\
@@ -146,7 +149,8 @@
 \ }\n\
  ]}\n\n\
  The [GtkTreeModel] interface contains two methods for reference\n\
- counting: gtk_tree_model_ref_node() and gtk_tree_model_unref_node().\n\
+ counting: {{!Ocgtk.Raw.Tree_model.val-ref_node}[gtk_tree_model_ref_node ()]} \
+ and {{!Ocgtk.Raw.Tree_model.val-unref_node}[gtk_tree_model_unref_node ()]}.\n\
  These two methods are optional to implement. The reference counting\n\
  is meant as a way for views to let models know when nodes are being\n\
  displayed. [GtkTreeView] will take a reference on a node when it is\n\
@@ -184,7 +188,8 @@ external unref_node : t -> Tree_iter.t -> unit = "ml_gtk_tree_model_unref_node"
 
     This is an optional method for models to implement. To be more specific,
     models may ignore this call as it exists primarily for performance reasons.
-    For more information on what this means, see gtk_tree_model_ref_node().
+    For more information on what this means, see
+    {{!Ocgtk.Raw.Tree_model.val-ref_node}[gtk_tree_model_ref_node ()]}.
 
     Please note that nodes that are deleted are not unreffed. *)
 
@@ -306,7 +311,7 @@ external get_value : t -> Tree_iter.t -> int -> Gobject.Value.t
   = "ml_gtk_tree_model_get_value"
 (** Initializes and sets [value] to that at [column].
 
-    When done with [value], g_value_unset() needs to be called to free any
+    When done with [value], [g_value_unset ()] needs to be called to free any
     allocated memory. *)
 
 external get_string_from_iter : t -> Tree_iter.t -> string option
@@ -320,7 +325,7 @@ external get_path : t -> Tree_iter.t -> Tree_path.t
   = "ml_gtk_tree_model_get_path"
 (** Returns a newly-created [GtkTreePath] referenced by [iter].
 
-    This path should be freed with gtk_tree_path_free(). *)
+    This path should be freed with [gtk_tree_path_free ()]. *)
 
 external get_n_columns : t -> int = "ml_gtk_tree_model_get_n_columns"
 (** Returns the number of columns supported by [tree_model]. *)

@@ -20,7 +20,7 @@ class type tree_model_t = object
   method get_path : Raw.Tree_iter.t -> Raw.Tree_path.t
   (** Returns a newly-created [GtkTreePath] referenced by [iter].
 
-      This path should be freed with gtk_tree_path_free(). *)
+      This path should be freed with [gtk_tree_path_free ()]. *)
 
   method get_string_from_iter : Raw.Tree_iter.t -> string option
   (** Generates a string representation of the iter.
@@ -111,7 +111,7 @@ class type tree_model_t = object
       This is an optional method for models to implement. To be more specific,
       models may ignore this call as it exists primarily for performance
       reasons. For more information on what this means, see
-      gtk_tree_model_ref_node().
+      [gtk_tree_model_ref_node ()].
 
       Please note that nodes that are deleted are not unreffed. *)
 

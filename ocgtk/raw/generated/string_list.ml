@@ -72,7 +72,7 @@ external get_string : t -> int -> string option
     If [self] does not contain [position] items, [None] is returned.
 
     This function returns the const char *. To get the object wrapping it, use
-    g_list_model_get_item(). *)
+    [g_list_model_get_item ()]. *)
 
 external find : t -> string -> int = "ml_gtk_string_list_find"
 (** Gets the position of the [string] in [self].

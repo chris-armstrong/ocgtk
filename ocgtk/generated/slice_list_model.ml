@@ -8,10 +8,10 @@ class type slice_list_model_t = object
   (** Gets the model that is currently being used or [None] if none. *)
 
   method get_offset : unit -> int
-  (** Gets the offset set via gtk_slice_list_model_set_offset(). *)
+  (** Gets the offset set via [gtk_slice_list_model_set_offset ()]. *)
 
   method get_size : unit -> int
-  (** Gets the size set via gtk_slice_list_model_set_size(). *)
+  (** Gets the size set via [gtk_slice_list_model_set_size ()]. *)
 
   method set_model : Ocgio.List_model.list_model_t option -> unit
   (** Sets the model to show a slice of.

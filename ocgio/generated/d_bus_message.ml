@@ -89,9 +89,9 @@ class type d_bus_message_t = object
       This method is only available on UNIX.
 
       The file descriptors normally correspond to [G_VARIANT_TYPE_HANDLE] values
-      in the body of the message. For example, if g_variant_get_handle() returns
-      5, that is intended to be a reference to the file descriptor that can be
-      accessed by [g_unix_fd_list_get (list, 5, ...)]. *)
+      in the body of the message. For example, if [g_variant_get_handle ()]
+      returns 5, that is intended to be a reference to the file descriptor that
+      can be accessed by [g_unix_fd_list_get (list, 5, ...)]. *)
 
   method lock : unit -> unit
   (** If [message] is locked, does nothing. Otherwise locks the message. *)
@@ -221,7 +221,7 @@ class type d_bus_message_t = object
       returns [false].
 
       Otherwise this method encodes the error in [message] as a [GError] using
-      g_dbus_error_set_dbus_error() using the information in the
+      [g_dbus_error_set_dbus_error ()] using the information in the
       [G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME] header field of [message] as well
       as the first string item in [message]'s body. *)
 

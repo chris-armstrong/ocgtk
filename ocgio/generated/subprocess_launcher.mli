@@ -24,11 +24,11 @@ class type subprocess_launcher_t = object
 
   method close : unit -> unit
   (** Closes all the file descriptors previously passed to the object with
-      g_subprocess_launcher_take_fd(), g_subprocess_launcher_take_stderr_fd(),
-      etc.
+      [g_subprocess_launcher_take_fd ()],
+      [g_subprocess_launcher_take_stderr_fd ()], etc.
 
       After calling this method, any subsequent calls to
-      g_subprocess_launcher_spawn() or g_subprocess_launcher_spawnv() will
+      [g_subprocess_launcher_spawn ()] or [g_subprocess_launcher_spawnv ()] will
       return [G_IO_ERROR_CLOSED]. This method is idempotent if called more than
       once.
 
@@ -53,19 +53,19 @@ class type subprocess_launcher_t = object
   (** Replace the entire environment of processes launched from this launcher
       with the given 'environ' variable.
 
-      Typically you will build this variable by using g_listenv() to copy the
-      process 'environ' and using the functions g_environ_setenv(),
-      g_environ_unsetenv(), etc.
+      Typically you will build this variable by using [g_listenv ()] to copy the
+      process 'environ' and using the functions [g_environ_setenv ()],
+      [g_environ_unsetenv ()], etc.
 
-      As an alternative, you can use g_subprocess_launcher_setenv(),
-      g_subprocess_launcher_unsetenv(), etc.
+      As an alternative, you can use [g_subprocess_launcher_setenv ()],
+      [g_subprocess_launcher_unsetenv ()], etc.
 
       Pass an empty array to set an empty environment. Pass [None] to inherit
       the parent process’ environment. As of GLib 2.54, the parent process’
-      environment will be copied when g_subprocess_launcher_set_environ() is
+      environment will be copied when [g_subprocess_launcher_set_environ ()] is
       called. Previously, it was copied when the subprocess was executed. This
       means the copied environment may now be modified (using
-      g_subprocess_launcher_setenv(), etc.) before launching the subprocess.
+      [g_subprocess_launcher_setenv ()], etc.) before launching the subprocess.
 
       On UNIX, all strings in this array can be arbitrary byte strings. On
       Windows, they should be in UTF-8. *)
@@ -80,8 +80,8 @@ class type subprocess_launcher_t = object
       [G_SUBPROCESS_FLAGS_STDIN_PIPE] and [G_SUBPROCESS_FLAGS_STDIN_INHERIT]).
 
       You may also not set a flag that conflicts with a previous call to a
-      function like g_subprocess_launcher_set_stdin_file_path() or
-      g_subprocess_launcher_take_stdout_fd(). *)
+      function like [g_subprocess_launcher_set_stdin_file_path ()] or
+      [g_subprocess_launcher_take_stdout_fd ()]. *)
 
   method set_stderr_file_path : string option -> unit
   (** Sets the file path to use as the stderr for spawned processes.
@@ -234,7 +234,8 @@ class subprocess_launcher : Raw.Subprocess_launcher.t -> subprocess_launcher_t
 (** {1:constructors Constructors} *)
 
 val new_ : Enums.subprocessflags -> subprocess_launcher_t
-(** Creates a new [GSubprocessLauncher].
+(** Creates a new
+    {{!Ocgio.Subprocess_launcher.class-type-subprocess_launcher_t}[GSubprocessLauncher]}.
 
     The launcher is created with the default options. A copy of the environment
     of the calling process is made at the time of this call and will be used as

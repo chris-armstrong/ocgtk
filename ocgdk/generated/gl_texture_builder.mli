@@ -32,37 +32,40 @@ class type gl_texture_builder_t = object
 
   method get_color_state : unit -> Raw.Color_state.t
   (** Gets the color state previously set via
-      gdk_gl_texture_builder_set_color_state(). *)
+      [gdk_gl_texture_builder_set_color_state ()]. *)
 
   method get_context : unit -> Gl_context.gl_context_t option
-  (** Gets the context previously set via gdk_gl_texture_builder_set_context()
-      or [None] if none was set. *)
+  (** Gets the context previously set via
+      [gdk_gl_texture_builder_set_context ()] or [None] if none was set. *)
 
   method get_format : unit -> Enums.memoryformat
-  (** Gets the format previously set via gdk_gl_texture_builder_set_format(). *)
+  (** Gets the format previously set via [gdk_gl_texture_builder_set_format ()].
+  *)
 
   method get_has_mipmap : unit -> bool
   (** Gets whether the texture has a mipmap. *)
 
   method get_height : unit -> int
-  (** Gets the height previously set via gdk_gl_texture_builder_set_height() or
-      0 if the height wasn't set. *)
+  (** Gets the height previously set via [gdk_gl_texture_builder_set_height ()]
+      or 0 if the height wasn't set. *)
 
   method get_id : unit -> int
-  (** Gets the texture id previously set via gdk_gl_texture_builder_set_id() or
-      0 if the id wasn't set. *)
+  (** Gets the texture id previously set via [gdk_gl_texture_builder_set_id ()]
+      or 0 if the id wasn't set. *)
 
   method get_update_region : unit -> Occairo.Region.region_t option
   (** Gets the region previously set via
-      gdk_gl_texture_builder_set_update_region() or [None] if none was set. *)
+      [gdk_gl_texture_builder_set_update_region ()] or [None] if none was set.
+  *)
 
   method get_update_texture : unit -> Texture.texture_t option
   (** Gets the texture previously set via
-      gdk_gl_texture_builder_set_update_texture() or [None] if none was set. *)
+      [gdk_gl_texture_builder_set_update_texture ()] or [None] if none was set.
+  *)
 
   method get_width : unit -> int
-  (** Gets the width previously set via gdk_gl_texture_builder_set_width() or 0
-      if the width wasn't set. *)
+  (** Gets the width previously set via [gdk_gl_texture_builder_set_width ()] or
+      0 if the width wasn't set. *)
 
   method set_color_state : Raw.Color_state.t -> unit
   (** Sets the color state for the texture.

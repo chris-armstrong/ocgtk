@@ -333,9 +333,9 @@ type transformcategory =
     (** The matrix is a 3D matrix. This means that the w column (the last
         column) has the values (0, 0, 0, 1). *)
   | `V2D
-    (** The matrix is a 2D matrix. This is equivalent to graphene_matrix_is_2d()
-        returning [true]. In particular, this means that Cairo can deal with the
-        matrix. *)
+    (** The matrix is a 2D matrix. This is equivalent to
+        [graphene_matrix_is_2d ()] returning [true]. In particular, this means
+        that Cairo can deal with the matrix. *)
   | `V2D_AFFINE
     (** The matrix is a combination of 2D scale and 2D translation operations.
         In particular, this means that any rectangle can be transformed exactly
@@ -363,7 +363,7 @@ type pathforeachflags_flag =
   | `QUAD  (** Allow emission of [GSK_PATH_QUAD] operations *)
   | `CUBIC  (** Allow emission of [GSK_PATH_CUBIC] operations. *)
   | `CONIC  (** Allow emission of [GSK_PATH_CONIC] operations. *) ]
-(** Flags that can be passed to gsk_path_foreach() to influence what kinds of
+(** Flags that can be passed to [gsk_path_foreach ()] to influence what kinds of
     operations the path is decomposed into.
 
     By default, [Gsk.Path.foreach] will only emit a path with all operations

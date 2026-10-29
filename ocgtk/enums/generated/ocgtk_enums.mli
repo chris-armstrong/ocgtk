@@ -41,7 +41,8 @@ type accessibleautocomplete =
         displayed, one value in the collection is automatically selected, and
         the text needed to complete the automatically selected value appears
         after the caret in the input. *) ]
-(** The possible values for the [GTK_ACCESSIBLE_PROPERTY_AUTOCOMPLETE]
+(** The possible values for the
+    {{!Ocgtk.Enums.type-accessibleproperty.constructor-AUTOCOMPLETE}[GTK_ACCESSIBLE_PROPERTY_AUTOCOMPLETE]}
     accessible property. *)
 
 val accessibleautocomplete_of_int : int -> accessibleautocomplete
@@ -54,10 +55,15 @@ type accessibleinvalidstate =
   | `TRUE  (** The value entered by the user has failed validation *)
   | `GRAMMAR  (** A grammatical error was detected *)
   | `SPELLING  (** A spelling error was detected *) ]
-(** The possible values for the [GTK_ACCESSIBLE_STATE_INVALID] accessible state.
+(** The possible values for the
+    {{!Ocgtk.Enums.type-accessiblestate.constructor-INVALID}[GTK_ACCESSIBLE_STATE_INVALID]}
+    accessible state.
 
-    Note that the [GTK_ACCESSIBLE_INVALID_FALSE] and
-    [GTK_ACCESSIBLE_INVALID_TRUE] have the same values as [false] and [true]. *)
+    Note that the
+    {{!Ocgtk.Enums.type-accessibleinvalidstate.constructor-FALSE}[GTK_ACCESSIBLE_INVALID_FALSE]}
+    and
+    {{!Ocgtk.Enums.type-accessibleinvalidstate.constructor-TRUE}[GTK_ACCESSIBLE_INVALID_TRUE]}
+    have the same values as [false] and [true]. *)
 
 val accessibleinvalidstate_of_int : int -> accessibleinvalidstate
 val accessibleinvalidstate_to_int : accessibleinvalidstate -> int
@@ -171,7 +177,8 @@ type accessiblerelation =
     *)
   | `COL_INDEX_TEXT
     (** Defines a human readable text alternative of
-        [GTK_ACCESSIBLE_RELATION_COL_INDEX]. Value type: string *)
+        {{!Ocgtk.Enums.type-accessiblerelation.constructor-COL_INDEX}[GTK_ACCESSIBLE_RELATION_COL_INDEX]}.
+        Value type: string *)
   | `COL_SPAN
     (** Defines the number of columns spanned by a cell or gridcell within a
         table, grid, or treegrid. Value type: integer *)
@@ -421,8 +428,9 @@ type accessiblesort =
   | `OTHER
     (** A sort algorithm other than ascending or descending has been applied. *)
   ]
-(** The possible values for the [GTK_ACCESSIBLE_PROPERTY_SORT] accessible
-    property. *)
+(** The possible values for the
+    {{!Ocgtk.Enums.type-accessibleproperty.constructor-SORT}[GTK_ACCESSIBLE_PROPERTY_SORT]}
+    accessible property. *)
 
 val accessiblesort_of_int : int -> accessiblesort
 val accessiblesort_to_int : accessiblesort -> int
@@ -449,7 +457,8 @@ type accessiblestate =
         {{!Ocgtk.Widget.class-type-widget_t.method-get_visible}[Widget:visible]}
         property. You can use this state explicitly on UI elements that should
         not be exposed to an assistive technology. Value type: boolean See also:
-        [GTK_ACCESSIBLE_STATE_DISABLED] *)
+        {{!Ocgtk.Enums.type-accessiblestate.constructor-DISABLED}[GTK_ACCESSIBLE_STATE_DISABLED]}
+    *)
   | `INVALID
     (** An “invalid” state; set when a widget is showing an error. Value type:
         {{!Ocgtk.Enums.type-accessibleinvalidstate}[AccessibleInvalidState]} *)
@@ -514,11 +523,15 @@ type accessibletristate =
   [ `FALSE  (** The state is [false] *)
   | `TRUE  (** The state is [true] *)
   | `MIXED  (** The state is [mixed] *) ]
-(** The possible values for the [GTK_ACCESSIBLE_STATE_PRESSED] accessible state.
+(** The possible values for the
+    {{!Ocgtk.Enums.type-accessiblestate.constructor-PRESSED}[GTK_ACCESSIBLE_STATE_PRESSED]}
+    accessible state.
 
-    Note that the [GTK_ACCESSIBLE_TRISTATE_FALSE] and
-    [GTK_ACCESSIBLE_TRISTATE_TRUE] have the same values as [false] and [true].
-*)
+    Note that the
+    {{!Ocgtk.Enums.type-accessibletristate.constructor-FALSE}[GTK_ACCESSIBLE_TRISTATE_FALSE]}
+    and
+    {{!Ocgtk.Enums.type-accessibletristate.constructor-TRUE}[GTK_ACCESSIBLE_TRISTATE_TRUE]}
+    have the same values as [false] and [true]. *)
 
 val accessibletristate_of_int : int -> accessibletristate
 val accessibletristate_to_int : accessibletristate -> int
@@ -593,17 +606,24 @@ type assistantpagetype =
   | `CUSTOM
     (** Used for when other page types are not appropriate. No buttons will be
         shown, and the application must add its own buttons through
-        gtk_assistant_add_action_widget(). *) ]
+        {{!Ocgtk.Assistant.class-type-assistant_t.method-add_action_widget}[gtk_assistant_add_action_widget
+                                                                            ()]}.
+    *) ]
 (** Determines the role of a page inside a [GtkAssistant].
 
     The role is used to handle buttons sensitivity and visibility.
 
     Note that an assistant needs to end its page flow with a page of type
-    [GTK_ASSISTANT_PAGE_CONFIRM], [GTK_ASSISTANT_PAGE_SUMMARY] or
-    [GTK_ASSISTANT_PAGE_PROGRESS] to be correct.
+    {{!Ocgtk.Enums.type-assistantpagetype.constructor-CONFIRM}[GTK_ASSISTANT_PAGE_CONFIRM]},
+    {{!Ocgtk.Enums.type-assistantpagetype.constructor-SUMMARY}[GTK_ASSISTANT_PAGE_SUMMARY]}
+    or
+    {{!Ocgtk.Enums.type-assistantpagetype.constructor-PROGRESS}[GTK_ASSISTANT_PAGE_PROGRESS]}
+    to be correct.
 
     The Cancel button will only be shown if the page isn’t “committed”. See
-    gtk_assistant_commit() for details. *)
+    {{!Ocgtk.Assistant.class-type-assistant_t.method-commit}[gtk_assistant_commit
+                                                             ()]} for details.
+*)
 
 val assistantpagetype_of_int : int -> assistantpagetype
 val assistantpagetype_to_int : assistantpagetype -> int
@@ -629,7 +649,10 @@ val baselineposition_to_int : baselineposition -> int
 
 type borderstyle =
   [ `NONE  (** No visible border *)
-  | `HIDDEN  (** Same as [GTK_BORDER_STYLE_NONE] *)
+  | `HIDDEN
+    (** Same as
+        {{!Ocgtk.Enums.type-borderstyle.constructor-NONE}[GTK_BORDER_STYLE_NONE]}
+    *)
   | `SOLID  (** A single line segment *)
   | `INSET  (** Looks as if the content is sunken into the canvas *)
   | `OUTSET  (** Looks as if the content is coming out of the canvas *)
@@ -690,11 +713,15 @@ type buttonstype =
   | `OK_CANCEL  (** OK and Cancel buttons *) ]
 (** Prebuilt sets of buttons for [GtkDialog].
 
-    If none of these choices are appropriate, simply use [GTK_BUTTONS_NONE] and
+    If none of these choices are appropriate, simply use
+    {{!Ocgtk.Enums.type-buttonstype.constructor-NONE}[GTK_BUTTONS_NONE]} and
     call [Gtk.Dialog.add_buttons].
 
-    Please note that [GTK_BUTTONS_OK], [GTK_BUTTONS_YES_NO] and
-    [GTK_BUTTONS_OK_CANCEL] are discouraged by the
+    Please note that
+    {{!Ocgtk.Enums.type-buttonstype.constructor-OK}[GTK_BUTTONS_OK]},
+    {{!Ocgtk.Enums.type-buttonstype.constructor-YES_NO}[GTK_BUTTONS_YES_NO]} and
+    {{!Ocgtk.Enums.type-buttonstype.constructor-OK_CANCEL}[GTK_BUTTONS_OK_CANCEL]}
+    are discouraged by the
     {{:https://developer.gnome.org/hig/}GNOME Human Interface Guidelines}. *)
 
 val buttonstype_of_int : int -> buttonstype
@@ -752,12 +779,17 @@ type constraintattribute =
   | `BOTTOM  (** The bottom edge of a widget *)
   | `START
     (** The leading edge of a widget, depending on text direction; equivalent to
-        [GTK_CONSTRAINT_ATTRIBUTE_LEFT] for LTR languages, and
-        [GTK_CONSTRAINT_ATTRIBUTE_RIGHT] for RTL ones *)
+        {{!Ocgtk.Enums.type-constraintattribute.constructor-LEFT}[GTK_CONSTRAINT_ATTRIBUTE_LEFT]}
+        for LTR languages, and
+        {{!Ocgtk.Enums.type-constraintattribute.constructor-RIGHT}[GTK_CONSTRAINT_ATTRIBUTE_RIGHT]}
+        for RTL ones *)
   | `END
     (** The trailing edge of a widget, depending on text direction; equivalent
-        to [GTK_CONSTRAINT_ATTRIBUTE_RIGHT] for LTR languages, and
-        [GTK_CONSTRAINT_ATTRIBUTE_LEFT] for RTL ones *)
+        to
+        {{!Ocgtk.Enums.type-constraintattribute.constructor-RIGHT}[GTK_CONSTRAINT_ATTRIBUTE_RIGHT]}
+        for LTR languages, and
+        {{!Ocgtk.Enums.type-constraintattribute.constructor-LEFT}[GTK_CONSTRAINT_ATTRIBUTE_LEFT]}
+        for RTL ones *)
   | `WIDTH  (** The width of a widget *)
   | `HEIGHT  (** The height of a widget *)
   | `CENTER_X  (** The center of a widget, on the horizontal axis *)
@@ -1212,8 +1244,13 @@ type imagetype =
    {{!Ocgtk.Image.class-type-image_t}[Gtk.Image]}.\n\n\
    If you want to get the image from the widget, you can only get the\n\
    currently-stored representation; for instance, if the \
-   gtk_image_get_storage_type()\n\
-   returns [GTK_IMAGE_PAINTABLE], then you can call gtk_image_get_paintable().\n\n\
+   {{!Ocgtk.Image.class-type-image_t.method-get_storage_type}[gtk_image_get_storage_type \
+   ()]}\n\
+   returns \
+   {{!Ocgtk.Enums.type-imagetype.constructor-PAINTABLE}[GTK_IMAGE_PAINTABLE]}, \
+   then you can call \
+   {{!Ocgtk.Image.class-type-image_t.method-get_paintable}[gtk_image_get_paintable \
+   ()]}.\n\n\
    For empty images, you can request any storage type (call any of the \"get\"\n\
    functions), but they will all return [None] values."]
 
@@ -1232,8 +1269,13 @@ type inputpurpose =
   | `EMAIL  (** Edited field expects email address *)
   | `NAME  (** Edited field expects the name of a person *)
   | `PASSWORD
-    (** Like [GTK_INPUT_PURPOSE_FREE_FORM], but characters are hidden *)
-  | `PIN  (** Like [GTK_INPUT_PURPOSE_DIGITS], but characters are hidden *)
+    (** Like
+        {{!Ocgtk.Enums.type-inputpurpose.constructor-FREE_FORM}[GTK_INPUT_PURPOSE_FREE_FORM]},
+        but characters are hidden *)
+  | `PIN
+    (** Like
+        {{!Ocgtk.Enums.type-inputpurpose.constructor-DIGITS}[GTK_INPUT_PURPOSE_DIGITS]},
+        but characters are hidden *)
   | `TERMINAL  (** Allow any character, in addition to control codes *) ]
 (** Describes primary purpose of the input widget.
 
@@ -1246,10 +1288,13 @@ type inputpurpose =
     that is expressed by the purpose. The application is expected to validate
     the entry contents, even if it specified a purpose.
 
-    The difference between [GTK_INPUT_PURPOSE_DIGITS] and
-    [GTK_INPUT_PURPOSE_NUMBER] is that the former accepts only digits while the
-    latter also some punctuation (like commas or points, plus, minus) and “e” or
-    “E” as in 3.14E+000.
+    The difference between
+    {{!Ocgtk.Enums.type-inputpurpose.constructor-DIGITS}[GTK_INPUT_PURPOSE_DIGITS]}
+    and
+    {{!Ocgtk.Enums.type-inputpurpose.constructor-NUMBER}[GTK_INPUT_PURPOSE_NUMBER]}
+    is that the former accepts only digits while the latter also some
+    punctuation (like commas or points, plus, minus) and “e” or “E” as in
+    3.14E+000.
 
     This enumeration may be extended in the future; input methods should
     interpret unknown values as “free form”. *)
@@ -1264,8 +1309,9 @@ type inscriptionoverflow =
   | `ELLIPSIZE_START  (** Omit characters at the start of the text *)
   | `ELLIPSIZE_MIDDLE  (** Omit characters at the middle of the text *)
   | `ELLIPSIZE_END  (** Omit characters at the end of the text *) ]
-(** The different methods to handle text in [GtkInscription] when it doesn't fit
-    the available space.
+(** The different methods to handle text in
+    {{!Ocgtk.Inscription.class-type-inscription_t}[GtkInscription]} when it
+    doesn't fit the available space.
     @since 4.8 *)
 
 val inscriptionoverflow_of_int : int -> inscriptionoverflow
@@ -1352,8 +1398,9 @@ type listtabbehavior =
   | `CELL
     (** Cycle only through a single cell, then move focus out of the list.
         Moving focus between cells needs to be done with the arrow keys. This is
-        only relevant for cell-based widgets like [GtkColumnView], otherwise it
-        behaves like [GTK_LIST_TAB_ITEM]. *) ]
+        only relevant for cell-based widgets like
+        {{!Ocgtk.Column_view.class-type-column_view_t}[GtkColumnView]},
+        otherwise it behaves like [GTK_LIST_TAB_ITEM]. *) ]
 (** Used to configure the focus behavior in the [GTK_DIR_TAB_FORWARD] and
     [GTK_DIR_TAB_BACKWARD] direction, like the <kbd>Tab</kbd> key in a
     {{!Ocgtk.List_view.class-type-list_view_t}[Gtk.ListView]}.
@@ -1518,7 +1565,10 @@ type pageorientation =
   | `LANDSCAPE  (** Landscape mode. *)
   | `REVERSE_PORTRAIT  (** Reverse portrait mode. *)
   | `REVERSE_LANDSCAPE  (** Reverse landscape mode. *) ]
-(** See also gtk_print_settings_set_orientation(). *)
+(** See also
+    {{!Ocgtk.Print_settings.class-type-print_settings_t.method-set_orientation}[gtk_print_settings_set_orientation
+                                                                                ()]}.
+*)
 
 val pageorientation_of_int : int -> pageorientation
 val pageorientation_to_int : pageorientation -> int
@@ -1529,7 +1579,7 @@ type pageset =
   [ `ALL  (** All pages. *)
   | `EVEN  (** Even pages. *)
   | `ODD  (** Odd pages. *) ]
-(** See also gtk_print_job_set_page_set(). *)
+(** See also [gtk_print_job_set_page_set ()]. *)
 
 val pageset_of_int : int -> pageset
 val pageset_to_int : pageset -> int
@@ -1591,7 +1641,10 @@ type printduplex =
   [ `SIMPLEX  (** No duplex. *)
   | `HORIZONTAL  (** Horizontal duplex. *)
   | `VERTICAL  (** Vertical duplex. *) ]
-(** See also gtk_print_settings_set_duplex(). *)
+(** See also
+    {{!Ocgtk.Print_settings.class-type-print_settings_t.method-set_duplex}[gtk_print_settings_set_duplex
+                                                                           ()]}.
+*)
 
 val printduplex_of_int : int -> printduplex
 val printduplex_to_int : printduplex -> int
@@ -1659,7 +1712,7 @@ type printpages =
   | `CURRENT  (** Current page. *)
   | `RANGES  (** Range of pages. *)
   | `SELECTION  (** Selected pages. *) ]
-(** See also gtk_print_job_set_pages() *)
+(** See also [gtk_print_job_set_pages ()] *)
 
 val printpages_of_int : int -> printpages
 val printpages_to_int : printpages -> int
@@ -1671,7 +1724,10 @@ type printquality =
   | `NORMAL  (** Normal quality. *)
   | `HIGH  (** High quality. *)
   | `DRAFT  (** Draft quality. *) ]
-(** See also gtk_print_settings_set_quality(). *)
+(** See also
+    {{!Ocgtk.Print_settings.class-type-print_settings_t.method-set_quality}[gtk_print_settings_set_quality
+                                                                            ()]}.
+*)
 
 val printquality_of_int : int -> printquality
 val printquality_to_int : printquality -> int
@@ -1776,7 +1832,9 @@ type responsetype =
   | `NO  (** Returned by No buttons in GTK dialogs *)
   | `APPLY  (** Returned by Apply buttons in GTK dialogs *)
   | `HELP  (** Returned by Help buttons in GTK dialogs *) ]
-(** Predefined values for use as response ids in gtk_dialog_add_button().
+(** Predefined values for use as response ids in
+    {{!Ocgtk.Dialog.class-type-dialog_t.method-add_button}[gtk_dialog_add_button
+                                                           ()]}.
 
     All predefined values are negative; GTK leaves values of 0 or greater for
     application-defined response ids. *)
@@ -1860,9 +1918,10 @@ type selectionmode =
   | `BROWSE
     (** Exactly one element is selected. In some circumstances, such as
         initially or during a search operation, it’s possible for no element to
-        be selected with [GTK_SELECTION_BROWSE]. What is really enforced is that
-        the user can’t deselect a currently selected element except by selecting
-        another element. *)
+        be selected with
+        {{!Ocgtk.Enums.type-selectionmode.constructor-BROWSE}[GTK_SELECTION_BROWSE]}.
+        What is really enforced is that the user can’t deselect a currently
+        selected element except by selecting another element. *)
   | `MULTIPLE
     (** Any number of elements may be selected. The Ctrl key may be used to
         enlarge the selection, and Shift key to select between the focus and the
@@ -1983,14 +2042,18 @@ type sorterchange =
         values *)
   | `INVERTED
     (** The sort order was inverted. Comparisons that returned
-        [GTK_ORDERING_SMALLER] now return [GTK_ORDERING_LARGER] and vice versa.
-        Other comparisons return the same values as before. *)
+        {{!Ocgtk.Enums.type-ordering.constructor-SMALLER}[GTK_ORDERING_SMALLER]}
+        now return
+        {{!Ocgtk.Enums.type-ordering.constructor-LARGER}[GTK_ORDERING_LARGER]}
+        and vice versa. Other comparisons return the same values as before. *)
   | `LESS_STRICT
     (** The sorter is less strict: Comparisons may now return
-        [GTK_ORDERING_EQUAL] that did not do so before. *)
+        {{!Ocgtk.Enums.type-ordering.constructor-EQUAL}[GTK_ORDERING_EQUAL]}
+        that did not do so before. *)
   | `MORE_STRICT
     (** The sorter is more strict: Comparisons that did return
-        [GTK_ORDERING_EQUAL] may not do so anymore. *) ]
+        {{!Ocgtk.Enums.type-ordering.constructor-EQUAL}[GTK_ORDERING_EQUAL]} may
+        not do so anymore. *) ]
 (** Describes changes in a sorter in more detail and allows users to optimize
     resorting. *)
 
@@ -2002,12 +2065,19 @@ val sorterchange_to_int : sorterchange -> int
 type sorterorder =
   [ `PARTIAL  (** A partial order. Any [GtkOrdering] is possible. *)
   | `NONE
-    (** No order, all elements are considered equal. gtk_sorter_compare() will
-        only return [GTK_ORDERING_EQUAL]. *)
+    (** No order, all elements are considered equal.
+        {{!Ocgtk.Sorter.class-type-sorter_t.method-compare}[gtk_sorter_compare
+                                                            ()]} will only
+        return
+        {{!Ocgtk.Enums.type-ordering.constructor-EQUAL}[GTK_ORDERING_EQUAL]}. *)
   | `TOTAL
-    (** A total order. gtk_sorter_compare() will only return
-        [GTK_ORDERING_EQUAL] if an item is compared with itself. Two different
-        items will never cause this value to be returned. *) ]
+    (** A total order.
+        {{!Ocgtk.Sorter.class-type-sorter_t.method-compare}[gtk_sorter_compare
+                                                            ()]} will only
+        return
+        {{!Ocgtk.Enums.type-ordering.constructor-EQUAL}[GTK_ORDERING_EQUAL]} if
+        an item is compared with itself. Two different items will never cause
+        this value to be returned. *) ]
 (** Describes the type of order that a [GtkSorter] may produce. *)
 
 val sorterorder_of_int : int -> sorterorder
@@ -2042,7 +2112,9 @@ type spintype =
   | `END  (** Go to the adjustments upper bound. *)
   | `USER_DEFINED  (** Change by a specified amount. *) ]
 (** The values of the GtkSpinType enumeration are used to specify the change to
-    make in gtk_spin_button_spin(). *)
+    make in
+    {{!Ocgtk.Spin_button.class-type-spin_button_t.method-spin}[gtk_spin_button_spin
+                                                               ()]}. *)
 
 val spintype_of_int : int -> spintype
 val spintype_to_int : spintype -> int
@@ -2223,8 +2295,8 @@ type treeviewcolumnsizing =
     (** Columns resize to be the optimal size every time the model changes. *)
   | `FIXED  (** Columns are a fixed numbers of pixels wide. *) ]
 (** The sizing method the column uses to determine its width. Please note that
-    [GTK_TREE_VIEW_COLUMN_AUTOSIZE] are inefficient for large views, and can
-    make columns appear choppy. *)
+    {{!Ocgtk.Enums.type-treeviewcolumnsizing.constructor-AUTOSIZE}[GTK_TREE_VIEW_COLUMN_AUTOSIZE]}
+    are inefficient for large views, and can make columns appear choppy. *)
 
 val treeviewcolumnsizing_of_int : int -> treeviewcolumnsizing
 val treeviewcolumnsizing_to_int : treeviewcolumnsizing -> int
@@ -2260,7 +2332,10 @@ type unit =
   | `POINTS  (** Dimensions in points. *)
   | `INCH  (** Dimensions in inches. *)
   | `MM  (** Dimensions in millimeters *) ]
-(** See also gtk_print_settings_set_paper_width(). *)
+(** See also
+    {{!Ocgtk.Print_settings.class-type-print_settings_t.method-set_paper_width}[gtk_print_settings_set_paper_width
+                                                                                ()]}.
+*)
 
 val unit_of_int : int -> unit
 val unit_to_int : unit -> int
@@ -2302,7 +2377,7 @@ type wrapmode =
   | `CHAR
     (** wrap text, breaking lines anywhere the cursor can appear (between
         characters, usually - if you want to be technical, between graphemes,
-        see pango_get_log_attrs()) *)
+        see [pango_get_log_attrs ()]) *)
   | `WORD  (** wrap text, breaking lines in between words *)
   | `WORD_CHAR
     (** wrap text, breaking lines in between words, or if that is not enough,
@@ -2337,15 +2412,16 @@ val applicationinhibitflags_to_int : applicationinhibitflags -> int
 
 type builderclosureflags_flag =
   [ `SWAPPED
-    (** The closure should be created swapped. See g_cclosure_new_swap() for
+    (** The closure should be created swapped. See [g_cclosure_new_swap ()] for
         details. *) ]
-(** The list of flags that can be passed to gtk_builder_create_closure().
+(** The list of flags that can be passed to [gtk_builder_create_closure ()].
 
     New values may be added in the future for new features, so external
     implementations of
     {{!Ocgtk.Builder_scope.class-type-builder_scope_t}[Gtk.BuilderScope]} should
     test the flags for unknown values and raise a
-    [GTK_BUILDER_ERROR_INVALID_ATTRIBUTE] error when they encounter one. *)
+    {{!Ocgtk.Enums.type-buildererror.constructor-INVALID_ATTRIBUTE}[GTK_BUILDER_ERROR_INVALID_ATTRIBUTE]}
+    error when they encounter one. *)
 
 type builderclosureflags = builderclosureflags_flag list
 
@@ -2396,7 +2472,7 @@ type debugflags_flag =
   | `INVERT_TEXT_DIR  (** Inverts the default text-direction. *)
   | `CSS  (** Information about deprecated CSS features. *)
   | `BUILDER  (** Information about deprecated GtkBuilder features. *) ]
-(** Flags to use with gtk_set_debug_flags().
+(** Flags to use with [gtk_set_debug_flags ()].
 
     Settings these flags causes GTK to print out different types of debugging
     information. Some of these flags are only available when GTK has been
@@ -2430,8 +2506,10 @@ type eventcontrollerscrollflags_flag =
   | `DISCRETE  (** Only emit deltas that are multiples of 1. *)
   | `KINETIC  (** Emit ::decelerate after continuous scroll finishes. *)
   | `PHYSICAL_DIRECTION
-    (** A [GtkEventControllerScrollFlags] value to prefer physical direction
-        over logical direction (i.e. oblivious to natural scroll). *)
+    (** A
+        {{!Ocgtk.Enums.type-eventcontrollerscrollflags}[GtkEventControllerScrollFlags]}
+        value to prefer physical direction over logical direction (i.e.
+        oblivious to natural scroll). *)
   | `BOTH_AXES  (** Emit scroll on both axes. *) ]
 (** Describes the behavior of a [GtkEventControllerScroll]. *)
 
@@ -2472,7 +2550,9 @@ type iconlookupflags_flag =
   | `PRELOAD
     (** Starts loading the texture in the background so it is ready when later
         needed. *) ]
-(** Used to specify options for gtk_icon_theme_lookup_icon(). *)
+(** Used to specify options for
+    {{!Ocgtk.Icon_theme.class-type-icon_theme_t.method-lookup_icon}[gtk_icon_theme_lookup_icon
+                                                                    ()]}. *)
 
 type iconlookupflags = iconlookupflags_flag list
 
@@ -2508,7 +2588,8 @@ type inputhints_flag =
     {{!Ocgtk.Enums.type-inputpurpose}[InputPurpose]} of the entry.
 
     Some common sense is expected when using these flags - mixing
-    [GTK_INPUT_HINT_LOWERCASE] with any of the uppercase hints makes no sense.
+    {{!Ocgtk.Enums.type-inputhints_flag.constructor-LOWERCASE}[GTK_INPUT_HINT_LOWERCASE]}
+    with any of the uppercase hints makes no sense.
 
     This enumeration may be extended in the future; input methods should ignore
     unknown values. *)
@@ -2622,7 +2703,9 @@ type stylecontextprintflags_flag =
   | `SHOW_STYLE  (** Show the values of the CSS properties for each node *)
   | `SHOW_CHANGE  (** Show information about what changes affect the styles *)
   ]
-(** Flags that modify the behavior of gtk_style_context_to_string().
+(** Flags that modify the behavior of
+    {{!Ocgtk.Style_context.class-type-style_context_t.method-to_string}[gtk_style_context_to_string
+                                                                        ()]}.
 
     New values may be added to this enumeration. *)
 
@@ -2684,8 +2767,9 @@ type treemodelflags_flag =
     They are returned by
     {{!Ocgtk.Tree_model.class-type-tree_model_t.method-get_flags}[Gtk.TreeModel.get_flags]},
     and must be static for the lifetime of the object. A more complete
-    description of [GTK_TREE_MODEL_ITERS_PERSIST] can be found in the overview
-    of this section. *)
+    description of
+    {{!Ocgtk.Enums.type-treemodelflags_flag.constructor-ITERS_PERSIST}[GTK_TREE_MODEL_ITERS_PERSIST]}
+    can be found in the overview of this section. *)
 
 type treemodelflags = treemodelflags_flag list
 

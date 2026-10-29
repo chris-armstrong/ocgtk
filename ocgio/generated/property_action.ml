@@ -6,8 +6,8 @@ class type property_action_t = object
   method enabled : bool
   (** If [action] is currently enabled.
 
-      If the action is disabled then calls to g_action_activate() and
-      g_action_change_state() have no effect. *)
+      If the action is disabled then calls to [g_action_activate ()] and
+      [g_action_change_state ()] have no effect. *)
 
   method invert_boolean : bool
   (** If [true], the state of the action will be the negation of the property

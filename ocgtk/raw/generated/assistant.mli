@@ -16,8 +16,9 @@
     page statuses.
 
     If you have a case that doesn’t quite fit in [GtkAssistant]s way of handling
-    buttons, you can use the [GTK_ASSISTANT_PAGE_CUSTOM] page type and handle
-    buttons yourself.
+    buttons, you can use the
+    {{!Ocgtk.Enums.type-assistantpagetype.constructor-CUSTOM}[GTK_ASSISTANT_PAGE_CUSTOM]}
+    page type and handle buttons yourself.
 
     [GtkAssistant] maintains a [GtkAssistantPage] object for each added child,
     which holds additional per-child properties. You obtain the
@@ -103,7 +104,7 @@ external set_current_page : t -> int -> unit
 (** Switches the page to [page_num].
 
     Note that this will only be necessary in custom buttons, as the [assistant]
-    flow can be set with gtk_assistant_set_forward_page_func(). *)
+    flow can be set with [gtk_assistant_set_forward_page_func ()]. *)
 
 external remove_page : t -> int -> unit = "ml_gtk_assistant_remove_page"
 (** Removes the [page_num]’s page from [assistant]. *)
@@ -123,7 +124,8 @@ external previous_page : t -> unit = "ml_gtk_assistant_previous_page"
     available.
 
     This function is for use when creating pages of the
-    [GTK_ASSISTANT_PAGE_CUSTOM] type. *)
+    {{!Ocgtk.Enums.type-assistantpagetype.constructor-CUSTOM}[GTK_ASSISTANT_PAGE_CUSTOM]}
+    type. *)
 
 external prepend_page :
   t ->
@@ -139,7 +141,8 @@ external next_page : t -> unit = "ml_gtk_assistant_next_page"
     It is a programming error to call this function when there is no next page.
 
     This function is for use when creating pages of the
-    [GTK_ASSISTANT_PAGE_CUSTOM] type. *)
+    {{!Ocgtk.Enums.type-assistantpagetype.constructor-CUSTOM}[GTK_ASSISTANT_PAGE_CUSTOM]}
+    type. *)
 
 external insert_page :
   t ->
@@ -245,8 +248,9 @@ val on_apply :
 
     A handler for the ::apply signal should carry out the actions for which the
     wizard has collected data. If the action takes a long time to complete, you
-    might consider putting a page of type [GTK_ASSISTANT_PAGE_PROGRESS] after
-    the confirmation page and handle this operation within the
+    might consider putting a page of type
+    {{!Ocgtk.Enums.type-assistantpagetype.constructor-PROGRESS}[GTK_ASSISTANT_PAGE_PROGRESS]}
+    after the confirmation page and handle this operation within the
     {{!Ocgtk.Raw.Assistant.val-on_prepare}[Gtk.Assistant::prepare]} signal of
     the progress page. *)
 
@@ -258,7 +262,8 @@ val on_close :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 (** Emitted either when the close button of a summary page is clicked, or when
     the apply button in the last page in the flow (of type
-    [GTK_ASSISTANT_PAGE_CONFIRM]) is clicked. *)
+    {{!Ocgtk.Enums.type-assistantpagetype.constructor-CONFIRM}[GTK_ASSISTANT_PAGE_CONFIRM]})
+    is clicked. *)
 
 val on_escape :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

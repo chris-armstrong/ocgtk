@@ -93,12 +93,12 @@ external gtype : unit -> Gobject.Type.t
 
 external new_finish : Async_result.t -> (t, GError.t) result
   = "ml_g_dbus_object_manager_client_new_finish"
-(** Finishes an operation started with g_dbus_object_manager_client_new(). *)
+(** Finishes an operation started with [g_dbus_object_manager_client_new ()]. *)
 
 external new_for_bus_finish : Async_result.t -> (t, GError.t) result
   = "ml_g_dbus_object_manager_client_new_for_bus_finish"
 (** Finishes an operation started with
-    g_dbus_object_manager_client_new_for_bus(). *)
+    [g_dbus_object_manager_client_new_for_bus ()]. *)
 
 (* Methods *)
 
@@ -106,7 +106,9 @@ external get_name_owner : t -> string option
   = "ml_g_dbus_object_manager_client_get_name_owner"
 (** The unique name that owns the name that [manager] is for or [None] if no-one
     currently owns that name. You can connect to the [GObject::notify] signal to
-    track changes to the [GDBusObjectManagerClient:name]-owner property. *)
+    track changes to the
+    {{!Ocgio.Raw.D_bus_object_manager_client.val-get_name_owner}[GDBusObjectManagerClient:name-owner]}
+    property. *)
 
 external get_name : t -> string = "ml_g_dbus_object_manager_client_get_name"
 (** Gets the name that [manager] is for, or [None] if not a message bus
@@ -118,7 +120,8 @@ external get_flags : t -> Ocgio_enums.dbusobjectmanagerclientflags
 
 external get_connection : t -> D_bus_connection.t
   = "ml_g_dbus_object_manager_client_get_connection"
-(** Gets the [GDBusConnection] used by [manager]. *)
+(** Gets the {{!Ocgio.Raw.D_bus_connection}[GDBusConnection]} used by [manager].
+*)
 
 (* Properties *)
 

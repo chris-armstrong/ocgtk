@@ -299,8 +299,9 @@ external delegate_get_accessible_platform_state :
     result, will not work properly.
 
     So, if you can't ensure the direct child condition, you should give the
-    delegate the [GTK_ACCESSIBLE_ROLE_TEXT_BOX] role, or you can change your
-    tree to allow this function to work. *)
+    delegate the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-TEXT_BOX}[GTK_ACCESSIBLE_ROLE_TEXT_BOX]}
+    role, or you can change your tree to allow this function to work. *)
 
 (* Properties *)
 
@@ -326,8 +327,8 @@ val on_delete_text :
 
     The default handler for this signal will normally be responsible for
     deleting the text, so by connecting to this signal and then stopping the
-    signal with g_signal_stop_emission(), it is possible to modify the range of
-    deleted text, or prevent it from being deleted entirely.
+    signal with [g_signal_stop_emission ()], it is possible to modify the range
+    of deleted text, or prevent it from being deleted entirely.
 
     The [start_pos] and [end_pos] parameters are interpreted as for
     {{!Ocgtk.Raw.Editable.val-delete_text}[Gtk.Editable.delete_text]}. *)

@@ -47,7 +47,7 @@ class type inet_address_t = object
 
   method get_native_size : unit -> Gsize.t
   (** Gets the size of the native raw binary address for [address]. This is the
-      size of the data that you get from g_inet_address_to_bytes(). *)
+      size of the data that you get from [g_inet_address_to_bytes ()]. *)
 
   method get_scope_id : unit -> UInt32.t
   (** Gets the value of [Gio.InetAddress:scope-id]. *)

@@ -1,6 +1,7 @@
 (** A GtkTreeRowReference tracks model changes so that it always refers to the
     same row (a [GtkTreePath] refers to a position, not a fixed row). Create a
-    new GtkTreeRowReference with gtk_tree_row_reference_new().
+    new GtkTreeRowReference with
+    {{!Ocgtk.Tree_row_reference.val-new_}[gtk_tree_row_reference_new ()]}.
 
     Its methods, signals and properties are on
     {!class-type-tree_row_reference_t}. Its constructors are under
@@ -13,7 +14,8 @@
 
     A GtkTreeRowReference tracks model changes so that it always refers to the
     same row (a [GtkTreePath] refers to a position, not a fixed row). Create a
-    new GtkTreeRowReference with gtk_tree_row_reference_new(). *)
+    new GtkTreeRowReference with
+    {{!Ocgtk.Tree_row_reference.val-new_}[gtk_tree_row_reference_new ()]}. *)
 class type tree_row_reference_t = object
   (** {2:methods Methods} *)
 
@@ -58,10 +60,10 @@ val new_proxy :
     This reference will keep pointing to the node pointed to by [path], so long
     as it exists. If [path] isn’t a valid path in [model], then [None] is
     returned. However, unlike references created with
-    gtk_tree_row_reference_new(), it does not listen to the model for changes.
-    The creator of the row reference must do this explicitly using
-    gtk_tree_row_reference_inserted(), gtk_tree_row_reference_deleted(),
-    gtk_tree_row_reference_reordered().
+    {{!Ocgtk.Tree_row_reference.val-new_}[gtk_tree_row_reference_new ()]}, it
+    does not listen to the model for changes. The creator of the row reference
+    must do this explicitly using [gtk_tree_row_reference_inserted ()],
+    [gtk_tree_row_reference_deleted ()], [gtk_tree_row_reference_reordered ()].
 
     These functions must be called exactly once per proxy when the corresponding
     signal on the model is emitted. This single call updates all row references

@@ -457,7 +457,7 @@ and display_t = object
 
       GTK will call this function automatically for GtkWindow with custom
       startup-notification identifier unless
-      gtk_window_set_auto_startup_notification() is called to disable that
+      [gtk_window_set_auto_startup_notification ()] is called to disable that
       feature. *)
 
   method prepare_gl : unit -> (bool, GError.t) result
@@ -535,12 +535,12 @@ and draw_context_t = object
       region that must be drawn.
 
       When using GTK, the widget system automatically places calls to
-      gdk_draw_context_begin_frame() and gdk_draw_context_end_frame() via the
-      use of GskRenderers, so application code does not need to call these
+      [gdk_draw_context_begin_frame ()] and [gdk_draw_context_end_frame ()] via
+      the use of GskRenderers, so application code does not need to call these
       functions explicitly. *)
 
   method end_frame : unit -> unit
-  (** Ends a drawing operation started with gdk_draw_context_begin_frame().
+  (** Ends a drawing operation started with [gdk_draw_context_begin_frame ()].
 
       This makes the drawing available on screen. See
       [Gdk.DrawContext.begin_frame] for more details about drawing.
@@ -655,7 +655,7 @@ and gl_context_t = object
   (** {2:methods Methods} *)
 
   method get_allowed_apis : unit -> Enums.glapi
-  (** Gets the allowed APIs set via gdk_gl_context_set_allowed_apis(). *)
+  (** Gets the allowed APIs set via [gdk_gl_context_set_allowed_apis ()]. *)
 
   method get_api : unit -> Enums.glapi
   (** Gets the API currently in use.
@@ -724,12 +724,12 @@ and gl_context_t = object
       It is safe to call this function on a realized [GdkGLContext]. *)
 
   method set_allowed_apis : Enums.glapi -> unit
-  (** Sets the allowed APIs. When gdk_gl_context_realize() is called, only the
-      allowed APIs will be tried. If you set this to 0, realizing will always
-      fail.
+  (** Sets the allowed APIs. When [gdk_gl_context_realize ()] is called, only
+      the allowed APIs will be tried. If you set this to 0, realizing will
+      always fail.
 
       If you set it on a realized context, the property will not have any
-      effect. It is only relevant during gdk_gl_context_realize().
+      effect. It is only relevant during [gdk_gl_context_realize ()].
 
       By default, all APIs are allowed. *)
 
@@ -953,7 +953,7 @@ and surface_t = object
       performed.
 
       Surface size is reported in ”application pixels”, not ”device pixels” (see
-      gdk_surface_get_scale_factor()). *)
+      [gdk_surface_get_scale_factor ()]). *)
 
   method on_leave_monitor :
     ?after:bool ->
@@ -990,7 +990,7 @@ and surface_t = object
       font options as [surface]. Generally, the new surface will also use the
       same backend as [surface], unless that is not possible for some reason.
       The type of the returned surface may be examined with
-      cairo_surface_get_type().
+      [cairo_surface_get_type ()].
 
       Initially the surface contents are all 0 (transparent if contents have
       transparency, black otherwise.)
@@ -1088,7 +1088,7 @@ and surface_t = object
 
       For toplevel surfaces, withdraws them, so they will no longer be known to
       the window manager; for all surfaces, unmaps them, so they won’t be
-      displayed. Normally done automatically as part of gtk_widget_hide(). *)
+      displayed. Normally done automatically as part of [gtk_widget_hide ()]. *)
 
   method is_destroyed : unit -> bool
   (** Check to see if a surface is destroyed. *)

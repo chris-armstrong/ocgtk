@@ -21,9 +21,10 @@ external gtype : unit -> Gobject.Type.t = "ml_pango_attribute_get_type"
 
 external init : t -> Attr_class.t -> unit = "ml_pango_attribute_init"
 (** Initializes [attr]'s klass to [klass], it's start_index to
-    [PANGO_ATTR_INDEX_FROM_TEXT_BEGINNING] and end_index to
-    [PANGO_ATTR_INDEX_TO_TEXT_END] such that the attribute applies to the entire
-    text by default. *)
+    {{!Ocpango.Constants.attr_index_from_text_beginning}[PANGO_ATTR_INDEX_FROM_TEXT_BEGINNING]}
+    and end_index to
+    {{!Ocpango.Constants.attr_index_to_text_end}[PANGO_ATTR_INDEX_TO_TEXT_END]}
+    such that the attribute applies to the entire text by default. *)
 
 external equal : t -> t -> bool = "ml_pango_attribute_equal"
 (** Compare two attributes for equality.

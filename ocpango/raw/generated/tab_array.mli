@@ -57,8 +57,10 @@ external set_decimal_point : t -> int -> int -> unit
   = "ml_pango_tab_array_set_decimal_point"
 (** Sets the Unicode character to use as decimal point.
 
-    This is only relevant for tabs with [PANGO_TAB_DECIMAL] alignment, which
-    align content at the first occurrence of the decimal point character.
+    This is only relevant for tabs with
+    {{!Ocpango.Enums.type-tabalign.constructor-DECIMAL}[PANGO_TAB_DECIMAL]}
+    alignment, which align content at the first occurrence of the decimal point
+    character.
 
     By default, Pango uses the decimal point according to the current locale. *)
 
@@ -84,8 +86,10 @@ external get_decimal_point : t -> int -> int
   = "ml_pango_tab_array_get_decimal_point"
 (** Gets the Unicode character to use as decimal point.
 
-    This is only relevant for tabs with [PANGO_TAB_DECIMAL] alignment, which
-    align content at the first occurrence of the decimal point character.
+    This is only relevant for tabs with
+    {{!Ocpango.Enums.type-tabalign.constructor-DECIMAL}[PANGO_TAB_DECIMAL]}
+    alignment, which align content at the first occurrence of the decimal point
+    character.
 
     The default value of 0 means that Pango will use the decimal point according
     to the current locale. *)

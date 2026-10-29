@@ -51,8 +51,9 @@
     data transfer and finish the operation by calling [Gdk.Drop.finish].
 
     Between the ::drag-enter and ::drag-leave signals the widget is a current
-    drop target, and will receive the [GTK_STATE_FLAG_DROP_ACTIVE] state, which
-    can be used by themes to style the widget as a drop target. *)
+    drop target, and will receive the
+    {{!Ocgtk.Enums.type-stateflags_flag.constructor-DROP_ACTIVE}[GTK_STATE_FLAG_DROP_ACTIVE]}
+    state, which can be used by themes to style the widget as a drop target. *)
 class type drop_target_async_t = object
   inherit Event_controller.event_controller_t
 
@@ -198,8 +199,9 @@ class drop_target_async : Raw.Drop_target_async.t -> drop_target_async_t
     data transfer and finish the operation by calling [Gdk.Drop.finish].
 
     Between the ::drag-enter and ::drag-leave signals the widget is a current
-    drop target, and will receive the [GTK_STATE_FLAG_DROP_ACTIVE] state, which
-    can be used by themes to style the widget as a drop target. *)
+    drop target, and will receive the
+    {{!Ocgtk.Enums.type-stateflags_flag.constructor-DROP_ACTIVE}[GTK_STATE_FLAG_DROP_ACTIVE]}
+    state, which can be used by themes to style the widget as a drop target. *)
 
 (** {1:constructors Constructors} *)
 

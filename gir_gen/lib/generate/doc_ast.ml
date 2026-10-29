@@ -25,6 +25,7 @@ type sym_kind =
   | Type_kind
 [@@deriving eq]
 
+type sym_origin = Fragment | Hash | Percent | C_call [@@deriving eq]
 type c_lit = True | False | Null | Null_on_error of string [@@deriving eq]
 
 type inline =
@@ -35,6 +36,7 @@ type inline =
   | Link of { text : inline list; url : string }
   | Page_ref of { text : inline list; path : string; anchor : string option }
   | Sym_ref of {
+      origin : sym_origin;
       kind : sym_kind option;
       endpoint : string;
       anchor : string option;
@@ -74,3 +76,8 @@ type fallback =
    convention; provide [equal_t] by hand so the round-trip tests have the
    module's own structural equality. *)
 let equal_t (a : t) (b : t) : bool = List.equal equal_block a.blocks b.blocks
+
+let sym_ref_text origin endpoint =
+  match origin with
+  | C_call -> endpoint ^ " ()"
+  | Fragment | Hash | Percent -> endpoint

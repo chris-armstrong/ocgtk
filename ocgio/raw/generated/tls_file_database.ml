@@ -22,11 +22,13 @@ external get_anchors : t -> string = "ml_g_tls_file_database_get_anchors"
 (** The path to a file containing PEM encoded certificate authority root
     anchors. The certificates in this file will be treated as root authorities
     for the purpose of verifying other certificates via the
-    g_tls_database_verify_chain() operation. *)
+    {{!Ocgio.Raw.Tls_database.val-verify_chain}[g_tls_database_verify_chain ()]}
+    operation. *)
 
 external set_anchors : t -> string -> unit
   = "ml_g_tls_file_database_set_anchors"
 (** The path to a file containing PEM encoded certificate authority root
     anchors. The certificates in this file will be treated as root authorities
     for the purpose of verifying other certificates via the
-    g_tls_database_verify_chain() operation. *)
+    {{!Ocgio.Raw.Tls_database.val-verify_chain}[g_tls_database_verify_chain ()]}
+    operation. *)

@@ -18,7 +18,7 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_subprocess_launcher_get_type"
 
 external new_ : Ocgio_enums.subprocessflags -> t
   = "ml_g_subprocess_launcher_new"
-(** Creates a new [GSubprocessLauncher].
+(** Creates a new {{!Ocgio.Raw.Subprocess_launcher}[GSubprocessLauncher]}.
 
     The launcher is created with the default options. A copy of the environment
     of the calling process is made at the time of this call and will be used as
@@ -60,8 +60,9 @@ external take_stdin_fd : t -> int -> unit
     If [fd] is -1 then any previously given fd is unset.
 
     Note that if your intention is to have the stdin of the calling process
-    inherited by the child then [G_SUBPROCESS_FLAGS_STDIN_INHERIT] is a better
-    way to go about doing that.
+    inherited by the child then
+    {{!Ocgio.Enums.type-subprocessflags_flag.constructor-STDIN_INHERIT}[G_SUBPROCESS_FLAGS_STDIN_INHERIT]}
+    is a better way to go about doing that.
 
     The passed [fd] is noted but will not be touched in the current process. It
     is therefore necessary that it be kept open by the caller until the
@@ -83,7 +84,8 @@ external take_stderr_fd : t -> int -> unit
     Note that the default behaviour is to pass stderr through to the stderr of
     the parent process.
 
-    The passed [fd] belongs to the [GSubprocessLauncher]. It will be
+    The passed [fd] belongs to the
+    {{!Ocgio.Raw.Subprocess_launcher}[GSubprocessLauncher]}. It will be
     automatically closed when the launcher is finalized. The file descriptor
     will also be closed on the child side when executing the spawned process.
 
@@ -108,7 +110,8 @@ external take_fd : t -> int -> int -> unit = "ml_g_subprocess_launcher_take_fd"
 
 external spawnv : t -> string array -> (Subprocess.t, GError.t) result
   = "ml_g_subprocess_launcher_spawnv"
-(** Creates a [GSubprocess] given a provided array of arguments. *)
+(** Creates a {{!Ocgio.Raw.Subprocess}[GSubprocess]} given a provided array of
+    arguments. *)
 
 external setenv : t -> string -> string -> bool -> unit
   = "ml_g_subprocess_launcher_setenv"
@@ -156,7 +159,7 @@ external set_stderr_file_path : t -> string option -> unit
     be the case if using '2>' at the shell.
 
     If you want to send both stdout and stderr to the same file then use
-    [G_SUBPROCESS_FLAGS_STDERR_MERGE].
+    {{!Ocgio.Enums.type-subprocessflags_flag.constructor-STDERR_MERGE}[G_SUBPROCESS_FLAGS_STDERR_MERGE]}.
 
     You may not set a stderr file path if a stderr fd is already set or if the
     launcher flags contain any flags directing stderr elsewhere.
@@ -167,34 +170,47 @@ external set_flags : t -> Ocgio_enums.subprocessflags -> unit
   = "ml_g_subprocess_launcher_set_flags"
 (** Sets the flags on the launcher.
 
-    The default flags are [G_SUBPROCESS_FLAGS_NONE].
+    The default flags are
+    {{!Ocgio.Enums.type-subprocessflags_flag.constructor-NONE}[G_SUBPROCESS_FLAGS_NONE]}.
 
     You may not set flags that specify conflicting options for how to handle a
-    particular stdio stream (eg: specifying both [G_SUBPROCESS_FLAGS_STDIN_PIPE]
-    and [G_SUBPROCESS_FLAGS_STDIN_INHERIT]).
+    particular stdio stream (eg: specifying both
+    {{!Ocgio.Enums.type-subprocessflags_flag.constructor-STDIN_PIPE}[G_SUBPROCESS_FLAGS_STDIN_PIPE]}
+    and
+    {{!Ocgio.Enums.type-subprocessflags_flag.constructor-STDIN_INHERIT}[G_SUBPROCESS_FLAGS_STDIN_INHERIT]}).
 
     You may also not set a flag that conflicts with a previous call to a
-    function like g_subprocess_launcher_set_stdin_file_path() or
-    g_subprocess_launcher_take_stdout_fd(). *)
+    function like
+    {{!Ocgio.Raw.Subprocess_launcher.val-set_stdin_file_path}[g_subprocess_launcher_set_stdin_file_path
+                                                              ()]} or
+    {{!Ocgio.Raw.Subprocess_launcher.val-take_stdout_fd}[g_subprocess_launcher_take_stdout_fd
+                                                         ()]}. *)
 
 external set_environ : t -> string array -> unit
   = "ml_g_subprocess_launcher_set_environ"
 (** Replace the entire environment of processes launched from this launcher with
     the given 'environ' variable.
 
-    Typically you will build this variable by using g_listenv() to copy the
-    process 'environ' and using the functions g_environ_setenv(),
-    g_environ_unsetenv(), etc.
+    Typically you will build this variable by using [g_listenv ()] to copy the
+    process 'environ' and using the functions [g_environ_setenv ()],
+    [g_environ_unsetenv ()], etc.
 
-    As an alternative, you can use g_subprocess_launcher_setenv(),
-    g_subprocess_launcher_unsetenv(), etc.
+    As an alternative, you can use
+    {{!Ocgio.Raw.Subprocess_launcher.val-setenv}[g_subprocess_launcher_setenv
+                                                 ()]},
+    {{!Ocgio.Raw.Subprocess_launcher.val-unsetenv}[g_subprocess_launcher_unsetenv
+                                                   ()]}, etc.
 
     Pass an empty array to set an empty environment. Pass [None] to inherit the
     parent process’ environment. As of GLib 2.54, the parent process’
-    environment will be copied when g_subprocess_launcher_set_environ() is
-    called. Previously, it was copied when the subprocess was executed. This
-    means the copied environment may now be modified (using
-    g_subprocess_launcher_setenv(), etc.) before launching the subprocess.
+    environment will be copied when
+    {{!Ocgio.Raw.Subprocess_launcher.val-set_environ}[g_subprocess_launcher_set_environ
+                                                      ()]} is called.
+    Previously, it was copied when the subprocess was executed. This means the
+    copied environment may now be modified (using
+    {{!Ocgio.Raw.Subprocess_launcher.val-setenv}[g_subprocess_launcher_setenv
+                                                 ()]}, etc.) before launching
+    the subprocess.
 
     On UNIX, all strings in this array can be arbitrary byte strings. On
     Windows, they should be in UTF-8. *)
@@ -215,15 +231,21 @@ external getenv : t -> string -> string option
 
 external close : t -> unit = "ml_g_subprocess_launcher_close"
 (** Closes all the file descriptors previously passed to the object with
-    g_subprocess_launcher_take_fd(), g_subprocess_launcher_take_stderr_fd(),
-    etc.
+    {{!Ocgio.Raw.Subprocess_launcher.val-take_fd}[g_subprocess_launcher_take_fd
+                                                  ()]},
+    {{!Ocgio.Raw.Subprocess_launcher.val-take_stderr_fd}[g_subprocess_launcher_take_stderr_fd
+                                                         ()]}, etc.
 
     After calling this method, any subsequent calls to
-    g_subprocess_launcher_spawn() or g_subprocess_launcher_spawnv() will return
-    [G_IO_ERROR_CLOSED]. This method is idempotent if called more than once.
+    [g_subprocess_launcher_spawn ()] or
+    {{!Ocgio.Raw.Subprocess_launcher.val-spawnv}[g_subprocess_launcher_spawnv
+                                                 ()]} will return
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-CLOSED}[G_IO_ERROR_CLOSED]}.
+    This method is idempotent if called more than once.
 
-    This function is called automatically when the [GSubprocessLauncher] is
-    disposed, but is provided separately so that garbage collected language
-    bindings can call it earlier to guarantee when FDs are closed. *)
+    This function is called automatically when the
+    {{!Ocgio.Raw.Subprocess_launcher}[GSubprocessLauncher]} is disposed, but is
+    provided separately so that garbage collected language bindings can call it
+    earlier to guarantee when FDs are closed. *)
 
 (* Properties *)

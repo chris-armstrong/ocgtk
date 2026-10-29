@@ -9,7 +9,7 @@ class type sorter_t = object
   (** Emitted whenever the sorter changed.
 
       Users of the sorter should then update the sort order again via
-      gtk_sorter_compare().
+      [gtk_sorter_compare ()].
 
       [Gtk.SortListModel] handles this signal automatically.
 

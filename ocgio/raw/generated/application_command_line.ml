@@ -159,9 +159,10 @@ external set_exit_status : t -> int -> unit
   = "ml_g_application_command_line_set_exit_status"
 (** Sets the exit status that will be used when the invoking process exits.
 
-    The return value of the [GApplication::command]-line signal is passed to
-    this function when the handler returns. This is the usual way of setting the
-    exit status.
+    The return value of the
+    {{!Ocgio.Raw.Application.val-on_command_line}[GApplication::command-line]}
+    signal is passed to this function when the handler returns. This is the
+    usual way of setting the exit status.
 
     In the event that you want the remote invocation to continue running and
     want to decide on the exit status in the future, you can use this call. For
@@ -175,16 +176,17 @@ external set_exit_status : t -> int -> unit
     a non-zero value) then the application is considered to have been
     'successful' in a certain sense, and the exit status is always zero. If the
     application use count is zero, though, the exit status of the local
-    [GApplicationCommandLine] is used.
+    {{!Ocgio.Raw.Application_command_line}[GApplicationCommandLine]} is used.
 
-    This method is a no-op if g_application_command_line_done() has been called.
-*)
+    This method is a no-op if
+    {{!Ocgio.Raw.Application_command_line.val-done_}[g_application_command_line_done
+                                                     ()]} has been called. *)
 
 external printerr_literal : t -> string -> unit
   = "ml_g_application_command_line_printerr_literal"
 (** Prints a message using the stderr print handler in the invoking process.
 
-    Unlike g_application_command_line_printerr(), [message] is not a
+    Unlike [g_application_command_line_printerr ()], [message] is not a
     [printf()]-style format string. Use this function if [message] contains text
     you don't have control over, that could include [printf()] escape sequences.
 *)
@@ -193,7 +195,7 @@ external print_literal : t -> string -> unit
   = "ml_g_application_command_line_print_literal"
 (** Prints a message using the stdout print handler in the invoking process.
 
-    Unlike g_application_command_line_print(), [message] is not a
+    Unlike [g_application_command_line_print ()], [message] is not a
     [printf()]-style format string. Use this function if [message] contains text
     you don't have control over, that could include [printf()] escape sequences.
 *)
@@ -201,13 +203,13 @@ external print_literal : t -> string -> unit
 external getenv : t -> string -> string option
   = "ml_g_application_command_line_getenv"
 (** Gets the value of a particular environment variable of the command line
-    invocation, as would be returned by g_getenv(). The strings may contain
+    invocation, as would be returned by [g_getenv ()]. The strings may contain
     non-utf8 data.
 
     The remote application usually does not send an environment. Use
-    [G_APPLICATION_SEND_ENVIRONMENT] to affect that. Even with this flag set it
-    is possible that the environment is still not available (due to invocation
-    messages from other applications).
+    {{!Ocgio.Enums.type-applicationflags_flag.constructor-SEND_ENVIRONMENT}[G_APPLICATION_SEND_ENVIRONMENT]}
+    to affect that. Even with this flag set it is possible that the environment
+    is still not available (due to invocation messages from other applications).
 
     The return value should not be modified or freed and is valid for as long as
     [cmdline] exists. *)
@@ -216,11 +218,12 @@ external get_stdin : t -> Input_stream.t option
   = "ml_g_application_command_line_get_stdin"
 (** Gets the stdin of the invoking process.
 
-    The [GInputStream] can be used to read data passed to the standard input of
-    the invoking process. This doesn't work on all platforms. Presently, it is
-    only available on UNIX when using a D-Bus daemon capable of passing file
-    descriptors. If stdin is not available then [None] will be returned. In the
-    future, support may be expanded to other platforms.
+    The {{!Ocgio.Raw.Input_stream}[GInputStream]} can be used to read data
+    passed to the standard input of the invoking process. This doesn't work on
+    all platforms. Presently, it is only available on UNIX when using a D-Bus
+    daemon capable of passing file descriptors. If stdin is not available then
+    [None] will be returned. In the future, support may be expanded to other
+    platforms.
 
     You must only call this function once per commandline invocation. *)
 
@@ -244,24 +247,28 @@ external get_is_remote : t -> bool
 external get_exit_status : t -> int
   = "ml_g_application_command_line_get_exit_status"
 (** Gets the exit status of [cmdline]. See
-    g_application_command_line_set_exit_status() for more information. *)
+    {{!Ocgio.Raw.Application_command_line.val-set_exit_status}[g_application_command_line_set_exit_status
+                                                               ()]} for more
+    information. *)
 
 external get_environ : t -> string array
   = "ml_g_application_command_line_get_environ"
 (** Gets the contents of the 'environ' variable of the command line invocation,
-    as would be returned by g_get_environ(), ie as a null-terminated list of
+    as would be returned by [g_get_environ ()], ie as a null-terminated list of
     strings in the form 'NAME=VALUE'. The strings may contain non-utf8 data.
 
     The remote application usually does not send an environment. Use
-    [G_APPLICATION_SEND_ENVIRONMENT] to affect that. Even with this flag set it
-    is possible that the environment is still not available (due to invocation
-    messages from other applications).
+    {{!Ocgio.Enums.type-applicationflags_flag.constructor-SEND_ENVIRONMENT}[G_APPLICATION_SEND_ENVIRONMENT]}
+    to affect that. Even with this flag set it is possible that the environment
+    is still not available (due to invocation messages from other applications).
 
     The return value should not be modified or freed and is valid for as long as
     [cmdline] exists.
 
-    See g_application_command_line_getenv() if you are only interested in the
-    value of a single environment variable. *)
+    See
+    {{!Ocgio.Raw.Application_command_line.val-getenv}[g_application_command_line_getenv
+                                                      ()]} if you are only
+    interested in the value of a single environment variable. *)
 
 external get_cwd : t -> string option = "ml_g_application_command_line_get_cwd"
 (** Gets the working directory of the command line invocation. The string may
@@ -282,10 +289,10 @@ external get_arguments : t -> string array * int
     on Windows.
 
     If you wish to use the return value with [GOptionContext], you must use
-    g_option_context_parse_strv().
+    [g_option_context_parse_strv ()].
 
-    The return value is null-terminated and should be freed using g_strfreev().
-*)
+    The return value is null-terminated and should be freed using
+    [g_strfreev ()]. *)
 
 external done_ : t -> unit = "ml_g_application_command_line_done"
 (** Signals that command line processing is completed.
@@ -298,19 +305,21 @@ external done_ : t -> unit = "ml_g_application_command_line_done"
     {{!Ocgio.Raw.Application.val-on_command_line}[Gio.Application::command-line]}
     handler, after the exit status is set and all messages are printed.
 
-    After this call, g_application_command_line_set_exit_status() has no effect.
-    Subsequent calls to this method are no-ops.
+    After this call,
+    {{!Ocgio.Raw.Application_command_line.val-set_exit_status}[g_application_command_line_set_exit_status
+                                                               ()]} has no
+    effect. Subsequent calls to this method are no-ops.
 
-    This method is automatically called when the [GApplicationCommandLine]
-    object is disposed — so you can omit the call in non-garbage collected
-    languages. *)
+    This method is automatically called when the
+    {{!Ocgio.Raw.Application_command_line}[GApplicationCommandLine]} object is
+    disposed — so you can omit the call in non-garbage collected languages. *)
 
 external create_file_for_arg : t -> string -> App_info_cycle_64c425a0.File.t
   = "ml_g_application_command_line_create_file_for_arg"
-(** Creates a [GFile] corresponding to a filename that was given as part of the
-    invocation of [cmdline].
+(** Creates a {{!Ocgio.Raw.File}[GFile]} corresponding to a filename that was
+    given as part of the invocation of [cmdline].
 
-    This differs from g_file_new_for_commandline_arg() in that it resolves
+    This differs from [g_file_new_for_commandline_arg ()] in that it resolves
     relative pathnames using the current working directory of the invoking
     process rather than the local process. *)
 

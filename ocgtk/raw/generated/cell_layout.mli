@@ -10,10 +10,10 @@
  [GtkCellLayout] are attributes. Attributes let you set the properties\n\
  in flexible ways. They can just be set to constant values like regular\n\
  properties. But they can also be mapped to a column of the underlying\n\
- tree model with gtk_cell_layout_set_attributes(), which means that the value\n\
+ tree model with [gtk_cell_layout_set_attributes ()], which means that the value\n\
  of the attribute can change from cell to cell as they are rendered by\n\
  the cell renderer. Finally, it is possible to specify a function with\n\
- gtk_cell_layout_set_cell_data_func() that is called to determine the\n\
+ [gtk_cell_layout_set_cell_data_func ()] that is called to determine the\n\
  value of the attribute for each cell that is rendered.\n\n\
  {b GtkCellLayouts as GtkBuildable}\n\n\
  Implementations of GtkCellLayout which also implement the GtkBuildable\n\

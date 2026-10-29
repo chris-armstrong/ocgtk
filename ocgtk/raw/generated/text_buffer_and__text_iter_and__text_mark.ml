@@ -475,8 +475,11 @@ module rec Text_buffer : sig
       {{!Ocgtk.Raw.Text_buffer.val-begin_irreversible_action}[Gtk.TextBuffer.begin_irreversible_action]}
       was called.
 
-      You may nest calls to gtk_text_buffer_begin_irreversible_action() and
-      gtk_text_buffer_end_irreversible_action() pairs. *)
+      You may nest calls to
+      {{!Ocgtk.Raw.Text_buffer.val-begin_irreversible_action}[gtk_text_buffer_begin_irreversible_action
+                                                              ()]} and
+      {{!Ocgtk.Raw.Text_buffer.val-end_irreversible_action}[gtk_text_buffer_end_irreversible_action
+                                                            ()]} pairs. *)
 
   external delete_selection : t -> bool -> bool -> bool
     = "ml_gtk_text_buffer_delete_selection"
@@ -498,7 +501,7 @@ module rec Text_buffer : sig
   (** Deletes [mark], so that it’s no longer located anywhere in the buffer.
 
       Removes the reference the buffer holds to the mark, so if you haven’t
-      called g_object_ref() on the mark, it will be freed. Even if the mark
+      called [g_object_ref ()] on the mark, it will be freed. Even if the mark
       isn’t freed, most operations on [mark] become invalid, until it gets added
       to a buffer again with
       {{!Ocgtk.Raw.Text_buffer.val-add_mark}[Gtk.TextBuffer.add_mark]}. Use
@@ -523,7 +526,8 @@ module rec Text_buffer : sig
   (** Deletes text between [start] and [end].
 
       The order of [start] and [end] is not actually relevant;
-      gtk_text_buffer_delete() will reorder them.
+      {{!Ocgtk.Raw.Text_buffer.val-delete}[gtk_text_buffer_delete ()]} will
+      reorder them.
 
       This function actually emits the “delete-range” signal, and the default
       handler of that signal deletes the text. Because the buffer is modified,
@@ -577,16 +581,24 @@ module rec Text_buffer : sig
   external begin_user_action : t -> unit
     = "ml_gtk_text_buffer_begin_user_action"
   (** Called to indicate that the buffer operations between here and a call to
-      gtk_text_buffer_end_user_action() are part of a single user-visible
-      operation.
+      {{!Ocgtk.Raw.Text_buffer.val-end_user_action}[gtk_text_buffer_end_user_action
+                                                    ()]} are part of a single
+      user-visible operation.
 
-      The operations between gtk_text_buffer_begin_user_action() and
-      gtk_text_buffer_end_user_action() can then be grouped when creating an
-      undo stack. [GtkTextBuffer] maintains a count of calls to
-      gtk_text_buffer_begin_user_action() that have not been closed with a call
-      to gtk_text_buffer_end_user_action(), and emits the “begin-user-action”
-      and “end-user-action” signals only for the outermost pair of calls. This
-      allows you to build user actions from other user actions.
+      The operations between
+      {{!Ocgtk.Raw.Text_buffer.val-begin_user_action}[gtk_text_buffer_begin_user_action
+                                                      ()]} and
+      {{!Ocgtk.Raw.Text_buffer.val-end_user_action}[gtk_text_buffer_end_user_action
+                                                    ()]} can then be grouped
+      when creating an undo stack. [GtkTextBuffer] maintains a count of calls to
+      {{!Ocgtk.Raw.Text_buffer.val-begin_user_action}[gtk_text_buffer_begin_user_action
+                                                      ()]} that have not been
+      closed with a call to
+      {{!Ocgtk.Raw.Text_buffer.val-end_user_action}[gtk_text_buffer_end_user_action
+                                                    ()]}, and emits the
+      “begin-user-action” and “end-user-action” signals only for the outermost
+      pair of calls. This allows you to build user actions from other user
+      actions.
 
       The “interactive” buffer mutation functions, such as
       {{!Ocgtk.Raw.Text_buffer.val-insert_interactive}[Gtk.TextBuffer.insert_interactive]},
@@ -605,8 +617,11 @@ module rec Text_buffer : sig
       {{!Ocgtk.Raw.Text_buffer.val-end_irreversible_action}[Gtk.TextBuffer.end_irreversible_action]}
       after the irreversible action has completed.
 
-      You may nest calls to gtk_text_buffer_begin_irreversible_action() and
-      gtk_text_buffer_end_irreversible_action() pairs. *)
+      You may nest calls to
+      {{!Ocgtk.Raw.Text_buffer.val-begin_irreversible_action}[gtk_text_buffer_begin_irreversible_action
+                                                              ()]} and
+      {{!Ocgtk.Raw.Text_buffer.val-end_irreversible_action}[gtk_text_buffer_end_irreversible_action
+                                                            ()]} pairs. *)
 
   external backspace : t -> Text_iter.t -> bool -> bool -> bool
     = "ml_gtk_text_buffer_backspace"
@@ -1211,8 +1226,11 @@ end = struct
       {{!Ocgtk.Raw.Text_buffer.val-begin_irreversible_action}[Gtk.TextBuffer.begin_irreversible_action]}
       was called.
 
-      You may nest calls to gtk_text_buffer_begin_irreversible_action() and
-      gtk_text_buffer_end_irreversible_action() pairs. *)
+      You may nest calls to
+      {{!Ocgtk.Raw.Text_buffer.val-begin_irreversible_action}[gtk_text_buffer_begin_irreversible_action
+                                                              ()]} and
+      {{!Ocgtk.Raw.Text_buffer.val-end_irreversible_action}[gtk_text_buffer_end_irreversible_action
+                                                            ()]} pairs. *)
 
   external delete_selection : t -> bool -> bool -> bool
     = "ml_gtk_text_buffer_delete_selection"
@@ -1234,7 +1252,7 @@ end = struct
   (** Deletes [mark], so that it’s no longer located anywhere in the buffer.
 
       Removes the reference the buffer holds to the mark, so if you haven’t
-      called g_object_ref() on the mark, it will be freed. Even if the mark
+      called [g_object_ref ()] on the mark, it will be freed. Even if the mark
       isn’t freed, most operations on [mark] become invalid, until it gets added
       to a buffer again with
       {{!Ocgtk.Raw.Text_buffer.val-add_mark}[Gtk.TextBuffer.add_mark]}. Use
@@ -1259,7 +1277,8 @@ end = struct
   (** Deletes text between [start] and [end].
 
       The order of [start] and [end] is not actually relevant;
-      gtk_text_buffer_delete() will reorder them.
+      {{!Ocgtk.Raw.Text_buffer.val-delete}[gtk_text_buffer_delete ()]} will
+      reorder them.
 
       This function actually emits the “delete-range” signal, and the default
       handler of that signal deletes the text. Because the buffer is modified,
@@ -1313,16 +1332,24 @@ end = struct
   external begin_user_action : t -> unit
     = "ml_gtk_text_buffer_begin_user_action"
   (** Called to indicate that the buffer operations between here and a call to
-      gtk_text_buffer_end_user_action() are part of a single user-visible
-      operation.
+      {{!Ocgtk.Raw.Text_buffer.val-end_user_action}[gtk_text_buffer_end_user_action
+                                                    ()]} are part of a single
+      user-visible operation.
 
-      The operations between gtk_text_buffer_begin_user_action() and
-      gtk_text_buffer_end_user_action() can then be grouped when creating an
-      undo stack. [GtkTextBuffer] maintains a count of calls to
-      gtk_text_buffer_begin_user_action() that have not been closed with a call
-      to gtk_text_buffer_end_user_action(), and emits the “begin-user-action”
-      and “end-user-action” signals only for the outermost pair of calls. This
-      allows you to build user actions from other user actions.
+      The operations between
+      {{!Ocgtk.Raw.Text_buffer.val-begin_user_action}[gtk_text_buffer_begin_user_action
+                                                      ()]} and
+      {{!Ocgtk.Raw.Text_buffer.val-end_user_action}[gtk_text_buffer_end_user_action
+                                                    ()]} can then be grouped
+      when creating an undo stack. [GtkTextBuffer] maintains a count of calls to
+      {{!Ocgtk.Raw.Text_buffer.val-begin_user_action}[gtk_text_buffer_begin_user_action
+                                                      ()]} that have not been
+      closed with a call to
+      {{!Ocgtk.Raw.Text_buffer.val-end_user_action}[gtk_text_buffer_end_user_action
+                                                    ()]}, and emits the
+      “begin-user-action” and “end-user-action” signals only for the outermost
+      pair of calls. This allows you to build user actions from other user
+      actions.
 
       The “interactive” buffer mutation functions, such as
       {{!Ocgtk.Raw.Text_buffer.val-insert_interactive}[Gtk.TextBuffer.insert_interactive]},
@@ -1341,8 +1368,11 @@ end = struct
       {{!Ocgtk.Raw.Text_buffer.val-end_irreversible_action}[Gtk.TextBuffer.end_irreversible_action]}
       after the irreversible action has completed.
 
-      You may nest calls to gtk_text_buffer_begin_irreversible_action() and
-      gtk_text_buffer_end_irreversible_action() pairs. *)
+      You may nest calls to
+      {{!Ocgtk.Raw.Text_buffer.val-begin_irreversible_action}[gtk_text_buffer_begin_irreversible_action
+                                                              ()]} and
+      {{!Ocgtk.Raw.Text_buffer.val-end_irreversible_action}[gtk_text_buffer_end_irreversible_action
+                                                            ()]} pairs. *)
 
   external backspace : t -> Text_iter.t -> bool -> bool -> bool
     = "ml_gtk_text_buffer_backspace"
@@ -1462,8 +1492,9 @@ and Text_iter : sig
     = "ml_gtk_text_iter_toggles_tag"
   (** Gets whether a range with [tag] applied to it begins or ends at [iter].
 
-      This is equivalent to (gtk_text_iter_starts_tag() ||
-      gtk_text_iter_ends_tag()) *)
+      This is equivalent to
+      ({{!Ocgtk.Raw.Text_iter.val-starts_tag}[gtk_text_iter_starts_tag ()]} ||
+      {{!Ocgtk.Raw.Text_iter.val-ends_tag}[gtk_text_iter_ends_tag ()]}) *)
 
   external starts_word : t -> bool = "ml_gtk_text_iter_starts_word"
   (** Determines whether [iter] begins a natural-language word.
@@ -2205,8 +2236,9 @@ end = struct
     = "ml_gtk_text_iter_toggles_tag"
   (** Gets whether a range with [tag] applied to it begins or ends at [iter].
 
-      This is equivalent to (gtk_text_iter_starts_tag() ||
-      gtk_text_iter_ends_tag()) *)
+      This is equivalent to
+      ({{!Ocgtk.Raw.Text_iter.val-starts_tag}[gtk_text_iter_starts_tag ()]} ||
+      {{!Ocgtk.Raw.Text_iter.val-ends_tag}[gtk_text_iter_ends_tag ()]}) *)
 
   external starts_word : t -> bool = "ml_gtk_text_iter_starts_word"
   (** Determines whether [iter] begins a natural-language word.

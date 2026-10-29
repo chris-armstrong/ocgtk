@@ -16,16 +16,19 @@ module rec Event_controller : sig
     = "ml_gtk_event_controller_set_propagation_phase"
   (** Sets the propagation phase at which a controller handles events.
 
-      If [phase] is [GTK_PHASE_NONE], no automatic event handling will be
-      performed, but other additional gesture maintenance will. *)
+      If [phase] is
+      {{!Ocgtk.Enums.type-propagationphase.constructor-NONE}[GTK_PHASE_NONE]},
+      no automatic event handling will be performed, but other additional
+      gesture maintenance will. *)
 
   external set_propagation_limit : t -> Ocgtk_enums.propagationlimit -> unit
     = "ml_gtk_event_controller_set_propagation_limit"
   (** Sets the event propagation limit on the event controller.
 
-      If the limit is set to [GTK_LIMIT_SAME_NATIVE], the controller won't
-      handle events that are targeted at widgets on a different surface, such as
-      popovers. *)
+      If the limit is set to
+      {{!Ocgtk.Enums.type-propagationlimit.constructor-SAME_NATIVE}[GTK_LIMIT_SAME_NATIVE]},
+      the controller won't handle events that are targeted at widgets on a
+      different surface, such as popovers. *)
 
   external set_name : t -> string option -> unit
     = "ml_gtk_event_controller_set_name"
@@ -92,16 +95,19 @@ end = struct
     = "ml_gtk_event_controller_set_propagation_phase"
   (** Sets the propagation phase at which a controller handles events.
 
-      If [phase] is [GTK_PHASE_NONE], no automatic event handling will be
-      performed, but other additional gesture maintenance will. *)
+      If [phase] is
+      {{!Ocgtk.Enums.type-propagationphase.constructor-NONE}[GTK_PHASE_NONE]},
+      no automatic event handling will be performed, but other additional
+      gesture maintenance will. *)
 
   external set_propagation_limit : t -> Ocgtk_enums.propagationlimit -> unit
     = "ml_gtk_event_controller_set_propagation_limit"
   (** Sets the event propagation limit on the event controller.
 
-      If the limit is set to [GTK_LIMIT_SAME_NATIVE], the controller won't
-      handle events that are targeted at widgets on a different surface, such as
-      popovers. *)
+      If the limit is set to
+      {{!Ocgtk.Enums.type-propagationlimit.constructor-SAME_NATIVE}[GTK_LIMIT_SAME_NATIVE]},
+      the controller won't handle events that are targeted at widgets on a
+      different surface, such as popovers. *)
 
   external set_name : t -> string option -> unit
     = "ml_gtk_event_controller_set_name"
@@ -357,8 +363,11 @@ and Tooltip : sig
       setting tooltips on [GtkTreeView] rows and cells, [GtkIconViews], etc.
 
       For setting tooltips on [GtkTreeView], please refer to the convenience
-      functions for this: gtk_tree_view_set_tooltip_row() and
-      gtk_tree_view_set_tooltip_cell(). *)
+      functions for this:
+      {{!Ocgtk.Raw.Tree_view.val-set_tooltip_row}[gtk_tree_view_set_tooltip_row
+                                                  ()]} and
+      {{!Ocgtk.Raw.Tree_view.val-set_tooltip_cell}[gtk_tree_view_set_tooltip_cell
+                                                   ()]}. *)
 
   external set_text : t -> string option -> unit = "ml_gtk_tooltip_set_text"
   (** Sets the text of the tooltip to be [text].
@@ -394,8 +403,9 @@ and Tooltip : sig
   (** Replaces the widget packed into the tooltip with [custom_widget].
       [custom_widget] does not get destroyed when the tooltip goes away. By
       default a box with a [GtkImage] and [GtkLabel] is embedded in the tooltip,
-      which can be configured using gtk_tooltip_set_markup() and
-      gtk_tooltip_set_icon(). *)
+      which can be configured using
+      {{!Ocgtk.Raw.Tooltip.val-set_markup}[gtk_tooltip_set_markup ()]} and
+      {{!Ocgtk.Raw.Tooltip.val-set_icon}[gtk_tooltip_set_icon ()]}. *)
 end = struct
   type t = [ `tooltip | `object_ ] Gobject.obj
 
@@ -410,8 +420,11 @@ end = struct
       setting tooltips on [GtkTreeView] rows and cells, [GtkIconViews], etc.
 
       For setting tooltips on [GtkTreeView], please refer to the convenience
-      functions for this: gtk_tree_view_set_tooltip_row() and
-      gtk_tree_view_set_tooltip_cell(). *)
+      functions for this:
+      {{!Ocgtk.Raw.Tree_view.val-set_tooltip_row}[gtk_tree_view_set_tooltip_row
+                                                  ()]} and
+      {{!Ocgtk.Raw.Tree_view.val-set_tooltip_cell}[gtk_tree_view_set_tooltip_cell
+                                                   ()]}. *)
 
   external set_text : t -> string option -> unit = "ml_gtk_tooltip_set_text"
   (** Sets the text of the tooltip to be [text].
@@ -447,8 +460,9 @@ end = struct
   (** Replaces the widget packed into the tooltip with [custom_widget].
       [custom_widget] does not get destroyed when the tooltip goes away. By
       default a box with a [GtkImage] and [GtkLabel] is embedded in the tooltip,
-      which can be configured using gtk_tooltip_set_markup() and
-      gtk_tooltip_set_icon(). *)
+      which can be configured using
+      {{!Ocgtk.Raw.Tooltip.val-set_markup}[gtk_tooltip_set_markup ()]} and
+      {{!Ocgtk.Raw.Tooltip.val-set_icon}[gtk_tooltip_set_icon ()]}. *)
 end
 
 and Widget : sig
@@ -505,7 +519,8 @@ and Widget : sig
       When a widget receives a call to the snapshot function, it must send
       synthetic [Gtk.Widget.snapshot] calls to all children. This function
       provides a convenient way of doing this. A widget, when it receives a call
-      to its [Gtk.Widget.snapshot] function, calls gtk_widget_snapshot_child()
+      to its [Gtk.Widget.snapshot] function, calls
+      {{!Ocgtk.Raw.Widget.val-snapshot_child}[gtk_widget_snapshot_child ()]}
       once for each child, passing in the [snapshot] the widget received.
 
       This function takes care of translating the origin of [snapshot], and
@@ -970,10 +985,12 @@ and Widget : sig
       {{!Ocgtk.Raw.Label}[Gtk.Label]}, the label queues a resize to ensure
       there’s enough space for the new text.
 
-      Note that you cannot call gtk_widget_queue_resize() on a widget from
-      inside its implementation of the [Gtk.Widget.size_allocate] virtual
-      method. Calls to gtk_widget_queue_resize() from inside
-      [Gtk.Widget.size_allocate] will be silently ignored.
+      Note that you cannot call
+      {{!Ocgtk.Raw.Widget.val-queue_resize}[gtk_widget_queue_resize ()]} on a
+      widget from inside its implementation of the [Gtk.Widget.size_allocate]
+      virtual method. Calls to
+      {{!Ocgtk.Raw.Widget.val-queue_resize}[gtk_widget_queue_resize ()]} from
+      inside [Gtk.Widget.size_allocate] will be silently ignored.
 
       This function is only for use in widget implementations. *)
 
@@ -1049,8 +1066,9 @@ and Widget : sig
   (** Measures [widget] in the orientation [orientation] and for the given
       [for_size].
 
-      As an example, if [orientation] is [GTK_ORIENTATION_HORIZONTAL] and
-      [for_size] is 300, this functions will compute the minimum and natural
+      As an example, if [orientation] is
+      {{!Ocgtk.Enums.type-orientation.constructor-HORIZONTAL}[GTK_ORIENTATION_HORIZONTAL]}
+      and [for_size] is 300, this functions will compute the minimum and natural
       width of [widget] if it is allocated at a height of 300 pixels.
 
       See GtkWidget’s geometry management section for a more details on
@@ -2220,7 +2238,8 @@ end = struct
       When a widget receives a call to the snapshot function, it must send
       synthetic [Gtk.Widget.snapshot] calls to all children. This function
       provides a convenient way of doing this. A widget, when it receives a call
-      to its [Gtk.Widget.snapshot] function, calls gtk_widget_snapshot_child()
+      to its [Gtk.Widget.snapshot] function, calls
+      {{!Ocgtk.Raw.Widget.val-snapshot_child}[gtk_widget_snapshot_child ()]}
       once for each child, passing in the [snapshot] the widget received.
 
       This function takes care of translating the origin of [snapshot], and
@@ -2685,10 +2704,12 @@ end = struct
       {{!Ocgtk.Raw.Label}[Gtk.Label]}, the label queues a resize to ensure
       there’s enough space for the new text.
 
-      Note that you cannot call gtk_widget_queue_resize() on a widget from
-      inside its implementation of the [Gtk.Widget.size_allocate] virtual
-      method. Calls to gtk_widget_queue_resize() from inside
-      [Gtk.Widget.size_allocate] will be silently ignored.
+      Note that you cannot call
+      {{!Ocgtk.Raw.Widget.val-queue_resize}[gtk_widget_queue_resize ()]} on a
+      widget from inside its implementation of the [Gtk.Widget.size_allocate]
+      virtual method. Calls to
+      {{!Ocgtk.Raw.Widget.val-queue_resize}[gtk_widget_queue_resize ()]} from
+      inside [Gtk.Widget.size_allocate] will be silently ignored.
 
       This function is only for use in widget implementations. *)
 
@@ -2764,8 +2785,9 @@ end = struct
   (** Measures [widget] in the orientation [orientation] and for the given
       [for_size].
 
-      As an example, if [orientation] is [GTK_ORIENTATION_HORIZONTAL] and
-      [for_size] is 300, this functions will compute the minimum and natural
+      As an example, if [orientation] is
+      {{!Ocgtk.Enums.type-orientation.constructor-HORIZONTAL}[GTK_ORIENTATION_HORIZONTAL]}
+      and [for_size] is 300, this functions will compute the minimum and natural
       width of [widget] if it is allocated at a height of 300 pixels.
 
       See GtkWidget’s geometry management section for a more details on

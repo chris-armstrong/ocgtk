@@ -82,29 +82,37 @@ external newv :
 
 external wait_finish : t -> Async_result.t -> (bool, GError.t) result
   = "ml_g_subprocess_wait_finish"
-(** Collects the result of a previous call to g_subprocess_wait_async(). *)
+(** Collects the result of a previous call to [g_subprocess_wait_async ()]. *)
 
 external wait_check_finish : t -> Async_result.t -> (bool, GError.t) result
   = "ml_g_subprocess_wait_check_finish"
-(** Collects the result of a previous call to g_subprocess_wait_check_async().
-*)
+(** Collects the result of a previous call to
+    [g_subprocess_wait_check_async ()]. *)
 
 external wait_check : t -> Cancellable.t option -> (bool, GError.t) result
   = "ml_g_subprocess_wait_check"
-(** Combines g_subprocess_wait() with g_spawn_check_wait_status(). *)
+(** Combines {{!Ocgio.Raw.Subprocess.val-wait}[g_subprocess_wait ()]} with
+    [g_spawn_check_wait_status ()]. *)
 
 external wait : t -> Cancellable.t option -> (bool, GError.t) result
   = "ml_g_subprocess_wait"
 (** Synchronously wait for the subprocess to terminate.
 
     After the process terminates you can query its exit status with functions
-    such as g_subprocess_get_if_exited() and g_subprocess_get_exit_status().
+    such as
+    {{!Ocgio.Raw.Subprocess.val-get_if_exited}[g_subprocess_get_if_exited ()]}
+    and
+    {{!Ocgio.Raw.Subprocess.val-get_exit_status}[g_subprocess_get_exit_status
+                                                 ()]}.
 
     This function does not fail in the case of the subprocess having abnormal
-    termination. See g_subprocess_wait_check() for that.
+    termination. See
+    {{!Ocgio.Raw.Subprocess.val-wait_check}[g_subprocess_wait_check ()]} for
+    that.
 
     Cancelling [cancellable] doesn't kill the subprocess. Call
-    g_subprocess_force_exit() if it is desirable. *)
+    {{!Ocgio.Raw.Subprocess.val-force_exit}[g_subprocess_force_exit ()]} if it
+    is desirable. *)
 
 external send_signal : t -> int -> unit = "ml_g_subprocess_send_signal"
 (** Sends the UNIX signal [signal_num] to the subprocess, if it is still
@@ -121,40 +129,47 @@ external get_term_sig : t -> int = "ml_g_subprocess_get_term_sig"
 
     This is equivalent to the system WTERMSIG macro.
 
-    It is an error to call this function before g_subprocess_wait() and unless
-    g_subprocess_get_if_signaled() returned [true]. *)
+    It is an error to call this function before
+    {{!Ocgio.Raw.Subprocess.val-wait}[g_subprocess_wait ()]} and unless
+    {{!Ocgio.Raw.Subprocess.val-get_if_signaled}[g_subprocess_get_if_signaled
+                                                 ()]} returned [true]. *)
 
 external get_successful : t -> bool = "ml_g_subprocess_get_successful"
 [@@ocaml.doc
   "Checks if the process was \"successful\".  A process is considered\n\
    successful if it exited cleanly with an exit status of 0, either by\n\
    way of the exit() system call or return from main().\n\n\
-   It is an error to call this function before g_subprocess_wait() has\n\
+   It is an error to call this function before \
+   {{!Ocgio.Raw.Subprocess.val-wait}[g_subprocess_wait ()]} has\n\
    returned."]
 
 external get_stdout_pipe : t -> Input_stream.t option
   = "ml_g_subprocess_get_stdout_pipe"
-(** Gets the [GInputStream] from which to read the stdout output of
-    [subprocess].
+(** Gets the {{!Ocgio.Raw.Input_stream}[GInputStream]} from which to read the
+    stdout output of [subprocess].
 
-    The process must have been created with [G_SUBPROCESS_FLAGS_STDOUT_PIPE],
+    The process must have been created with
+    {{!Ocgio.Enums.type-subprocessflags_flag.constructor-STDOUT_PIPE}[G_SUBPROCESS_FLAGS_STDOUT_PIPE]},
     otherwise [None] will be returned. *)
 
 external get_stdin_pipe : t -> Output_stream.t option
   = "ml_g_subprocess_get_stdin_pipe"
-(** Gets the [GOutputStream] that you can write to in order to give data to the
-    stdin of [subprocess].
+(** Gets the {{!Ocgio.Raw.Output_stream}[GOutputStream]} that you can write to
+    in order to give data to the stdin of [subprocess].
 
-    The process must have been created with [G_SUBPROCESS_FLAGS_STDIN_PIPE] and
-    not [G_SUBPROCESS_FLAGS_STDIN_INHERIT], otherwise [None] will be returned.
-*)
+    The process must have been created with
+    {{!Ocgio.Enums.type-subprocessflags_flag.constructor-STDIN_PIPE}[G_SUBPROCESS_FLAGS_STDIN_PIPE]}
+    and not
+    {{!Ocgio.Enums.type-subprocessflags_flag.constructor-STDIN_INHERIT}[G_SUBPROCESS_FLAGS_STDIN_INHERIT]},
+    otherwise [None] will be returned. *)
 
 external get_stderr_pipe : t -> Input_stream.t option
   = "ml_g_subprocess_get_stderr_pipe"
-(** Gets the [GInputStream] from which to read the stderr output of
-    [subprocess].
+(** Gets the {{!Ocgio.Raw.Input_stream}[GInputStream]} from which to read the
+    stderr output of [subprocess].
 
-    The process must have been created with [G_SUBPROCESS_FLAGS_STDERR_PIPE],
+    The process must have been created with
+    {{!Ocgio.Enums.type-subprocessflags_flag.constructor-STDERR_PIPE}[G_SUBPROCESS_FLAGS_STDERR_PIPE]},
     otherwise [None] will be returned. *)
 
 external get_status : t -> int = "ml_g_subprocess_get_status"
@@ -162,21 +177,24 @@ external get_status : t -> int = "ml_g_subprocess_get_status"
 
     This value has no particular meaning, but it can be used with the macros
     defined by the system headers such as WIFEXITED. It can also be used with
-    g_spawn_check_wait_status().
+    [g_spawn_check_wait_status ()].
 
-    It is more likely that you want to use g_subprocess_get_if_exited() followed
-    by g_subprocess_get_exit_status().
+    It is more likely that you want to use
+    {{!Ocgio.Raw.Subprocess.val-get_if_exited}[g_subprocess_get_if_exited ()]}
+    followed by
+    {{!Ocgio.Raw.Subprocess.val-get_exit_status}[g_subprocess_get_exit_status
+                                                 ()]}.
 
-    It is an error to call this function before g_subprocess_wait() has
-    returned. *)
+    It is an error to call this function before
+    {{!Ocgio.Raw.Subprocess.val-wait}[g_subprocess_wait ()]} has returned. *)
 
 external get_if_signaled : t -> bool = "ml_g_subprocess_get_if_signaled"
 (** Check if the given subprocess terminated in response to a signal.
 
     This is equivalent to the system WIFSIGNALED macro.
 
-    It is an error to call this function before g_subprocess_wait() has
-    returned. *)
+    It is an error to call this function before
+    {{!Ocgio.Raw.Subprocess.val-wait}[g_subprocess_wait ()]} has returned. *)
 
 external get_if_exited : t -> bool = "ml_g_subprocess_get_if_exited"
 (** Check if the given subprocess exited normally (ie: by way of exit() or
@@ -184,8 +202,8 @@ external get_if_exited : t -> bool = "ml_g_subprocess_get_if_exited"
 
     This is equivalent to the system WIFEXITED macro.
 
-    It is an error to call this function before g_subprocess_wait() has
-    returned. *)
+    It is an error to call this function before
+    {{!Ocgio.Raw.Subprocess.val-wait}[g_subprocess_wait ()]} has returned. *)
 
 external get_identifier : t -> string option = "ml_g_subprocess_get_identifier"
 (** On UNIX, returns the process ID as a decimal string. On Windows, returns the
@@ -198,15 +216,17 @@ external get_exit_status : t -> int = "ml_g_subprocess_get_exit_status"
 
     This is equivalent to the system WEXITSTATUS macro.
 
-    It is an error to call this function before g_subprocess_wait() and unless
-    g_subprocess_get_if_exited() returned [true]. *)
+    It is an error to call this function before
+    {{!Ocgio.Raw.Subprocess.val-wait}[g_subprocess_wait ()]} and unless
+    {{!Ocgio.Raw.Subprocess.val-get_if_exited}[g_subprocess_get_if_exited ()]}
+    returned [true]. *)
 
 external force_exit : t -> unit = "ml_g_subprocess_force_exit"
 (** Use an operating-system specific method to attempt an immediate, forceful
     termination of the process. There is no mechanism to determine whether or
     not the request itself was successful; however, you can use
-    g_subprocess_wait() to monitor the status of the process after calling this
-    function.
+    {{!Ocgio.Raw.Subprocess.val-wait}[g_subprocess_wait ()]} to monitor the
+    status of the process after calling this function.
 
     On Unix, this function sends [SIGKILL]. *)
 

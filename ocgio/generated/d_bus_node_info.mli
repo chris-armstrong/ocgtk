@@ -32,7 +32,9 @@ class d_bus_node_info : Raw.D_bus_node_info.t -> d_bus_node_info_t
 (** {1:constructors Constructors} *)
 
 val new_for_xml : string -> (d_bus_node_info_t, GError.t) result
-(** Parses [xml_data] and returns a [GDBusNodeInfo] representing the data.
+(** Parses [xml_data] and returns a
+    {{!Ocgio.D_bus_node_info.class-type-d_bus_node_info_t}[GDBusNodeInfo]}
+    representing the data.
 
     The introspection XML must contain exactly one top-level [<node>] element.
 

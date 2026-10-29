@@ -57,7 +57,8 @@
  should be done with the shared GDBus session bus. Note that due to the\n\
  internal architecture of GDBus, method calls can be dispatched at any time\n\
  (even if a main loop is not running). For this reason, you must ensure that\n\
- any object paths that you wish to register are registered before [GApplication]\n\
+ any object paths that you wish to register are registered before \
+ {{!Ocgio.Raw.Application}[GApplication]}\n\
  attempts to acquire the bus name of your application (which happens in\n\
  {{!Ocgio.Raw.Application.val-register}[Gio.Application.register]}). \
  Unfortunately, this means that you cannot\n\
@@ -131,20 +132,22 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_application_get_type"
 
 external new_ : string option -> Ocgio_enums.applicationflags -> t
   = "ml_g_application_new"
-(** Creates a new [GApplication] instance.
+(** Creates a new {{!Ocgio.Raw.Application}[GApplication]} instance.
 
     If non-[None], the application id must be valid. See
-    g_application_id_is_valid().
+    [g_application_id_is_valid ()].
 
-    If no application ID is given then some features of [GApplication] (most
-    notably application uniqueness) will be disabled. *)
+    If no application ID is given then some features of
+    {{!Ocgio.Raw.Application}[GApplication]} (most notably application
+    uniqueness) will be disabled. *)
 
 (* Methods *)
 
 external withdraw_notification : t -> string -> unit
   = "ml_g_application_withdraw_notification"
 (** Withdraws a notification that was sent with
-    g_application_send_notification().
+    {{!Ocgio.Raw.Application.val-send_notification}[g_application_send_notification
+                                                    ()]}.
 
     This call does nothing if a notification with [id] doesn't exist or the
     notification was never sent.
@@ -164,12 +167,14 @@ external unmark_busy : t -> unit = "ml_g_application_unmark_busy"
     processes.
 
     This function must only be called to cancel the effect of a previous call to
-    g_application_mark_busy(). *)
+    {{!Ocgio.Raw.Application.val-mark_busy}[g_application_mark_busy ()]}. *)
 
 external unbind_busy_property : t -> [ `object_ ] Gobject.obj -> string -> unit
   = "ml_g_application_unbind_busy_property"
 (** Destroys a binding between [property] and the busy state of [application]
-    that was previously created with g_application_bind_busy_property(). *)
+    that was previously created with
+    {{!Ocgio.Raw.Application.val-bind_busy_property}[g_application_bind_busy_property
+                                                     ()]}. *)
 
 external set_version : t -> string -> unit = "ml_g_application_set_version"
 (** Sets the version number of [application]. This will be used to implement a
@@ -189,7 +194,8 @@ external set_resource_base_path : t -> string option -> unit
    fixed names relative to the given base path.\n\n\
    By default, the resource base path is determined from the application\n\
    ID by prefixing '/' and replacing each '.' with '/'.  This is done at\n\
-   the time that the [GApplication] object is constructed.  Changes to\n\
+   the time that the {{!Ocgio.Raw.Application}[GApplication]} object is \
+   constructed.  Changes to\n\
    the application ID after that point will not have an impact on the\n\
    resource base path.\n\n\
    As an example, if the application has an ID of \"org.example.app\" then\n\
@@ -197,15 +203,18 @@ external set_resource_base_path : t -> string option -> unit
    is a [GtkApplication] (and you have not manually changed the path)\n\
    then Gtk will then search for the menus of the application at\n\
    \"/org/example/app/gtk/menus.ui\".\n\n\
-   See [GResource] for more information about adding resources to your\n\
+   See {{!Ocgio.Raw.Resource}[GResource]} for more information about adding \
+   resources to your\n\
    application.\n\n\
    You can disable automatic resource loading functionality by setting\n\
    the path to [None].\n\n\
    Changing the resource base path once the application is running is\n\
    not recommended.  The point at which the resource path is consulted\n\
    for forming paths for various purposes is unspecified.  When writing\n\
-   a sub-class of [GApplication] you should either set the\n\
-   [GApplication:resource]-base-path property at construction time, or call\n\
+   a sub-class of {{!Ocgio.Raw.Application}[GApplication]} you should either \
+   set the\n\
+   {{!Ocgio.Raw.Application.val-get_resource_base_path}[GApplication:resource-base-path]} \
+   property at construction time, or call\n\
    this function during the instance initialization. Alternatively, you\n\
    can call this function in the [GApplicationClass].startup virtual function,\n\
    before chaining up to the parent implementation."]
@@ -214,34 +223,38 @@ external set_option_context_summary : t -> string option -> unit
   = "ml_g_application_set_option_context_summary"
 (** Adds a summary to the [application] option context.
 
-    See g_option_context_set_summary() for more information. *)
+    See [g_option_context_set_summary ()] for more information. *)
 
 external set_option_context_parameter_string : t -> string option -> unit
   = "ml_g_application_set_option_context_parameter_string"
 (** Sets the parameter string to be used by the commandline handling of
     [application].
 
-    This function registers the argument to be passed to g_option_context_new()
-    when the internal [GOptionContext] of [application] is created.
+    This function registers the argument to be passed to
+    [g_option_context_new ()] when the internal [GOptionContext] of
+    [application] is created.
 
-    See g_option_context_new() for more information about [parameter_string]. *)
+    See [g_option_context_new ()] for more information about [parameter_string].
+*)
 
 external set_option_context_description : t -> string option -> unit
   = "ml_g_application_set_option_context_description"
 (** Adds a description to the [application] option context.
 
-    See g_option_context_set_description() for more information. *)
+    See [g_option_context_set_description ()] for more information. *)
 
 external set_inactivity_timeout : t -> int -> unit
   = "ml_g_application_set_inactivity_timeout"
 (** Sets the current inactivity timeout for the application.
 
     This is the amount of time (in milliseconds) after the last call to
-    g_application_release() before the application stops running.
+    {{!Ocgio.Raw.Application.val-release}[g_application_release ()]} before the
+    application stops running.
 
     This call has no side effects of its own. The value set here is only used
-    for next time g_application_release() drops the use count to zero. Any
-    timeouts currently in progress are not impacted. *)
+    for next time
+    {{!Ocgio.Raw.Application.val-release}[g_application_release ()]} drops the
+    use count to zero. Any timeouts currently in progress are not impacted. *)
 
 external set_flags : t -> Ocgio_enums.applicationflags -> unit
   = "ml_g_application_set_flags"
@@ -249,11 +262,11 @@ external set_flags : t -> Ocgio_enums.applicationflags -> unit
 
     The flags can only be modified if [application] has not yet been registered.
 
-    See [GApplicationFlags]. *)
+    See {{!Ocgio.Enums.type-applicationflags}[GApplicationFlags]}. *)
 
 external set_default : t -> unit = "ml_g_application_set_default"
 (** Sets or unsets the default application for the process, as returned by
-    g_application_get_default().
+    [g_application_get_default ()].
 
     This function does not take its own reference on [application]. If
     [application] is destroyed then the default application will revert back to
@@ -267,12 +280,13 @@ external set_application_id : t -> string option -> unit
     registered.
 
     If non-[None], the application id must be valid. See
-    g_application_id_is_valid(). *)
+    [g_application_id_is_valid ()]. *)
 
 external set_action_group : t -> Action_group.t option -> unit
   = "ml_g_application_set_action_group"
-(** This used to be how actions were associated with a [GApplication]. Now there
-    is [GActionMap] for that. *)
+(** This used to be how actions were associated with a
+    {{!Ocgio.Raw.Application}[GApplication]}. Now there is
+    {{!Ocgio.Raw.Action_map}[GActionMap]} for that. *)
 
 external send_notification : t -> string option -> Notification.t -> unit
   = "ml_g_application_send_notification"
@@ -308,32 +322,38 @@ external run : t -> int -> string array option -> int = "ml_g_application_run"
    the [argc], [argv] parameters from main() to this function, it is possible\n\
    to pass [None] if [argv] is not available or commandline handling is not\n\
    required.  Note that on Windows, [argc] and [argv] are ignored, and\n\
-   g_win32_get_command_line() is called internally (for proper support\n\
+   [g_win32_get_command_line ()] is called internally (for proper support\n\
    of Unicode commandline arguments).\n\n\
-   [GApplication] will attempt to parse the commandline arguments.  You\n\
+   {{!Ocgio.Raw.Application}[GApplication]} will attempt to parse the \
+   commandline arguments.  You\n\
    can add commandline flags to the list of recognised options by way of\n\
-   g_application_add_main_option_entries().  After this, the\n\
-   [GApplication::handle]-local-options signal is emitted, from which the\n\
+   [g_application_add_main_option_entries ()].  After this, the\n\
+   [GApplication::handle-local-options] signal is emitted, from which the\n\
    application can inspect the values of its [GOptionEntrys].\n\n\
-   [GApplication::handle]-local-options is a good place to handle options\n\
+   [GApplication::handle-local-options] is a good place to handle options\n\
    such as [--version], where an immediate reply from the local process is\n\
    desired (instead of communicating with an already-running instance).\n\
-   A [GApplication::handle]-local-options handler can stop further processing\n\
+   A [GApplication::handle-local-options] handler can stop further processing\n\
    by returning a non-negative value, which then becomes the exit status of\n\
    the process.\n\n\
    What happens next depends on the flags: if\n\
-   [G_APPLICATION_HANDLES_COMMAND_LINE] was specified then the remaining\n\
+   {{!Ocgio.Enums.type-applicationflags_flag.constructor-HANDLES_COMMAND_LINE}[G_APPLICATION_HANDLES_COMMAND_LINE]} \
+   was specified then the remaining\n\
    commandline arguments are sent to the primary instance, where a\n\
-   [GApplication::command]-line signal is emitted.  Otherwise, the\n\
+   {{!Ocgio.Raw.Application.val-on_command_line}[GApplication::command-line]} \
+   signal is emitted.  Otherwise, the\n\
    remaining commandline arguments are assumed to be a list of files.\n\
    If there are no files listed, the application is activated via the\n\
-   [GApplication::activate] signal.  If there are one or more files, and\n\
-   [G_APPLICATION_HANDLES_OPEN] was specified then the files are opened\n\
+   {{!Ocgio.Raw.Application.val-on_activate}[GApplication::activate]} signal.  \
+   If there are one or more files, and\n\
+   {{!Ocgio.Enums.type-applicationflags_flag.constructor-HANDLES_OPEN}[G_APPLICATION_HANDLES_OPEN]} \
+   was specified then the files are opened\n\
    via the [GApplication::open] signal.\n\n\
    If you are interested in doing more complicated local handling of the\n\
-   commandline then you should implement your own [GApplication] subclass\n\
-   and override local_command_line(). In this case, you most likely want\n\
-   to return [true] from your local_command_line() implementation to\n\
+   commandline then you should implement your own \
+   {{!Ocgio.Raw.Application}[GApplication]} subclass\n\
+   and override [local_command_line ()]. In this case, you most likely want\n\
+   to return [true] from your [local_command_line ()] implementation to\n\
    suppress the default handling. See\n\
    \\[gapplication-example-cmdline2.c\\]\\[https://gitlab.gnome.org/GNOME/glib/-/blob/HEAD/gio/tests/gapplication-example-cmdline2.c\\]\n\
    for an example.\n\n\
@@ -341,23 +361,31 @@ external run : t -> int -> string array option -> int = "ml_g_application_run"
    then the exit status is returned immediately.  If the use count is\n\
    non-zero then the default main context is iterated until the use count\n\
    falls to zero, at which point 0 is returned.\n\n\
-   If the [G_APPLICATION_IS_SERVICE] flag is set, then the service will\n\
+   If the \
+   {{!Ocgio.Enums.type-applicationflags_flag.constructor-IS_SERVICE}[G_APPLICATION_IS_SERVICE]} \
+   flag is set, then the service will\n\
    run for as much as 10 seconds with a use count of zero while waiting\n\
    for the message that caused the activation to arrive.  After that,\n\
    if the use count falls to zero the application will exit immediately,\n\
-   except in the case that g_application_set_inactivity_timeout() is in\n\
+   except in the case that \
+   {{!Ocgio.Raw.Application.val-set_inactivity_timeout}[g_application_set_inactivity_timeout \
+   ()]} is in\n\
    use.\n\n\
-   This function sets the prgname (g_set_prgname()), if not already set,\n\
+   This function sets the prgname ([g_set_prgname ()]), if not already set,\n\
    to the basename of argv\\[0\\].\n\n\
-   Much like g_main_loop_run(), this function will acquire the main context\n\
+   Much like [g_main_loop_run ()], this function will acquire the main context\n\
    for the duration that the application is running.\n\n\
    Since 2.40, applications that are not explicitly flagged as services\n\
-   or launchers (ie: neither [G_APPLICATION_IS_SERVICE] or\n\
-   [G_APPLICATION_IS_LAUNCHER] are given as flags) will check (from the\n\
+   or launchers (ie: neither \
+   {{!Ocgio.Enums.type-applicationflags_flag.constructor-IS_SERVICE}[G_APPLICATION_IS_SERVICE]} \
+   or\n\
+   {{!Ocgio.Enums.type-applicationflags_flag.constructor-IS_LAUNCHER}[G_APPLICATION_IS_LAUNCHER]} \
+   are given as flags) will check (from the\n\
    default handler for local_command_line) if \"--gapplication-service\"\n\
    was given in the command line.  If this flag is present then normal\n\
    commandline processing is interrupted and the\n\
-   [G_APPLICATION_IS_SERVICE] flag is set.  This provides a \"compromise\"\n\
+   {{!Ocgio.Enums.type-applicationflags_flag.constructor-IS_SERVICE}[G_APPLICATION_IS_SERVICE]} \
+   flag is set.  This provides a \"compromise\"\n\
    solution whereby running an application directly from the commandline\n\
    will invoke it in the normal way (which can be useful for debugging)\n\
    while still allowing applications to be D-Bus activated in service\n\
@@ -374,7 +402,7 @@ external release : t -> unit = "ml_g_application_release"
     When the use count reaches zero, the application will stop running.
 
     Never call this function except to cancel the effect of a previous call to
-    g_application_hold(). *)
+    {{!Ocgio.Raw.Application.val-hold}[g_application_hold ()]}. *)
 
 external register : t -> Cancellable.t option -> (bool, GError.t) result
   = "ml_g_application_register"
@@ -385,8 +413,9 @@ external register : t -> Cancellable.t option -> (bool, GError.t) result
     instance. This is implemented by attempting to acquire the application
     identifier as a unique bus name on the session bus using GDBus.
 
-    If there is no application ID or if [G_APPLICATION_NON_UNIQUE] was given,
-    then this process will always become the primary instance.
+    If there is no application ID or if
+    {{!Ocgio.Enums.type-applicationflags_flag.constructor-NON_UNIQUE}[G_APPLICATION_NON_UNIQUE]}
+    was given, then this process will always become the primary instance.
 
     Due to the internal architecture of GDBus, method calls can be dispatched at
     any time (even if a main loop is not running). For this reason, you must
@@ -396,8 +425,9 @@ external register : t -> Cancellable.t option -> (bool, GError.t) result
     If the application has already been registered then [true] is returned with
     no work performed.
 
-    The [GApplication::startup] signal is emitted if registration succeeds and
-    [application] is the primary instance (including the non-unique case).
+    The {{!Ocgio.Raw.Application.val-on_startup}[GApplication::startup]} signal
+    is emitted if registration succeeds and [application] is the primary
+    instance (including the non-unique case).
 
     In the event of an error (such as [cancellable] being cancelled, or a
     failure to connect to the session bus), [false] is returned and [error] is
@@ -405,21 +435,25 @@ external register : t -> Cancellable.t option -> (bool, GError.t) result
 
     Note: the return value of this function is not an indicator that this
     instance is or is not the primary instance of the application. See
-    g_application_get_is_remote() for that. *)
+    {{!Ocgio.Raw.Application.val-get_is_remote}[g_application_get_is_remote ()]}
+    for that. *)
 
 external quit : t -> unit = "ml_g_application_quit"
 (** Immediately quits the application.
 
-    Upon return to the mainloop, g_application_run() will return, calling only
-    the 'shutdown' function before doing so.
+    Upon return to the mainloop,
+    {{!Ocgio.Raw.Application.val-run}[g_application_run ()]} will return,
+    calling only the 'shutdown' function before doing so.
 
     The hold count is ignored. Take care if your code has called
-    g_application_hold() on the application and is therefore still expecting it
-    to exist. (Note that you may have called g_application_hold() indirectly,
-    for example through gtk_application_add_window().)
+    {{!Ocgio.Raw.Application.val-hold}[g_application_hold ()]} on the
+    application and is therefore still expecting it to exist. (Note that you may
+    have called {{!Ocgio.Raw.Application.val-hold}[g_application_hold ()]}
+    indirectly, for example through [gtk_application_add_window ()].)
 
-    The result of calling g_application_run() again after it returns is
-    unspecified. *)
+    The result of calling
+    {{!Ocgio.Raw.Application.val-run}[g_application_run ()]} again after it
+    returns is unspecified. *)
 
 external open_ :
   t -> App_info_cycle_64c425a0.File.t array -> int -> string -> unit
@@ -434,7 +468,9 @@ external open_ :
    opening files (eg: \"view\" vs \"edit\", etc).  Unless you have a need\n\
    for this functionality, you should use \"\".\n\n\
    The application must be registered before calling this function\n\
-   and it must have the [G_APPLICATION_HANDLES_OPEN] flag set."]
+   and it must have the \
+   {{!Ocgio.Enums.type-applicationflags_flag.constructor-HANDLES_OPEN}[G_APPLICATION_HANDLES_OPEN]} \
+   flag set."]
 
 external mark_busy : t -> unit = "ml_g_application_mark_busy"
 (** Increases the busy count of [application].
@@ -446,7 +482,8 @@ external mark_busy : t -> unit = "ml_g_application_mark_busy"
     use that information to indicate the state to the user (e.g. with a
     spinner).
 
-    To cancel the busy indication, use g_application_unmark_busy().
+    To cancel the busy indication, use
+    {{!Ocgio.Raw.Application.val-unmark_busy}[g_application_unmark_busy ()]}.
 
     The application must be registered before calling this function. *)
 
@@ -454,10 +491,12 @@ external hold : t -> unit = "ml_g_application_hold"
 (** Increases the use count of [application].
 
     Use this function to indicate that the application has a reason to continue
-    to run. For example, g_application_hold() is called by GTK when a toplevel
-    window is on the screen.
+    to run. For example,
+    {{!Ocgio.Raw.Application.val-hold}[g_application_hold ()]} is called by GTK
+    when a toplevel window is on the screen.
 
-    To cancel the hold, call g_application_release(). *)
+    To cancel the hold, call
+    {{!Ocgio.Raw.Application.val-release}[g_application_release ()]}. *)
 
 external get_version : t -> string option = "ml_g_application_get_version"
 (** Gets the version of [application]. *)
@@ -466,7 +505,10 @@ external get_resource_base_path : t -> string option
   = "ml_g_application_get_resource_base_path"
 (** Gets the resource base path of [application].
 
-    See g_application_set_resource_base_path() for more information. *)
+    See
+    {{!Ocgio.Raw.Application.val-set_resource_base_path}[g_application_set_resource_base_path
+                                                         ()]} for more
+    information. *)
 
 external get_is_remote : t -> bool = "ml_g_application_get_is_remote"
 (** Checks if [application] is remote.
@@ -477,63 +519,77 @@ external get_is_remote : t -> bool = "ml_g_application_get_is_remote"
     primary instance.
 
     The value of this property cannot be accessed before
-    g_application_register() has been called. See
-    g_application_get_is_registered(). *)
+    {{!Ocgio.Raw.Application.val-register}[g_application_register ()]} has been
+    called. See
+    {{!Ocgio.Raw.Application.val-get_is_registered}[g_application_get_is_registered
+                                                    ()]}. *)
 
 external get_is_registered : t -> bool = "ml_g_application_get_is_registered"
 (** Checks if [application] is registered.
 
-    An application is registered if g_application_register() has been
+    An application is registered if
+    {{!Ocgio.Raw.Application.val-register}[g_application_register ()]} has been
     successfully called. *)
 
 external get_is_busy : t -> bool = "ml_g_application_get_is_busy"
 (** Gets the application's current busy state, as set through
-    g_application_mark_busy() or g_application_bind_busy_property(). *)
+    {{!Ocgio.Raw.Application.val-mark_busy}[g_application_mark_busy ()]} or
+    {{!Ocgio.Raw.Application.val-bind_busy_property}[g_application_bind_busy_property
+                                                     ()]}. *)
 
 external get_inactivity_timeout : t -> int
   = "ml_g_application_get_inactivity_timeout"
 (** Gets the current inactivity timeout for the application.
 
     This is the amount of time (in milliseconds) after the last call to
-    g_application_release() before the application stops running. *)
+    {{!Ocgio.Raw.Application.val-release}[g_application_release ()]} before the
+    application stops running. *)
 
 external get_flags : t -> Ocgio_enums.applicationflags
   = "ml_g_application_get_flags"
 (** Gets the flags for [application].
 
-    See [GApplicationFlags]. *)
+    See {{!Ocgio.Enums.type-applicationflags}[GApplicationFlags]}. *)
 
 external get_dbus_object_path : t -> string option
   = "ml_g_application_get_dbus_object_path"
 (** Gets the D-Bus object path being used by the application, or [None].
 
-    If [GApplication] is using its D-Bus backend then this function will return
-    the D-Bus object path that [GApplication] is using. If the application is
-    the primary instance then there is an object published at this path. If the
+    If {{!Ocgio.Raw.Application}[GApplication]} is using its D-Bus backend then
+    this function will return the D-Bus object path that
+    {{!Ocgio.Raw.Application}[GApplication]} is using. If the application is the
+    primary instance then there is an object published at this path. If the
     application is not the primary instance then the result of this function is
     undefined.
 
-    If [GApplication] is not using D-Bus then this function will return [None].
-    This includes the situation where the D-Bus backend would normally be in use
-    but we were unable to connect to the bus.
+    If {{!Ocgio.Raw.Application}[GApplication]} is not using D-Bus then this
+    function will return [None]. This includes the situation where the D-Bus
+    backend would normally be in use but we were unable to connect to the bus.
 
     This function must not be called before the application has been registered.
-    See g_application_get_is_registered(). *)
+    See
+    {{!Ocgio.Raw.Application.val-get_is_registered}[g_application_get_is_registered
+                                                    ()]}. *)
 
 external get_dbus_connection : t -> D_bus_connection.t option
   = "ml_g_application_get_dbus_connection"
-(** Gets the [GDBusConnection] being used by the application, or [None].
+(** Gets the {{!Ocgio.Raw.D_bus_connection}[GDBusConnection]} being used by the
+    application, or [None].
 
-    If [GApplication] is using its D-Bus backend then this function will return
-    the [GDBusConnection] being used for uniqueness and communication with the
-    desktop environment and other instances of the application.
+    If {{!Ocgio.Raw.Application}[GApplication]} is using its D-Bus backend then
+    this function will return the
+    {{!Ocgio.Raw.D_bus_connection}[GDBusConnection]} being used for uniqueness
+    and communication with the desktop environment and other instances of the
+    application.
 
-    If [GApplication] is not using D-Bus then this function will return [None].
-    This includes the situation where the D-Bus backend would normally be in use
-    but we were unable to connect to the bus.
+    If {{!Ocgio.Raw.Application}[GApplication]} is not using D-Bus then this
+    function will return [None]. This includes the situation where the D-Bus
+    backend would normally be in use but we were unable to connect to the bus.
 
     This function must not be called before the application has been registered.
-    See g_application_get_is_registered(). *)
+    See
+    {{!Ocgio.Raw.Application.val-get_is_registered}[g_application_get_is_registered
+                                                    ()]}. *)
 
 external get_application_id : t -> string option
   = "ml_g_application_get_application_id"
@@ -541,8 +597,9 @@ external get_application_id : t -> string option
 
 external bind_busy_property : t -> [ `object_ ] Gobject.obj -> string -> unit
   = "ml_g_application_bind_busy_property"
-(** Marks [application] as busy (see g_application_mark_busy()) while [property]
-    on [object] is [true].
+(** Marks [application] as busy (see
+    {{!Ocgio.Raw.Application.val-mark_busy}[g_application_mark_busy ()]}) while
+    [property] on [object] is [true].
 
     The binding holds a reference to [application] while it is active, but not
     to [object]. Instead, the binding is destroyed when [object] is finalized.
@@ -551,8 +608,9 @@ external bind_busy_property : t -> [ `object_ ] Gobject.obj -> string -> unit
 external activate : t -> unit = "ml_g_application_activate"
 (** Activates the application.
 
-    In essence, this results in the [GApplication::activate] signal being
-    emitted in the primary instance.
+    In essence, this results in the
+    {{!Ocgio.Raw.Application.val-on_activate}[GApplication::activate]} signal
+    being emitted in the primary instance.
 
     The application must be registered before calling this function. *)
 
@@ -561,7 +619,8 @@ external activate : t -> unit = "ml_g_application_activate"
 val on_activate :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 (** The ::activate signal is emitted on the primary instance when an activation
-    occurs. See g_application_activate(). *)
+    occurs. See
+    {{!Ocgio.Raw.Application.val-activate}[g_application_activate ()]}. *)
 
 val on_command_line :
   ?after:bool ->
@@ -569,16 +628,21 @@ val on_command_line :
   callback:(command_line:Application_command_line.t -> int) ->
   Gobject.Signal.handler_id
 (** The ::command-line signal is emitted on the primary instance when a
-    commandline is not handled locally. See g_application_run() and the
-    [GApplicationCommandLine] documentation for more information. *)
+    commandline is not handled locally. See
+    {{!Ocgio.Raw.Application.val-run}[g_application_run ()]} and the
+    {{!Ocgio.Raw.Application_command_line}[GApplicationCommandLine]}
+    documentation for more information. *)
 
 val on_name_lost :
   ?after:bool -> t -> callback:(unit -> bool) -> Gobject.Signal.handler_id
 (** The ::name-lost signal is emitted only on the registered primary instance
     when a new instance has taken over. This can only happen if the application
-    is using the [G_APPLICATION_ALLOW_REPLACEMENT] flag.
+    is using the
+    {{!Ocgio.Enums.type-applicationflags_flag.constructor-ALLOW_REPLACEMENT}[G_APPLICATION_ALLOW_REPLACEMENT]}
+    flag.
 
-    The default handler for this signal calls g_application_quit(). *)
+    The default handler for this signal calls
+    {{!Ocgio.Raw.Application.val-quit}[g_application_quit ()]}. *)
 
 val on_shutdown :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
@@ -588,4 +652,5 @@ val on_shutdown :
 val on_startup :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
 (** The ::startup signal is emitted on the primary instance immediately after
-    registration. See g_application_register(). *)
+    registration. See
+    {{!Ocgio.Raw.Application.val-register}[g_application_register ()]}. *)

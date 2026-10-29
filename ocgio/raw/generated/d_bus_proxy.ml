@@ -60,11 +60,11 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_d_bus_proxy_get_type"
 
 external new_finish : Async_result.t -> (t, GError.t) result
   = "ml_g_dbus_proxy_new_finish"
-(** Finishes creating a [GDBusProxy]. *)
+(** Finishes creating a {{!Ocgio.Raw.D_bus_proxy}[GDBusProxy]}. *)
 
 external new_for_bus_finish : Async_result.t -> (t, GError.t) result
   = "ml_g_dbus_proxy_new_for_bus_finish"
-(** Finishes creating a [GDBusProxy]. *)
+(** Finishes creating a {{!Ocgio.Raw.D_bus_proxy}[GDBusProxy]}. *)
 
 external new_for_bus_sync :
   Ocgio_enums.bustype ->
@@ -77,10 +77,11 @@ external new_for_bus_sync :
   (t, GError.t) result
   = "ml_g_dbus_proxy_new_for_bus_sync_bytecode"
     "ml_g_dbus_proxy_new_for_bus_sync_native"
-(** Like g_dbus_proxy_new_sync() but takes a [GBusType] instead of a
-    [GDBusConnection].
+(** Like {{!Ocgio.Raw.D_bus_proxy.val-new_sync}[g_dbus_proxy_new_sync ()]} but
+    takes a {{!Ocgio.Enums.type-bustype}[GBusType]} instead of a
+    {{!Ocgio.Raw.D_bus_connection}[GDBusConnection]}.
 
-    [GDBusProxy] is used in this
+    {{!Ocgio.Raw.D_bus_proxy}[GDBusProxy]} is used in this
     \[example\]{{!Ocgio.Raw.D_bus_proxy}[Gio.DBusProxy]}. *)
 
 external new_sync :
@@ -95,27 +96,36 @@ external new_sync :
   = "ml_g_dbus_proxy_new_sync_bytecode" "ml_g_dbus_proxy_new_sync_native"
 (** Creates a proxy for accessing [interface_name] on the remote object at
     [object_path] owned by [name] at [connection] and synchronously loads D-Bus
-    properties unless the [G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES] flag is
-    used.
+    properties unless the
+    {{!Ocgio.Enums.type-dbusproxyflags_flag.constructor-DO_NOT_LOAD_PROPERTIES}[G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES]}
+    flag is used.
 
-    If the [G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS] flag is not set, also
-    sets up match rules for signals. Connect to the [GDBusProxy::g]-signal
-    signal to handle signals from the remote object.
+    If the
+    {{!Ocgio.Enums.type-dbusproxyflags_flag.constructor-DO_NOT_CONNECT_SIGNALS}[G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS]}
+    flag is not set, also sets up match rules for signals. Connect to the
+    {{!Ocgio.Raw.D_bus_proxy.val-on_g_signal}[GDBusProxy::g-signal]} signal to
+    handle signals from the remote object.
 
-    If both [G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES] and
-    [G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS] are set, this constructor is
-    guaranteed to return immediately without blocking.
+    If both
+    {{!Ocgio.Enums.type-dbusproxyflags_flag.constructor-DO_NOT_LOAD_PROPERTIES}[G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES]}
+    and
+    {{!Ocgio.Enums.type-dbusproxyflags_flag.constructor-DO_NOT_CONNECT_SIGNALS}[G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS]}
+    are set, this constructor is guaranteed to return immediately without
+    blocking.
 
     If [name] is a well-known name and the
-    [G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START] and
-    [G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION] flags aren't set and
-    no name owner currently exists, the message bus will be requested to launch
-    a name owner for the name.
+    {{!Ocgio.Enums.type-dbusproxyflags_flag.constructor-DO_NOT_AUTO_START}[G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START]}
+    and
+    {{!Ocgio.Enums.type-dbusproxyflags_flag.constructor-DO_NOT_AUTO_START_AT_CONSTRUCTION}
+     [G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START_AT_CONSTRUCTION]} flags aren't set
+    and no name owner currently exists, the message bus will be requested to
+    launch a name owner for the name.
 
-    This is a synchronous failable constructor. See g_dbus_proxy_new() and
-    g_dbus_proxy_new_finish() for the asynchronous version.
+    This is a synchronous failable constructor. See [g_dbus_proxy_new ()] and
+    {{!Ocgio.Raw.D_bus_proxy.val-new_finish}[g_dbus_proxy_new_finish ()]} for
+    the asynchronous version.
 
-    [GDBusProxy] is used in this
+    {{!Ocgio.Raw.D_bus_proxy}[GDBusProxy]} is used in this
     \[example\]{{!Ocgio.Raw.D_bus_proxy}[Gio.DBusProxy]}. *)
 
 (* Methods *)
@@ -123,15 +133,20 @@ external new_sync :
 external set_interface_info : t -> D_bus_interface_info.t option -> unit
   = "ml_g_dbus_proxy_set_interface_info"
 (** Ensure that interactions with [proxy] conform to the given interface. See
-    the [GDBusProxy:g]-interface-info property for more details. *)
+    the
+    {{!Ocgio.Raw.D_bus_proxy.val-get_g_interface_info}[GDBusProxy:g-interface-info]}
+    property for more details. *)
 
 external set_default_timeout : t -> int -> unit
   = "ml_g_dbus_proxy_set_default_timeout"
 (** Sets the timeout to use if -1 (specifying default timeout) is passed as
-    [timeout_msec] in the g_dbus_proxy_call() and g_dbus_proxy_call_sync()
+    [timeout_msec] in the [g_dbus_proxy_call ()] and
+    {{!Ocgio.Raw.D_bus_proxy.val-call_sync}[g_dbus_proxy_call_sync ()]}
     functions.
 
-    See the [GDBusProxy:g]-default-timeout property for more details. *)
+    See the
+    {{!Ocgio.Raw.D_bus_proxy.val-get_g_default_timeout}[GDBusProxy:g-default-timeout]}
+    property for more details. *)
 
 external set_cached_property : t -> string -> Gvariant.t option -> unit
   = "ml_g_dbus_proxy_set_cached_property"
@@ -141,10 +156,11 @@ external set_cached_property : t -> string -> Gvariant.t option -> unit
    If [value] is [None], then the cached value is removed from the\n\
    property cache.\n\n\
    If [proxy] has an expected interface (see\n\
-   [GDBusProxy:g]-interface-info) and [property_name] is referenced by\n\
+   {{!Ocgio.Raw.D_bus_proxy.val-get_g_interface_info}[GDBusProxy:g-interface-info]}) \
+   and [property_name] is referenced by\n\
    it, then [value] is checked against the type of the property.\n\n\
    If the [value] [GVariant] is floating, it is consumed. This allows\n\
-   convenient 'inline' use of g_variant_new(), e.g.\n\n\
+   convenient 'inline' use of [g_variant_new ()], e.g.\n\n\
    {[\n\
   \ g_dbus_proxy_set_cached_property (proxy,\n\
   \                                   \"SomeProperty\",\n\
@@ -171,7 +187,9 @@ external get_object_path : t -> string = "ml_g_dbus_proxy_get_object_path"
 external get_name_owner : t -> string option = "ml_g_dbus_proxy_get_name_owner"
 (** The unique name that owns the name that [proxy] is for or [None] if no-one
     currently owns that name. You may connect to the [GObject::notify] signal to
-    track changes to the [GDBusProxy:g]-name-owner property. *)
+    track changes to the
+    {{!Ocgio.Raw.D_bus_proxy.val-get_g_name_owner}[GDBusProxy:g-name-owner]}
+    property. *)
 
 external get_name : t -> string option = "ml_g_dbus_proxy_get_name"
 (** Gets the name that [proxy] was constructed for.
@@ -185,9 +203,10 @@ external get_interface_name : t -> string = "ml_g_dbus_proxy_get_interface_name"
 
 external get_interface_info : t -> D_bus_interface_info.t option
   = "ml_g_dbus_proxy_get_interface_info"
-(** Returns the [GDBusInterfaceInfo], if any, specifying the interface that
-    [proxy] conforms to. See the [GDBusProxy:g]-interface-info property for more
-    details. *)
+(** Returns the {{!Ocgio.Raw.D_bus_interface_info}[GDBusInterfaceInfo]}, if any,
+    specifying the interface that [proxy] conforms to. See the
+    {{!Ocgio.Raw.D_bus_proxy.val-get_g_interface_info}[GDBusProxy:g-interface-info]}
+    property for more details. *)
 
 external get_flags : t -> Ocgio_enums.dbusproxyflags
   = "ml_g_dbus_proxy_get_flags"
@@ -195,10 +214,13 @@ external get_flags : t -> Ocgio_enums.dbusproxyflags
 
 external get_default_timeout : t -> int = "ml_g_dbus_proxy_get_default_timeout"
 (** Gets the timeout to use if -1 (specifying default timeout) is passed as
-    [timeout_msec] in the g_dbus_proxy_call() and g_dbus_proxy_call_sync()
+    [timeout_msec] in the [g_dbus_proxy_call ()] and
+    {{!Ocgio.Raw.D_bus_proxy.val-call_sync}[g_dbus_proxy_call_sync ()]}
     functions.
 
-    See the [GDBusProxy:g]-default-timeout property for more details. *)
+    See the
+    {{!Ocgio.Raw.D_bus_proxy.val-get_g_default_timeout}[GDBusProxy:g-default-timeout]}
+    property for more details. *)
 
 external get_connection : t -> D_bus_connection.t
   = "ml_g_dbus_proxy_get_connection"
@@ -213,8 +235,9 @@ external get_cached_property : t -> string -> Gvariant.t option
 (** Looks up the value for a property from the cache. This call does no blocking
     IO.
 
-    If [proxy] has an expected interface (see [GDBusProxy:g]-interface-info) and
-    [property_name] is referenced by it, then [value] is checked against the
+    If [proxy] has an expected interface (see
+    {{!Ocgio.Raw.D_bus_proxy.val-get_g_interface_info}[GDBusProxy:g-interface-info]})
+    and [property_name] is referenced by it, then [value] is checked against the
     type of the property. *)
 
 external call_sync :
@@ -231,14 +254,17 @@ external call_sync :
    If [method_name] contains any dots, then [name] is split into interface and\n\
    method name parts. This allows using [proxy] for invoking methods on\n\
    other interfaces.\n\n\
-   If the [GDBusConnection] associated with [proxy] is disconnected then\n\
-   the operation will fail with [G_IO_ERROR_CLOSED]. If\n\
+   If the {{!Ocgio.Raw.D_bus_connection}[GDBusConnection]} associated with \
+   [proxy] is disconnected then\n\
+   the operation will fail with \
+   {{!Ocgio.Enums.type-ioerrorenum.constructor-CLOSED}[G_IO_ERROR_CLOSED]}. If\n\
    [cancellable] is canceled, the operation will fail with\n\
-   [G_IO_ERROR_CANCELLED]. If [parameters] contains a value not\n\
+   {{!Ocgio.Enums.type-ioerrorenum.constructor-CANCELLED}[G_IO_ERROR_CANCELLED]}. \
+   If [parameters] contains a value not\n\
    compatible with the D-Bus protocol, the operation fails with\n\
-   [G_IO_ERROR_INVALID_ARGUMENT].\n\n\
+   {{!Ocgio.Enums.type-ioerrorenum.constructor-INVALID_ARGUMENT}[G_IO_ERROR_INVALID_ARGUMENT]}.\n\n\
    If the [parameters] [GVariant] is floating, it is consumed. This allows\n\
-   convenient 'inline' use of g_variant_new(), e.g.:\n\n\
+   convenient 'inline' use of [g_variant_new ()], e.g.:\n\n\
    {[\n\
   \ g_dbus_proxy_call_sync (proxy,\n\
   \                         \"TwoStrings\",\n\
@@ -251,26 +277,28 @@ external call_sync :
   \                         &error);\n\
    ]}\n\n\
    The calling thread is blocked until a reply is received. See\n\
-   g_dbus_proxy_call() for the asynchronous version of this\n\
+   [g_dbus_proxy_call ()] for the asynchronous version of this\n\
    method.\n\n\
    If [proxy] has an expected interface (see\n\
-   [GDBusProxy:g]-interface-info) and [method_name] is referenced by it,\n\
+   {{!Ocgio.Raw.D_bus_proxy.val-get_g_interface_info}[GDBusProxy:g-interface-info]}) \
+   and [method_name] is referenced by it,\n\
    then the return value is checked against the return type."]
 
 external call_finish : t -> Async_result.t -> (Gvariant.t, GError.t) result
   = "ml_g_dbus_proxy_call_finish"
-(** Finishes an operation started with g_dbus_proxy_call(). *)
+(** Finishes an operation started with [g_dbus_proxy_call ()]. *)
 
 (* Properties *)
 
 external get_g_connection : t -> D_bus_connection.t
   = "ml_g_d_bus_proxy_get_g_connection"
-(** The [GDBusConnection] the proxy is for. *)
+(** The {{!Ocgio.Raw.D_bus_connection}[GDBusConnection]} the proxy is for. *)
 
 external get_g_default_timeout : t -> int
   = "ml_g_d_bus_proxy_get_g_default_timeout"
 (** The timeout to use if -1 (specifying default timeout) is passed as
-    [timeout_msec] in the g_dbus_proxy_call() and g_dbus_proxy_call_sync()
+    [timeout_msec] in the [g_dbus_proxy_call ()] and
+    {{!Ocgio.Raw.D_bus_proxy.val-call_sync}[g_dbus_proxy_call_sync ()]}
     functions.
 
     This allows applications to set a proxy-wide timeout for all remote method
@@ -281,7 +309,8 @@ external get_g_default_timeout : t -> int
 external set_g_default_timeout : t -> int -> unit
   = "ml_g_d_bus_proxy_set_g_default_timeout"
 (** The timeout to use if -1 (specifying default timeout) is passed as
-    [timeout_msec] in the g_dbus_proxy_call() and g_dbus_proxy_call_sync()
+    [timeout_msec] in the [g_dbus_proxy_call ()] and
+    {{!Ocgio.Raw.D_bus_proxy.val-call_sync}[g_dbus_proxy_call_sync ()]}
     functions.
 
     This allows applications to set a proxy-wide timeout for all remote method
@@ -291,30 +320,36 @@ external set_g_default_timeout : t -> int -> unit
 
 external get_g_flags : t -> Ocgio_enums.dbusproxyflags
   = "ml_g_d_bus_proxy_get_g_flags"
-(** Flags from the [GDBusProxyFlags] enumeration. *)
+(** Flags from the {{!Ocgio.Enums.type-dbusproxyflags}[GDBusProxyFlags]}
+    enumeration. *)
 
 external get_g_interface_info : t -> D_bus_interface_info.t
   = "ml_g_d_bus_proxy_get_g_interface_info"
 [@@ocaml.doc
   "Ensure that interactions with this proxy conform to the given\n\
    interface. This is mainly to ensure that malformed data received\n\
-   from the other peer is ignored. The given [GDBusInterfaceInfo] is\n\
+   from the other peer is ignored. The given \
+   {{!Ocgio.Raw.D_bus_interface_info}[GDBusInterfaceInfo]} is\n\
    said to be the \"expected interface\".\n\n\
    The checks performed are:\n\n\
    - When completing a method call, if the type signature of\n\
    the reply message isn't what's expected, the reply is\n\
-   discarded and the [GError] is set to [G_IO_ERROR_INVALID_ARGUMENT].\n\n\
+   discarded and the [GError] is set to \
+   {{!Ocgio.Enums.type-ioerrorenum.constructor-INVALID_ARGUMENT}[G_IO_ERROR_INVALID_ARGUMENT]}.\n\n\
    - Received signals that have a type signature mismatch are dropped and\n\
-   a warning is logged via g_warning().\n\n\
+   a warning is logged via [g_warning ()].\n\n\
    - Properties received via the initial [GetAll()] call or via the\n\
    [::PropertiesChanged] signal (on the\n\
    org.freedesktop.DBus.Properties\n\
-   interface) or set using g_dbus_proxy_set_cached_property()\n\
+   interface) or set using \
+   {{!Ocgio.Raw.D_bus_proxy.val-set_cached_property}[g_dbus_proxy_set_cached_property \
+   ()]}\n\
    with a type signature mismatch are ignored and a warning is\n\
-   logged via g_warning().\n\n\
+   logged via [g_warning ()].\n\n\
    Note that these checks are never done on methods, signals and\n\
    properties that are not referenced in the given\n\
-   [GDBusInterfaceInfo], since extending a D-Bus interface on the\n\
+   {{!Ocgio.Raw.D_bus_interface_info}[GDBusInterfaceInfo]}, since extending a \
+   D-Bus interface on the\n\
    service-side is not considered an ABI break."]
 
 external set_g_interface_info : t -> D_bus_interface_info.t -> unit
@@ -322,23 +357,28 @@ external set_g_interface_info : t -> D_bus_interface_info.t -> unit
 [@@ocaml.doc
   "Ensure that interactions with this proxy conform to the given\n\
    interface. This is mainly to ensure that malformed data received\n\
-   from the other peer is ignored. The given [GDBusInterfaceInfo] is\n\
+   from the other peer is ignored. The given \
+   {{!Ocgio.Raw.D_bus_interface_info}[GDBusInterfaceInfo]} is\n\
    said to be the \"expected interface\".\n\n\
    The checks performed are:\n\n\
    - When completing a method call, if the type signature of\n\
    the reply message isn't what's expected, the reply is\n\
-   discarded and the [GError] is set to [G_IO_ERROR_INVALID_ARGUMENT].\n\n\
+   discarded and the [GError] is set to \
+   {{!Ocgio.Enums.type-ioerrorenum.constructor-INVALID_ARGUMENT}[G_IO_ERROR_INVALID_ARGUMENT]}.\n\n\
    - Received signals that have a type signature mismatch are dropped and\n\
-   a warning is logged via g_warning().\n\n\
+   a warning is logged via [g_warning ()].\n\n\
    - Properties received via the initial [GetAll()] call or via the\n\
    [::PropertiesChanged] signal (on the\n\
    org.freedesktop.DBus.Properties\n\
-   interface) or set using g_dbus_proxy_set_cached_property()\n\
+   interface) or set using \
+   {{!Ocgio.Raw.D_bus_proxy.val-set_cached_property}[g_dbus_proxy_set_cached_property \
+   ()]}\n\
    with a type signature mismatch are ignored and a warning is\n\
-   logged via g_warning().\n\n\
+   logged via [g_warning ()].\n\n\
    Note that these checks are never done on methods, signals and\n\
    properties that are not referenced in the given\n\
-   [GDBusInterfaceInfo], since extending a D-Bus interface on the\n\
+   {{!Ocgio.Raw.D_bus_interface_info}[GDBusInterfaceInfo]}, since extending a \
+   D-Bus interface on the\n\
    service-side is not considered an ABI break."]
 
 external get_g_interface_name : t -> string
@@ -349,9 +389,10 @@ external get_g_name : t -> string = "ml_g_d_bus_proxy_get_g_name"
 (** The well-known or unique name that the proxy is for. *)
 
 external get_g_name_owner : t -> string = "ml_g_d_bus_proxy_get_g_name_owner"
-(** The unique name that owns [GDBusProxy:g]-name or [None] if no-one currently
-    owns that name. You may connect to [GObject::notify] signal to track changes
-    to this property. *)
+(** The unique name that owns
+    {{!Ocgio.Raw.D_bus_proxy.val-get_g_name}[GDBusProxy:g-name]} or [None] if
+    no-one currently owns that name. You may connect to [GObject::notify] signal
+    to track changes to this property. *)
 
 external get_g_object_path : t -> string = "ml_g_d_bus_proxy_get_g_object_path"
 (** The object path the proxy is for. *)

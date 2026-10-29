@@ -3,7 +3,7 @@ class type async_initable_t = object
 
   method init_finish : Async_result.async_result_t -> (bool, GError.t) result
   (** Finishes asynchronous initialization and returns the result. See
-      g_async_initable_init_async(). *)
+      [g_async_initable_init_async ()]. *)
 
   method new_finish :
     Async_result.async_result_t -> ([ `object_ ] Gobject.obj, GError.t) result

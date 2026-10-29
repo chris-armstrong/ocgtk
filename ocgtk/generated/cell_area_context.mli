@@ -25,7 +25,9 @@ class type cell_area_context_t =
     request and render groups of data rows. However, it’s important that the
     same context which was used to request sizes for a given [GtkTreeModel] row
     also be used for the same row when calling other [GtkCellArea] APIs such as
-    gtk_cell_area_render() and gtk_cell_area_event(). *)
+    [gtk_cell_area_render ()] and
+    {{!Ocgtk.Cell_area.class-type-cell_area_t.method-event}[gtk_cell_area_event
+                                                            ()]}. *)
 
 class cell_area_context : Raw.Cell_area_context.t -> cell_area_context_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Cell_area_context.t}. *)
@@ -43,7 +45,9 @@ class cell_area_context : Raw.Cell_area_context.t -> cell_area_context_t
     request and render groups of data rows. However, it’s important that the
     same context which was used to request sizes for a given [GtkTreeModel] row
     also be used for the same row when calling other [GtkCellArea] APIs such as
-    gtk_cell_area_render() and gtk_cell_area_event(). *)
+    [gtk_cell_area_render ()] and
+    {{!Ocgtk.Cell_area.class-type-cell_area_t.method-event}[gtk_cell_area_event
+                                                            ()]}. *)
 
 (** {1:constructors Constructors} *)
 

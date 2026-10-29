@@ -53,14 +53,14 @@ class type tls_client_connection_t = object
   (** Gets [conn]'s expected server identity *)
 
   method get_use_ssl3 : unit -> bool
-  (** SSL 3.0 is no longer supported. See g_tls_client_connection_set_use_ssl3()
-      for details. *)
+  (** SSL 3.0 is no longer supported. See
+      [g_tls_client_connection_set_use_ssl3 ()] for details. *)
 
   method get_validation_flags : unit -> Enums.tlscertificateflags
   (** Gets [conn]'s validation flags
 
       This function does not work as originally designed and is impossible to
-      use correctly. See [GTlsClientConnection:validation]-flags for more
+      use correctly. See [GTlsClientConnection:validation-flags] for more
       information. *)
 
   method set_server_identity : Socket_connectable.socket_connectable_t -> unit
@@ -86,7 +86,7 @@ class type tls_client_connection_t = object
       [G_TLS_CERTIFICATE_VALIDATE_ALL] is used.
 
       This function does not work as originally designed and is impossible to
-      use correctly. See [GTlsClientConnection:validation]-flags for more
+      use correctly. See [GTlsClientConnection:validation-flags] for more
       information. *)
 
   (** {2:conversions Conversions} *)

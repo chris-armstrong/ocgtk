@@ -15,8 +15,11 @@ module rec Cell_area : sig
       ::editing-canceled signal, otherwise the the ::editing-done signal will be
       emitted on the current edit widget.
 
-      See gtk_cell_area_get_edited_cell() and gtk_cell_area_get_edit_widget().
-  *)
+      See
+      {{!Ocgtk.Raw.Cell_area.val-get_edited_cell}[gtk_cell_area_get_edited_cell
+                                                  ()]} and
+      {{!Ocgtk.Raw.Cell_area.val-get_edit_widget}[gtk_cell_area_get_edit_widget
+                                                  ()]}. *)
 
   external snapshot :
     t ->
@@ -40,7 +43,9 @@ module rec Cell_area : sig
 
       This is generally called by implementations of [GtkCellAreaClass.focus()]
       or [GtkCellAreaClass.event()], however it can also be used to implement
-      functions such as gtk_tree_view_set_cursor_on_cell(). *)
+      functions such as
+      {{!Ocgtk.Raw.Tree_view.val-set_cursor_on_cell}[gtk_tree_view_set_cursor_on_cell
+                                                     ()]}. *)
 
   external request_renderer :
     t ->
@@ -53,15 +58,18 @@ module rec Cell_area : sig
     int * int = "ml_gtk_cell_area_request_renderer"
   (** This is a convenience function for [GtkCellArea] implementations to
       request size for cell renderers. It’s important to use this function to
-      request size and then use gtk_cell_area_inner_cell_area() at render and
-      event time since this function will add padding around the cell for focus
-      painting. *)
+      request size and then use
+      {{!Ocgtk.Raw.Cell_area.val-inner_cell_area}[gtk_cell_area_inner_cell_area
+                                                  ()]} at render and event time
+      since this function will add padding around the cell for focus painting.
+  *)
 
   external remove_focus_sibling :
     t -> Cell_renderer.t -> Cell_renderer.t -> unit
     = "ml_gtk_cell_area_remove_focus_sibling"
   (** Removes [sibling] from [renderer]’s focus sibling list (see
-      gtk_cell_area_add_focus_sibling()). *)
+      {{!Ocgtk.Raw.Cell_area.val-add_focus_sibling}[gtk_cell_area_add_focus_sibling
+                                                    ()]}). *)
 
   external remove : t -> Cell_renderer.t -> unit = "ml_gtk_cell_area_remove"
   (** Removes [renderer] from [area]. *)
@@ -69,7 +77,8 @@ module rec Cell_area : sig
   external is_focus_sibling : t -> Cell_renderer.t -> Cell_renderer.t -> bool
     = "ml_gtk_cell_area_is_focus_sibling"
   (** Returns whether [sibling] is one of [renderer]’s focus siblings (see
-      gtk_cell_area_add_focus_sibling()). *)
+      {{!Ocgtk.Raw.Cell_area.val-add_focus_sibling}[gtk_cell_area_add_focus_sibling
+                                                    ()]}). *)
 
   external is_activatable : t -> bool = "ml_gtk_cell_area_is_activatable"
   (** Returns whether the area can do anything when activated, after applying
@@ -84,8 +93,9 @@ module rec Cell_area : sig
     Ocgdk_raw.Rectangle.t = "ml_gtk_cell_area_inner_cell_area"
   (** This is a convenience function for [GtkCellArea] implementations to get
       the inner area where a given [GtkCellRenderer] will be rendered. It
-      removes any padding previously added by gtk_cell_area_request_renderer().
-  *)
+      removes any padding previously added by
+      {{!Ocgtk.Raw.Cell_area.val-request_renderer}[gtk_cell_area_request_renderer
+                                                   ()]}. *)
 
   external has_renderer : t -> Cell_renderer.t -> bool
     = "ml_gtk_cell_area_has_renderer"
@@ -108,16 +118,25 @@ module rec Cell_area : sig
       specified [height].
 
       [area] stores some geometrical information in [context] along the way
-      while calling gtk_cell_area_get_preferred_height(). It’s important to
-      perform a series of gtk_cell_area_get_preferred_height() requests with
+      while calling
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_height}[gtk_cell_area_get_preferred_height
+                                                       ()]}. It’s important to
+      perform a series of
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_height}[gtk_cell_area_get_preferred_height
+                                                       ()]} requests with
       [context] first and then call
-      gtk_cell_area_get_preferred_width_for_height() on each cell area
-      individually to get the height for width of each fully requested row.
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_width_for_height}[gtk_cell_area_get_preferred_width_for_height
+                                                                 ()]} on each
+      cell area individually to get the height for width of each fully requested
+      row.
 
       If at some point, the height of a single row changes, it should be
-      requested with gtk_cell_area_get_preferred_height() again and then the
+      requested with
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_height}[gtk_cell_area_get_preferred_height
+                                                       ()]} again and then the
       full height of the requested rows checked again with
-      gtk_cell_area_context_get_preferred_height(). *)
+      {{!Ocgtk.Raw.Cell_area_context.val-get_preferred_height}[gtk_cell_area_context_get_preferred_height
+                                                               ()]}. *)
 
   external get_preferred_width :
     t ->
@@ -131,8 +150,10 @@ module rec Cell_area : sig
       [area] will store some geometrical information in [context] along the way;
       when requesting sizes over an arbitrary number of rows, it’s not important
       to check the [minimum_width] and [natural_width] of this call but rather
-      to consult gtk_cell_area_context_get_preferred_width() after a series of
-      requests. *)
+      to consult
+      {{!Ocgtk.Raw.Cell_area_context.val-get_preferred_width}[gtk_cell_area_context_get_preferred_width
+                                                              ()]} after a
+      series of requests. *)
 
   external get_preferred_height_for_width :
     t ->
@@ -146,16 +167,25 @@ module rec Cell_area : sig
       the specified [width].
 
       [area] stores some geometrical information in [context] along the way
-      while calling gtk_cell_area_get_preferred_width(). It’s important to
-      perform a series of gtk_cell_area_get_preferred_width() requests with
+      while calling
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_width}[gtk_cell_area_get_preferred_width
+                                                      ()]}. It’s important to
+      perform a series of
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_width}[gtk_cell_area_get_preferred_width
+                                                      ()]} requests with
       [context] first and then call
-      gtk_cell_area_get_preferred_height_for_width() on each cell area
-      individually to get the height for width of each fully requested row.
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_height_for_width}[gtk_cell_area_get_preferred_height_for_width
+                                                                 ()]} on each
+      cell area individually to get the height for width of each fully requested
+      row.
 
       If at some point, the width of a single row changes, it should be
-      requested with gtk_cell_area_get_preferred_width() again and then the full
-      width of the requested rows checked again with
-      gtk_cell_area_context_get_preferred_width(). *)
+      requested with
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_width}[gtk_cell_area_get_preferred_width
+                                                      ()]} again and then the
+      full width of the requested rows checked again with
+      {{!Ocgtk.Raw.Cell_area_context.val-get_preferred_width}[gtk_cell_area_context_get_preferred_width
+                                                              ()]}. *)
 
   external get_preferred_height :
     t ->
@@ -169,8 +199,10 @@ module rec Cell_area : sig
       [area] will store some geometrical information in [context] along the way;
       when requesting sizes over an arbitrary number of rows, it’s not important
       to check the [minimum_height] and [natural_height] of this call but rather
-      to consult gtk_cell_area_context_get_preferred_height() after a series of
-      requests. *)
+      to consult
+      {{!Ocgtk.Raw.Cell_area_context.val-get_preferred_height}[gtk_cell_area_context_get_preferred_height
+                                                               ()]} after a
+      series of requests. *)
 
   external get_focus_siblings : t -> Cell_renderer.t -> Cell_renderer.t list
     = "ml_gtk_cell_area_get_focus_siblings"
@@ -204,8 +236,9 @@ module rec Cell_area : sig
     = "ml_gtk_cell_area_get_current_path_string"
   (** Gets the current [GtkTreePath] string for the currently applied
       [GtkTreeIter], this is implicitly updated when
-      gtk_cell_area_apply_attributes() is called and can be used to interact
-      with renderers from [GtkCellArea] subclasses. *)
+      {{!Ocgtk.Raw.Cell_area.val-apply_attributes}[gtk_cell_area_apply_attributes
+                                                   ()]} is called and can be
+      used to interact with renderers from [GtkCellArea] subclasses. *)
 
   external get_cell_at_position :
     t ->
@@ -385,8 +418,11 @@ end = struct
       ::editing-canceled signal, otherwise the the ::editing-done signal will be
       emitted on the current edit widget.
 
-      See gtk_cell_area_get_edited_cell() and gtk_cell_area_get_edit_widget().
-  *)
+      See
+      {{!Ocgtk.Raw.Cell_area.val-get_edited_cell}[gtk_cell_area_get_edited_cell
+                                                  ()]} and
+      {{!Ocgtk.Raw.Cell_area.val-get_edit_widget}[gtk_cell_area_get_edit_widget
+                                                  ()]}. *)
 
   external snapshot :
     t ->
@@ -410,7 +446,9 @@ end = struct
 
       This is generally called by implementations of [GtkCellAreaClass.focus()]
       or [GtkCellAreaClass.event()], however it can also be used to implement
-      functions such as gtk_tree_view_set_cursor_on_cell(). *)
+      functions such as
+      {{!Ocgtk.Raw.Tree_view.val-set_cursor_on_cell}[gtk_tree_view_set_cursor_on_cell
+                                                     ()]}. *)
 
   external request_renderer :
     t ->
@@ -423,15 +461,18 @@ end = struct
     int * int = "ml_gtk_cell_area_request_renderer"
   (** This is a convenience function for [GtkCellArea] implementations to
       request size for cell renderers. It’s important to use this function to
-      request size and then use gtk_cell_area_inner_cell_area() at render and
-      event time since this function will add padding around the cell for focus
-      painting. *)
+      request size and then use
+      {{!Ocgtk.Raw.Cell_area.val-inner_cell_area}[gtk_cell_area_inner_cell_area
+                                                  ()]} at render and event time
+      since this function will add padding around the cell for focus painting.
+  *)
 
   external remove_focus_sibling :
     t -> Cell_renderer.t -> Cell_renderer.t -> unit
     = "ml_gtk_cell_area_remove_focus_sibling"
   (** Removes [sibling] from [renderer]’s focus sibling list (see
-      gtk_cell_area_add_focus_sibling()). *)
+      {{!Ocgtk.Raw.Cell_area.val-add_focus_sibling}[gtk_cell_area_add_focus_sibling
+                                                    ()]}). *)
 
   external remove : t -> Cell_renderer.t -> unit = "ml_gtk_cell_area_remove"
   (** Removes [renderer] from [area]. *)
@@ -439,7 +480,8 @@ end = struct
   external is_focus_sibling : t -> Cell_renderer.t -> Cell_renderer.t -> bool
     = "ml_gtk_cell_area_is_focus_sibling"
   (** Returns whether [sibling] is one of [renderer]’s focus siblings (see
-      gtk_cell_area_add_focus_sibling()). *)
+      {{!Ocgtk.Raw.Cell_area.val-add_focus_sibling}[gtk_cell_area_add_focus_sibling
+                                                    ()]}). *)
 
   external is_activatable : t -> bool = "ml_gtk_cell_area_is_activatable"
   (** Returns whether the area can do anything when activated, after applying
@@ -454,8 +496,9 @@ end = struct
     Ocgdk_raw.Rectangle.t = "ml_gtk_cell_area_inner_cell_area"
   (** This is a convenience function for [GtkCellArea] implementations to get
       the inner area where a given [GtkCellRenderer] will be rendered. It
-      removes any padding previously added by gtk_cell_area_request_renderer().
-  *)
+      removes any padding previously added by
+      {{!Ocgtk.Raw.Cell_area.val-request_renderer}[gtk_cell_area_request_renderer
+                                                   ()]}. *)
 
   external has_renderer : t -> Cell_renderer.t -> bool
     = "ml_gtk_cell_area_has_renderer"
@@ -478,16 +521,25 @@ end = struct
       specified [height].
 
       [area] stores some geometrical information in [context] along the way
-      while calling gtk_cell_area_get_preferred_height(). It’s important to
-      perform a series of gtk_cell_area_get_preferred_height() requests with
+      while calling
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_height}[gtk_cell_area_get_preferred_height
+                                                       ()]}. It’s important to
+      perform a series of
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_height}[gtk_cell_area_get_preferred_height
+                                                       ()]} requests with
       [context] first and then call
-      gtk_cell_area_get_preferred_width_for_height() on each cell area
-      individually to get the height for width of each fully requested row.
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_width_for_height}[gtk_cell_area_get_preferred_width_for_height
+                                                                 ()]} on each
+      cell area individually to get the height for width of each fully requested
+      row.
 
       If at some point, the height of a single row changes, it should be
-      requested with gtk_cell_area_get_preferred_height() again and then the
+      requested with
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_height}[gtk_cell_area_get_preferred_height
+                                                       ()]} again and then the
       full height of the requested rows checked again with
-      gtk_cell_area_context_get_preferred_height(). *)
+      {{!Ocgtk.Raw.Cell_area_context.val-get_preferred_height}[gtk_cell_area_context_get_preferred_height
+                                                               ()]}. *)
 
   external get_preferred_width :
     t ->
@@ -501,8 +553,10 @@ end = struct
       [area] will store some geometrical information in [context] along the way;
       when requesting sizes over an arbitrary number of rows, it’s not important
       to check the [minimum_width] and [natural_width] of this call but rather
-      to consult gtk_cell_area_context_get_preferred_width() after a series of
-      requests. *)
+      to consult
+      {{!Ocgtk.Raw.Cell_area_context.val-get_preferred_width}[gtk_cell_area_context_get_preferred_width
+                                                              ()]} after a
+      series of requests. *)
 
   external get_preferred_height_for_width :
     t ->
@@ -516,16 +570,25 @@ end = struct
       the specified [width].
 
       [area] stores some geometrical information in [context] along the way
-      while calling gtk_cell_area_get_preferred_width(). It’s important to
-      perform a series of gtk_cell_area_get_preferred_width() requests with
+      while calling
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_width}[gtk_cell_area_get_preferred_width
+                                                      ()]}. It’s important to
+      perform a series of
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_width}[gtk_cell_area_get_preferred_width
+                                                      ()]} requests with
       [context] first and then call
-      gtk_cell_area_get_preferred_height_for_width() on each cell area
-      individually to get the height for width of each fully requested row.
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_height_for_width}[gtk_cell_area_get_preferred_height_for_width
+                                                                 ()]} on each
+      cell area individually to get the height for width of each fully requested
+      row.
 
       If at some point, the width of a single row changes, it should be
-      requested with gtk_cell_area_get_preferred_width() again and then the full
-      width of the requested rows checked again with
-      gtk_cell_area_context_get_preferred_width(). *)
+      requested with
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_width}[gtk_cell_area_get_preferred_width
+                                                      ()]} again and then the
+      full width of the requested rows checked again with
+      {{!Ocgtk.Raw.Cell_area_context.val-get_preferred_width}[gtk_cell_area_context_get_preferred_width
+                                                              ()]}. *)
 
   external get_preferred_height :
     t ->
@@ -539,8 +602,10 @@ end = struct
       [area] will store some geometrical information in [context] along the way;
       when requesting sizes over an arbitrary number of rows, it’s not important
       to check the [minimum_height] and [natural_height] of this call but rather
-      to consult gtk_cell_area_context_get_preferred_height() after a series of
-      requests. *)
+      to consult
+      {{!Ocgtk.Raw.Cell_area_context.val-get_preferred_height}[gtk_cell_area_context_get_preferred_height
+                                                               ()]} after a
+      series of requests. *)
 
   external get_focus_siblings : t -> Cell_renderer.t -> Cell_renderer.t list
     = "ml_gtk_cell_area_get_focus_siblings"
@@ -574,8 +639,9 @@ end = struct
     = "ml_gtk_cell_area_get_current_path_string"
   (** Gets the current [GtkTreePath] string for the currently applied
       [GtkTreeIter], this is implicitly updated when
-      gtk_cell_area_apply_attributes() is called and can be used to interact
-      with renderers from [GtkCellArea] subclasses. *)
+      {{!Ocgtk.Raw.Cell_area.val-apply_attributes}[gtk_cell_area_apply_attributes
+                                                   ()]} is called and can be
+      used to interact with renderers from [GtkCellArea] subclasses. *)
 
   external get_cell_at_position :
     t ->
@@ -770,7 +836,8 @@ and Cell_area_context : sig
       only allowed to grow (this is usually an option for views rendering large
       data stores as a measure of optimization), then only the row that changed
       or was inserted needs to be (re)requested with
-      gtk_cell_area_get_preferred_width().
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_width}[gtk_cell_area_get_preferred_width
+                                                      ()]}.
 
       When the new overall size of the context requires that the allocated size
       changes (or whenever this allocation changes at all), the variable row
@@ -779,7 +846,8 @@ and Cell_area_context : sig
       For instance, if the rows are displayed all with the same width from top
       to bottom then a change in the allocated width necessitates a
       recalculation of all the displayed row heights using
-      gtk_cell_area_get_preferred_height_for_width(). *)
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_height_for_width}[gtk_cell_area_get_preferred_height_for_width
+                                                                 ()]}. *)
 
   external push_preferred_width : t -> int -> int -> unit
     = "ml_gtk_cell_area_context_push_preferred_width"
@@ -788,8 +856,9 @@ and Cell_area_context : sig
 
       This is used by [GtkCellAreaContext] implementations during the request
       process over a series of [GtkTreeModel] rows to progressively push the
-      requested width over a series of gtk_cell_area_get_preferred_width()
-      requests. *)
+      requested width over a series of
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_width}[gtk_cell_area_get_preferred_width
+                                                      ()]} requests. *)
 
   external push_preferred_height : t -> int -> int -> unit
     = "ml_gtk_cell_area_context_push_preferred_height"
@@ -798,40 +867,49 @@ and Cell_area_context : sig
 
       This is used by [GtkCellAreaContext] implementations during the request
       process over a series of [GtkTreeModel] rows to progressively push the
-      requested height over a series of gtk_cell_area_get_preferred_height()
-      requests. *)
+      requested height over a series of
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_height}[gtk_cell_area_get_preferred_height
+                                                       ()]} requests. *)
 
   external get_preferred_width_for_height : t -> int -> int * int
     = "ml_gtk_cell_area_context_get_preferred_width_for_height"
   (** Gets the accumulative preferred width for [height] for all rows which have
       been requested for the same said [height] with this context.
 
-      After gtk_cell_area_context_reset() is called and/or before ever
-      requesting the size of a [GtkCellArea], the returned values are -1. *)
+      After
+      {{!Ocgtk.Raw.Cell_area_context.val-reset}[gtk_cell_area_context_reset ()]}
+      is called and/or before ever requesting the size of a [GtkCellArea], the
+      returned values are -1. *)
 
   external get_preferred_width : t -> int * int
     = "ml_gtk_cell_area_context_get_preferred_width"
   (** Gets the accumulative preferred width for all rows which have been
       requested with this context.
 
-      After gtk_cell_area_context_reset() is called and/or before ever
-      requesting the size of a [GtkCellArea], the returned values are 0. *)
+      After
+      {{!Ocgtk.Raw.Cell_area_context.val-reset}[gtk_cell_area_context_reset ()]}
+      is called and/or before ever requesting the size of a [GtkCellArea], the
+      returned values are 0. *)
 
   external get_preferred_height_for_width : t -> int -> int * int
     = "ml_gtk_cell_area_context_get_preferred_height_for_width"
   (** Gets the accumulative preferred height for [width] for all rows which have
       been requested for the same said [width] with this context.
 
-      After gtk_cell_area_context_reset() is called and/or before ever
-      requesting the size of a [GtkCellArea], the returned values are -1. *)
+      After
+      {{!Ocgtk.Raw.Cell_area_context.val-reset}[gtk_cell_area_context_reset ()]}
+      is called and/or before ever requesting the size of a [GtkCellArea], the
+      returned values are -1. *)
 
   external get_preferred_height : t -> int * int
     = "ml_gtk_cell_area_context_get_preferred_height"
   (** Gets the accumulative preferred height for all rows which have been
       requested with this context.
 
-      After gtk_cell_area_context_reset() is called and/or before ever
-      requesting the size of a [GtkCellArea], the returned values are 0. *)
+      After
+      {{!Ocgtk.Raw.Cell_area_context.val-reset}[gtk_cell_area_context_reset ()]}
+      is called and/or before ever requesting the size of a [GtkCellArea], the
+      returned values are 0. *)
 
   external get_area : t -> Cell_area.t = "ml_gtk_cell_area_context_get_area"
   (** Fetches the [GtkCellArea] this [context] was created by.
@@ -849,8 +927,9 @@ and Cell_area_context : sig
   (** Fetches the current allocation size for [context].
 
       If the context was not allocated in width or height, or if the context was
-      recently reset with gtk_cell_area_context_reset(), the returned value will
-      be -1. *)
+      recently reset with
+      {{!Ocgtk.Raw.Cell_area_context.val-reset}[gtk_cell_area_context_reset ()]},
+      the returned value will be -1. *)
 
   external allocate : t -> int -> int -> unit
     = "ml_gtk_cell_area_context_allocate"
@@ -870,25 +949,29 @@ and Cell_area_context : sig
     = "ml_gtk_cell_area_context_get_minimum_height"
   (** The minimum height for the [GtkCellArea] in this context for all
       [GtkTreeModel] rows that this context was requested for using
-      gtk_cell_area_get_preferred_height(). *)
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_height}[gtk_cell_area_get_preferred_height
+                                                       ()]}. *)
 
   external get_minimum_width : t -> int
     = "ml_gtk_cell_area_context_get_minimum_width"
   (** The minimum width for the [GtkCellArea] in this context for all
       [GtkTreeModel] rows that this context was requested for using
-      gtk_cell_area_get_preferred_width(). *)
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_width}[gtk_cell_area_get_preferred_width
+                                                      ()]}. *)
 
   external get_natural_height : t -> int
     = "ml_gtk_cell_area_context_get_natural_height"
   (** The natural height for the [GtkCellArea] in this context for all
       [GtkTreeModel] rows that this context was requested for using
-      gtk_cell_area_get_preferred_height(). *)
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_height}[gtk_cell_area_get_preferred_height
+                                                       ()]}. *)
 
   external get_natural_width : t -> int
     = "ml_gtk_cell_area_context_get_natural_width"
   (** The natural width for the [GtkCellArea] in this context for all
       [GtkTreeModel] rows that this context was requested for using
-      gtk_cell_area_get_preferred_width(). *)
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_width}[gtk_cell_area_get_preferred_width
+                                                      ()]}. *)
 end = struct
   type t = [ `cell_area_context | `object_ ] Gobject.obj
 
@@ -904,7 +987,8 @@ end = struct
       only allowed to grow (this is usually an option for views rendering large
       data stores as a measure of optimization), then only the row that changed
       or was inserted needs to be (re)requested with
-      gtk_cell_area_get_preferred_width().
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_width}[gtk_cell_area_get_preferred_width
+                                                      ()]}.
 
       When the new overall size of the context requires that the allocated size
       changes (or whenever this allocation changes at all), the variable row
@@ -913,7 +997,8 @@ end = struct
       For instance, if the rows are displayed all with the same width from top
       to bottom then a change in the allocated width necessitates a
       recalculation of all the displayed row heights using
-      gtk_cell_area_get_preferred_height_for_width(). *)
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_height_for_width}[gtk_cell_area_get_preferred_height_for_width
+                                                                 ()]}. *)
 
   external push_preferred_width : t -> int -> int -> unit
     = "ml_gtk_cell_area_context_push_preferred_width"
@@ -922,8 +1007,9 @@ end = struct
 
       This is used by [GtkCellAreaContext] implementations during the request
       process over a series of [GtkTreeModel] rows to progressively push the
-      requested width over a series of gtk_cell_area_get_preferred_width()
-      requests. *)
+      requested width over a series of
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_width}[gtk_cell_area_get_preferred_width
+                                                      ()]} requests. *)
 
   external push_preferred_height : t -> int -> int -> unit
     = "ml_gtk_cell_area_context_push_preferred_height"
@@ -932,40 +1018,49 @@ end = struct
 
       This is used by [GtkCellAreaContext] implementations during the request
       process over a series of [GtkTreeModel] rows to progressively push the
-      requested height over a series of gtk_cell_area_get_preferred_height()
-      requests. *)
+      requested height over a series of
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_height}[gtk_cell_area_get_preferred_height
+                                                       ()]} requests. *)
 
   external get_preferred_width_for_height : t -> int -> int * int
     = "ml_gtk_cell_area_context_get_preferred_width_for_height"
   (** Gets the accumulative preferred width for [height] for all rows which have
       been requested for the same said [height] with this context.
 
-      After gtk_cell_area_context_reset() is called and/or before ever
-      requesting the size of a [GtkCellArea], the returned values are -1. *)
+      After
+      {{!Ocgtk.Raw.Cell_area_context.val-reset}[gtk_cell_area_context_reset ()]}
+      is called and/or before ever requesting the size of a [GtkCellArea], the
+      returned values are -1. *)
 
   external get_preferred_width : t -> int * int
     = "ml_gtk_cell_area_context_get_preferred_width"
   (** Gets the accumulative preferred width for all rows which have been
       requested with this context.
 
-      After gtk_cell_area_context_reset() is called and/or before ever
-      requesting the size of a [GtkCellArea], the returned values are 0. *)
+      After
+      {{!Ocgtk.Raw.Cell_area_context.val-reset}[gtk_cell_area_context_reset ()]}
+      is called and/or before ever requesting the size of a [GtkCellArea], the
+      returned values are 0. *)
 
   external get_preferred_height_for_width : t -> int -> int * int
     = "ml_gtk_cell_area_context_get_preferred_height_for_width"
   (** Gets the accumulative preferred height for [width] for all rows which have
       been requested for the same said [width] with this context.
 
-      After gtk_cell_area_context_reset() is called and/or before ever
-      requesting the size of a [GtkCellArea], the returned values are -1. *)
+      After
+      {{!Ocgtk.Raw.Cell_area_context.val-reset}[gtk_cell_area_context_reset ()]}
+      is called and/or before ever requesting the size of a [GtkCellArea], the
+      returned values are -1. *)
 
   external get_preferred_height : t -> int * int
     = "ml_gtk_cell_area_context_get_preferred_height"
   (** Gets the accumulative preferred height for all rows which have been
       requested with this context.
 
-      After gtk_cell_area_context_reset() is called and/or before ever
-      requesting the size of a [GtkCellArea], the returned values are 0. *)
+      After
+      {{!Ocgtk.Raw.Cell_area_context.val-reset}[gtk_cell_area_context_reset ()]}
+      is called and/or before ever requesting the size of a [GtkCellArea], the
+      returned values are 0. *)
 
   external get_area : t -> Cell_area.t = "ml_gtk_cell_area_context_get_area"
   (** Fetches the [GtkCellArea] this [context] was created by.
@@ -983,8 +1078,9 @@ end = struct
   (** Fetches the current allocation size for [context].
 
       If the context was not allocated in width or height, or if the context was
-      recently reset with gtk_cell_area_context_reset(), the returned value will
-      be -1. *)
+      recently reset with
+      {{!Ocgtk.Raw.Cell_area_context.val-reset}[gtk_cell_area_context_reset ()]},
+      the returned value will be -1. *)
 
   external allocate : t -> int -> int -> unit
     = "ml_gtk_cell_area_context_allocate"
@@ -1004,25 +1100,29 @@ end = struct
     = "ml_gtk_cell_area_context_get_minimum_height"
   (** The minimum height for the [GtkCellArea] in this context for all
       [GtkTreeModel] rows that this context was requested for using
-      gtk_cell_area_get_preferred_height(). *)
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_height}[gtk_cell_area_get_preferred_height
+                                                       ()]}. *)
 
   external get_minimum_width : t -> int
     = "ml_gtk_cell_area_context_get_minimum_width"
   (** The minimum width for the [GtkCellArea] in this context for all
       [GtkTreeModel] rows that this context was requested for using
-      gtk_cell_area_get_preferred_width(). *)
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_width}[gtk_cell_area_get_preferred_width
+                                                      ()]}. *)
 
   external get_natural_height : t -> int
     = "ml_gtk_cell_area_context_get_natural_height"
   (** The natural height for the [GtkCellArea] in this context for all
       [GtkTreeModel] rows that this context was requested for using
-      gtk_cell_area_get_preferred_height(). *)
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_height}[gtk_cell_area_get_preferred_height
+                                                       ()]}. *)
 
   external get_natural_width : t -> int
     = "ml_gtk_cell_area_context_get_natural_width"
   (** The natural width for the [GtkCellArea] in this context for all
       [GtkTreeModel] rows that this context was requested for using
-      gtk_cell_area_get_preferred_width(). *)
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_width}[gtk_cell_area_get_preferred_width
+                                                      ()]}. *)
 end
 
 and Cell_layout : sig
@@ -1070,7 +1170,7 @@ and Cell_layout : sig
   external clear_attributes : t -> Cell_renderer.t -> unit
     = "ml_gtk_cell_layout_clear_attributes"
   (** Clears all existing attributes previously set with
-      gtk_cell_layout_set_attributes(). *)
+      [gtk_cell_layout_set_attributes ()]. *)
 
   external clear : t -> unit = "ml_gtk_cell_layout_clear"
   (** Unsets all the mappings on all renderers on [cell_layout] and removes all
@@ -1130,7 +1230,7 @@ end = struct
   external clear_attributes : t -> Cell_renderer.t -> unit
     = "ml_gtk_cell_layout_clear_attributes"
   (** Clears all existing attributes previously set with
-      gtk_cell_layout_set_attributes(). *)
+      [gtk_cell_layout_set_attributes ()]. *)
 
   external clear : t -> unit = "ml_gtk_cell_layout_clear"
   (** Unsets all the mappings on all renderers on [cell_layout] and removes all

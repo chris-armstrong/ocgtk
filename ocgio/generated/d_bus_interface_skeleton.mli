@@ -30,17 +30,17 @@ class type d_bus_interface_skeleton_t = object
       Note that this signal is emitted in a thread dedicated to handling the
       method call so handlers are allowed to perform blocking IO. This means
       that it is appropriate to call e.g.
-      polkit_authority_check_authorization_sync() with the
+      [polkit_authority_check_authorization_sync ()] with the
       POLKIT_CHECK_AUTHORIZATION_FLAGS_ALLOW_USER_INTERACTION flag set.
 
       If [false] is returned then no further handlers are run and the signal
       handler must take a reference to [invocation] and finish handling the call
-      (e.g. return an error via g_dbus_method_invocation_return_error()).
+      (e.g. return an error via [g_dbus_method_invocation_return_error ()]).
 
       Otherwise, if [true] is returned, signal emission continues. If no
       handlers return [false], then the method is dispatched. If [interface] has
       an enclosing [GDBusObjectSkeleton], then the
-      [GDBusObjectSkeleton::authorize]-method signal handlers run before the
+      [GDBusObjectSkeleton::authorize-method] signal handlers run before the
       handlers for this signal.
 
       The default class handler just returns [true].
@@ -48,7 +48,7 @@ class type d_bus_interface_skeleton_t = object
       Please note that the common case is optimized: if no signals handlers are
       connected and the default class handler isn't overridden (for both
       [interface] and the enclosing [GDBusObjectSkeleton], if any) and
-      [GDBusInterfaceSkeleton:g]-flags does not have the
+      [GDBusInterfaceSkeleton:g-flags] does not have the
       [G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD]
       flags set, no dedicated thread is ever used and the call will be handled
       in the same thread as the object that [interface] belongs to was exported
@@ -64,7 +64,7 @@ class type d_bus_interface_skeleton_t = object
       multiple connections however the [object_path] provided must be the same
       for all connections.
 
-      Use g_dbus_interface_skeleton_unexport() to unexport the object. *)
+      Use [g_dbus_interface_skeleton_unexport ()] to unexport the object. *)
 
   method flush : unit -> unit
   (** If [interface_] has outstanding changes, request for these changes to be
@@ -106,13 +106,13 @@ class type d_bus_interface_skeleton_t = object
   (** Stops exporting [interface_] on all connections it is exported on.
 
       To unexport [interface_] from only a single connection, use
-      g_dbus_interface_skeleton_unexport_from_connection() *)
+      [g_dbus_interface_skeleton_unexport_from_connection ()] *)
 
   method unexport_from_connection : D_bus_connection.d_bus_connection_t -> unit
   (** Stops exporting [interface_] on [connection].
 
       To stop exporting on all connections the interface is exported on, use
-      g_dbus_interface_skeleton_unexport(). *)
+      [g_dbus_interface_skeleton_unexport ()]. *)
 
   (** {2:properties Properties} *)
 

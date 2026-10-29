@@ -19,7 +19,8 @@
      [Gtk.GestureSingle.get_current_sequence]} while the gesture is being
     interacted with.
 
-    By default gestures react to both [GDK_BUTTON_PRIMARY] and touch events.
+    By default gestures react to both
+    {{!Ocgdk.Constants.button_primary}[GDK_BUTTON_PRIMARY]} and touch events.
     {{!Ocgtk.Gesture_single.class-type-gesture_single_t.method-set_touch_only}[Gtk.GestureSingle.set_touch_only]}
     can be used to change the touch behavior. Callers may also specify a
     different mouse button number to interact with through
@@ -94,7 +95,8 @@ class gesture_single : Raw.Gesture_single.t -> gesture_single_t
      [Gtk.GestureSingle.get_current_sequence]} while the gesture is being
     interacted with.
 
-    By default gestures react to both [GDK_BUTTON_PRIMARY] and touch events.
+    By default gestures react to both
+    {{!Ocgdk.Constants.button_primary}[GDK_BUTTON_PRIMARY]} and touch events.
     {{!Ocgtk.Gesture_single.class-type-gesture_single_t.method-set_touch_only}[Gtk.GestureSingle.set_touch_only]}
     can be used to change the touch behavior. Callers may also specify a
     different mouse button number to interact with through

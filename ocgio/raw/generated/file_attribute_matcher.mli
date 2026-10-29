@@ -15,7 +15,8 @@ external new_ : string -> t = "ml_g_file_attribute_matcher_new"
   "Creates a new file attribute matcher, which matches attributes\n\
    against a given string. [GFileAttributeMatchers] are reference\n\
    counted structures, and are created with a reference count of 1. If\n\
-   the number of references falls to 0, the [GFileAttributeMatcher] is\n\
+   the number of references falls to 0, the \
+   {{!Ocgio.Raw.File_attribute_matcher}[GFileAttributeMatcher]} is\n\
    automatically destroyed.\n\n\
    The [attributes] string should be formatted with specific keys separated\n\
    from namespaces with a double colon. Several \"namespace::key\" strings may \
@@ -35,9 +36,11 @@ external new_ : string -> t = "ml_g_file_attribute_matcher_new"
 
 external to_string : t -> string = "ml_g_file_attribute_matcher_to_string"
 (** Prints what the matcher is matching against. The format will be equal to the
-    format passed to g_file_attribute_matcher_new(). The output however, might
-    not be identical, as the matcher may decide to use a different order or omit
-    needless parts. *)
+    format passed to
+    {{!Ocgio.Raw.File_attribute_matcher.val-new_}[g_file_attribute_matcher_new
+                                                  ()]}. The output however,
+    might not be identical, as the matcher may decide to use a different order
+    or omit needless parts. *)
 
 external subtract : t -> t option -> t option
   = "ml_g_file_attribute_matcher_subtract"
@@ -66,7 +69,8 @@ external matches : t -> string -> bool = "ml_g_file_attribute_matcher_matches"
 
 external enumerate_next : t -> string option
   = "ml_g_file_attribute_matcher_enumerate_next"
-(** Gets the next matched attribute from a [GFileAttributeMatcher]. *)
+(** Gets the next matched attribute from a
+    {{!Ocgio.Raw.File_attribute_matcher}[GFileAttributeMatcher]}. *)
 
 external enumerate_namespace : t -> string -> bool
   = "ml_g_file_attribute_matcher_enumerate_namespace"

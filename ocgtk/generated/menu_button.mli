@@ -40,12 +40,15 @@
     and
     {{!Ocgtk.Widget.class-type-widget_t.method-get_valign}[Gtk.Widget:valign]}
     properties of the menu are also taken into account. For example, when the
-    direction is [GTK_ARROW_DOWN] and the horizontal alignment is
-    [GTK_ALIGN_START], the menu will be positioned below the button, with the
-    starting edge (depending on the text direction) of the menu aligned with the
-    starting edge of the button. If there is not enough space below the button,
-    the menu is popped up above the button instead. If the alignment would move
-    part of the menu offscreen, it is “pushed in”.
+    direction is
+    {{!Ocgtk.Enums.type-arrowtype.constructor-DOWN}[GTK_ARROW_DOWN]} and the
+    horizontal alignment is
+    {{!Ocgtk.Enums.type-align.constructor-START}[GTK_ALIGN_START]}, the menu
+    will be positioned below the button, with the starting edge (depending on
+    the text direction) of the menu aligned with the starting edge of the
+    button. If there is not enough space below the button, the menu is popped up
+    above the button instead. If the alignment would move part of the menu
+    offscreen, it is “pushed in”.
 
     {b CSS nodes}
 
@@ -246,12 +249,15 @@ class menu_button : Raw.Menu_button.t -> menu_button_t
     and
     {{!Ocgtk.Widget.class-type-widget_t.method-get_valign}[Gtk.Widget:valign]}
     properties of the menu are also taken into account. For example, when the
-    direction is [GTK_ARROW_DOWN] and the horizontal alignment is
-    [GTK_ALIGN_START], the menu will be positioned below the button, with the
-    starting edge (depending on the text direction) of the menu aligned with the
-    starting edge of the button. If there is not enough space below the button,
-    the menu is popped up above the button instead. If the alignment would move
-    part of the menu offscreen, it is “pushed in”.
+    direction is
+    {{!Ocgtk.Enums.type-arrowtype.constructor-DOWN}[GTK_ARROW_DOWN]} and the
+    horizontal alignment is
+    {{!Ocgtk.Enums.type-align.constructor-START}[GTK_ALIGN_START]}, the menu
+    will be positioned below the button, with the starting edge (depending on
+    the text direction) of the menu aligned with the starting edge of the
+    button. If there is not enough space below the button, the menu is popped up
+    above the button instead. If the alignment would move part of the menu
+    offscreen, it is “pushed in”.
 
     {b CSS nodes}
 

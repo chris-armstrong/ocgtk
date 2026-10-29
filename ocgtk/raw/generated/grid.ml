@@ -103,7 +103,9 @@ external set_row_baseline_position :
 (** Sets how the baseline should be positioned on [row] of the grid, in case
     that row is assigned more space than is requested.
 
-    The default baseline position is [GTK_BASELINE_POSITION_CENTER]. *)
+    The default baseline position is
+    {{!Ocgtk.Enums.type-baselineposition.constructor-CENTER}[GTK_BASELINE_POSITION_CENTER]}.
+*)
 
 external set_column_spacing : t -> int -> unit
   = "ml_gtk_grid_set_column_spacing"
@@ -171,8 +173,13 @@ external insert_next_to :
 (** Inserts a row or column at the specified position.
 
     The new row or column is placed next to [sibling], on the side determined by
-    [side]. If [side] is [GTK_POS_TOP] or [GTK_POS_BOTTOM], a row is inserted.
-    If [side] is [GTK_POS_LEFT] of [GTK_POS_RIGHT], a column is inserted. *)
+    [side]. If [side] is
+    {{!Ocgtk.Enums.type-positiontype.constructor-TOP}[GTK_POS_TOP]} or
+    {{!Ocgtk.Enums.type-positiontype.constructor-BOTTOM}[GTK_POS_BOTTOM]}, a row
+    is inserted. If [side] is
+    {{!Ocgtk.Enums.type-positiontype.constructor-LEFT}[GTK_POS_LEFT]} of
+    {{!Ocgtk.Enums.type-positiontype.constructor-RIGHT}[GTK_POS_RIGHT]}, a
+    column is inserted. *)
 
 external insert_column : t -> int -> unit = "ml_gtk_grid_insert_column"
 (** Inserts a column at the specified position.

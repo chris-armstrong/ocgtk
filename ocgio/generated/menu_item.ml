@@ -40,8 +40,8 @@ class type menu_item_t = object
      as a radio menu item (ie: with a radio bullet or equivalent\n\
      indication).  The item should be marked as 'selected' when the string\n\
      state is equal to the value of the [target] property.\n\n\
-     See g_menu_item_set_action_and_target() or\n\
-     g_menu_item_set_detailed_action() for two equivalent calls that are\n\
+     See [g_menu_item_set_action_and_target ()] or\n\
+     [g_menu_item_set_detailed_action ()] for two equivalent calls that are\n\
      probably more convenient for most uses."]
 
   method set_attribute_value : string -> Gvariant.t option -> unit
@@ -61,25 +61,25 @@ class type menu_item_t = object
       attribute. If [value] is [None] then the attribute is unset. If the
       [value] [GVariant] is floating, it is consumed.
 
-      See also g_menu_item_set_attribute() for a more convenient way to do the
-      same. *)
+      See also [g_menu_item_set_attribute ()] for a more convenient way to do
+      the same. *)
 
   method set_detailed_action : string -> unit
   [@@ocaml.doc
     "Sets the \"action\" and possibly the \"target\" attribute of [menu_item].\n\n\
      The format of [detailed_action] is the same format parsed by\n\
-     g_action_parse_detailed_name().\n\n\
-     See g_menu_item_set_action_and_target() or\n\
-     g_menu_item_set_action_and_target_value() for more flexible (but\n\
+     [g_action_parse_detailed_name ()].\n\n\
+     See [g_menu_item_set_action_and_target ()] or\n\
+     [g_menu_item_set_action_and_target_value ()] for more flexible (but\n\
      slightly less convenient) alternatives.\n\n\
-     See also g_menu_item_set_action_and_target_value() for a description of\n\
+     See also [g_menu_item_set_action_and_target_value ()] for a description of\n\
      the semantics of the action and target attributes."]
 
   method set_icon : Icon.icon_t -> unit
   [@@ocaml.doc
     "Sets (or unsets) the icon on [menu_item].\n\n\
-     This call is the same as calling g_icon_serialize() and using the\n\
-     result as the value to g_menu_item_set_attribute_value() for\n\
+     This call is the same as calling [g_icon_serialize ()] and using the\n\
+     result as the value to [g_menu_item_set_attribute_value ()] for\n\
      [G_MENU_ATTRIBUTE_ICON].\n\n\
      This API is only intended for use with \"noun\" menu items; things like\n\
      bookmarks or applications in an \"Open With\" menu.  Don't use it on\n\
@@ -110,7 +110,7 @@ class type menu_item_t = object
     "Sets or unsets the \"section\" link of [menu_item] to [section].\n\n\
      The effect of having one menu appear as a section of another is\n\
      exactly as it sounds: the items from [section] become a direct part of\n\
-     the menu that [menu_item] is added to.  See g_menu_item_new_section()\n\
+     the menu that [menu_item] is added to.  See [g_menu_item_new_section ()]\n\
      for more information about what it means for a menu item to be a\n\
      section."]
 

@@ -33,16 +33,17 @@ external truncate :
 
     If [cancellable] is not [None], then the operation can be cancelled by
     triggering the cancellable object from another thread. If the operation was
-    cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. If an
-    operation was partially finished when the operation was cancelled the
-    partial result will be returned, without an error. *)
+    cancelled, the error
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-CANCELLED}[G_IO_ERROR_CANCELLED]}
+    will be returned. If an operation was partially finished when the operation
+    was cancelled the partial result will be returned, without an error. *)
 
 external tell : t -> int64 = "ml_g_seekable_tell"
 (** Tells the current position within the stream. *)
 
 external can_truncate : t -> bool = "ml_g_seekable_can_truncate"
 (** Tests if the length of the stream can be adjusted with
-    g_seekable_truncate(). *)
+    {{!Ocgio.Raw.Seekable.val-truncate}[g_seekable_truncate ()]}. *)
 
 external can_seek : t -> bool = "ml_g_seekable_can_seek"
 (** Tests if the stream supports the [GSeekableIface]. *)

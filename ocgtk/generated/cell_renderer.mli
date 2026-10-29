@@ -24,8 +24,10 @@
     cells on the screen. To this extent, it isn’t expected that a CellRenderer
     keep any permanent state around. Instead, any state is set just prior to use
     using [GObject]s property system. Then, the cell is measured using
-    gtk_cell_renderer_get_preferred_size(). Finally, the cell is rendered in the
-    correct location using gtk_cell_renderer_snapshot().
+    [gtk_cell_renderer_get_preferred_size ()]. Finally, the cell is rendered in
+    the correct location using
+    {{!Ocgtk.Cell_renderer.class-type-cell_renderer_t.method-snapshot}[gtk_cell_renderer_snapshot
+                                                                       ()]}.
 
     There are a number of rules that must be followed when writing a new
     [GtkCellRenderer]. First and foremost, it’s important that a certain set of
@@ -55,7 +57,7 @@ class type cell_renderer_t = object
       cell. For example, an editable cell renderer could be written to cancel
       editing when the user presses Escape.
 
-      See also: gtk_cell_renderer_stop_editing(). *)
+      See also: [gtk_cell_renderer_stop_editing ()]. *)
 
   method on_editing_started :
     ?after:bool ->
@@ -66,8 +68,8 @@ class type cell_renderer_t = object
       of this signal is to do special setup on [editable], e.g. adding a
       [GtkEntryCompletion] or setting up additional columns in a [GtkComboBox].
 
-      See gtk_cell_editable_start_editing() for information on the lifecycle of
-      the [editable] and a way to do setup that doesn’t depend on the
+      See [gtk_cell_editable_start_editing ()] for information on the lifecycle
+      of the [editable] and a way to do setup that doesn’t depend on the
       [renderer].
 
       Note that GTK doesn't guarantee that cell renderers will continue to use
@@ -274,8 +276,10 @@ class cell_renderer : Raw.Cell_renderer.t -> cell_renderer_t
     cells on the screen. To this extent, it isn’t expected that a CellRenderer
     keep any permanent state around. Instead, any state is set just prior to use
     using [GObject]s property system. Then, the cell is measured using
-    gtk_cell_renderer_get_preferred_size(). Finally, the cell is rendered in the
-    correct location using gtk_cell_renderer_snapshot().
+    [gtk_cell_renderer_get_preferred_size ()]. Finally, the cell is rendered in
+    the correct location using
+    {{!Ocgtk.Cell_renderer.class-type-cell_renderer_t.method-snapshot}[gtk_cell_renderer_snapshot
+                                                                       ()]}.
 
     There are a number of rules that must be followed when writing a new
     [GtkCellRenderer]. First and foremost, it’s important that a certain set of

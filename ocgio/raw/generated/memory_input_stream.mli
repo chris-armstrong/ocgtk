@@ -14,11 +14,13 @@ type t = [ `memory_input_stream | `input_stream | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gio_memory_input_stream_get_type"
 
 external new_ : unit -> t = "ml_g_memory_input_stream_new"
-(** Creates a new empty [GMemoryInputStream]. *)
+(** Creates a new empty {{!Ocgio.Raw.Memory_input_stream}[GMemoryInputStream]}.
+*)
 
 external new_from_bytes : Glib_bytes.t -> t
   = "ml_g_memory_input_stream_new_from_bytes"
-(** Creates a new [GMemoryInputStream] with data from the given [bytes]. *)
+(** Creates a new {{!Ocgio.Raw.Memory_input_stream}[GMemoryInputStream]} with
+    data from the given [bytes]. *)
 
 (* Methods *)
 

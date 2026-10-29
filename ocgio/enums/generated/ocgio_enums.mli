@@ -21,7 +21,7 @@ type converterresult =
   | `CONVERTED  (** Some data was consumed or produced *)
   | `FINISHED  (** The conversion is finished *)
   | `FLUSHED  (** Flushing is finished *) ]
-(** Results returned from g_converter_convert().
+(** Results returned from [g_converter_convert ()].
     @since 2.24 *)
 
 val converterresult_of_int : int -> converterresult
@@ -82,9 +82,12 @@ type dbuserror =
         socket). *)
   | `TIMEOUT
     (** Certain timeout errors, possibly ETIMEDOUT on a socket. Note that
-        [G_DBUS_ERROR_NO_REPLY] is used for message reply timeouts. Warning:
-        this is confusingly-named given that [G_DBUS_ERROR_TIMED_OUT] also
-        exists. We can't fix it for compatibility reasons so just be careful. *)
+        {{!Ocgio.Enums.type-dbuserror.constructor-NO_REPLY}[G_DBUS_ERROR_NO_REPLY]}
+        is used for message reply timeouts. Warning: this is confusingly-named
+        given that
+        {{!Ocgio.Enums.type-dbuserror.constructor-TIMED_OUT}[G_DBUS_ERROR_TIMED_OUT]}
+        also exists. We can't fix it for compatibility reasons so just be
+        careful. *)
   | `NO_NETWORK  (** No network access (probably ENETUNREACH on a socket). *)
   | `ADDRESS_IN_USE
     (** Can't bind a socket since its address is in use (i.e. EADDRINUSE). *)
@@ -99,8 +102,10 @@ type dbuserror =
     (** Method name you invoked isn't known by the object you invoked it on. *)
   | `TIMED_OUT
     (** Certain timeout errors, e.g. while starting a service. Warning: this is
-        confusingly-named given that [G_DBUS_ERROR_TIMEOUT] also exists. We
-        can't fix it for compatibility reasons so just be careful. *)
+        confusingly-named given that
+        {{!Ocgio.Enums.type-dbuserror.constructor-TIMEOUT}[G_DBUS_ERROR_TIMEOUT]}
+        also exists. We can't fix it for compatibility reasons so just be
+        careful. *)
   | `MATCH_RULE_NOT_FOUND
     (** Tried to remove or modify a match rule that didn't exist. *)
   | `MATCH_RULE_INVALID  (** The match rule isn't syntactically valid. *)
@@ -177,7 +182,8 @@ type dbusmessageheaderfield =
   | `SIGNATURE  (** The signature of the message body. *)
   | `NUM_UNIX_FDS
     (** The number of UNIX file descriptors that accompany the message. *) ]
-(** Header fields used in [GDBusMessage].
+(** Header fields used in
+    {{!Ocgio.D_bus_message.class-type-d_bus_message_t}[GDBusMessage]}.
     @since 2.26 *)
 
 val dbusmessageheaderfield_of_int : int -> dbusmessageheaderfield
@@ -191,7 +197,8 @@ type dbusmessagetype =
   | `METHOD_RETURN  (** Method reply. *)
   | `ERROR  (** Error reply. *)
   | `SIGNAL  (** Signal emission. *) ]
-(** Message types used in [GDBusMessage].
+(** Message types used in
+    {{!Ocgio.D_bus_message.class-type-d_bus_message_t}[GDBusMessage]}.
     @since 2.26 *)
 
 val dbusmessagetype_of_int : int -> dbusmessagetype
@@ -204,8 +211,9 @@ type datastreambyteorder =
   | `LITTLE_ENDIAN  (** Selects Little Endian byte order. *)
   | `HOST_ENDIAN
     (** Selects endianness based on host machine's architecture. *) ]
-(** [GDataStreamByteOrder] is used to ensure proper endianness of streaming data
-    sources across various machine architectures. *)
+(** {{!Ocgio.Enums.type-datastreambyteorder}[GDataStreamByteOrder]} is used to
+    ensure proper endianness of streaming data sources across various machine
+    architectures. *)
 
 val datastreambyteorder_of_int : int -> datastreambyteorder
 val datastreambyteorder_to_int : datastreambyteorder -> int
@@ -220,8 +228,8 @@ type datastreamnewlinetype =
   | `CR_LF
     [@ocaml.doc "Selects \"CR, LF\" line ending, common on Microsoft Windows."]
   | `ANY  (** Automatically try to handle any line ending type. *) ]
-(** [GDataStreamNewlineType] is used when checking for or setting the line
-    endings for a given file. *)
+(** {{!Ocgio.Enums.type-datastreamnewlinetype}[GDataStreamNewlineType]} is used
+    when checking for or setting the line endings for a given file. *)
 
 val datastreamnewlinetype_of_int : int -> datastreamnewlinetype
 val datastreamnewlinetype_to_int : datastreamnewlinetype -> int
@@ -259,7 +267,7 @@ type emblemorigin =
     (** Emblem comes from a user-defined tag, e.g. set by nautilus (in the
         future) *) ]
 (** GEmblemOrigin is used to add information about the origin of the emblem to
-    [GEmblem].
+    {{!Ocgio.Emblem.class-type-emblem_t}[GEmblem]}.
     @since 2.18 *)
 
 val emblemorigin_of_int : int -> emblemorigin
@@ -271,7 +279,10 @@ type fileattributestatus =
   [ `UNSET  (** Attribute value is unset (empty). *)
   | `SET  (** Attribute value is set. *)
   | `ERROR_SETTING  (** Indicates an error in setting the value. *) ]
-(** Used by g_file_set_attributes_from_info() when setting file attributes. *)
+(** Used by
+    {{!Ocgio.File.class-type-file_t.method-set_attributes_from_info}[g_file_set_attributes_from_info
+                                                                     ()]} when
+    setting file attributes. *)
 
 val fileattributestatus_of_int : int -> fileattributestatus
 val fileattributestatus_to_int : fileattributestatus -> int
@@ -307,18 +318,22 @@ type filemonitorevent =
   | `UNMOUNTED  (** the file location was unmounted. *)
   | `MOVED
     (** the file was moved -- only sent if the (deprecated)
-        [G_FILE_MONITOR_SEND_MOVED] flag is set *)
+        {{!Ocgio.Enums.type-filemonitorflags_flag.constructor-SEND_MOVED}[G_FILE_MONITOR_SEND_MOVED]}
+        flag is set *)
   | `RENAMED
     (** the file was renamed within the current directory -- only sent if the
-        [G_FILE_MONITOR_WATCH_MOVES] flag is set. Since: 2.46. *)
+        {{!Ocgio.Enums.type-filemonitorflags_flag.constructor-WATCH_MOVES}[G_FILE_MONITOR_WATCH_MOVES]}
+        flag is set. Since: 2.46. *)
   | `MOVED_IN
     (** the file was moved into the monitored directory from another location --
-        only sent if the [G_FILE_MONITOR_WATCH_MOVES] flag is set. Since: 2.46.
-    *)
+        only sent if the
+        {{!Ocgio.Enums.type-filemonitorflags_flag.constructor-WATCH_MOVES}[G_FILE_MONITOR_WATCH_MOVES]}
+        flag is set. Since: 2.46. *)
   | `MOVED_OUT
     (** the file was moved out of the monitored directory to another location --
-        only sent if the [G_FILE_MONITOR_WATCH_MOVES] flag is set. Since: 2.46
-    *) ]
+        only sent if the
+        {{!Ocgio.Enums.type-filemonitorflags_flag.constructor-WATCH_MOVES}[G_FILE_MONITOR_WATCH_MOVES]}
+        flag is set. Since: 2.46 *) ]
 (** Specifies what type of event a monitor event is. *)
 
 val filemonitorevent_of_int : int -> filemonitorevent
@@ -340,14 +355,19 @@ type filetype =
   | `MOUNTABLE  (** File is a mountable location. *) ]
 (** Indicates the file's on-disk type.
 
-    On Windows systems a file will never have [G_FILE_TYPE_SYMBOLIC_LINK] type;
-    use [GFileInfo] and [G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK] to determine
-    whether a file is a symlink or not. This is due to the fact that NTFS does
-    not have a single filesystem object type for symbolic links - it has files
-    that symlink to files, and directories that symlink to directories.
-    [GFileType] enumeration cannot precisely represent this important
-    distinction, which is why all Windows symlinks will continue to be reported
-    as [G_FILE_TYPE_REGULAR] or [G_FILE_TYPE_DIRECTORY]. *)
+    On Windows systems a file will never have
+    {{!Ocgio.Enums.type-filetype.constructor-SYMBOLIC_LINK}[G_FILE_TYPE_SYMBOLIC_LINK]}
+    type; use {{!Ocgio.File_info.class-type-file_info_t}[GFileInfo]} and
+    {{!Ocgio.Constants.file_attribute_standard_is_symlink}[G_FILE_ATTRIBUTE_STANDARD_IS_SYMLINK]}
+    to determine whether a file is a symlink or not. This is due to the fact
+    that NTFS does not have a single filesystem object type for symbolic links -
+    it has files that symlink to files, and directories that symlink to
+    directories. {{!Ocgio.Enums.type-filetype}[GFileType]} enumeration cannot
+    precisely represent this important distinction, which is why all Windows
+    symlinks will continue to be reported as
+    {{!Ocgio.Enums.type-filetype.constructor-REGULAR}[G_FILE_TYPE_REGULAR]} or
+    {{!Ocgio.Enums.type-filetype.constructor-DIRECTORY}[G_FILE_TYPE_DIRECTORY]}.
+*)
 
 val filetype_of_int : int -> filetype
 val filetype_to_int : filetype -> int
@@ -362,7 +382,8 @@ type filesystempreviewtype =
   | `NEVER  (** Never preview files. *) ]
 (** Indicates a hint from the file system whether files should be previewed in a
     file manager. Returned as the value of the key
-    [G_FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW]. *)
+    {{!Ocgio.Constants.file_attribute_filesystem_use_preview}[G_FILE_ATTRIBUTE_FILESYSTEM_USE_PREVIEW]}.
+*)
 
 val filesystempreviewtype_of_int : int -> filesystempreviewtype
 val filesystempreviewtype_to_int : filesystempreviewtype -> int
@@ -372,7 +393,7 @@ val filesystempreviewtype_to_int : filesystempreviewtype -> int
 type ioerrorenum =
   [ `FAILED
     (** Generic error condition for when an operation fails and no more specific
-        [GIOErrorEnum] value is defined. *)
+        {{!Ocgio.Enums.type-ioerrorenum}[GIOErrorEnum]} value is defined. *)
   | `NOT_FOUND  (** File not found. *)
   | `EXISTS  (** File already exists. *)
   | `IS_DIRECTORY  (** File is a directory. *)
@@ -392,7 +413,9 @@ type ioerrorenum =
   | `NOT_MOUNTED  (** File isn't mounted. *)
   | `ALREADY_MOUNTED  (** File is already mounted. *)
   | `CLOSED  (** File was closed. *)
-  | `CANCELLED  (** Operation was cancelled. See [GCancellable]. *)
+  | `CANCELLED
+    (** Operation was cancelled. See
+        {{!Ocgio.Cancellable.class-type-cancellable_t}[GCancellable]}. *)
   | `PENDING  (** Operations are still pending. *)
   | `READ_ONLY  (** File is read only. *)
   | `CANT_CREATE_BACKUP  (** Backup couldn't be created. *)
@@ -415,9 +438,9 @@ type ioerrorenum =
   | `INVALID_DATA  (** The input data was invalid. Since 2.24 *)
   | `DBUS_ERROR
     (** A remote object generated an error that doesn't correspond to a locally
-        registered [GError] error domain. Use g_dbus_error_get_remote_error() to
-        extract the D-Bus error name and g_dbus_error_strip_remote_error() to
-        fix up the message so it matches what was received on the wire. Since
+        registered [GError] error domain. Use [g_dbus_error_get_remote_error ()]
+        to extract the D-Bus error name and [g_dbus_error_strip_remote_error ()]
+        to fix up the message so it matches what was received on the wire. Since
         2.26. *)
   | `HOST_UNREACHABLE  (** Host unreachable. Since 2.26 *)
   | `NETWORK_UNREACHABLE  (** Network unreachable. Since 2.26 *)
@@ -431,10 +454,15 @@ type ioerrorenum =
   | `CONNECTION_CLOSED
     [@ocaml.doc
       "Connection closed by peer. Note that this\n\
-       is the same code as [G_IO_ERROR_BROKEN_PIPE]; before 2.44 some\n\
-       \"connection closed\" errors returned [G_IO_ERROR_BROKEN_PIPE], but \
-       others\n\
-       returned [G_IO_ERROR_FAILED]. Now they should all return the same\n\
+       is the same code as \
+       {{!Ocgio.Enums.type-ioerrorenum.constructor-BROKEN_PIPE}[G_IO_ERROR_BROKEN_PIPE]}; \
+       before 2.44 some\n\
+       \"connection closed\" errors returned \
+       {{!Ocgio.Enums.type-ioerrorenum.constructor-BROKEN_PIPE}[G_IO_ERROR_BROKEN_PIPE]}, \
+       but others\n\
+       returned \
+       {{!Ocgio.Enums.type-ioerrorenum.constructor-FAILED}[G_IO_ERROR_FAILED]}. \
+       Now they should all return the same\n\
        value, which has this more logical name. Since 2.44."]
   | `NOT_CONNECTED  (** Transport endpoint is not connected. Since 2.44 *)
   | `MESSAGE_TOO_LARGE  (** Message too large. Since 2.48. *)
@@ -444,8 +472,9 @@ type ioerrorenum =
 
     Note that this domain may be extended in future GLib releases. In general,
     new error codes either only apply to new APIs, or else replace
-    [G_IO_ERROR_FAILED] in cases that were not explicitly distinguished before.
-    You should therefore avoid writing code like
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-FAILED}[G_IO_ERROR_FAILED]} in
+    cases that were not explicitly distinguished before. You should therefore
+    avoid writing code like
 
     {[
     if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_FAILED))
@@ -456,10 +485,12 @@ type ioerrorenum =
     ]}
 
     but should instead treat all unrecognized error codes the same as
-    [G_IO_ERROR_FAILED].
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-FAILED}[G_IO_ERROR_FAILED]}.
 
-    See also [GPollableReturn] for a cheaper way of returning
-    [G_IO_ERROR_WOULD_BLOCK] to callers without allocating a [GError]. *)
+    See also {{!Ocgio.Enums.type-pollablereturn}[GPollableReturn]} for a cheaper
+    way of returning
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-WOULD_BLOCK}[G_IO_ERROR_WOULD_BLOCK]}
+    to callers without allocating a [GError]. *)
 
 val ioerrorenum_of_int : int -> ioerrorenum
 val ioerrorenum_to_int : ioerrorenum -> int
@@ -472,7 +503,7 @@ type iomodulescopeflags =
     (** When using this scope to load or scan modules, automatically block a
         modules which has the same base basename as previously loaded module. *)
   ]
-(** Flags for use with g_io_module_scope_new().
+(** Flags for use with [g_io_module_scope_new ()].
     @since 2.30 *)
 
 val iomodulescopeflags_of_int : int -> iomodulescopeflags
@@ -495,7 +526,9 @@ type memorymonitorwarninglevel =
 (** Memory availability warning levels.
 
     Note that because new values might be added, it is recommended that
-    applications check [GMemoryMonitorWarningLevel] as ranges, for example:
+    applications check
+    {{!Ocgio.Enums.type-memorymonitorwarninglevel}[GMemoryMonitorWarningLevel]}
+    as ranges, for example:
 
     {[
     if (warning_level > G_MEMORY_MONITOR_WARNING_LEVEL_LOW)
@@ -514,8 +547,9 @@ type mountoperationresult =
     *)
   | `ABORTED  (** The user requested the mount operation to be aborted *)
   | `UNHANDLED  (** The request was unhandled (i.e. not implemented) *) ]
-(** [GMountOperationResult] is returned as a result when a request for
-    information is send by the mounting operation. *)
+(** {{!Ocgio.Enums.type-mountoperationresult}[GMountOperationResult]} is
+    returned as a result when a request for information is send by the mounting
+    operation. *)
 
 val mountoperationresult_of_int : int -> mountoperationresult
 val mountoperationresult_to_int : mountoperationresult -> int
@@ -535,7 +569,8 @@ type networkconnectivity =
   | `FULL
     (** The host is connected to a network, and appears to be able to reach the
         full Internet. *) ]
-(** The host's network connectivity state, as reported by [GNetworkMonitor].
+(** The host's network connectivity state, as reported by
+    {{!Ocgio.Network_monitor.class-type-network_monitor_t}[GNetworkMonitor]}.
     @since 2.44 *)
 
 val networkconnectivity_of_int : int -> networkconnectivity
@@ -571,7 +606,8 @@ type passwordsave =
   [ `NEVER  (** never save a password. *)
   | `FOR_SESSION  (** save a password for the session. *)
   | `PERMANENTLY  (** save a password permanently. *) ]
-(** [GPasswordSave] is used to indicate the lifespan of a saved password.
+(** {{!Ocgio.Enums.type-passwordsave}[GPasswordSave]} is used to indicate the
+    lifespan of a saved password.
 
     [Gvfs] stores passwords in the Gnome keyring when this flag allows it to,
     and later retrieves it again from there. *)
@@ -590,10 +626,13 @@ type pollablereturn =
 
     This enum exists to be able to return errors to callers without having to
     allocate a [GError]. Allocating [GErrors] can be quite expensive for
-    regularly happening errors like [G_IO_ERROR_WOULD_BLOCK].
+    regularly happening errors like
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-WOULD_BLOCK}[G_IO_ERROR_WOULD_BLOCK]}.
 
-    In case of [G_POLLABLE_RETURN_FAILED] a [GError] should be set for the
-    operation to give details about the error that happened.
+    In case of
+    {{!Ocgio.Enums.type-pollablereturn.constructor-FAILED}[G_POLLABLE_RETURN_FAILED]}
+    a [GError] should be set for the operation to give details about the error
+    that happened.
     @since 2.60 *)
 
 val pollablereturn_of_int : int -> pollablereturn
@@ -608,7 +647,7 @@ type resolvererror =
         or similar problem *)
   | `INTERNAL  (** unknown error *) ]
 (** An error code used with [G_RESOLVER_ERROR] in a [GError] returned from a
-    [GResolver] routine.
+    {{!Ocgio.Resolver.class-type-resolver_t}[GResolver]} routine.
     @since 2.22 *)
 
 val resolvererror_of_int : int -> resolvererror
@@ -622,36 +661,43 @@ type resolverrecordtype =
   | `TXT  (** look up DNS TXT records for a name *)
   | `SOA  (** look up DNS SOA records for a zone *)
   | `NS  (** look up DNS NS records for a domain *) ]
-(** The type of record that g_resolver_lookup_records() or
-    g_resolver_lookup_records_async() should retrieve. The records are returned
-    as lists of [GVariant] tuples. Each record type has different values in the
-    variant tuples returned.
+(** The type of record that
+    {{!Ocgio.Resolver.class-type-resolver_t.method-lookup_records}[g_resolver_lookup_records
+                                                                   ()]} or
+    [g_resolver_lookup_records_async ()] should retrieve. The records are
+    returned as lists of [GVariant] tuples. Each record type has different
+    values in the variant tuples returned.
 
-    [G_RESOLVER_RECORD_SRV] records are returned as variants with the signature
-    [(qqqs)], containing a [guint16] with the priority, a [guint16] with the
-    weight, a [guint16] with the port, and a string of the hostname.
+    {{!Ocgio.Enums.type-resolverrecordtype.constructor-SRV}[G_RESOLVER_RECORD_SRV]}
+    records are returned as variants with the signature [(qqqs)], containing a
+    [guint16] with the priority, a [guint16] with the weight, a [guint16] with
+    the port, and a string of the hostname.
 
-    [G_RESOLVER_RECORD_MX] records are returned as variants with the signature
-    [(qs)], representing a [guint16] with the preference, and a string
-    containing the mail exchanger hostname.
+    {{!Ocgio.Enums.type-resolverrecordtype.constructor-MX}[G_RESOLVER_RECORD_MX]}
+    records are returned as variants with the signature [(qs)], representing a
+    [guint16] with the preference, and a string containing the mail exchanger
+    hostname.
 
-    [G_RESOLVER_RECORD_TXT] records are returned as variants with the signature
-    [(as)], representing an array of the strings in the text record. Note: Most
-    TXT records only contain a single string, but
+    {{!Ocgio.Enums.type-resolverrecordtype.constructor-TXT}[G_RESOLVER_RECORD_TXT]}
+    records are returned as variants with the signature [(as)], representing an
+    array of the strings in the text record. Note: Most TXT records only contain
+    a single string, but
     {{:https://tools.ietf.org/html/rfc1035#section-3.3.14}RFC 1035} does allow a
     record to contain multiple strings. The RFC which defines the interpretation
     of a specific TXT record will likely require concatenation of multiple
     strings if they are present, as with
     {{:https://tools.ietf.org/html/rfc7208#section-3.3}RFC 7208}.
 
-    [G_RESOLVER_RECORD_SOA] records are returned as variants with the signature
-    [(ssuuuuu)], representing a string containing the primary name server, a
-    string containing the administrator, the serial as a [guint32], the refresh
+    {{!Ocgio.Enums.type-resolverrecordtype.constructor-SOA}[G_RESOLVER_RECORD_SOA]}
+    records are returned as variants with the signature [(ssuuuuu)],
+    representing a string containing the primary name server, a string
+    containing the administrator, the serial as a [guint32], the refresh
     interval as a [guint32], the retry interval as a [guint32], the expire
     timeout as a [guint32], and the TTL as a [guint32].
 
-    [G_RESOLVER_RECORD_NS] records are returned as variants with the signature
-    [(s)], representing a string of the hostname of the name server.
+    {{!Ocgio.Enums.type-resolverrecordtype.constructor-NS}[G_RESOLVER_RECORD_NS]}
+    records are returned as variants with the signature [(s)], representing a
+    string of the hostname of the name server.
     @since 2.34 *)
 
 val resolverrecordtype_of_int : int -> resolverrecordtype
@@ -663,7 +709,7 @@ type resourceerror =
   [ `NOT_FOUND  (** no file was found at the requested path *)
   | `INTERNAL  (** unknown error *) ]
 (** An error code used with [G_RESOURCE_ERROR] in a [GError] returned from a
-    [GResource] routine.
+    {{!Ocgio.Resource.class-type-resource_t}[GResource]} routine.
     @since 2.32 *)
 
 val resourceerror_of_int : int -> resourceerror
@@ -684,10 +730,14 @@ type socketclientevent =
   | `PROXY_NEGOTIATED  (** The client has negotiated with the proxy server. *)
   | `TLS_HANDSHAKING  (** The client is performing a TLS handshake. *)
   | `TLS_HANDSHAKED  (** The client has performed a TLS handshake. *)
-  | `COMPLETE  (** The client is done with a particular [GSocketConnectable]. *)
-  ]
-(** Describes an event occurring on a [GSocketClient]. See the
-    [GSocketClient::event] signal for more details.
+  | `COMPLETE
+    (** The client is done with a particular
+        {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}[GSocketConnectable]}.
+    *) ]
+(** Describes an event occurring on a
+    {{!Ocgio.Socket_client.class-type-socket_client_t}[GSocketClient]}. See the
+    {{!Ocgio.Socket_client.class-type-socket_client_t.method-on_event}[GSocketClient::event]}
+    signal for more details.
 
     Additional values may be added to this type in the future.
     @since 2.32 *)
@@ -702,8 +752,10 @@ type socketfamily =
   | `UNIX  (** the UNIX domain family *)
   | `IPV4  (** the IPv4 family *)
   | `IPV6  (** the IPv6 family *) ]
-(** The protocol family of a [GSocketAddress]. (These values are identical to
-    the system defines [AF_INET], [AF_INET6] and [AF_UNIX], if available.)
+(** The protocol family of a
+    {{!Ocgio.Socket_address.class-type-socket_address_t}[GSocketAddress]}.
+    (These values are identical to the system defines [AF_INET], [AF_INET6] and
+    [AF_UNIX], if available.)
     @since 2.22 *)
 
 val socketfamily_of_int : int -> socketfamily
@@ -716,8 +768,11 @@ type socketlistenerevent =
   | `BOUND  (** The listener has bound a socket. *)
   | `LISTENING  (** The listener is about to start listening on this socket. *)
   | `LISTENED  (** The listener is now listening on this socket. *) ]
-(** Describes an event occurring on a [GSocketListener]. See the
-    [GSocketListener::event] signal for more details.
+(** Describes an event occurring on a
+    {{!Ocgio.Socket_listener.class-type-socket_listener_t}[GSocketListener]}.
+    See the
+    {{!Ocgio.Socket_listener.class-type-socket_listener_t.method-on_event}[GSocketListener::event]}
+    signal for more details.
 
     Additional values may be added to this type in the future.
     @since 2.46 *)
@@ -733,9 +788,10 @@ type socketprotocol =
   | `TCP  (** TCP over IP *)
   | `UDP  (** UDP over IP *)
   | `SCTP  (** SCTP over IP *) ]
-(** A protocol identifier is specified when creating a [GSocket], which is a
-    family/type specific identifier, where 0 means the default protocol for the
-    particular family/type.
+(** A protocol identifier is specified when creating a
+    {{!Ocgio.Socket.class-type-socket_t}[GSocket]}, which is a family/type
+    specific identifier, where 0 means the default protocol for the particular
+    family/type.
 
     This enum contains a set of commonly available and used protocols. You can
     also pass any other identifiers handled by the platform in order to use
@@ -754,8 +810,8 @@ type sockettype =
   | `SEQPACKET
     (** Reliable connection-based passing of datagrams of fixed maximum length
         (e.g. SCTP). *) ]
-(** Flags used when creating a [GSocket]. Some protocols may not implement all
-    the socket types.
+(** Flags used when creating a {{!Ocgio.Socket.class-type-socket_t}[GSocket]}.
+    Some protocols may not implement all the socket types.
     @since 2.22 *)
 
 val sockettype_of_int : int -> sockettype
@@ -767,7 +823,8 @@ type tlsauthenticationmode =
   [ `NONE  (** client authentication not required *)
   | `REQUESTED  (** client authentication is requested *)
   | `REQUIRED  (** client authentication is required *) ]
-(** The client authentication mode for a [GTlsServerConnection].
+(** The client authentication mode for a
+    {{!Ocgio.Tls_server_connection.class-type-tls_server_connection_t}[GTlsServerConnection]}.
     @since 2.28 *)
 
 val tlsauthenticationmode_of_int : int -> tlsauthenticationmode
@@ -776,9 +833,12 @@ val tlsauthenticationmode_to_int : tlsauthenticationmode -> int
 (* TlsCertificateRequestFlags - enumeration *)
 
 type tlscertificaterequestflags = [ `NONE  (** No flags *) ]
-(** Flags for g_tls_interaction_request_certificate(),
-    g_tls_interaction_request_certificate_async(), and
-    g_tls_interaction_invoke_request_certificate().
+(** Flags for
+    {{!Ocgio.Tls_interaction.class-type-tls_interaction_t.method-request_certificate}
+     [g_tls_interaction_request_certificate ()]},
+    [g_tls_interaction_request_certificate_async ()], and
+    {{!Ocgio.Tls_interaction.class-type-tls_interaction_t.method-invoke_request_certificate}
+     [g_tls_interaction_invoke_request_certificate ()]}.
     @since 2.40 *)
 
 val tlscertificaterequestflags_of_int : int -> tlscertificaterequestflags
@@ -824,8 +884,10 @@ type tlschannelbindingtype =
   | `EXPORTER
     (** {{:https://www.rfc-editor.org/rfc/rfc9266.html}[tls-exporter]} binding
         type. Since: 2.74 *) ]
-(** The type of TLS channel binding data to retrieve from [GTlsConnection] or
-    [GDtlsConnection], as documented by RFC 5929 or RFC 9266. The
+(** The type of TLS channel binding data to retrieve from
+    {{!Ocgio.Tls_connection.class-type-tls_connection_t}[GTlsConnection]} or
+    {{!Ocgio.Dtls_connection.class-type-dtls_connection_t}[GDtlsConnection]}, as
+    documented by RFC 5929 or RFC 9266. The
     {{:https://tools.ietf.org/html/rfc5929#section-5}[tls-unique-for-telnet]}
     binding type is not currently implemented.
     @since 2.66 *)
@@ -839,9 +901,12 @@ type tlsdatabaselookupflags =
   [ `NONE  (** No lookup flags *)
   | `KEYPAIR  (** Restrict lookup to certificates that have a private key. *)
   ]
-(** Flags for g_tls_database_lookup_certificate_for_handle(),
-    g_tls_database_lookup_certificate_issuer(), and
-    g_tls_database_lookup_certificates_issued_by().
+(** Flags for
+    {{!Ocgio.Tls_database.class-type-tls_database_t.method-lookup_certificate_for_handle}
+     [g_tls_database_lookup_certificate_for_handle ()]},
+    {{!Ocgio.Tls_database.class-type-tls_database_t.method-lookup_certificate_issuer}
+     [g_tls_database_lookup_certificate_issuer ()]}, and
+    [g_tls_database_lookup_certificates_issued_by ()].
     @since 2.30 *)
 
 val tlsdatabaselookupflags_of_int : int -> tlsdatabaselookupflags
@@ -863,10 +928,13 @@ type tlserror =
   | `CERTIFICATE_REQUIRED
     (** The TLS handshake failed because the server requested a client-side
         certificate, but none was provided. See
-        g_tls_connection_set_certificate(). *)
+        {{!Ocgio.Tls_connection.class-type-tls_connection_t.method-set_certificate}
+         [g_tls_connection_set_certificate ()]}. *)
   | `EOF
     (** The TLS connection was closed without proper notice, which may indicate
-        an attack. See g_tls_connection_set_require_close_notify(). *)
+        an attack. See
+        {{!Ocgio.Tls_connection.class-type-tls_connection_t.method-set_require_close_notify}
+         [g_tls_connection_set_require_close_notify ()]}. *)
   | `INAPPROPRIATE_FALLBACK
     (** The TLS handshake failed because the client sent the fallback SCSV,
         indicating a protocol downgrade attack. Since: 2.60 *)
@@ -888,8 +956,10 @@ type tlsinteractionresult =
   | `FAILED
     (** The interaction has failed, or was cancelled. and the operation should
         be aborted. *) ]
-(** [GTlsInteractionResult] is returned by various functions in
-    [GTlsInteraction] when finishing an interaction request.
+(** {{!Ocgio.Enums.type-tlsinteractionresult}[GTlsInteractionResult]} is
+    returned by various functions in
+    {{!Ocgio.Tls_interaction.class-type-tls_interaction_t}[GTlsInteraction]}
+    when finishing an interaction request.
     @since 2.30 *)
 
 val tlsinteractionresult_of_int : int -> tlsinteractionresult
@@ -912,15 +982,17 @@ type tlsprotocolversion =
   | `DTLS_1_2
     (** DTLS 1.2, defined by
         {{:https://datatracker.ietf.org/doc/html/rfc6347}RFC 6347} *) ]
-(** The TLS or DTLS protocol version used by a [GTlsConnection] or
-    [GDtlsConnection]. The integer values of these versions are sequential to
-    ensure newer known protocol versions compare greater than older known
-    versions. Any known DTLS protocol version will compare greater than any SSL
-    or TLS protocol version. The protocol version may be
-    [G_TLS_PROTOCOL_VERSION_UNKNOWN] if the TLS backend supports a newer
-    protocol version that GLib does not yet know about. This means that it's
-    possible for an unknown DTLS protocol version to compare less than the TLS
-    protocol versions.
+(** The TLS or DTLS protocol version used by a
+    {{!Ocgio.Tls_connection.class-type-tls_connection_t}[GTlsConnection]} or
+    {{!Ocgio.Dtls_connection.class-type-dtls_connection_t}[GDtlsConnection]}.
+    The integer values of these versions are sequential to ensure newer known
+    protocol versions compare greater than older known versions. Any known DTLS
+    protocol version will compare greater than any SSL or TLS protocol version.
+    The protocol version may be
+    {{!Ocgio.Enums.type-tlsprotocolversion.constructor-UNKNOWN}[G_TLS_PROTOCOL_VERSION_UNKNOWN]}
+    if the TLS backend supports a newer protocol version that GLib does not yet
+    know about. This means that it's possible for an unknown DTLS protocol
+    version to compare less than the TLS protocol versions.
     @since 2.70 *)
 
 val tlsprotocolversion_of_int : int -> tlsprotocolversion
@@ -932,7 +1004,9 @@ type tlsrehandshakemode =
   [ `NEVER  (** Never allow rehandshaking *)
   | `SAFELY  (** Allow safe rehandshaking only *)
   | `UNSAFELY  (** Allow unsafe rehandshaking *) ]
-(** When to allow rehandshaking. See g_tls_connection_set_rehandshake_mode().
+(** When to allow rehandshaking. See
+    {{!Ocgio.Tls_connection.class-type-tls_connection_t.method-set_rehandshake_mode}
+     [g_tls_connection_set_rehandshake_mode ()]}.
     @since 2.28 *)
 
 val tlsrehandshakemode_of_int : int -> tlsrehandshakemode
@@ -948,18 +1022,21 @@ type unixsocketaddresstype =
   | `ABSTRACT_PADDED
     (** an abstract name, 0-padded to the full length of a unix socket name *)
   ]
-(** The type of name used by a [GUnixSocketAddress].
-    [G_UNIX_SOCKET_ADDRESS_PATH] indicates a traditional unix domain socket
-    bound to a filesystem path. [G_UNIX_SOCKET_ADDRESS_ANONYMOUS] indicates a
-    socket not bound to any name (eg, a client-side socket, or a socket created
-    with socketpair()).
+(** The type of name used by a
+    {{!Ocgio.Unix_socket_address.class-type-unix_socket_address_t}[GUnixSocketAddress]}.
+    {{!Ocgio.Enums.type-unixsocketaddresstype.constructor-PATH}[G_UNIX_SOCKET_ADDRESS_PATH]}
+    indicates a traditional unix domain socket bound to a filesystem path.
+    {{!Ocgio.Enums.type-unixsocketaddresstype.constructor-ANONYMOUS}[G_UNIX_SOCKET_ADDRESS_ANONYMOUS]}
+    indicates a socket not bound to any name (eg, a client-side socket, or a
+    socket created with socketpair()).
 
     For abstract sockets, there are two incompatible ways of naming them; the
     man pages suggest using the entire [struct sockaddr_un] as the name, padding
     the unused parts of the %sun_path field with zeroes; this corresponds to
-    [G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED]. However, many programs instead just
-    use a portion of %sun_path, and pass an appropriate smaller length to bind()
-    or connect(). This is [G_UNIX_SOCKET_ADDRESS_ABSTRACT].
+    {{!Ocgio.Enums.type-unixsocketaddresstype.constructor-ABSTRACT_PADDED}[G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED]}.
+    However, many programs instead just use a portion of %sun_path, and pass an
+    appropriate smaller length to bind() or connect(). This is
+    {{!Ocgio.Enums.type-unixsocketaddresstype.constructor-ABSTRACT}[G_UNIX_SOCKET_ADDRESS_ABSTRACT]}.
     @since 2.26 *)
 
 val unixsocketaddresstype_of_int : int -> unixsocketaddresstype
@@ -971,8 +1048,10 @@ type zlibcompressorformat =
   [ `ZLIB  (** deflate compression with zlib header *)
   | `GZIP  (** gzip file format *)
   | `RAW  (** deflate compression with no header *) ]
-(** Used to select the type of data format to use for [GZlibDecompressor] and
-    [GZlibCompressor].
+(** Used to select the type of data format to use for
+    {{!Ocgio.Zlib_decompressor.class-type-zlib_decompressor_t}[GZlibDecompressor]}
+    and
+    {{!Ocgio.Zlib_compressor.class-type-zlib_compressor_t}[GZlibCompressor]}.
     @since 2.24 *)
 
 val zlibcompressorformat_of_int : int -> zlibcompressorformat
@@ -986,7 +1065,8 @@ type appinfocreateflags_flag =
   | `SUPPORTS_URIS  (** Application supports URI arguments. *)
   | `SUPPORTS_STARTUP_NOTIFICATION
     (** Application supports startup notification. Since 2.26 *) ]
-(** Flags used when creating a [GAppInfo]. *)
+(** Flags used when creating a
+    {{!Ocgio.App_info.class-type-app_info_t}[GAppInfo]}. *)
 
 type appinfocreateflags = appinfocreateflags_flag list
 
@@ -1006,21 +1086,29 @@ type applicationflags_flag =
   | `HANDLES_OPEN
     (** This application handles opening files (in the primary instance). Note
         that this flag only affects the default implementation of
-        local_command_line(), and has no effect if
-        [G_APPLICATION_HANDLES_COMMAND_LINE] is given. See g_application_run()
-        for details. *)
+        [local_command_line ()], and has no effect if
+        {{!Ocgio.Enums.type-applicationflags_flag.constructor-HANDLES_COMMAND_LINE}
+         [G_APPLICATION_HANDLES_COMMAND_LINE]} is given. See
+        {{!Ocgio.Application.class-type-application_t.method-run}[g_application_run
+                                                                  ()]} for
+        details. *)
   | `HANDLES_COMMAND_LINE
     (** This application handles command line arguments (in the primary
         instance). Note that this flag only affect the default implementation of
-        local_command_line(). See g_application_run() for details. *)
+        [local_command_line ()]. See
+        {{!Ocgio.Application.class-type-application_t.method-run}[g_application_run
+                                                                  ()]} for
+        details. *)
   | `SEND_ENVIRONMENT
     (** Send the environment of the launching process to the primary instance.
         Set this flag if your application is expected to behave differently
         depending on certain environment variables. For instance, an editor
         might be expected to use the [GIT_COMMITTER_NAME] environment variable
         when editing a git commit message. The environment is available to the
-        [GApplication::command]-line signal handler, via
-        g_application_command_line_getenv(). *)
+        {{!Ocgio.Application.class-type-application_t.method-on_command_line}[GApplication::command-line]}
+        signal handler, via
+        {{!Ocgio.Application_command_line.class-type-application_command_line_t.method-getenv}
+         [g_application_command_line_getenv ()]}. *)
   | `NON_UNIQUE
     (** Make no attempts to do any of the typical single-instance application
         negotiation, even if the application ID is given. The application
@@ -1035,7 +1123,8 @@ type applicationflags_flag =
   | `REPLACE
     (** Take over from another instance. This flag is usually set by passing
         [--gapplication-replace] on the commandline. Since: 2.60 *) ]
-(** Flags used to define the behaviour of a [GApplication].
+(** Flags used to define the behaviour of a
+    {{!Ocgio.Application.class-type-application_t}[GApplication]}.
     @since 2.28 *)
 
 type applicationflags = applicationflags_flag list
@@ -1052,8 +1141,9 @@ type askpasswordflags_flag =
   | `SAVING_SUPPORTED  (** operation supports saving settings. *)
   | `ANONYMOUS_SUPPORTED  (** operation supports anonymous users. *)
   | `TCRYPT  (** operation takes TCRYPT parameters (Since: 2.58) *) ]
-(** [GAskPasswordFlags] are used to request specific information from the user,
-    or to notify the user of their choices in an authentication situation. *)
+(** {{!Ocgio.Enums.type-askpasswordflags}[GAskPasswordFlags]} are used to
+    request specific information from the user, or to notify the user of their
+    choices in an authentication situation. *)
 
 type askpasswordflags = askpasswordflags_flag list
 
@@ -1068,13 +1158,14 @@ type busnameownerflags_flag =
     (** Allow another message bus connection to claim the name. *)
   | `REPLACE
     (** If another message bus connection owns the name and have specified
-        [G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT], then take the name from the
-        other connection. *)
+        {{!Ocgio.Enums.type-busnameownerflags_flag.constructor-ALLOW_REPLACEMENT}
+         [G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT]}, then take the name from
+        the other connection. *)
   | `DO_NOT_QUEUE
     (** If another message bus connection owns the name, immediately return an
         error from [Gio.bus_own_name] rather than entering the waiting queue for
         that name. *) ]
-(** Flags used in g_bus_own_name().
+(** Flags used in [g_bus_own_name ()].
     @since 2.26 *)
 
 type busnameownerflags = busnameownerflags_flag list
@@ -1089,7 +1180,7 @@ type busnamewatcherflags_flag =
   | `AUTO_START
     (** If no-one owns the name when beginning to watch the name, ask the bus to
         launch an owner for the name. *) ]
-(** Flags used in g_bus_watch_name().
+(** Flags used in [g_bus_watch_name ()].
     @since 2.26 *)
 
 type busnamewatcherflags = busnamewatcherflags_flag list
@@ -1103,7 +1194,7 @@ type converterflags_flag =
   [ `NONE  (** No flags. *)
   | `INPUT_AT_END  (** At end of input data *)
   | `FLUSH  (** Flush data *) ]
-(** Flags used when calling a g_converter_convert().
+(** Flags used when calling a [g_converter_convert ()].
     @since 2.24 *)
 
 type converterflags = converterflags_flag list
@@ -1121,7 +1212,7 @@ type dbuscallflags_flag =
   | `ALLOW_INTERACTIVE_AUTHORIZATION
     (** the caller is prepared to wait for interactive authorization. Since
         2.46. *) ]
-(** Flags used in g_dbus_connection_call() and similar APIs.
+(** Flags used in [g_dbus_connection_call ()] and similar APIs.
     @since 2.26 *)
 
 type dbuscallflags = dbuscallflags_flag list
@@ -1159,7 +1250,8 @@ type dbusconnectionflags_flag =
     *)
   | `DELAY_MESSAGE_PROCESSING
     (** If set, processing of D-Bus messages is delayed until
-        g_dbus_connection_start_message_processing() is called. *)
+        {{!Ocgio.D_bus_connection.class-type-d_bus_connection_t.method-start_message_processing}
+         [g_dbus_connection_start_message_processing ()]} is called. *)
   | `AUTHENTICATION_REQUIRE_SAME_USER
     (** When authenticating as a server, require the UID of the peer to be the
         same as the UID of the server. (Since: 2.68) *)
@@ -1170,7 +1262,8 @@ type dbusconnectionflags_flag =
         authentication, for which this flag makes connections to a server in
         another user namespace succeed, but causes a deadlock when connecting to
         a GDBus server older than 2.73.3. Since: 2.74 *) ]
-(** Flags used when creating a new [GDBusConnection].
+(** Flags used when creating a new
+    {{!Ocgio.D_bus_connection.class-type-d_bus_connection_t}[GDBusConnection]}.
     @since 2.26 *)
 
 type dbusconnectionflags = dbusconnectionflags_flag list
@@ -1188,7 +1281,9 @@ type dbusinterfaceskeletonflags_flag =
         IO without blocking any other part of the process. It also means that
         the method implementation must use locking to access data structures
         used by other threads. *) ]
-(** Flags describing the behavior of a [GDBusInterfaceSkeleton] instance.
+(** Flags describing the behavior of a
+    {{!Ocgio.D_bus_interface_skeleton.class-type-d_bus_interface_skeleton_t}[GDBusInterfaceSkeleton]}
+    instance.
     @since 2.30 *)
 
 type dbusinterfaceskeletonflags = dbusinterfaceskeletonflags_flag list
@@ -1207,7 +1302,8 @@ type dbusmessageflags_flag =
   | `ALLOW_INTERACTIVE_AUTHORIZATION
     (** If set on a method call, this flag means that the caller is prepared to
         wait for interactive authorization. Since 2.46. *) ]
-(** Message flags used in [GDBusMessage].
+(** Message flags used in
+    {{!Ocgio.D_bus_message.class-type-d_bus_message_t}[GDBusMessage]}.
     @since 2.26 *)
 
 type dbusmessageflags = dbusmessageflags_flag list
@@ -1223,7 +1319,9 @@ type dbusobjectmanagerclientflags_flag =
     (** If not set and the manager is for a well-known name, then request the
         bus to launch an owner for the name if no-one owns the name. This flag
         can only be used in managers for well-known names. *) ]
-(** Flags used when constructing a [GDBusObjectManagerClient].
+(** Flags used when constructing a
+    {{!Ocgio.D_bus_object_manager_client.class-type-d_bus_object_manager_client_t}
+     [GDBusObjectManagerClient]}.
     @since 2.30 *)
 
 type dbusobjectmanagerclientflags = dbusobjectmanagerclientflags_flag list
@@ -1260,20 +1358,22 @@ type dbusproxyflags_flag =
     (** If set, the property value for any __invalidated property__ will be
         (asynchronously) retrieved upon receiving the [PropertiesChanged] D-Bus
         signal and the property will not cause emission of the
-        [GDBusProxy::g]-properties-changed signal. When the value is received
-        the [GDBusProxy::g]-properties-changed signal is emitted for the
+        [GDBusProxy::g-properties-changed] signal. When the value is received
+        the [GDBusProxy::g-properties-changed] signal is emitted for the
         property along with the retrieved value. Since 2.32. *)
   | `DO_NOT_AUTO_START_AT_CONSTRUCTION
     (** If the proxy is for a well-known name, do not ask the bus to launch an
         owner during proxy initialization, but allow it to be autostarted by a
         method call. This flag is only meaningful in proxies for well-known
-        names, and only if [G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START] is not also
-        specified. *)
+        names, and only if
+        {{!Ocgio.Enums.type-dbusproxyflags_flag.constructor-DO_NOT_AUTO_START}[G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START]}
+        is not also specified. *)
   | `NO_MATCH_RULE
     (** Don't actually send the AddMatch D-Bus call for this signal
         subscription. This gives you more control over which match rules you add
         (but you must add them manually). (Since: 2.72) *) ]
-(** Flags used when constructing an instance of a [GDBusProxy] derived class.
+(** Flags used when constructing an instance of a
+    {{!Ocgio.D_bus_proxy.class-type-d_bus_proxy_t}[GDBusProxy]} derived class.
     @since 2.26 *)
 
 type dbusproxyflags = dbusproxyflags_flag list
@@ -1286,9 +1386,11 @@ val dbusproxyflags_to_int : dbusproxyflags -> int
 type dbussendmessageflags_flag =
   [ `NONE  (** No flags set. *)
   | `PRESERVE_SERIAL
-    (** Do not automatically assign a serial number from the [GDBusConnection]
+    (** Do not automatically assign a serial number from the
+        {{!Ocgio.D_bus_connection.class-type-d_bus_connection_t}[GDBusConnection]}
         object when sending a message. *) ]
-(** Flags used when sending [GDBusMessages] on a [GDBusConnection].
+(** Flags used when sending [GDBusMessages] on a
+    {{!Ocgio.D_bus_connection.class-type-d_bus_connection_t}[GDBusConnection]}.
     @since 2.26 *)
 
 type dbussendmessageflags = dbussendmessageflags_flag list
@@ -1301,14 +1403,17 @@ val dbussendmessageflags_to_int : dbussendmessageflags -> int
 type dbusserverflags_flag =
   [ `NONE  (** No flags set. *)
   | `RUN_IN_THREAD
-    (** All [GDBusServer::new]-connection signals will run in separated
-        dedicated threads (see signal for details). *)
+    (** All
+        {{!Ocgio.D_bus_server.class-type-d_bus_server_t.method-on_new_connection}
+         [GDBusServer::new-connection]} signals will run in separated dedicated
+        threads (see signal for details). *)
   | `AUTHENTICATION_ALLOW_ANONYMOUS
     (** Allow the anonymous authentication method. *)
   | `AUTHENTICATION_REQUIRE_SAME_USER
     (** Require the UID of the peer to be the same as the UID of the server when
         authenticating. (Since: 2.68) *) ]
-(** Flags used when creating a [GDBusServer].
+(** Flags used when creating a
+    {{!Ocgio.D_bus_server.class-type-d_bus_server_t}[GDBusServer]}.
     @since 2.26 *)
 
 type dbusserverflags = dbusserverflags_flag list
@@ -1332,7 +1437,7 @@ type dbussignalflags_flag =
         equivalent to the given path, or one of the paths is a subpath of the
         other. *) ]
 (** Flags used when subscribing to signals via
-    g_dbus_connection_signal_subscribe().
+    [g_dbus_connection_signal_subscribe ()].
     @since 2.26 *)
 
 type dbussignalflags = dbussignalflags_flag list
@@ -1348,7 +1453,7 @@ type dbussubtreeflags_flag =
     (** Method calls to objects not in the enumerated range will still be
         dispatched. This is useful if you want to dynamically spawn objects in
         the subtree. *) ]
-(** Flags passed to g_dbus_connection_register_subtree().
+(** Flags passed to [g_dbus_connection_register_subtree ()].
     @since 2.26 *)
 
 type dbussubtreeflags = dbussubtreeflags_flag list
@@ -1390,7 +1495,7 @@ type filecopyflags_flag =
   | `NOFOLLOW_SYMLINKS  (** Don't follow symlinks. *)
   | `ALL_METADATA
     (** Copy all file metadata instead of just default set used for copy (see
-        [GFileInfo]). *)
+        {{!Ocgio.File_info.class-type-file_info_t}[GFileInfo]}). *)
   | `NO_FALLBACK_FOR_MOVE
     (** Don't use copy and delete fallback if native move not supported. *)
   | `TARGET_DEFAULT_PERMS
@@ -1422,7 +1527,8 @@ type filecreateflags_flag =
        You can think of it as \"unlink destination\" before\n\
        writing to it, although the implementation may not\n\
        be exactly like that. This flag can only be used with\n\
-       g_file_replace() and its variants, including g_file_replace_contents().\n\
+       {{!Ocgio.File.class-type-file_t.method-replace}[g_file_replace ()]} and \
+       its variants, including [g_file_replace_contents ()].\n\
        Since 2.20"] ]
 (** Flags used when an operation may create a file. *)
 
@@ -1447,7 +1553,7 @@ type filemeasureflags_flag =
         file types are not specified in a standard way. *)
   | `NO_XDEV  (** Do not cross mount point boundaries. Compare with [du -x]. *)
   ]
-(** Flags that can be used with g_file_measure_disk_usage().
+(** Flags that can be used with [g_file_measure_disk_usage ()].
     @since 2.38 *)
 
 type filemeasureflags = filemeasureflags_flag list
@@ -1465,15 +1571,20 @@ type filemonitorflags_flag =
         a single G_FILE_MONITOR_EVENT_MOVED event instead (NB: not supported on
         all backends; the default behaviour -without specifying this flag- is to
         send single DELETED and CREATED events). Deprecated since 2.46: use
-        [G_FILE_MONITOR_WATCH_MOVES] instead. *)
+        {{!Ocgio.Enums.type-filemonitorflags_flag.constructor-WATCH_MOVES}[G_FILE_MONITOR_WATCH_MOVES]}
+        instead. *)
   | `WATCH_HARD_LINKS
     (** Watch for changes to the file made via another hard link. Since 2.36. *)
   | `WATCH_MOVES
     (** Watch for rename operations on a monitored directory. This causes
-        [G_FILE_MONITOR_EVENT_RENAMED], [G_FILE_MONITOR_EVENT_MOVED_IN] and
-        [G_FILE_MONITOR_EVENT_MOVED_OUT] events to be emitted when possible.
-        Since: 2.46. *) ]
-(** Flags used to set what a [GFileMonitor] will watch for. *)
+        {{!Ocgio.Enums.type-filemonitorevent.constructor-RENAMED}[G_FILE_MONITOR_EVENT_RENAMED]},
+        {{!Ocgio.Enums.type-filemonitorevent.constructor-MOVED_IN}[G_FILE_MONITOR_EVENT_MOVED_IN]}
+        and
+        {{!Ocgio.Enums.type-filemonitorevent.constructor-MOVED_OUT}[G_FILE_MONITOR_EVENT_MOVED_OUT]}
+        events to be emitted when possible. Since: 2.46. *) ]
+(** Flags used to set what a
+    {{!Ocgio.File_monitor.class-type-file_monitor_t}[GFileMonitor]} will watch
+    for. *)
 
 type filemonitorflags = filemonitorflags_flag list
 
@@ -1485,7 +1596,8 @@ val filemonitorflags_to_int : filemonitorflags -> int
 type filequeryinfoflags_flag =
   [ `NONE  (** No flags set. *)
   | `NOFOLLOW_SYMLINKS  (** Don't follow symlinks. *) ]
-(** Flags used when querying a [GFileInfo]. *)
+(** Flags used when querying a
+    {{!Ocgio.File_info.class-type-file_info_t}[GFileInfo]}. *)
 
 type filequeryinfoflags = filequeryinfoflags_flag list
 
@@ -1549,7 +1661,10 @@ val outputstreamspliceflags_to_int : outputstreamspliceflags -> int
 (* ResolverNameLookupFlags - bitfield/flags *)
 
 type resolvernamelookupflags_flag =
-  [ `DEFAULT  (** default behavior (same as g_resolver_lookup_by_name()) *)
+  [ `DEFAULT
+    (** default behavior (same as
+        {{!Ocgio.Resolver.class-type-resolver_t.method-lookup_by_name}[g_resolver_lookup_by_name
+                                                                       ()]}) *)
   | `IPV4_ONLY  (** only resolve ipv4 addresses *)
   | `IPV6_ONLY  (** only resolve ipv6 addresses *) ]
 (** Flags to modify lookup behavior.
@@ -1628,11 +1743,13 @@ type socketmsgflags_flag =
   | `DONTROUTE
     (** Don't use a gateway to send out the packet, only send to hosts on
         directly connected networks. *) ]
-(** Flags used in g_socket_receive_message() and g_socket_send_message(). The
-    flags listed in the enum are some commonly available flags, but the values
-    used for them are the same as on the platform, and any other flags are
-    passed in/out as is. So to use a platform specific flag, just include the
-    right system header and pass in the flag.
+(** Flags used in [g_socket_receive_message ()] and
+    {{!Ocgio.Socket.class-type-socket_t.method-send_message}[g_socket_send_message
+                                                             ()]}. The flags
+    listed in the enum are some commonly available flags, but the values used
+    for them are the same as on the platform, and any other flags are passed
+    in/out as is. So to use a platform specific flag, just include the right
+    system header and pass in the flag.
     @since 2.22 *)
 
 type socketmsgflags = socketmsgflags_flag list
@@ -1646,17 +1763,26 @@ type subprocessflags_flag =
   [ `NONE  (** No flags. *)
   | `STDIN_PIPE
     (** create a pipe for the stdin of the spawned process that can be accessed
-        with g_subprocess_get_stdin_pipe(). *)
+        with
+        {{!Ocgio.Subprocess.class-type-subprocess_t.method-get_stdin_pipe}[g_subprocess_get_stdin_pipe
+                                                                           ()]}.
+    *)
   | `STDIN_INHERIT  (** stdin is inherited from the calling process. *)
   | `STDOUT_PIPE
     (** create a pipe for the stdout of the spawned process that can be accessed
-        with g_subprocess_get_stdout_pipe(). *)
+        with
+        {{!Ocgio.Subprocess.class-type-subprocess_t.method-get_stdout_pipe}[g_subprocess_get_stdout_pipe
+                                                                            ()]}.
+    *)
   | `STDOUT_SILENCE
     (** silence the stdout of the spawned process (ie: redirect to [/dev/null]).
     *)
   | `STDERR_PIPE
     (** create a pipe for the stderr of the spawned process that can be accessed
-        with g_subprocess_get_stderr_pipe(). *)
+        with
+        {{!Ocgio.Subprocess.class-type-subprocess_t.method-get_stderr_pipe}[g_subprocess_get_stderr_pipe
+                                                                            ()]}.
+    *)
   | `STDERR_SILENCE
     (** silence the stderr of the spawned process (ie: redirect to [/dev/null]).
     *)
@@ -1673,15 +1799,18 @@ type subprocessflags_flag =
   | `SEARCH_PATH_FROM_ENVP
     (** if path searching is needed when spawning the subprocess, use the [PATH]
         in the launcher environment. (Since: 2.72) *) ]
-(** Flags to define the behaviour of a [GSubprocess].
+(** Flags to define the behaviour of a
+    {{!Ocgio.Subprocess.class-type-subprocess_t}[GSubprocess]}.
 
     Note that the default for stdin is to redirect from [/dev/null]. For stdout
     and stderr the default are for them to inherit the corresponding descriptor
     from the calling process.
 
     Note that it is a programmer error to mix 'incompatible' flags. For example,
-    you may not request both [G_SUBPROCESS_FLAGS_STDOUT_PIPE] and
-    [G_SUBPROCESS_FLAGS_STDOUT_SILENCE].
+    you may not request both
+    {{!Ocgio.Enums.type-subprocessflags_flag.constructor-STDOUT_PIPE}[G_SUBPROCESS_FLAGS_STDOUT_PIPE]}
+    and
+    {{!Ocgio.Enums.type-subprocessflags_flag.constructor-STDOUT_SILENCE}[G_SUBPROCESS_FLAGS_STDOUT_SILENCE]}.
     @since 2.40 *)
 
 type subprocessflags = subprocessflags_flag list
@@ -1692,7 +1821,8 @@ val subprocessflags_to_int : subprocessflags -> int
 (* TestDBusFlags - bitfield/flags *)
 
 type testdbusflags_flag = [ `NONE  (** No flags. *) ]
-(** Flags to define future [GTestDBus] behaviour.
+(** Flags to define future
+    {{!Ocgio.Test_d_bus.class-type-test_d_bus_t}[GTestDBus]} behaviour.
     @since 2.34 *)
 
 type testdbusflags = testdbusflags_flag list
@@ -1712,22 +1842,24 @@ type tlscertificateflags_flag =
     (** The certificate's activation time is still in the future *)
   | `EXPIRED  (** The certificate has expired *)
   | `REVOKED
-    (** The certificate has been revoked according to the [GTlsConnection]'s
+    (** The certificate has been revoked according to the
+        {{!Ocgio.Tls_connection.class-type-tls_connection_t}[GTlsConnection]}'s
         certificate revocation list. *)
   | `INSECURE  (** The certificate's algorithm is considered insecure. *)
   | `GENERIC_ERROR  (** Some other error occurred validating the certificate *)
   | `VALIDATE_ALL  (** the combination of all of the above flags *) ]
 (** A set of flags describing TLS certification validation. This can be used to
     describe why a particular certificate was rejected (for example, in
-    [GTlsConnection::accept]-certificate).
+    {{!Ocgio.Tls_connection.class-type-tls_connection_t.method-on_accept_certificate}
+     [GTlsConnection::accept-certificate]}).
 
     GLib guarantees that if certificate verification fails, at least one flag
     will be set, but it does not guarantee that all possible flags will be set.
     Accordingly, you may not safely decide to ignore any particular type of
     error. For example, it would be incorrect to mask
-    [G_TLS_CERTIFICATE_EXPIRED] if you want to allow expired certificates,
-    because this could potentially be the only error flag set even if other
-    problems exist with the certificate.
+    {{!Ocgio.Enums.type-tlscertificateflags_flag.constructor-EXPIRED}[G_TLS_CERTIFICATE_EXPIRED]}
+    if you want to allow expired certificates, because this could potentially be
+    the only error flag set even if other problems exist with the certificate.
     @since 2.28 *)
 
 type tlscertificateflags = tlscertificateflags_flag list
@@ -1738,7 +1870,9 @@ val tlscertificateflags_to_int : tlscertificateflags -> int
 (* TlsDatabaseVerifyFlags - bitfield/flags *)
 
 type tlsdatabaseverifyflags_flag = [ `NONE  (** No verification flags *) ]
-(** Flags for g_tls_database_verify_chain().
+(** Flags for
+    {{!Ocgio.Tls_database.class-type-tls_database_t.method-verify_chain}[g_tls_database_verify_chain
+                                                                         ()]}.
     @since 2.30 *)
 
 type tlsdatabaseverifyflags = tlsdatabaseverifyflags_flag list

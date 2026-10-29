@@ -28,7 +28,7 @@ class type cancellable_t = object
       Note that disconnecting from this signal (or any signal) in a
       multi-threaded program is prone to race conditions. For instance it is
       possible that a signal handler may be invoked even after a call to
-      g_signal_handler_disconnect() for that handler has already returned.
+      [g_signal_handler_disconnect ()] for that handler has already returned.
 
       There is also a problem when cancellation happens right before connecting
       to the signal. If this happens the signal will unexpectedly not be
@@ -36,8 +36,8 @@ class type cancellable_t = object
       condition where this is still happening.
 
       In order to make it safe and easy to connect handlers there are two helper
-      functions: g_cancellable_connect() and g_cancellable_disconnect() which
-      protect against problems like this.
+      functions: [g_cancellable_connect ()] and [g_cancellable_disconnect ()]
+      which protect against problems like this.
 
       An example of how to us this:
 
@@ -95,7 +95,7 @@ class type cancellable_t = object
 
   method disconnect : int -> unit
   (** Disconnects a handler from a cancellable instance similar to
-      g_signal_handler_disconnect(). Additionally, in the event that a signal
+      [g_signal_handler_disconnect ()]. Additionally, in the event that a signal
       handler is currently running, this call will block until the handler has
       finished. Calling this function from a [GCancellable::cancelled] signal
       handler will therefore result in a deadlock.
@@ -114,13 +114,13 @@ class type cancellable_t = object
 
       You are not supposed to read from the fd yourself, just check for readable
       status. Reading to unset the readable status is done with
-      g_cancellable_reset().
+      [g_cancellable_reset ()].
 
       After a successful return from this function, you should use
-      g_cancellable_release_fd() to free up resources allocated for the returned
-      file descriptor.
+      [g_cancellable_release_fd ()] to free up resources allocated for the
+      returned file descriptor.
 
-      See also g_cancellable_make_pollfd(). *)
+      See also [g_cancellable_make_pollfd ()]. *)
 
   method is_cancelled : unit -> bool
   (** Checks if a cancellable job has been cancelled. *)
@@ -131,7 +131,7 @@ class type cancellable_t = object
 
   method push_current : unit -> unit
   (** Pushes [cancellable] onto the cancellable stack. The current cancellable
-      can then be received using g_cancellable_get_current().
+      can then be received using [g_cancellable_get_current ()].
 
       This is useful when implementing cancellable operations in code that does
       not allow you to pass down the cancellable object.
@@ -140,8 +140,8 @@ class type cancellable_t = object
       rarely have to call this yourself. *)
 
   method release_fd : unit -> unit
-  (** Releases a resources previously allocated by g_cancellable_get_fd() or
-      g_cancellable_make_pollfd().
+  (** Releases a resources previously allocated by [g_cancellable_get_fd ()] or
+      [g_cancellable_make_pollfd ()].
 
       For compatibility reasons with older releases, calling this function is
       not strictly required, the resources will be automatically freed when the
@@ -195,10 +195,14 @@ class cancellable : Raw.Cancellable.t -> cancellable_t
 (** {1:constructors Constructors} *)
 
 val new_ : unit -> cancellable_t
-(** Creates a new [GCancellable] object.
+(** Creates a new {{!Ocgio.Cancellable.class-type-cancellable_t}[GCancellable]}
+    object.
 
     Applications that want to start one or more operations that should be
-    cancellable should create a [GCancellable] and pass it to the operations.
+    cancellable should create a
+    {{!Ocgio.Cancellable.class-type-cancellable_t}[GCancellable]} and pass it to
+    the operations.
 
-    One [GCancellable] can be used in multiple consecutive operations or in
-    multiple concurrent operations. *)
+    One {{!Ocgio.Cancellable.class-type-cancellable_t}[GCancellable]} can be
+    used in multiple consecutive operations or in multiple concurrent
+    operations. *)

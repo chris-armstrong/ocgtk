@@ -37,8 +37,8 @@ class type unix_connection_t = object
     Cancellable.cancellable_t option ->
     (Credentials.credentials_t, GError.t) result
   (** Receives credentials from the sending end of the connection. The sending
-      end has to call g_unix_connection_send_credentials() (or similar) for this
-      to work.
+      end has to call [g_unix_connection_send_credentials ()] (or similar) for
+      this to work.
 
       As well as reading the credentials this also reads (and discards) a single
       byte from the stream, as this is required for credentials passing to work
@@ -53,16 +53,17 @@ class type unix_connection_t = object
       - GNU/Hurd since GLib 2.40
 
       Other ways to exchange credentials with a foreign peer includes the
-      [GUnixCredentialsMessage] type and g_socket_get_credentials() function. *)
+      [GUnixCredentialsMessage] type and [g_socket_get_credentials ()] function.
+  *)
 
   method receive_credentials_finish :
     Async_result.async_result_t -> (Credentials.credentials_t, GError.t) result
   (** Finishes an asynchronous receive credentials operation started with
-      g_unix_connection_receive_credentials_async(). *)
+      [g_unix_connection_receive_credentials_async ()]. *)
 
   method receive_fd : Cancellable.cancellable_t option -> (int, GError.t) result
   (** Receives a file descriptor from the sending end of the connection. The
-      sending end has to call g_unix_connection_send_fd() for this to work.
+      sending end has to call [g_unix_connection_send_fd ()] for this to work.
 
       As well as reading the fd this also reads a single byte from the stream,
       as this is required for fd passing to work on some implementations. *)
@@ -71,7 +72,7 @@ class type unix_connection_t = object
     Cancellable.cancellable_t option -> (bool, GError.t) result
   (** Passes the credentials of the current user the receiving side of the
       connection. The receiving end has to call
-      g_unix_connection_receive_credentials() (or similar) to accept the
+      [g_unix_connection_receive_credentials ()] (or similar) to accept the
       credentials.
 
       As well as sending the credentials this also writes a single NUL byte to
@@ -87,17 +88,18 @@ class type unix_connection_t = object
       - GNU/Hurd since GLib 2.40
 
       Other ways to exchange credentials with a foreign peer includes the
-      [GUnixCredentialsMessage] type and g_socket_get_credentials() function. *)
+      [GUnixCredentialsMessage] type and [g_socket_get_credentials ()] function.
+  *)
 
   method send_credentials_finish :
     Async_result.async_result_t -> (bool, GError.t) result
   (** Finishes an asynchronous send credentials operation started with
-      g_unix_connection_send_credentials_async(). *)
+      [g_unix_connection_send_credentials_async ()]. *)
 
   method send_fd :
     int -> Cancellable.cancellable_t option -> (bool, GError.t) result
   (** Passes a file descriptor to the receiving side of the connection. The
-      receiving end has to call g_unix_connection_receive_fd() to accept the
+      receiving end has to call [g_unix_connection_receive_fd ()] to accept the
       file descriptor.
 
       As well as sending the fd this also writes a single byte to the stream, as

@@ -51,8 +51,8 @@ class type file_output_stream_t = object
     (File_info.file_info_t, GError.t) result
   (** Queries a file output stream for the given [attributes]. This function
       blocks while querying the stream. For the asynchronous version of this
-      function, see g_file_output_stream_query_info_async(). While the stream is
-      blocked, the stream will set the pending flag internally, and any other
+      function, see [g_file_output_stream_query_info_async ()]. While the stream
+      is blocked, the stream will set the pending flag internally, and any other
       operations on the stream will fail with [G_IO_ERROR_PENDING].
 
       Can fail if the stream was already closed (with [error] being set to
@@ -70,7 +70,7 @@ class type file_output_stream_t = object
   method query_info_finish :
     Async_result.async_result_t -> (File_info.file_info_t, GError.t) result
   (** Finalizes the asynchronous query started by
-      g_file_output_stream_query_info_async(). *)
+      [g_file_output_stream_query_info_async ()]. *)
 
   (** {2:conversions Conversions} *)
 

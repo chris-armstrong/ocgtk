@@ -12,10 +12,10 @@
 
     [GtkWindowGroup] objects are referenced by each window in the group, so once
     you have added all windows to a [GtkWindowGroup], you can drop the initial
-    reference to the window group with g_object_unref(). If the windows in the
-    window group are subsequently destroyed, then they will be removed from the
-    window group and drop their references on the window group; when all window
-    have been removed, the window group will be freed.
+    reference to the window group with [g_object_unref ()]. If the windows in
+    the window group are subsequently destroyed, then they will be removed from
+    the window group and drop their references on the window group; when all
+    window have been removed, the window group will be freed.
 
     The class built on this module is in {!Ocgtk.Window_group}. *)
 

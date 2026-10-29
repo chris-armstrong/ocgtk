@@ -46,7 +46,7 @@ class type list_box_row_t = object
       Note that calls to this method must be in sync with the data used for the
       row functions. For instance, if the list is mirroring some external data
       set, and {i two} rows changed in the external data set then when you call
-      gtk_list_box_row_changed() on the first row the sort function must only
+      [gtk_list_box_row_changed ()] on the first row the sort function must only
       read the new data for the first of the two changed rows, otherwise the
       resorting of the rows will be wrong.
 

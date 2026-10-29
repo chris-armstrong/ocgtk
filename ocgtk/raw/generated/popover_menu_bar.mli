@@ -57,7 +57,8 @@ external remove_child :
   .t ->
   bool = "ml_gtk_popover_menu_bar_remove_child"
 (** Removes a widget that has previously been added with
-    gtk_popover_menu_bar_add_child(). *)
+    {{!Ocgtk.Raw.Popover_menu_bar.val-add_child}[gtk_popover_menu_bar_add_child
+                                                 ()]}. *)
 
 external get_menu_model : t -> Ocgio_raw.Menu_model.t option
   = "ml_gtk_popover_menu_bar_get_menu_model"

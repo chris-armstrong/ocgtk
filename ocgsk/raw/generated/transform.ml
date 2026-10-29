@@ -63,7 +63,8 @@ external to_translate : t -> float * float = "ml_gsk_transform_to_translate"
 
     [self] must be a 2D transformation. If you are not sure, use
 
-    gsk_transform_get_category() >= GSK_TRANSFORM_CATEGORY_2D_TRANSLATE
+    {{!Ocgsk.Raw.Transform.val-get_category}[gsk_transform_get_category ()]} >=
+    GSK_TRANSFORM_CATEGORY_2D_TRANSLATE
 
     to check. *)
 
@@ -91,7 +92,8 @@ external to_affine : t -> float * float * float * float
 
     [self] must be a 2D affine transformation. If you are not sure, use
 
-    gsk_transform_get_category() >= GSK_TRANSFORM_CATEGORY_2D_AFFINE
+    {{!Ocgsk.Raw.Transform.val-get_category}[gsk_transform_get_category ()]} >=
+    GSK_TRANSFORM_CATEGORY_2D_AFFINE
 
     to check. *)
 
@@ -109,7 +111,8 @@ external to_2d_components :
 
     [self] must be a 2D transformation. If you are not sure, use
 
-    gsk_transform_get_category() >= GSK_TRANSFORM_CATEGORY_2D
+    {{!Ocgsk.Raw.Transform.val-get_category}[gsk_transform_get_category ()]} >=
+    GSK_TRANSFORM_CATEGORY_2D
 
     to check. *)
 
@@ -119,7 +122,8 @@ external to_2d : t -> float * float * float * float * float * float
 
     [self] must be a 2D transformation. If you are not sure, use
 
-    gsk_transform_get_category() >= GSK_TRANSFORM_CATEGORY_2D
+    {{!Ocgsk.Raw.Transform.val-get_category}[gsk_transform_get_category ()]} >=
+    GSK_TRANSFORM_CATEGORY_2D
 
     to check.
 

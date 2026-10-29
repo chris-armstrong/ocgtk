@@ -25,7 +25,9 @@
     case, they will emit the
     {{!Ocgtk.Sorter.class-type-sorter_t.method-on_changed}[Gtk.Sorter::changed]}
     signal to notify that the sort order is no longer valid and should be
-    updated by calling gtk_sorter_compare() again.
+    updated by calling
+    {{!Ocgtk.Sorter.class-type-sorter_t.method-compare}[gtk_sorter_compare ()]}
+    again.
 
     GTK provides various pre-made sorter implementations for common sorting
     operations. {{!Ocgtk.Column_view.class-type-column_view_t}[Gtk.ColumnView]}
@@ -47,7 +49,7 @@ class type sorter_t = object
   (** Emitted whenever the sorter changed.
 
       Users of the sorter should then update the sort order again via
-      gtk_sorter_compare().
+      [gtk_sorter_compare ()].
 
       [Gtk.SortListModel] handles this signal automatically.
 
@@ -116,7 +118,9 @@ class sorter : Raw.Sorter.t -> sorter_t
     case, they will emit the
     {{!Ocgtk.Sorter.class-type-sorter_t.method-on_changed}[Gtk.Sorter::changed]}
     signal to notify that the sort order is no longer valid and should be
-    updated by calling gtk_sorter_compare() again.
+    updated by calling
+    {{!Ocgtk.Sorter.class-type-sorter_t.method-compare}[gtk_sorter_compare ()]}
+    again.
 
     GTK provides various pre-made sorter implementations for common sorting
     operations. {{!Ocgtk.Column_view.class-type-column_view_t}[Gtk.ColumnView]}

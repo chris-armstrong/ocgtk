@@ -3,9 +3,9 @@ class type srv_target_t = object
 
   method get_hostname : unit -> string
   (** Gets [target]'s hostname (in ASCII form; if you are going to present this
-      to the user, you should use g_hostname_is_ascii_encoded() to check if it
-      contains encoded Unicode segments, and use g_hostname_to_unicode() to
-      convert it if it does.) *)
+      to the user, you should use [g_hostname_is_ascii_encoded ()] to check if
+      it contains encoded Unicode segments, and use [g_hostname_to_unicode ()]
+      to convert it if it does.) *)
 
   method get_port : unit -> UInt16.t
   (** Gets [target]'s port *)

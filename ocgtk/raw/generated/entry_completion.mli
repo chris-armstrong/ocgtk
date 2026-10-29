@@ -72,7 +72,7 @@ external set_text_column : t -> int -> unit
 
     This functions creates and adds a [GtkCellRendererText] for the selected
     column. If you need to set the text column, but don't want the cell
-    renderer, use g_object_set() to set the
+    renderer, use [g_object_set ()] to set the
     {{!Ocgtk.Raw.Entry_completion.val-get_text_column}[Gtk.EntryCompletion:text-column]}
     property directly. *)
 

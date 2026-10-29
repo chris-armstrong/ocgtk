@@ -33,12 +33,14 @@ external gtype : unit -> Gobject.Type.t
   = "ml_gio_d_bus_object_manager_server_get_type"
 
 external new_ : string -> t = "ml_g_dbus_object_manager_server_new"
-(** Creates a new [GDBusObjectManagerServer] object.
+(** Creates a new
+    {{!Ocgio.Raw.D_bus_object_manager_server}[GDBusObjectManagerServer]} object.
 
     The returned server isn't yet exported on any connection. To do so, use
-    g_dbus_object_manager_server_set_connection(). Normally you want to export
-    all of your objects before doing so to avoid InterfacesAdded signals being
-    emitted. *)
+    {{!Ocgio.Raw.D_bus_object_manager_server.val-set_connection}[g_dbus_object_manager_server_set_connection
+                                                                 ()]}. Normally
+    you want to export all of your objects before doing so to avoid
+    InterfacesAdded signals being emitted. *)
 
 (* Methods *)
 
@@ -61,21 +63,25 @@ external is_exported : t -> D_bus_object_skeleton.t -> bool
 
 external get_connection : t -> D_bus_connection.t option
   = "ml_g_dbus_object_manager_server_get_connection"
-(** Gets the [GDBusConnection] used by [manager]. *)
+(** Gets the {{!Ocgio.Raw.D_bus_connection}[GDBusConnection]} used by [manager].
+*)
 
 external export_uniquely : t -> D_bus_object_skeleton.t -> unit
   = "ml_g_dbus_object_manager_server_export_uniquely"
-(** Like g_dbus_object_manager_server_export() but appends a string of the form
-    _N (with N being a natural number) to [object]'s object path if an object
-    with the given path already exists. As such, the
-    [GDBusObjectProxy:g]-object-path property of [object] may be modified. *)
+(** Like
+    {{!Ocgio.Raw.D_bus_object_manager_server.val-export}[g_dbus_object_manager_server_export
+                                                         ()]} but appends a
+    string of the form _N (with N being a natural number) to [object]'s object
+    path if an object with the given path already exists. As such, the
+    {{!Ocgio.Raw.D_bus_object_proxy.val-get_g_object_path}[GDBusObjectProxy:g-object-path]}
+    property of [object] may be modified. *)
 
 external export : t -> D_bus_object_skeleton.t -> unit
   = "ml_g_dbus_object_manager_server_export"
 (** Exports [object] on [manager].
 
-    If there is already a [GDBusObject] exported at the object path, then the
-    old object is removed.
+    If there is already a {{!Ocgio.Raw.D_bus_object}[GDBusObject]} exported at
+    the object path, then the old object is removed.
 
     The object path for [object] must be in the hierarchy rooted by the object
     path for [manager].

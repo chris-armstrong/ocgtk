@@ -7,7 +7,7 @@ class type subprocess_t = object
   (** Use an operating-system specific method to attempt an immediate, forceful
       termination of the process. There is no mechanism to determine whether or
       not the request itself was successful; however, you can use
-      g_subprocess_wait() to monitor the status of the process after calling
+      [g_subprocess_wait ()] to monitor the status of the process after calling
       this function.
 
       On Unix, this function sends [SIGKILL]. *)
@@ -19,8 +19,8 @@ class type subprocess_t = object
 
       This is equivalent to the system WEXITSTATUS macro.
 
-      It is an error to call this function before g_subprocess_wait() and unless
-      g_subprocess_get_if_exited() returned [true]. *)
+      It is an error to call this function before [g_subprocess_wait ()] and
+      unless [g_subprocess_get_if_exited ()] returned [true]. *)
 
   method get_identifier : unit -> string option
   (** On UNIX, returns the process ID as a decimal string. On Windows, returns
@@ -33,7 +33,7 @@ class type subprocess_t = object
 
       This is equivalent to the system WIFEXITED macro.
 
-      It is an error to call this function before g_subprocess_wait() has
+      It is an error to call this function before [g_subprocess_wait ()] has
       returned. *)
 
   method get_if_signaled : unit -> bool
@@ -41,7 +41,7 @@ class type subprocess_t = object
 
       This is equivalent to the system WIFSIGNALED macro.
 
-      It is an error to call this function before g_subprocess_wait() has
+      It is an error to call this function before [g_subprocess_wait ()] has
       returned. *)
 
   method get_status : unit -> int
@@ -49,12 +49,12 @@ class type subprocess_t = object
 
       This value has no particular meaning, but it can be used with the macros
       defined by the system headers such as WIFEXITED. It can also be used with
-      g_spawn_check_wait_status().
+      [g_spawn_check_wait_status ()].
 
-      It is more likely that you want to use g_subprocess_get_if_exited()
-      followed by g_subprocess_get_exit_status().
+      It is more likely that you want to use [g_subprocess_get_if_exited ()]
+      followed by [g_subprocess_get_exit_status ()].
 
-      It is an error to call this function before g_subprocess_wait() has
+      It is an error to call this function before [g_subprocess_wait ()] has
       returned. *)
 
   method get_stderr_pipe : unit -> Input_stream.input_stream_t option
@@ -84,7 +84,7 @@ class type subprocess_t = object
     "Checks if the process was \"successful\".  A process is considered\n\
      successful if it exited cleanly with an exit status of 0, either by\n\
      way of the exit() system call or return from main().\n\n\
-     It is an error to call this function before g_subprocess_wait() has\n\
+     It is an error to call this function before [g_subprocess_wait ()] has\n\
      returned."]
 
   method get_term_sig : unit -> int
@@ -93,8 +93,8 @@ class type subprocess_t = object
 
       This is equivalent to the system WTERMSIG macro.
 
-      It is an error to call this function before g_subprocess_wait() and unless
-      g_subprocess_get_if_signaled() returned [true]. *)
+      It is an error to call this function before [g_subprocess_wait ()] and
+      unless [g_subprocess_get_if_signaled ()] returned [true]. *)
 
   method send_signal : int -> unit
   (** Sends the UNIX signal [signal_num] to the subprocess, if it is still
@@ -109,25 +109,26 @@ class type subprocess_t = object
   (** Synchronously wait for the subprocess to terminate.
 
       After the process terminates you can query its exit status with functions
-      such as g_subprocess_get_if_exited() and g_subprocess_get_exit_status().
+      such as [g_subprocess_get_if_exited ()] and
+      [g_subprocess_get_exit_status ()].
 
       This function does not fail in the case of the subprocess having abnormal
-      termination. See g_subprocess_wait_check() for that.
+      termination. See [g_subprocess_wait_check ()] for that.
 
       Cancelling [cancellable] doesn't kill the subprocess. Call
-      g_subprocess_force_exit() if it is desirable. *)
+      [g_subprocess_force_exit ()] if it is desirable. *)
 
   method wait_check :
     Cancellable.cancellable_t option -> (bool, GError.t) result
-  (** Combines g_subprocess_wait() with g_spawn_check_wait_status(). *)
+  (** Combines [g_subprocess_wait ()] with [g_spawn_check_wait_status ()]. *)
 
   method wait_check_finish :
     Async_result.async_result_t -> (bool, GError.t) result
-  (** Collects the result of a previous call to g_subprocess_wait_check_async().
-  *)
+  (** Collects the result of a previous call to
+      [g_subprocess_wait_check_async ()]. *)
 
   method wait_finish : Async_result.async_result_t -> (bool, GError.t) result
-  (** Collects the result of a previous call to g_subprocess_wait_async(). *)
+  (** Collects the result of a previous call to [g_subprocess_wait_async ()]. *)
 
   (** {2:conversions Conversions} *)
 

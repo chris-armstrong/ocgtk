@@ -13,13 +13,14 @@ type t = [ `cancellable | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gio_cancellable_get_type"
 
 external new_ : unit -> t = "ml_g_cancellable_new"
-(** Creates a new [GCancellable] object.
+(** Creates a new {{!Ocgio.Raw.Cancellable}[GCancellable]} object.
 
     Applications that want to start one or more operations that should be
-    cancellable should create a [GCancellable] and pass it to the operations.
+    cancellable should create a {{!Ocgio.Raw.Cancellable}[GCancellable]} and
+    pass it to the operations.
 
-    One [GCancellable] can be used in multiple consecutive operations or in
-    multiple concurrent operations. *)
+    One {{!Ocgio.Raw.Cancellable}[GCancellable]} can be used in multiple
+    consecutive operations or in multiple concurrent operations. *)
 
 (* Methods *)
 
@@ -48,8 +49,9 @@ external reset : t -> unit = "ml_g_cancellable_reset"
     result in a deadlock. *)
 
 external release_fd : t -> unit = "ml_g_cancellable_release_fd"
-(** Releases a resources previously allocated by g_cancellable_get_fd() or
-    g_cancellable_make_pollfd().
+(** Releases a resources previously allocated by
+    {{!Ocgio.Raw.Cancellable.val-get_fd}[g_cancellable_get_fd ()]} or
+    [g_cancellable_make_pollfd ()].
 
     For compatibility reasons with older releases, calling this function is not
     strictly required, the resources will be automatically freed when the
@@ -66,13 +68,13 @@ external release_fd : t -> unit = "ml_g_cancellable_release_fd"
 
 external push_current : t -> unit = "ml_g_cancellable_push_current"
 (** Pushes [cancellable] onto the cancellable stack. The current cancellable can
-    then be received using g_cancellable_get_current().
+    then be received using [g_cancellable_get_current ()].
 
     This is useful when implementing cancellable operations in code that does
     not allow you to pass down the cancellable object.
 
-    This is typically called automatically by e.g. [GFile] operations, so you
-    rarely have to call this yourself. *)
+    This is typically called automatically by e.g. {{!Ocgio.Raw.File}[GFile]}
+    operations, so you rarely have to call this yourself. *)
 
 external pop_current : t -> unit = "ml_g_cancellable_pop_current"
 (** Pops [cancellable] off the cancellable stack (verifying that [cancellable]
@@ -88,33 +90,35 @@ external get_fd : t -> int = "ml_g_cancellable_get_fd"
 
     You are not supposed to read from the fd yourself, just check for readable
     status. Reading to unset the readable status is done with
-    g_cancellable_reset().
+    {{!Ocgio.Raw.Cancellable.val-reset}[g_cancellable_reset ()]}.
 
     After a successful return from this function, you should use
-    g_cancellable_release_fd() to free up resources allocated for the returned
-    file descriptor.
+    {{!Ocgio.Raw.Cancellable.val-release_fd}[g_cancellable_release_fd ()]} to
+    free up resources allocated for the returned file descriptor.
 
-    See also g_cancellable_make_pollfd(). *)
+    See also [g_cancellable_make_pollfd ()]. *)
 
 external disconnect : t -> int -> unit = "ml_g_cancellable_disconnect"
 (** Disconnects a handler from a cancellable instance similar to
-    g_signal_handler_disconnect(). Additionally, in the event that a signal
+    [g_signal_handler_disconnect ()]. Additionally, in the event that a signal
     handler is currently running, this call will block until the handler has
-    finished. Calling this function from a [GCancellable::cancelled] signal
+    finished. Calling this function from a
+    {{!Ocgio.Raw.Cancellable.val-on_cancelled}[GCancellable::cancelled]} signal
     handler will therefore result in a deadlock.
 
     This avoids a race condition where a thread cancels at the same time as the
     cancellable operation is finished and the signal handler is removed. See
-    [GCancellable::cancelled] for details on how to use this.
+    {{!Ocgio.Raw.Cancellable.val-on_cancelled}[GCancellable::cancelled]} for
+    details on how to use this.
 
     If [cancellable] is [None] or [handler_id] is [0] this function does
     nothing. *)
 
 external cancel : t -> unit = "ml_g_cancellable_cancel"
 (** Will set [cancellable] to cancelled, and will emit the
-    [GCancellable::cancelled] signal. (However, see the warning about race
-    conditions in the documentation for that signal if you are planning to
-    connect to it.)
+    {{!Ocgio.Raw.Cancellable.val-on_cancelled}[GCancellable::cancelled]} signal.
+    (However, see the warning about race conditions in the documentation for
+    that signal if you are planning to connect to it.)
 
     This function is thread-safe. In other words, you can safely call it from a
     thread other than the one running the operation that was passed the
@@ -145,7 +149,7 @@ val on_cancelled :
     Note that disconnecting from this signal (or any signal) in a multi-threaded
     program is prone to race conditions. For instance it is possible that a
     signal handler may be invoked even after a call to
-    g_signal_handler_disconnect() for that handler has already returned.
+    [g_signal_handler_disconnect ()] for that handler has already returned.
 
     There is also a problem when cancellation happens right before connecting to
     the signal. If this happens the signal will unexpectedly not be emitted, and
@@ -153,7 +157,8 @@ val on_cancelled :
     is still happening.
 
     In order to make it safe and easy to connect handlers there are two helper
-    functions: g_cancellable_connect() and g_cancellable_disconnect() which
+    functions: [g_cancellable_connect ()] and
+    {{!Ocgio.Raw.Cancellable.val-disconnect}[g_cancellable_disconnect ()]} which
     protect against problems like this.
 
     An example of how to us this:

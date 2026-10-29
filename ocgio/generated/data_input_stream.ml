@@ -14,16 +14,16 @@ class type data_input_stream_t = object
   (** Reads a 16-bit/2-byte value from [stream].
 
       In order to get the correct byte order for this read operation, see
-      g_data_input_stream_get_byte_order() and
-      g_data_input_stream_set_byte_order(). *)
+      [g_data_input_stream_get_byte_order ()] and
+      [g_data_input_stream_set_byte_order ()]. *)
 
   method read_int32 :
     Cancellable.cancellable_t option -> (Int32.t, GError.t) result
   (** Reads a signed 32-bit/4-byte value from [stream].
 
       In order to get the correct byte order for this read operation, see
-      g_data_input_stream_get_byte_order() and
-      g_data_input_stream_set_byte_order().
+      [g_data_input_stream_get_byte_order ()] and
+      [g_data_input_stream_set_byte_order ()].
 
       If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
@@ -34,8 +34,8 @@ class type data_input_stream_t = object
   (** Reads a 64-bit/8-byte value from [stream].
 
       In order to get the correct byte order for this read operation, see
-      g_data_input_stream_get_byte_order() and
-      g_data_input_stream_set_byte_order().
+      [g_data_input_stream_get_byte_order ()] and
+      [g_data_input_stream_set_byte_order ()].
 
       If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
@@ -46,16 +46,16 @@ class type data_input_stream_t = object
   (** Reads an unsigned 16-bit/2-byte value from [stream].
 
       In order to get the correct byte order for this read operation, see
-      g_data_input_stream_get_byte_order() and
-      g_data_input_stream_set_byte_order(). *)
+      [g_data_input_stream_get_byte_order ()] and
+      [g_data_input_stream_set_byte_order ()]. *)
 
   method read_uint32 :
     Cancellable.cancellable_t option -> (UInt32.t, GError.t) result
   (** Reads an unsigned 32-bit/4-byte value from [stream].
 
       In order to get the correct byte order for this read operation, see
-      g_data_input_stream_get_byte_order() and
-      g_data_input_stream_set_byte_order().
+      [g_data_input_stream_get_byte_order ()] and
+      [g_data_input_stream_set_byte_order ()].
 
       If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation
@@ -66,7 +66,7 @@ class type data_input_stream_t = object
   (** Reads an unsigned 64-bit/8-byte value from [stream].
 
       In order to get the correct byte order for this read operation, see
-      g_data_input_stream_get_byte_order().
+      [g_data_input_stream_get_byte_order ()].
 
       If [cancellable] is not [None], then the operation can be cancelled by
       triggering the cancellable object from another thread. If the operation

@@ -30,7 +30,7 @@ class type glyph_item_t = object
       length of [orig] (that is, there must be at least one byte assigned to
       each item, you can't create a zero-length item).
 
-      This function is similar in function to pango_item_split() (and uses it
+      This function is similar in function to [pango_item_split ()] (and uses it
       internally.) *)
 
   (** {2:conversions Conversions} *)

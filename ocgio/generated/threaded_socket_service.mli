@@ -79,5 +79,9 @@ class threaded_socket_service :
 
 val new_ : int -> threaded_socket_service_t
 [@@ocaml.doc
-  "Creates a new [GThreadedSocketService] with no listeners. Listeners\n\
-   must be added with one of the [GSocketListener] \"add\" methods."]
+  "Creates a new \
+   {{!Ocgio.Threaded_socket_service.class-type-threaded_socket_service_t}[GThreadedSocketService]} \
+   with no listeners. Listeners\n\
+   must be added with one of the \
+   {{!Ocgio.Socket_listener.class-type-socket_listener_t}[GSocketListener]} \
+   \"add\" methods."]

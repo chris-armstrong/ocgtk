@@ -17,7 +17,8 @@ external alloc : unit -> t = "ml_graphene_vec2_alloc"
 
     The contents of the returned structure are undefined.
 
-    Use graphene_vec2_init() to initialize the vector. *)
+    Use {{!Ocgraphene.Raw.Vec2.val-init}[graphene_vec2_init ()]} to initialize
+    the vector. *)
 
 (* Methods *)
 

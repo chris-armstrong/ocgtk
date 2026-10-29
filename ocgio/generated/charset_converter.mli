@@ -28,10 +28,10 @@ class type charset_converter_t = object
   (** Gets the number of fallbacks that [converter] has applied so far. *)
 
   method get_use_fallback : unit -> bool
-  (** Gets the [GCharsetConverter:use]-fallback property. *)
+  (** Gets the [GCharsetConverter:use-fallback] property. *)
 
   method set_use_fallback : bool -> unit
-  (** Sets the [GCharsetConverter:use]-fallback property. *)
+  (** Sets the [GCharsetConverter:use-fallback] property. *)
 
   (** {2:properties Properties} *)
 
@@ -52,4 +52,6 @@ class charset_converter : Raw.Charset_converter.t -> charset_converter_t
 (** {1:constructors Constructors} *)
 
 val new_ : string -> string -> (charset_converter_t, GError.t) result
-(** Creates a new [GCharsetConverter]. *)
+(** Creates a new
+    {{!Ocgio.Charset_converter.class-type-charset_converter_t}[GCharsetConverter]}.
+*)

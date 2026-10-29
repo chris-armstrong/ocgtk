@@ -53,7 +53,7 @@ and font_family_t = object
       For Western languages this would mean that the advance width of all
       characters are the same, but this categorization also includes Asian fonts
       which include double-width characters: characters that occupy two grid
-      cells. g_unichar_iswide() returns a result that indicates whether a
+      cells. [g_unichar_iswide ()] returns a result that indicates whether a
       character is typically double-width in a monospace font.
 
       The best way to find out the grid-cell size is to call

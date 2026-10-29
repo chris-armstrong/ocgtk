@@ -62,7 +62,7 @@ class type dtls_connection_t = object
     Gobject.Signal.handler_id
   (** Emitted during the TLS handshake after the peer certificate has been
       received. You can examine [peer_cert]'s certification path by calling
-      g_tls_certificate_get_issuer() on it.
+      [g_tls_certificate_get_issuer ()] on it.
 
       For a client-side connection, [peer_cert] is the server's certificate, and
       the signal will only be emitted if the certificate was not acceptable
@@ -103,12 +103,12 @@ class type dtls_connection_t = object
 
   method close : Cancellable.cancellable_t option -> (bool, GError.t) result
   (** Close the DTLS connection. This is equivalent to calling
-      g_dtls_connection_shutdown() to shut down both sides of the connection.
+      [g_dtls_connection_shutdown ()] to shut down both sides of the connection.
 
       Closing a [GDtlsConnection] waits for all buffered but untransmitted data
       to be sent before it completes. It then sends a [close_notify] DTLS alert
       to the peer and may wait for a [close_notify] to be received from the
-      peer. It does not close the underlying [GDtlsConnection:base]-socket; that
+      peer. It does not close the underlying [GDtlsConnection:base-socket]; that
       must be closed separately.
 
       Once [conn] is closed, all other operations will return
@@ -121,21 +121,21 @@ class type dtls_connection_t = object
 
       If [cancellable] is cancelled, the [GDtlsConnection] may be left
       partially-closed and any pending untransmitted data may be lost. Call
-      g_dtls_connection_close() again to complete closing the [GDtlsConnection].
-  *)
+      [g_dtls_connection_close ()] again to complete closing the
+      [GDtlsConnection]. *)
 
   method close_finish : Async_result.async_result_t -> (bool, GError.t) result
-  (** Finish an asynchronous TLS close operation. See g_dtls_connection_close()
-      for more information. *)
+  (** Finish an asynchronous TLS close operation. See
+      [g_dtls_connection_close ()] for more information. *)
 
   method emit_accept_certificate :
     Tls_certificate.tls_certificate_t -> Enums.tlscertificateflags -> bool
   (** Used by [GDtlsConnection] implementations to emit the
-      [GDtlsConnection::accept]-certificate signal. *)
+      [GDtlsConnection::accept-certificate] signal. *)
 
   method get_certificate : unit -> Tls_certificate.tls_certificate_t option
-  (** Gets [conn]'s certificate, as set by g_dtls_connection_set_certificate().
-  *)
+  (** Gets [conn]'s certificate, as set by
+      [g_dtls_connection_set_certificate ()]. *)
 
   method get_ciphersuite_name : unit -> string option
   (** Returns the name of the current DTLS ciphersuite, or [None] if the
@@ -149,7 +149,7 @@ class type dtls_connection_t = object
 
   method get_database : unit -> Tls_database.tls_database_t option
   (** Gets the certificate database that [conn] uses to verify peer
-      certificates. See g_dtls_connection_set_database(). *)
+      certificates. See [g_dtls_connection_set_database ()]. *)
 
   method get_interaction : unit -> Tls_interaction.tls_interaction_t option
   (** Get the object that will be used to interact with the user. It will be
@@ -163,17 +163,17 @@ class type dtls_connection_t = object
       If the peer did not use the ALPN extension, or did not advertise a
       protocol that matched one of [conn]'s protocols, or the TLS backend does
       not support ALPN, then this will be [None]. See
-      g_dtls_connection_set_advertised_protocols(). *)
+      [g_dtls_connection_set_advertised_protocols ()]. *)
 
   method get_peer_certificate : unit -> Tls_certificate.tls_certificate_t option
   (** Gets [conn]'s peer's certificate after the handshake has completed or
       failed. (It is not set during the emission of
-      [GDtlsConnection::accept]-certificate.) *)
+      [GDtlsConnection::accept-certificate].) *)
 
   method get_peer_certificate_errors : unit -> Enums.tlscertificateflags
   (** Gets the errors associated with validating [conn]'s peer's certificate,
       after the handshake has completed or failed. (It is not set during the
-      emission of [GDtlsConnection::accept]-certificate.) *)
+      emission of [GDtlsConnection::accept-certificate].) *)
 
   method get_protocol_version : unit -> Enums.tlsprotocolversion
   (** Returns the current DTLS protocol version, which may be
@@ -183,12 +183,12 @@ class type dtls_connection_t = object
 
   method get_rehandshake_mode : unit -> Enums.tlsrehandshakemode
   (** Gets [conn] rehandshaking mode. See
-      g_dtls_connection_set_rehandshake_mode() for details. *)
+      [g_dtls_connection_set_rehandshake_mode ()] for details. *)
 
   method get_require_close_notify : unit -> bool
   (** Tests whether or not [conn] expects a proper TLS close notification when
-      the connection is closed. See g_dtls_connection_set_require_close_notify()
-      for details. *)
+      the connection is closed. See
+      [g_dtls_connection_set_require_close_notify ()] for details. *)
 
   method handshake : Cancellable.cancellable_t option -> (bool, GError.t) result
   (** Attempts a TLS handshake on [conn].
@@ -197,7 +197,7 @@ class type dtls_connection_t = object
       the connection needs to perform a handshake after connecting,
       [GDtlsConnection] will handle this for you automatically when you try to
       send or receive data on the connection. You can call
-      g_dtls_connection_handshake() manually if you want to know whether the
+      [g_dtls_connection_handshake ()] manually if you want to know whether the
       initial handshake succeeded or failed (as opposed to just immediately
       trying to use [conn] to read or write, in which case, if it fails, it may
       not be possible to tell if it failed before or after completing the
@@ -209,7 +209,7 @@ class type dtls_connection_t = object
       beginning of the communication, you do not need to call this function
       explicitly unless you want clearer error reporting.
 
-      Previously, calling g_dtls_connection_handshake() after the initial
+      Previously, calling [g_dtls_connection_handshake ()] after the initial
       handshake would trigger a rehandshake; however, this usage was deprecated
       in GLib 2.60 because rehandshaking was removed from the TLS protocol in
       TLS 1.3. Since GLib 2.64, calling this function after the initial
@@ -221,14 +221,14 @@ class type dtls_connection_t = object
   method handshake_finish :
     Async_result.async_result_t -> (bool, GError.t) result
   (** Finish an asynchronous TLS handshake operation. See
-      g_dtls_connection_handshake() for more information. *)
+      [g_dtls_connection_handshake ()] for more information. *)
 
   method set_advertised_protocols : string array option -> unit
   (** Sets the list of application-layer protocols to advertise that the caller
       is willing to speak on this connection. The Application-Layer Protocol
       Negotiation (ALPN) extension will be used to negotiate a compatible
-      protocol with the peer; use g_dtls_connection_get_negotiated_protocol() to
-      find the negotiated protocol after the handshake. Specifying [None] for
+      protocol with the peer; use [g_dtls_connection_get_negotiated_protocol ()]
+      to find the negotiated protocol after the handshake. Specifying [None] for
       the the value of [protocols] will disable ALPN negotiation.
 
       See
@@ -243,23 +243,23 @@ class type dtls_connection_t = object
       For a [GDtlsClientConnection], this is optional. If a handshake fails with
       [G_TLS_ERROR_CERTIFICATE_REQUIRED], that means that the server requires a
       certificate, and if you try connecting again, you should call this method
-      first. You can call g_dtls_client_connection_get_accepted_cas() on the
+      first. You can call [g_dtls_client_connection_get_accepted_cas ()] on the
       failed connection to get a list of Certificate Authorities that the server
       will accept certificates from.
 
       (It is also possible that a server will allow the connection with or
       without a certificate; in that case, if you don't provide a certificate,
       you can tell that the server requested one by the fact that
-      g_dtls_client_connection_get_accepted_cas() will return non-[None].) *)
+      [g_dtls_client_connection_get_accepted_cas ()] will return non-[None].) *)
 
   method set_database : Tls_database.tls_database_t option -> unit
   (** Sets the certificate database that is used to verify peer certificates.
       This is set to the default database by default. See
-      g_tls_backend_get_default_database(). If set to [None], then peer
+      [g_tls_backend_get_default_database ()]. If set to [None], then peer
       certificate validation will always set the [G_TLS_CERTIFICATE_UNKNOWN_CA]
-      error (meaning [GDtlsConnection::accept]-certificate will always be
+      error (meaning [GDtlsConnection::accept-certificate] will always be
       emitted on client-side connections, unless that bit is not set in
-      [GDtlsClientConnection:validation]-flags).
+      [GDtlsClientConnection:validation-flags]).
 
       There are nonintuitive security implications when using a non-default
       database. See [GDtlsConnection:database] for details. *)
@@ -292,16 +292,17 @@ class type dtls_connection_t = object
      (because the application-level data includes a length field, or is\n\
      somehow self-delimiting); in this case, the close notify is\n\
      redundant and may be omitted. You\n\
-     can use g_dtls_connection_set_require_close_notify() to tell [conn]\n\
+     can use [g_dtls_connection_set_require_close_notify ()] to tell [conn]\n\
      to allow an \"unannounced\" connection close, in which case the close\n\
      will show up as a 0-length read, as in a non-TLS\n\
      [GDatagramBased], and it is up to the application to check that\n\
      the data has been fully received.\n\n\
      Note that this only affects the behavior when the peer closes the\n\
-     connection; when the application calls g_dtls_connection_close_async() on\n\
+     connection; when the application calls [g_dtls_connection_close_async ()] \
+     on\n\
      [conn] itself, this will send a close notification regardless of the\n\
      setting of this property. If you explicitly want to do an unclean\n\
-     close, you can close [conn]'s [GDtlsConnection:base]-socket rather\n\
+     close, you can close [conn]'s [GDtlsConnection:base-socket] rather\n\
      than closing [conn] itself."]
 
   method shutdown :
@@ -310,24 +311,24 @@ class type dtls_connection_t = object
 
       If [shutdown_read] is [true] then the receiving side of the connection is
       shut down, and further reading is disallowed. Subsequent calls to
-      g_datagram_based_receive_messages() will return [G_IO_ERROR_CLOSED].
+      [g_datagram_based_receive_messages ()] will return [G_IO_ERROR_CLOSED].
 
       If [shutdown_write] is [true] then the sending side of the connection is
       shut down, and further writing is disallowed. Subsequent calls to
-      g_datagram_based_send_messages() will return [G_IO_ERROR_CLOSED].
+      [g_datagram_based_send_messages ()] will return [G_IO_ERROR_CLOSED].
 
       It is allowed for both [shutdown_read] and [shutdown_write] to be TRUE —
-      this is equivalent to calling g_dtls_connection_close().
+      this is equivalent to calling [g_dtls_connection_close ()].
 
       If [cancellable] is cancelled, the [GDtlsConnection] may be left
       partially-closed and any pending untransmitted data may be lost. Call
-      g_dtls_connection_shutdown() again to complete closing the
+      [g_dtls_connection_shutdown ()] again to complete closing the
       [GDtlsConnection]. *)
 
   method shutdown_finish :
     Async_result.async_result_t -> (bool, GError.t) result
   (** Finish an asynchronous TLS shutdown operation. See
-      g_dtls_connection_shutdown() for more information. *)
+      [g_dtls_connection_shutdown ()] for more information. *)
 
   (** {2:properties Properties} *)
 

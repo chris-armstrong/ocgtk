@@ -11,7 +11,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_d_bus_node_info_get_type"
 
 external new_for_xml : string -> (t, GError.t) result
   = "ml_g_dbus_node_info_new_for_xml"
-(** Parses [xml_data] and returns a [GDBusNodeInfo] representing the data.
+(** Parses [xml_data] and returns a
+    {{!Ocgio.Raw.D_bus_node_info}[GDBusNodeInfo]} representing the data.
 
     The introspection XML must contain exactly one top-level [<node>] element.
 

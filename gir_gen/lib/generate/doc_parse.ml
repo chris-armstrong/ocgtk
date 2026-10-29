@@ -288,7 +288,7 @@ and fragment c =
         else
           let endpoint, anchor = split_anchor (strip_endpoint_backticks raw) in
           Some
-            ( T_nodes [ Sym_ref { kind; endpoint; anchor } ],
+            ( T_nodes [ Sym_ref { origin = Fragment; kind; endpoint; anchor } ],
               Cursor.advance close 1,
               [] )
   else None
@@ -375,9 +375,17 @@ and param_ref c =
         let name = Cursor.text_between start id_end in
         Some (T_nodes [ Param_ref name ], id_end, [])
 
+(* The end of a signal or property name: identifier characters, and hyphens
+   between them ([command-line], not the trailing one of [show-]). *)
+and skip_member_name c =
+  let c = Cursor.skip_while c is_ident_char in
+  if Cursor.is_char c '-' && Cursor.peek_matches c 1 is_ident_char then
+    skip_member_name (Cursor.advance c 1)
+  else c
+
 (* A legacy gtk-doc [#Type...] sigil. Guards (GIR plan §3.5): [#] not
    preceded by [/], then an uppercase identifier with no space. [#Type:p]
-   and [#Type::s] suffixes stay on the endpoint. *)
+   and [#Type::s] suffixes, hyphens included, stay on the endpoint. *)
 and hash_sigil c =
   if Cursor.peek_char c (-1) '/' then None
   else
@@ -392,9 +400,7 @@ and hash_sigil c =
           let sep = if Cursor.peek_char id_end 1 ':' then 2 else 1 in
           let after = Cursor.advance id_end sep in
           if Cursor.matches after is_ident_char then
-            Some
-              (Cursor.text_between id_end
-                 (Cursor.skip_while after is_ident_char))
+            Some (Cursor.text_between id_end (skip_member_name after))
           else None
         else None
       in
@@ -404,7 +410,10 @@ and hash_sigil c =
         | None -> (name, id_end)
       in
       Some
-        (T_nodes [ Sym_ref { kind = None; endpoint; anchor = None } ], next, [])
+        ( T_nodes
+            [ Sym_ref { origin = Hash; kind = None; endpoint; anchor = None } ],
+          next,
+          [] )
 
 (* A [#gint]-style primitive type sigil, [start] just past the [#]. Only
    names with an OCaml reading count; any other lowercase [#word] stays
@@ -427,14 +436,46 @@ and percent_sigil c =
     let node =
       Doc_c_idiom.c_lit_of_name endpoint
       |> Option.fold
-           ~none:(Sym_ref { kind = None; endpoint; anchor = None })
+           ~none:
+             (Sym_ref { origin = Percent; kind = None; endpoint; anchor = None })
            ~some:(fun lit -> C_lit lit)
     in
     Some (T_nodes [ node ], id_end, [])
 
+(* A C call in prose: an identifier with an underscore, directly followed by
+   [()] or [ ()] ([gtk_widget_show()]). The identifier must not continue a
+   word, a path or a member access ([obj.do_it()], [/path_to()]), or open a
+   bracket: the code span a C call renders as starts with one, so a rendered
+   call is not parsed again. *)
+and c_call c =
+  if
+    Cursor.peek_matches c (-1) (fun ch ->
+        is_ident_char ch || ch = '.' || ch = '/' || ch = '[')
+  then None
+  else
+    let id_end = Cursor.skip_while c is_ident_char in
+    let endpoint = Cursor.text_between c id_end in
+    let parens =
+      if Cursor.at_prefix id_end "()" then Some 2
+      else if Cursor.at_prefix id_end " ()" then Some 3
+      else None
+    in
+    match parens with
+    | Some len when String.contains endpoint '_' ->
+        Some
+          ( T_nodes
+              [
+                Sym_ref
+                  { origin = C_call; kind = None; endpoint; anchor = None };
+              ],
+            Cursor.advance id_end len,
+            [] )
+    | Some _ | None -> None
+
 and scan_token c =
   let* ch = Cursor.current c in
   match ch with
+  | ch when is_letter ch -> c_call c
   | '\\' -> backslash_escape c
   | '`' -> code_span c
   | '<' when Cursor.at_prefix c "<img" -> img_tag c

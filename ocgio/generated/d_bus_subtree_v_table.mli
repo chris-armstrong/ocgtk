@@ -1,5 +1,5 @@
 (** Virtual table for handling subtrees registered with
-    g_dbus_connection_register_subtree().
+    [g_dbus_connection_register_subtree ()].
 
     Its methods, signals and properties are on
     {!class-type-d_bus_subtree_v_table_t}. Its constructors are under
@@ -11,7 +11,7 @@
 (** {b The methods, signals and properties of a [DBusSubtreeVTable].}
 
     Virtual table for handling subtrees registered with
-    g_dbus_connection_register_subtree(). *)
+    [g_dbus_connection_register_subtree ()]. *)
 class type d_bus_subtree_v_table_t = object
   (** {2:conversions Conversions} *)
 

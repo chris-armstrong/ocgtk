@@ -39,7 +39,12 @@ let test_unclosed_fragment_is_literal_text () =
 let test_fragment_kind_parsed () =
   let t = parse Entity "[class@Foo]" in
   match t.blocks with
-  | [ Para [ Sym_ref { kind; endpoint; anchor } ] ] ->
+  | [ Para [ Sym_ref { origin; kind; endpoint; anchor } ] ] ->
+      Alcotest.(check bool)
+        "a fragment" true
+        (match origin with
+        | Fragment -> true
+        | Hash | Percent | C_call -> false);
       Alcotest.(check bool)
         "class fragment kind" true
         (match kind with Some Class -> true | _ -> false);
@@ -89,6 +94,59 @@ let test_sigil_guards () =
   lacks "URL fragment not a sigil" out "[bar]";
   lacks "hex not a sigil" out "[ff0000]";
   lacks "percent with space not a sigil" out "[b]"
+
+let origins s =
+  match (parse Member s).blocks with
+  | [ Para ins ] ->
+      List.filter_map
+        (function
+          | Sym_ref { origin; endpoint; _ } ->
+              let name =
+                match origin with
+                | Fragment -> "fragment"
+                | Hash -> "hash"
+                | Percent -> "percent"
+                | C_call -> "c-call"
+              in
+              Some (name ^ " " ^ endpoint)
+          | _ -> None)
+        ins
+  | _ -> Alcotest.failf "%s: expected one paragraph" s
+
+let check_origins msg expected s =
+  Alcotest.(check (list string)) msg expected (origins s)
+
+let test_sigil_origins () =
+  check_origins "each reference records its origin"
+    [
+      "fragment Gtk.Widget.show";
+      "hash GtkWidget::clicked";
+      "percent GDK_KEY_a";
+      "c-call gtk_widget_show";
+    ]
+    "[method@Gtk.Widget.show], #GtkWidget::clicked, %GDK_KEY_a and \
+     gtk_widget_show()."
+
+let test_hash_member_hyphens () =
+  check_origins "hyphens inside the member name, not after it"
+    [ "hash GApplication::command-line"; "hash GtkWidget:has-focus" ]
+    "#GApplication::command-line and #GtkWidget:has-focus- here"
+
+let test_c_call () =
+  check_origins "with or without a space before the parentheses"
+    [ "c-call gtk_widget_show"; "c-call g_object_unref" ]
+    "Call gtk_widget_show() then g_object_unref (), or";
+  has "rendered as gi-docgen does"
+    (E.translate "Call gtk_widget_show().")
+    "Call [gtk_widget_show ()]."
+
+let test_c_call_guards () =
+  check_origins "not a C call" []
+    "Call `gtk_widget_show()`, show(), obj.do_it(), /usr/lib_dir() or \
+     gtk_widget_show without parentheses.";
+  has "a C call in a code span stays code"
+    (E.translate "Call `gtk_widget_show()`.")
+    "[gtk_widget_show()]"
 
 let test_param_sigil () =
   let out = E.translate "Set by @amount." in
@@ -167,6 +225,10 @@ let tests =
       test_whole_backtick_fragment_renders_stable );
     ("legacy sigil degradation", `Quick, test_legacy_sigils);
     ("sigil guard rules", `Quick, test_sigil_guards);
+    ("sigil origins", `Quick, test_sigil_origins);
+    ("#Type::sig with hyphens", `Quick, test_hash_member_hyphens);
+    ("C calls", `Quick, test_c_call);
+    ("C call guards", `Quick, test_c_call_guards);
     ("param sigil -> [name]", `Quick, test_param_sigil);
     ("param email guard", `Quick, test_param_email_guard);
     ("admonition stripped", `Quick, test_admonition_stripped);

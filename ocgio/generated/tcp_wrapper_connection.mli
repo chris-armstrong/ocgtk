@@ -55,4 +55,6 @@ class tcp_wrapper_connection :
 (** {1:constructors Constructors} *)
 
 val new_ : Io_stream.io_stream_t -> Socket.socket_t -> tcp_wrapper_connection_t
-(** Wraps [base_io_stream] and [socket] together as a [GSocketConnection]. *)
+(** Wraps [base_io_stream] and [socket] together as a
+    {{!Ocgio.Socket_connection.class-type-socket_connection_t}[GSocketConnection]}.
+*)

@@ -28,10 +28,14 @@ module rec Tls_connection : sig
     = "ml_g_tls_connection_set_use_system_certdb"
   (** Sets whether [conn] uses the system certificate database to verify peer
       certificates. This is [true] by default. If set to [false], then peer
-      certificate validation will always set the [G_TLS_CERTIFICATE_UNKNOWN_CA]
-      error (meaning [GTlsConnection::accept]-certificate will always be emitted
-      on client-side connections, unless that bit is not set in
-      [GTlsClientConnection:validation]-flags). *)
+      certificate validation will always set the
+      {{!Ocgio.Enums.type-tlscertificateflags_flag.constructor-UNKNOWN_CA}[G_TLS_CERTIFICATE_UNKNOWN_CA]}
+      error (meaning
+      {{!Ocgio.Raw.Tls_connection.val-on_accept_certificate}[GTlsConnection::accept-certificate]}
+      will always be emitted on client-side connections, unless that bit is not
+      set in
+      {{!Ocgio.Raw.Tls_client_connection.val-get_validation_flags}[GTlsClientConnection:validation-flags]}).
+  *)
 
   external set_require_close_notify : t -> bool -> unit
     = "ml_g_tls_connection_set_require_close_notify"
@@ -40,7 +44,8 @@ module rec Tls_connection : sig
     \  before the connection is closed. If this is [true] (the default),\n\
     \  then [conn] will expect to receive a TLS close notification from its\n\
     \  peer before the connection is closed, and will return a\n\
-    \  [G_TLS_ERROR_EOF] error if the connection is closed without proper\n\
+    \  {{!Ocgio.Enums.type-tlserror.constructor-EOF}[G_TLS_ERROR_EOF]} error \
+     if the connection is closed without proper\n\
     \  notification (since this may indicate a network error, or\n\
     \  man-in-the-middle attack).\n\n\
     \  In some protocols, the application will know whether or not the\n\
@@ -49,16 +54,22 @@ module rec Tls_connection : sig
     \  somehow self-delimiting); in this case, the close notify is\n\
     \  redundant and sometimes omitted. (TLS 1.1 explicitly allows this;\n\
     \  in TLS 1.0 it is technically an error, but often done anyway.) You\n\
-    \  can use g_tls_connection_set_require_close_notify() to tell [conn]\n\
+    \  can use \
+     {{!Ocgio.Raw.Tls_connection.val-set_require_close_notify}[g_tls_connection_set_require_close_notify \
+     ()]} to tell [conn]\n\
     \  to allow an \"unannounced\" connection close, in which case the close\n\
     \  will show up as a 0-length read, as in a non-TLS\n\
-    \  [GSocketConnection], and it is up to the application to check that\n\
+    \  {{!Ocgio.Raw.Socket_connection}[GSocketConnection]}, and it is up to \
+     the application to check that\n\
     \  the data has been fully received.\n\n\
     \  Note that this only affects the behavior when the peer closes the\n\
-    \  connection; when the application calls g_io_stream_close() itself\n\
+    \  connection; when the application calls \
+     {{!Ocgio.Raw.Io_stream.val-close}[g_io_stream_close ()]} itself\n\
     \  on [conn], this will send a close notification regardless of the\n\
     \  setting of this property. If you explicitly want to do an unclean\n\
-    \  close, you can close [conn]'s [GTlsConnection:base]-io-stream rather\n\
+    \  close, you can close [conn]'s \
+     {{!Ocgio.Raw.Tls_connection.val-get_base_io_stream}[GTlsConnection:base-io-stream]} \
+     rather\n\
     \  than closing [conn] itself, but note that this may only be done when no \
      other\n\
     \  operations are pending on [conn] or the base I/O stream."]
@@ -76,48 +87,59 @@ module rec Tls_connection : sig
       used for things like prompting the user for passwords.
 
       The [interaction] argument will normally be a derived subclass of
-      [GTlsInteraction]. [None] can also be provided if no user interaction
-      should occur for this connection. *)
+      {{!Ocgio.Raw.Tls_interaction}[GTlsInteraction]}. [None] can also be
+      provided if no user interaction should occur for this connection. *)
 
   external set_database : t -> Tls_database.t option -> unit
     = "ml_g_tls_connection_set_database"
   (** Sets the certificate database that is used to verify peer certificates.
       This is set to the default database by default. See
-      g_tls_backend_get_default_database(). If set to [None], then peer
-      certificate validation will always set the [G_TLS_CERTIFICATE_UNKNOWN_CA]
-      error (meaning [GTlsConnection::accept]-certificate will always be emitted
-      on client-side connections, unless that bit is not set in
-      [GTlsClientConnection:validation]-flags).
+      {{!Ocgio.Raw.Tls_backend.val-get_default_database}[g_tls_backend_get_default_database
+                                                         ()]}. If set to [None],
+      then peer certificate validation will always set the
+      {{!Ocgio.Enums.type-tlscertificateflags_flag.constructor-UNKNOWN_CA}[G_TLS_CERTIFICATE_UNKNOWN_CA]}
+      error (meaning
+      {{!Ocgio.Raw.Tls_connection.val-on_accept_certificate}[GTlsConnection::accept-certificate]}
+      will always be emitted on client-side connections, unless that bit is not
+      set in
+      {{!Ocgio.Raw.Tls_client_connection.val-get_validation_flags}[GTlsClientConnection:validation-flags]}).
 
       There are nonintuitive security implications when using a non-default
-      database. See [GTlsConnection:database] for details. *)
+      database. See
+      {{!Ocgio.Raw.Tls_connection.val-get_database}[GTlsConnection:database]}
+      for details. *)
 
   external set_certificate : t -> Tls_certificate.t -> unit
     = "ml_g_tls_connection_set_certificate"
   (** This sets the certificate that [conn] will present to its peer during the
-      TLS handshake. For a [GTlsServerConnection], it is mandatory to set this,
-      and that will normally be done at construct time.
+      TLS handshake. For a
+      {{!Ocgio.Raw.Tls_server_connection}[GTlsServerConnection]}, it is
+      mandatory to set this, and that will normally be done at construct time.
 
-      For a [GTlsClientConnection], this is optional. If a handshake fails with
-      [G_TLS_ERROR_CERTIFICATE_REQUIRED], that means that the server requires a
-      certificate, and if you try connecting again, you should call this method
-      first. You can call g_tls_client_connection_get_accepted_cas() on the
-      failed connection to get a list of Certificate Authorities that the server
-      will accept certificates from.
+      For a {{!Ocgio.Raw.Tls_client_connection}[GTlsClientConnection]}, this is
+      optional. If a handshake fails with
+      {{!Ocgio.Enums.type-tlserror.constructor-CERTIFICATE_REQUIRED}[G_TLS_ERROR_CERTIFICATE_REQUIRED]},
+      that means that the server requires a certificate, and if you try
+      connecting again, you should call this method first. You can call
+      [g_tls_client_connection_get_accepted_cas ()] on the failed connection to
+      get a list of Certificate Authorities that the server will accept
+      certificates from.
 
       (It is also possible that a server will allow the connection with or
       without a certificate; in that case, if you don't provide a certificate,
       you can tell that the server requested one by the fact that
-      g_tls_client_connection_get_accepted_cas() will return non-[None].) *)
+      [g_tls_client_connection_get_accepted_cas ()] will return non-[None].) *)
 
   external set_advertised_protocols : t -> string array option -> unit
     = "ml_g_tls_connection_set_advertised_protocols"
   (** Sets the list of application-layer protocols to advertise that the caller
       is willing to speak on this connection. The Application-Layer Protocol
       Negotiation (ALPN) extension will be used to negotiate a compatible
-      protocol with the peer; use g_tls_connection_get_negotiated_protocol() to
-      find the negotiated protocol after the handshake. Specifying [None] for
-      the the value of [protocols] will disable ALPN negotiation.
+      protocol with the peer; use
+      {{!Ocgio.Raw.Tls_connection.val-get_negotiated_protocol}[g_tls_connection_get_negotiated_protocol
+                                                               ()]} to find the
+      negotiated protocol after the handshake. Specifying [None] for the the
+      value of [protocols] will disable ALPN negotiation.
 
       See
       {{:https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids}IANA
@@ -126,7 +148,8 @@ module rec Tls_connection : sig
   external handshake_finish : t -> Async_result.t -> (bool, GError.t) result
     = "ml_g_tls_connection_handshake_finish"
   (** Finish an asynchronous TLS handshake operation. See
-      g_tls_connection_handshake() for more information. *)
+      {{!Ocgio.Raw.Tls_connection.val-handshake}[g_tls_connection_handshake ()]}
+      for more information. *)
 
   external handshake : t -> Cancellable.t option -> (bool, GError.t) result
     = "ml_g_tls_connection_handshake"
@@ -135,9 +158,11 @@ module rec Tls_connection : sig
     \  On the client side, it is never necessary to call this method;\n\
     \  although the connection needs to perform a handshake after\n\
     \  connecting (or after sending a \"STARTTLS\"-type command),\n\
-    \  [GTlsConnection] will handle this for you automatically when you try\n\
+    \  {{!Ocgio.Raw.Tls_connection}[GTlsConnection]} will handle this for you \
+     automatically when you try\n\
     \  to send or receive data on the connection. You can call\n\
-    \  g_tls_connection_handshake() manually if you want to know whether\n\
+    \  {{!Ocgio.Raw.Tls_connection.val-handshake}[g_tls_connection_handshake \
+     ()]} manually if you want to know whether\n\
     \  the initial handshake succeeded or failed (as opposed to just\n\
     \  immediately trying to use [conn] to read or write, in which case,\n\
     \  if it fails, it may not be possible to tell if it failed before or\n\
@@ -147,53 +172,69 @@ module rec Tls_connection : sig
     \  Likewise, on the server side, although a handshake is necessary at\n\
     \  the beginning of the communication, you do not need to call this\n\
     \  function explicitly unless you want clearer error reporting.\n\n\
-    \  Previously, calling g_tls_connection_handshake() after the initial\n\
+    \  Previously, calling \
+     {{!Ocgio.Raw.Tls_connection.val-handshake}[g_tls_connection_handshake \
+     ()]} after the initial\n\
     \  handshake would trigger a rehandshake; however, this usage was\n\
     \  deprecated in GLib 2.60 because rehandshaking was removed from the\n\
     \  TLS protocol in TLS 1.3. Since GLib 2.64, calling this function after\n\
     \  the initial handshake will no longer do anything.\n\n\
-    \  When using a [GTlsConnection] created by [GSocketClient], the\n\
-    \  [GSocketClient] performs the initial handshake, so calling this\n\
+    \  When using a {{!Ocgio.Raw.Tls_connection}[GTlsConnection]} created by \
+     {{!Ocgio.Raw.Socket_client}[GSocketClient]}, the\n\
+    \  {{!Ocgio.Raw.Socket_client}[GSocketClient]} performs the initial \
+     handshake, so calling this\n\
     \  function manually is not recommended.\n\n\
-    \  [GTlsConnection::accept_certificate] may be emitted during the\n\
+    \  \
+     {{!Ocgio.Raw.Tls_connection.val-on_accept_certificate}[GTlsConnection::accept_certificate]} \
+     may be emitted during the\n\
     \  handshake."]
 
   external get_use_system_certdb : t -> bool
     = "ml_g_tls_connection_get_use_system_certdb"
   (** Gets whether [conn] uses the system certificate database to verify peer
-      certificates. See g_tls_connection_set_use_system_certdb(). *)
+      certificates. See
+      {{!Ocgio.Raw.Tls_connection.val-set_use_system_certdb}[g_tls_connection_set_use_system_certdb
+                                                             ()]}. *)
 
   external get_require_close_notify : t -> bool
     = "ml_g_tls_connection_get_require_close_notify"
   (** Tests whether or not [conn] expects a proper TLS close notification when
-      the connection is closed. See g_tls_connection_set_require_close_notify()
-      for details. *)
+      the connection is closed. See
+      {{!Ocgio.Raw.Tls_connection.val-set_require_close_notify}[g_tls_connection_set_require_close_notify
+                                                                ()]} for
+      details. *)
 
   external get_rehandshake_mode : t -> Ocgio_enums.tlsrehandshakemode
     = "ml_g_tls_connection_get_rehandshake_mode"
   (** Gets [conn] rehandshaking mode. See
-      g_tls_connection_set_rehandshake_mode() for details. *)
+      {{!Ocgio.Raw.Tls_connection.val-set_rehandshake_mode}[g_tls_connection_set_rehandshake_mode
+                                                            ()]} for details. *)
 
   external get_protocol_version : t -> Ocgio_enums.tlsprotocolversion
     = "ml_g_tls_connection_get_protocol_version"
   (** Returns the current TLS protocol version, which may be
-      [G_TLS_PROTOCOL_VERSION_UNKNOWN] if the connection has not handshaked, or
-      has been closed, or if the TLS backend has implemented a protocol version
-      that is not a recognized [GTlsProtocolVersion]. *)
+      {{!Ocgio.Enums.type-tlsprotocolversion.constructor-UNKNOWN}[G_TLS_PROTOCOL_VERSION_UNKNOWN]}
+      if the connection has not handshaked, or has been closed, or if the TLS
+      backend has implemented a protocol version that is not a recognized
+      {{!Ocgio.Enums.type-tlsprotocolversion}[GTlsProtocolVersion]}. *)
 
   external get_peer_certificate_errors : t -> Ocgio_enums.tlscertificateflags
     = "ml_g_tls_connection_get_peer_certificate_errors"
   (** Gets the errors associated with validating [conn]'s peer's certificate,
       after the handshake has completed or failed. (It is not set during the
-      emission of [GTlsConnection::accept]-certificate.)
+      emission of
+      {{!Ocgio.Raw.Tls_connection.val-on_accept_certificate}[GTlsConnection::accept-certificate]}.)
 
-      See [GTlsConnection:peer]-certificate-errors for more information. *)
+      See
+      {{!Ocgio.Raw.Tls_connection.val-get_peer_certificate_errors}[GTlsConnection:peer-certificate-errors]}
+      for more information. *)
 
   external get_peer_certificate : t -> Tls_certificate.t option
     = "ml_g_tls_connection_get_peer_certificate"
   (** Gets [conn]'s peer's certificate after the handshake has completed or
       failed. (It is not set during the emission of
-      [GTlsConnection::accept]-certificate.) *)
+      {{!Ocgio.Raw.Tls_connection.val-on_accept_certificate}[GTlsConnection::accept-certificate]}.)
+  *)
 
   external get_negotiated_protocol : t -> string option
     = "ml_g_tls_connection_get_negotiated_protocol"
@@ -203,7 +244,8 @@ module rec Tls_connection : sig
       If the peer did not use the ALPN extension, or did not advertise a
       protocol that matched one of [conn]'s protocols, or the TLS backend does
       not support ALPN, then this will be [None]. See
-      g_tls_connection_set_advertised_protocols(). *)
+      {{!Ocgio.Raw.Tls_connection.val-set_advertised_protocols}[g_tls_connection_set_advertised_protocols
+                                                                ()]}. *)
 
   external get_interaction : t -> Tls_interaction.t option
     = "ml_g_tls_connection_get_interaction"
@@ -214,7 +256,9 @@ module rec Tls_connection : sig
   external get_database : t -> Tls_database.t option
     = "ml_g_tls_connection_get_database"
   (** Gets the certificate database that [conn] uses to verify peer
-      certificates. See g_tls_connection_set_database(). *)
+      certificates. See
+      {{!Ocgio.Raw.Tls_connection.val-set_database}[g_tls_connection_set_database
+                                                    ()]}. *)
 
   external get_ciphersuite_name : t -> string option
     = "ml_g_tls_connection_get_ciphersuite_name"
@@ -229,24 +273,28 @@ module rec Tls_connection : sig
 
   external get_certificate : t -> Tls_certificate.t option
     = "ml_g_tls_connection_get_certificate"
-  (** Gets [conn]'s certificate, as set by g_tls_connection_set_certificate().
-  *)
+  (** Gets [conn]'s certificate, as set by
+      {{!Ocgio.Raw.Tls_connection.val-set_certificate}[g_tls_connection_set_certificate
+                                                       ()]}. *)
 
   external emit_accept_certificate :
     t -> Tls_certificate.t -> Ocgio_enums.tlscertificateflags -> bool
     = "ml_g_tls_connection_emit_accept_certificate"
-  (** Used by [GTlsConnection] implementations to emit the
-      [GTlsConnection::accept]-certificate signal. *)
+  (** Used by {{!Ocgio.Raw.Tls_connection}[GTlsConnection]} implementations to
+      emit the
+      {{!Ocgio.Raw.Tls_connection.val-on_accept_certificate}[GTlsConnection::accept-certificate]}
+      signal. *)
 
   (* Properties *)
 
   external get_base_io_stream : t -> Io_stream.t
     = "ml_g_tls_connection_get_base_io_stream"
-  (** The [GIOStream] that the connection wraps. The connection holds a
-      reference to this stream, and may run operations on the stream from other
-      threads throughout its lifetime. Consequently, after the [GIOStream] has
-      been constructed, application code may only run its own operations on this
-      stream when no [GIOStream] operations are running. *)
+  (** The {{!Ocgio.Raw.Io_stream}[GIOStream]} that the connection wraps. The
+      connection holds a reference to this stream, and may run operations on the
+      stream from other threads throughout its lifetime. Consequently, after the
+      {{!Ocgio.Raw.Io_stream}[GIOStream]} has been constructed, application code
+      may only run its own operations on this stream when no
+      {{!Ocgio.Raw.Io_stream}[GIOStream]} operations are running. *)
 
   val on_accept_certificate :
     ?after:bool ->
@@ -258,38 +306,45 @@ module rec Tls_connection : sig
     Gobject.Signal.handler_id
   (** Emitted during the TLS handshake after the peer certificate has been
       received. You can examine [peer_cert]'s certification path by calling
-      g_tls_certificate_get_issuer() on it.
+      {{!Ocgio.Raw.Tls_certificate.val-get_issuer}[g_tls_certificate_get_issuer
+                                                   ()]} on it.
 
       For a client-side connection, [peer_cert] is the server's certificate, and
       the signal will only be emitted if the certificate was not acceptable
-      according to [conn]'s [GTlsClientConnection:validation_flags]. If you
-      would like the certificate to be accepted despite [errors], return [true]
-      from the signal handler. Otherwise, if no handler accepts the certificate,
-      the handshake will fail with [G_TLS_ERROR_BAD_CERTIFICATE].
+      according to [conn]'s
+      {{!Ocgio.Raw.Tls_client_connection.val-get_validation_flags}[GTlsClientConnection:validation_flags]}.
+      If you would like the certificate to be accepted despite [errors], return
+      [true] from the signal handler. Otherwise, if no handler accepts the
+      certificate, the handshake will fail with
+      {{!Ocgio.Enums.type-tlserror.constructor-BAD_CERTIFICATE}[G_TLS_ERROR_BAD_CERTIFICATE]}.
 
       GLib guarantees that if certificate verification fails, this signal will
       be emitted with at least one error will be set in [errors], but it does
       not guarantee that all possible errors will be set. Accordingly, you may
       not safely decide to ignore any particular type of error. For example, it
-      would be incorrect to ignore [G_TLS_CERTIFICATE_EXPIRED] if you want to
-      allow expired certificates, because this could potentially be the only
-      error flag set even if other problems exist with the certificate.
+      would be incorrect to ignore
+      {{!Ocgio.Enums.type-tlscertificateflags_flag.constructor-EXPIRED}[G_TLS_CERTIFICATE_EXPIRED]}
+      if you want to allow expired certificates, because this could potentially
+      be the only error flag set even if other problems exist with the
+      certificate.
 
       For a server-side connection, [peer_cert] is the certificate presented by
       the client, if this was requested via the server's
-      [GTlsServerConnection:authentication_mode]. On the server side, the signal
-      is always emitted when the client presents a certificate, and the
-      certificate will only be accepted if a handler returns [true].
+      {{!Ocgio.Raw.Tls_server_connection.val-get_authentication_mode}[GTlsServerConnection:authentication_mode]}.
+      On the server side, the signal is always emitted when the client presents
+      a certificate, and the certificate will only be accepted if a handler
+      returns [true].
 
       Note that if this signal is emitted as part of asynchronous I/O in the
       main thread, then you should not attempt to interact with the user before
       returning from the signal handler. If you want to let the user decide
       whether or not to accept the certificate, you would have to return [false]
       from the signal handler on the first attempt, and then after the
-      connection attempt returns a [G_TLS_ERROR_BAD_CERTIFICATE], you can
-      interact with the user, and if the user decides to accept the certificate,
-      remember that fact, create a new connection, and return [true] from the
-      signal handler the next time.
+      connection attempt returns a
+      {{!Ocgio.Enums.type-tlserror.constructor-BAD_CERTIFICATE}[G_TLS_ERROR_BAD_CERTIFICATE]},
+      you can interact with the user, and if the user decides to accept the
+      certificate, remember that fact, create a new connection, and return
+      [true] from the signal handler the next time.
 
       If you are doing I/O in another thread, you do not need to worry about
       this, and can simply block in the signal handler until the UI thread
@@ -319,14 +374,16 @@ and Tls_database : sig
     t -> Async_result.t -> (Ocgio_enums.tlscertificateflags, GError.t) result
     = "ml_g_tls_database_verify_chain_finish"
   (** Finish an asynchronous verify chain operation. See
-      g_tls_database_verify_chain() for more information.
+      {{!Ocgio.Raw.Tls_database.val-verify_chain}[g_tls_database_verify_chain
+                                                  ()]} for more information.
 
       If [chain] is found to be valid, then the return value will be 0. If
       [chain] is found to be invalid, then the return value will indicate the
       problems found. If the function is unable to determine whether [chain] is
       valid or not (eg, because [cancellable] is triggered before it completes)
-      then the return value will be [G_TLS_CERTIFICATE_GENERIC_ERROR] and
-      [error] will be set accordingly. [error] is not set when [chain] is
+      then the return value will be
+      {{!Ocgio.Enums.type-tlscertificateflags_flag.constructor-GENERIC_ERROR}[G_TLS_CERTIFICATE_GENERIC_ERROR]}
+      and [error] will be set accordingly. [error] is not set when [chain] is
       successfully analyzed but found to be invalid. *)
 
   external verify_chain :
@@ -346,73 +403,86 @@ and Tls_database : sig
   (** Determines the validity of a certificate chain, outside the context of a
       TLS session.
 
-      [chain] is a chain of [GTlsCertificate] objects each pointing to the next
-      certificate in the chain by its [GTlsCertificate:issuer] property.
+      [chain] is a chain of {{!Ocgio.Raw.Tls_certificate}[GTlsCertificate]}
+      objects each pointing to the next certificate in the chain by its
+      {{!Ocgio.Raw.Tls_certificate.val-get_issuer}[GTlsCertificate:issuer]}
+      property.
 
       [purpose] describes the purpose (or usage) for which the certificate is
       being used. Typically [purpose] will be set to
-      [G_TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER] which means that the
-      certificate is being used to authenticate a server (and we are acting as
-      the client).
+      {{!Ocgio.Constants.tls_database_purpose_authenticate_server}[G_TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER]}
+      which means that the certificate is being used to authenticate a server
+      (and we are acting as the client).
 
       The [identity] is used to ensure the server certificate is valid for the
       expected peer identity. If the identity does not match the certificate,
-      [G_TLS_CERTIFICATE_BAD_IDENTITY] will be set in the return value. If
-      [identity] is [None], that bit will never be set in the return value. The
-      peer identity may also be used to check for pinned certificates (trust
-      exceptions) in the database. These may override the normal verification
-      process on a host-by-host basis.
+      {{!Ocgio.Enums.type-tlscertificateflags_flag.constructor-BAD_IDENTITY}[G_TLS_CERTIFICATE_BAD_IDENTITY]}
+      will be set in the return value. If [identity] is [None], that bit will
+      never be set in the return value. The peer identity may also be used to
+      check for pinned certificates (trust exceptions) in the database. These
+      may override the normal verification process on a host-by-host basis.
 
-      Currently there are no [flags], and [G_TLS_DATABASE_VERIFY_NONE] should be
-      used.
+      Currently there are no [flags], and
+      {{!Ocgio.Enums.type-tlsdatabaseverifyflags_flag.constructor-NONE}[G_TLS_DATABASE_VERIFY_NONE]}
+      should be used.
 
       If [chain] is found to be valid, then the return value will be 0. If
       [chain] is found to be invalid, then the return value will indicate at
       least one problem found. If the function is unable to determine whether
       [chain] is valid (for example, because [cancellable] is triggered before
       it completes) then the return value will be
-      [G_TLS_CERTIFICATE_GENERIC_ERROR] and [error] will be set accordingly.
-      [error] is not set when [chain] is successfully analyzed but found to be
-      invalid.
+      {{!Ocgio.Enums.type-tlscertificateflags_flag.constructor-GENERIC_ERROR}[G_TLS_CERTIFICATE_GENERIC_ERROR]}
+      and [error] will be set accordingly. [error] is not set when [chain] is
+      successfully analyzed but found to be invalid.
 
       GLib guarantees that if certificate verification fails, at least one error
       will be set in the return value, but it does not guarantee that all
       possible errors will be set. Accordingly, you may not safely decide to
       ignore any particular type of error. For example, it would be incorrect to
-      mask [G_TLS_CERTIFICATE_EXPIRED] if you want to allow expired
-      certificates, because this could potentially be the only error flag set
-      even if other problems exist with the certificate.
+      mask
+      {{!Ocgio.Enums.type-tlscertificateflags_flag.constructor-EXPIRED}[G_TLS_CERTIFICATE_EXPIRED]}
+      if you want to allow expired certificates, because this could potentially
+      be the only error flag set even if other problems exist with the
+      certificate.
 
       Prior to GLib 2.48, GLib's default TLS backend modified [chain] to
-      represent the certification path built by [GTlsDatabase] during
-      certificate verification by adjusting the [GTlsCertificate:issuer]
+      represent the certification path built by
+      {{!Ocgio.Raw.Tls_database}[GTlsDatabase]} during certificate verification
+      by adjusting the
+      {{!Ocgio.Raw.Tls_certificate.val-get_issuer}[GTlsCertificate:issuer]}
       property of each certificate in [chain]. Since GLib 2.48, this no longer
-      occurs, so you cannot rely on [GTlsCertificate:issuer] to represent the
-      actual certification path used during certificate verification.
+      occurs, so you cannot rely on
+      {{!Ocgio.Raw.Tls_certificate.val-get_issuer}[GTlsCertificate:issuer]} to
+      represent the actual certification path used during certificate
+      verification.
 
-      Because TLS session context is not used, [GTlsDatabase] may not perform as
-      many checks on the certificates as [GTlsConnection] would. For example,
-      certificate constraints may not be honored, and revocation checks may not
-      be performed. The best way to verify TLS certificates used by a TLS
-      connection is to let [GTlsConnection] handle the verification.
+      Because TLS session context is not used,
+      {{!Ocgio.Raw.Tls_database}[GTlsDatabase]} may not perform as many checks
+      on the certificates as {{!Ocgio.Raw.Tls_connection}[GTlsConnection]}
+      would. For example, certificate constraints may not be honored, and
+      revocation checks may not be performed. The best way to verify TLS
+      certificates used by a TLS connection is to let
+      {{!Ocgio.Raw.Tls_connection}[GTlsConnection]} handle the verification.
 
       The TLS backend may attempt to look up and add missing certificates to the
       chain. This may involve HTTP requests to download missing certificates.
 
-      This function can block. Use g_tls_database_verify_chain_async() to
+      This function can block. Use [g_tls_database_verify_chain_async ()] to
       perform the verification operation asynchronously. *)
 
   external lookup_certificates_issued_by_finish :
     t -> Async_result.t -> (Tls_certificate.t list, GError.t) result
     = "ml_g_tls_database_lookup_certificates_issued_by_finish"
   (** Finish an asynchronous lookup of certificates. See
-      g_tls_database_lookup_certificates_issued_by() for more information. *)
+      [g_tls_database_lookup_certificates_issued_by ()] for more information. *)
 
   external lookup_certificate_issuer_finish :
     t -> Async_result.t -> (Tls_certificate.t, GError.t) result
     = "ml_g_tls_database_lookup_certificate_issuer_finish"
   (** Finish an asynchronous lookup issuer operation. See
-      g_tls_database_lookup_certificate_issuer() for more information. *)
+      {{!Ocgio.Raw.Tls_database.val-lookup_certificate_issuer}[g_tls_database_lookup_certificate_issuer
+                                                               ()]} for more
+      information. *)
 
   external lookup_certificate_issuer :
     t ->
@@ -423,11 +493,12 @@ and Tls_database : sig
     (Tls_certificate.t, GError.t) result
     = "ml_g_tls_database_lookup_certificate_issuer"
   (** Look up the issuer of [certificate] in the database. The
-      [GTlsCertificate:issuer] property of [certificate] is not modified, and
-      the two certificates are not hooked into a chain.
+      {{!Ocgio.Raw.Tls_certificate.val-get_issuer}[GTlsCertificate:issuer]}
+      property of [certificate] is not modified, and the two certificates are
+      not hooked into a chain.
 
       This function can block. Use
-      g_tls_database_lookup_certificate_issuer_async() to perform the lookup
+      [g_tls_database_lookup_certificate_issuer_async ()] to perform the lookup
       operation asynchronously.
 
       Beware this function cannot be used to build certification paths. The
@@ -448,7 +519,9 @@ and Tls_database : sig
     t -> Async_result.t -> (Tls_certificate.t, GError.t) result
     = "ml_g_tls_database_lookup_certificate_for_handle_finish"
   (** Finish an asynchronous lookup of a certificate by its handle. See
-      g_tls_database_lookup_certificate_for_handle() for more information.
+      {{!Ocgio.Raw.Tls_database.val-lookup_certificate_for_handle}[g_tls_database_lookup_certificate_for_handle
+                                                                   ()]} for more
+      information.
 
       If the handle is no longer valid, or does not point to a certificate in
       this database, then [None] will be returned. *)
@@ -464,16 +537,18 @@ and Tls_database : sig
   (** Look up a certificate by its handle.
 
       The handle should have been created by calling
-      g_tls_database_create_certificate_handle() on a [GTlsDatabase] object of
-      the same TLS backend. The handle is designed to remain valid across
-      instantiations of the database.
+      {{!Ocgio.Raw.Tls_database.val-create_certificate_handle}[g_tls_database_create_certificate_handle
+                                                               ()]} on a
+      {{!Ocgio.Raw.Tls_database}[GTlsDatabase]} object of the same TLS backend.
+      The handle is designed to remain valid across instantiations of the
+      database.
 
       If the handle is no longer valid, or does not point to a certificate in
       this database, then [None] will be returned.
 
       This function can block, use
-      g_tls_database_lookup_certificate_for_handle_async() to perform the lookup
-      operation asynchronously. *)
+      [g_tls_database_lookup_certificate_for_handle_async ()] to perform the
+      lookup operation asynchronously. *)
 
   external create_certificate_handle : t -> Tls_certificate.t -> string option
     = "ml_g_tls_database_create_certificate_handle"
@@ -522,16 +597,22 @@ and Tls_interaction : sig
     t -> Async_result.t -> (Ocgio_enums.tlsinteractionresult, GError.t) result
     = "ml_g_tls_interaction_request_certificate_finish"
   (** Complete a request certificate user interaction request. This should be
-      once the g_tls_interaction_request_certificate_async() completion callback
-      is called.
+      once the [g_tls_interaction_request_certificate_async ()] completion
+      callback is called.
 
-      If [G_TLS_INTERACTION_HANDLED] is returned, then the [GTlsConnection]
-      passed to g_tls_interaction_request_certificate_async() will have had its
-      [GTlsConnection:certificate] filled in.
+      If
+      {{!Ocgio.Enums.type-tlsinteractionresult.constructor-HANDLED}[G_TLS_INTERACTION_HANDLED]}
+      is returned, then the {{!Ocgio.Raw.Tls_connection}[GTlsConnection]} passed
+      to [g_tls_interaction_request_certificate_async ()] will have had its
+      {{!Ocgio.Raw.Tls_connection.val-get_certificate}[GTlsConnection:certificate]}
+      filled in.
 
       If the interaction is cancelled by the cancellation object, or by the user
-      then [G_TLS_INTERACTION_FAILED] will be returned with an error that
-      contains a [G_IO_ERROR_CANCELLED] error code. *)
+      then
+      {{!Ocgio.Enums.type-tlsinteractionresult.constructor-FAILED}[G_TLS_INTERACTION_FAILED]}
+      will be returned with an error that contains a
+      {{!Ocgio.Enums.type-ioerrorenum.constructor-CANCELLED}[G_IO_ERROR_CANCELLED]}
+      error code. *)
 
   external request_certificate :
     t ->
@@ -542,22 +623,32 @@ and Tls_interaction : sig
     = "ml_g_tls_interaction_request_certificate"
   (** Run synchronous interaction to ask the user to choose a certificate to use
       with the connection. In general,
-      g_tls_interaction_invoke_request_certificate() should be used instead of
-      this function.
+      {{!Ocgio.Raw.Tls_interaction.val-invoke_request_certificate}[g_tls_interaction_invoke_request_certificate
+                                                                   ()]} should
+      be used instead of this function.
 
       Derived subclasses usually implement a certificate selector, although they
       may also choose to provide a certificate from elsewhere. Alternatively the
       user may abort this certificate request, which will usually abort the TLS
       connection.
 
-      If [G_TLS_INTERACTION_HANDLED] is returned, then the [GTlsConnection]
-      passed to g_tls_interaction_request_certificate() will have had its
-      [GTlsConnection:certificate] filled in.
+      If
+      {{!Ocgio.Enums.type-tlsinteractionresult.constructor-HANDLED}[G_TLS_INTERACTION_HANDLED]}
+      is returned, then the {{!Ocgio.Raw.Tls_connection}[GTlsConnection]} passed
+      to
+      {{!Ocgio.Raw.Tls_interaction.val-request_certificate}[g_tls_interaction_request_certificate
+                                                            ()]} will have had
+      its
+      {{!Ocgio.Raw.Tls_connection.val-get_certificate}[GTlsConnection:certificate]}
+      filled in.
 
       If the interaction is cancelled by the cancellation object, or by the user
-      then [G_TLS_INTERACTION_FAILED] will be returned with an error that
-      contains a [G_IO_ERROR_CANCELLED] error code. Certain implementations may
-      not support immediate cancellation. *)
+      then
+      {{!Ocgio.Enums.type-tlsinteractionresult.constructor-FAILED}[G_TLS_INTERACTION_FAILED]}
+      will be returned with an error that contains a
+      {{!Ocgio.Enums.type-ioerrorenum.constructor-CANCELLED}[G_IO_ERROR_CANCELLED]}
+      error code. Certain implementations may not support immediate
+      cancellation. *)
 
   external invoke_request_certificate :
     t ->
@@ -568,9 +659,10 @@ and Tls_interaction : sig
     = "ml_g_tls_interaction_invoke_request_certificate"
   (** Invoke the interaction to ask the user to choose a certificate to use with
       the connection. It invokes this interaction in the main loop, specifically
-      the [GMainContext] returned by g_main_context_get_thread_default() when
-      the interaction is created. This is called by called by [GTlsConnection]
-      when the peer requests a certificate during the handshake.
+      the [GMainContext] returned by [g_main_context_get_thread_default ()] when
+      the interaction is created. This is called by called by
+      {{!Ocgio.Raw.Tls_connection}[GTlsConnection]} when the peer requests a
+      certificate during the handshake.
 
       Derived subclasses usually implement a certificate selector, although they
       may also choose to provide a certificate from elsewhere. Alternatively the
@@ -582,9 +674,12 @@ and Tls_interaction : sig
       calling which ever one correctly.
 
       If the interaction is cancelled by the cancellation object, or by the user
-      then [G_TLS_INTERACTION_FAILED] will be returned with an error that
-      contains a [G_IO_ERROR_CANCELLED] error code. Certain implementations may
-      not support immediate cancellation. *)
+      then
+      {{!Ocgio.Enums.type-tlsinteractionresult.constructor-FAILED}[G_TLS_INTERACTION_FAILED]}
+      will be returned with an error that contains a
+      {{!Ocgio.Enums.type-ioerrorenum.constructor-CANCELLED}[G_IO_ERROR_CANCELLED]}
+      error code. Certain implementations may not support immediate
+      cancellation. *)
 
   external invoke_ask_password :
     t ->
@@ -594,9 +689,10 @@ and Tls_interaction : sig
     = "ml_g_tls_interaction_invoke_ask_password"
   (** Invoke the interaction to ask the user for a password. It invokes this
       interaction in the main loop, specifically the [GMainContext] returned by
-      g_main_context_get_thread_default() when the interaction is created. This
-      is called by called by [GTlsConnection] or [GTlsDatabase] to ask the user
-      for a password.
+      [g_main_context_get_thread_default ()] when the interaction is created.
+      This is called by called by {{!Ocgio.Raw.Tls_connection}[GTlsConnection]}
+      or {{!Ocgio.Raw.Tls_database}[GTlsDatabase]} to ask the user for a
+      password.
 
       Derived subclasses usually implement a password prompt, although they may
       also choose to provide a password from elsewhere. The [password] value
@@ -609,22 +705,32 @@ and Tls_interaction : sig
       calling which ever one correctly.
 
       If the interaction is cancelled by the cancellation object, or by the user
-      then [G_TLS_INTERACTION_FAILED] will be returned with an error that
-      contains a [G_IO_ERROR_CANCELLED] error code. Certain implementations may
-      not support immediate cancellation. *)
+      then
+      {{!Ocgio.Enums.type-tlsinteractionresult.constructor-FAILED}[G_TLS_INTERACTION_FAILED]}
+      will be returned with an error that contains a
+      {{!Ocgio.Enums.type-ioerrorenum.constructor-CANCELLED}[G_IO_ERROR_CANCELLED]}
+      error code. Certain implementations may not support immediate
+      cancellation. *)
 
   external ask_password_finish :
     t -> Async_result.t -> (Ocgio_enums.tlsinteractionresult, GError.t) result
     = "ml_g_tls_interaction_ask_password_finish"
   (** Complete an ask password user interaction request. This should be once the
-      g_tls_interaction_ask_password_async() completion callback is called.
+      [g_tls_interaction_ask_password_async ()] completion callback is called.
 
-      If [G_TLS_INTERACTION_HANDLED] is returned, then the [GTlsPassword] passed
-      to g_tls_interaction_ask_password() will have its password filled in.
+      If
+      {{!Ocgio.Enums.type-tlsinteractionresult.constructor-HANDLED}[G_TLS_INTERACTION_HANDLED]}
+      is returned, then the {{!Ocgio.Raw.Tls_password}[GTlsPassword]} passed to
+      {{!Ocgio.Raw.Tls_interaction.val-ask_password}[g_tls_interaction_ask_password
+                                                     ()]} will have its password
+      filled in.
 
       If the interaction is cancelled by the cancellation object, or by the user
-      then [G_TLS_INTERACTION_FAILED] will be returned with an error that
-      contains a [G_IO_ERROR_CANCELLED] error code. *)
+      then
+      {{!Ocgio.Enums.type-tlsinteractionresult.constructor-FAILED}[G_TLS_INTERACTION_FAILED]}
+      will be returned with an error that contains a
+      {{!Ocgio.Enums.type-ioerrorenum.constructor-CANCELLED}[G_IO_ERROR_CANCELLED]}
+      error code. *)
 
   external ask_password :
     t ->
@@ -633,8 +739,9 @@ and Tls_interaction : sig
     (Ocgio_enums.tlsinteractionresult, GError.t) result
     = "ml_g_tls_interaction_ask_password"
   (** Run synchronous interaction to ask the user for a password. In general,
-      g_tls_interaction_invoke_ask_password() should be used instead of this
-      function.
+      {{!Ocgio.Raw.Tls_interaction.val-invoke_ask_password}[g_tls_interaction_invoke_ask_password
+                                                            ()]} should be used
+      instead of this function.
 
       Derived subclasses usually implement a password prompt, although they may
       also choose to provide a password from elsewhere. The [password] value
@@ -643,7 +750,10 @@ and Tls_interaction : sig
       connection.
 
       If the interaction is cancelled by the cancellation object, or by the user
-      then [G_TLS_INTERACTION_FAILED] will be returned with an error that
-      contains a [G_IO_ERROR_CANCELLED] error code. Certain implementations may
-      not support immediate cancellation. *)
+      then
+      {{!Ocgio.Enums.type-tlsinteractionresult.constructor-FAILED}[G_TLS_INTERACTION_FAILED]}
+      will be returned with an error that contains a
+      {{!Ocgio.Enums.type-ioerrorenum.constructor-CANCELLED}[G_IO_ERROR_CANCELLED]}
+      error code. Certain implementations may not support immediate
+      cancellation. *)
 end

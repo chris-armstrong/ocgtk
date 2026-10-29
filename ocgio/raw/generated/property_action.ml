@@ -66,8 +66,8 @@ external gtype : unit -> Gobject.Type.t = "ml_gio_property_action_get_type"
 
 external new_ : string -> [ `object_ ] Gobject.obj -> string -> t
   = "ml_g_property_action_new"
-(** Creates a [GAction] corresponding to the value of property [property_name]
-    on [object].
+(** Creates a {{!Ocgio.Raw.Action}[GAction]} corresponding to the value of
+    property [property_name] on [object].
 
     The property must be existent and readable and writable (and not
     construct-only).
@@ -81,8 +81,10 @@ external new_ : string -> [ `object_ ] Gobject.obj -> string -> t
 external get_enabled : t -> bool = "ml_g_property_action_get_enabled"
 (** If [action] is currently enabled.
 
-    If the action is disabled then calls to g_action_activate() and
-    g_action_change_state() have no effect. *)
+    If the action is disabled then calls to
+    {{!Ocgio.Raw.Action.val-activate}[g_action_activate ()]} and
+    {{!Ocgio.Raw.Action.val-change_state}[g_action_change_state ()]} have no
+    effect. *)
 
 external get_invert_boolean : t -> bool
   = "ml_g_property_action_get_invert_boolean"
@@ -91,7 +93,7 @@ external get_invert_boolean : t -> bool
 
 external get_name : t -> string = "ml_g_property_action_get_name"
 (** The name of the action. This is mostly meaningful for identifying the action
-    once it has been added to a [GActionMap]. *)
+    once it has been added to a {{!Ocgio.Raw.Action_map}[GActionMap]}. *)
 
 external get_parameter_type : t -> Gvariant_type.t
   = "ml_g_property_action_get_parameter_type"

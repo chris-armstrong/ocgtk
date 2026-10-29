@@ -43,13 +43,14 @@ class type pollable_output_stream_t = object
   (** Checks if [stream] can be written.
 
       Note that some stream types may not be able to implement this 100%
-      reliably, and it is possible that a call to g_output_stream_write() after
-      this returns [true] would still block. To guarantee non-blocking behavior,
-      you should always use g_pollable_output_stream_write_nonblocking(), which
-      will return a [G_IO_ERROR_WOULD_BLOCK] error rather than blocking.
+      reliably, and it is possible that a call to [g_output_stream_write ()]
+      after this returns [true] would still block. To guarantee non-blocking
+      behavior, you should always use
+      [g_pollable_output_stream_write_nonblocking ()], which will return a
+      [G_IO_ERROR_WOULD_BLOCK] error rather than blocking.
 
       The behaviour of this method is undefined if
-      g_pollable_output_stream_can_poll() returns [false] for [stream]. *)
+      [g_pollable_output_stream_can_poll ()] returns [false] for [stream]. *)
 
   (** {2:conversions Conversions} *)
 

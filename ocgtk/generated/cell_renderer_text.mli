@@ -19,8 +19,9 @@
     ellipsized if it is too long and the [GtkCellRendererText:ellipsize]
     property allows it.
 
-    If the [GtkCellRenderer:mode] is [GTK_CELL_RENDERER_MODE_EDITABLE], the
-    [GtkCellRendererText] allows to edit its text using an entry. *)
+    If the [GtkCellRenderer:mode] is
+    {{!Ocgtk.Enums.type-cellrenderermode.constructor-EDITABLE}[GTK_CELL_RENDERER_MODE_EDITABLE]},
+    the [GtkCellRendererText] allows to edit its text using an entry. *)
 class type cell_renderer_text_t = object
   inherit Cell_renderer.cell_renderer_t
 
@@ -369,14 +370,15 @@ class cell_renderer_text : Raw.Cell_renderer_text.t -> cell_renderer_text_t
     ellipsized if it is too long and the [GtkCellRendererText:ellipsize]
     property allows it.
 
-    If the [GtkCellRenderer:mode] is [GTK_CELL_RENDERER_MODE_EDITABLE], the
-    [GtkCellRendererText] allows to edit its text using an entry. *)
+    If the [GtkCellRenderer:mode] is
+    {{!Ocgtk.Enums.type-cellrenderermode.constructor-EDITABLE}[GTK_CELL_RENDERER_MODE_EDITABLE]},
+    the [GtkCellRendererText] allows to edit its text using an entry. *)
 
 (** {1:constructors Constructors} *)
 
 val new_ : unit -> cell_renderer_text_t
 (** Creates a new [GtkCellRendererText]. Adjust how text is drawn using object
-    properties. Object properties can be set globally (with g_object_set()).
+    properties. Object properties can be set globally (with [g_object_set ()]).
     Also, with [GtkTreeViewColumn], you can bind a property to a value in a
     [GtkTreeModel]. For example, you can bind the “text” property on the cell
     renderer to a string value in the model, thus rendering a different string

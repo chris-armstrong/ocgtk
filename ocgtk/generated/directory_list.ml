@@ -20,7 +20,7 @@ class type directory_list_t = object
   (** Gets the file whose children are currently enumerated. *)
 
   method get_io_priority : unit -> int
-  (** Gets the IO priority set via gtk_directory_list_set_io_priority(). *)
+  (** Gets the IO priority set via [gtk_directory_list_set_io_priority ()]. *)
 
   method get_monitored : unit -> bool
   (** Returns whether the directory list is monitoring the directory for

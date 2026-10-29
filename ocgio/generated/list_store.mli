@@ -26,28 +26,28 @@ class type list_store_t = object
   (** {2:methods Methods} *)
 
   method append : [ `object_ ] Gobject.obj -> unit
-  (** Appends [item] to [store]. [item] must be of type [GListStore:item]-type.
+  (** Appends [item] to [store]. [item] must be of type [GListStore:item-type].
 
       This function takes a ref on [item].
 
-      Use g_list_store_splice() to append multiple items at the same time
+      Use [g_list_store_splice ()] to append multiple items at the same time
       efficiently. *)
 
   method insert : int -> [ `object_ ] Gobject.obj -> unit
   (** Inserts [item] into [store] at [position]. [item] must be of type
-      [GListStore:item]-type or derived from it. [position] must be smaller than
+      [GListStore:item-type] or derived from it. [position] must be smaller than
       the length of the list, or equal to it to append.
 
       This function takes a ref on [item].
 
-      Use g_list_store_splice() to insert multiple items at the same time
+      Use [g_list_store_splice ()] to insert multiple items at the same time
       efficiently. *)
 
   method remove : int -> unit
   (** Removes the item from [store] that is at [position]. [position] must be
       smaller than the current length of the list.
 
-      Use g_list_store_splice() to remove multiple items at the same time
+      Use [g_list_store_splice ()] to remove multiple items at the same time
       efficiently. *)
 
   method remove_all : unit -> unit
@@ -56,11 +56,11 @@ class type list_store_t = object
   method splice : int -> int -> [ `object_ ] Gobject.obj array -> int -> unit
   (** Changes [store] by removing [n_removals] items and adding [n_additions]
       items to it. [additions] must contain [n_additions] items of type
-      [GListStore:item]-type. [None] is not permitted.
+      [GListStore:item-type]. [None] is not permitted.
 
-      This function is more efficient than g_list_store_insert() and
-      g_list_store_remove(), because it only emits [GListModel::items]-changed
-      once for the change.
+      This function is more efficient than [g_list_store_insert ()] and
+      [g_list_store_remove ()], because it only emits
+      [GListModel::items-changed] once for the change.
 
       This function takes a ref on each item in [additions].
 
@@ -97,5 +97,5 @@ class list_store : Raw.List_store.t -> list_store_t
 (** {1:constructors Constructors} *)
 
 val new_ : Gobject.Type.t -> list_store_t
-(** Creates a new [GListStore] with items of type [item_type]. [item_type] must
-    be a subclass of [GObject]. *)
+(** Creates a new {{!Ocgio.List_store.class-type-list_store_t}[GListStore]} with
+    items of type [item_type]. [item_type] must be a subclass of [GObject]. *)

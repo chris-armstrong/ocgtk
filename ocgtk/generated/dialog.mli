@@ -137,7 +137,11 @@ end
      {{!Ocgtk.Dialog.class-type-dialog_t.method-add_action_widget}[Gtk.Dialog.add_action_widget]}.\n\n\
      [GtkDialogs] uses some heuristics to decide whether to add a close\n\
      button to the window decorations. If any of the action buttons use\n\
-     the response ID [GTK_RESPONSE_CLOSE] or [GTK_RESPONSE_CANCEL], the\n\
+     the response ID \
+     {{!Ocgtk.Enums.type-responsetype.constructor-CLOSE}[GTK_RESPONSE_CLOSE]} \
+     or \
+     {{!Ocgtk.Enums.type-responsetype.constructor-CANCEL}[GTK_RESPONSE_CANCEL]}, \
+     the\n\
      close button is omitted.\n\n\
      Clicking a button that was added as an action widget will emit the\n\
      {{!Ocgtk.Dialog.class-type-dialog_t.method-on_response}[Gtk.Dialog::response]} \
@@ -149,7 +153,8 @@ end
      less than zero). If a dialog receives a delete event, the\n\
      {{!Ocgtk.Dialog.class-type-dialog_t.method-on_response}[Gtk.Dialog::response]} \
      signal will be emitted with the\n\
-     [GTK_RESPONSE_DELETE_EVENT] response ID.\n\n\
+     {{!Ocgtk.Enums.type-responsetype.constructor-DELETE_EVENT}[GTK_RESPONSE_DELETE_EVENT]} \
+     response ID.\n\n\
      Dialogs are created with a call to \
      {{!Ocgtk.Dialog.val-new_}[Gtk.Dialog.new]} or\n\
      [Gtk.Dialog.new_with_buttons]. The latter is recommended; it allows\n\
@@ -158,7 +163,9 @@ end
      from user input), can be created by calling \
      {{!Ocgtk.Window.class-type-window_t.method-set_modal}[Gtk.Window.set_modal]}\n\
      on the dialog. When using [Gtk.Dialog.new_with_buttons], you can also\n\
-     pass the [GTK_DIALOG_MODAL] flag to make a dialog modal.\n\n\
+     pass the \
+     {{!Ocgtk.Enums.type-dialogflags_flag.constructor-MODAL}[GTK_DIALOG_MODAL]} \
+     flag to make a dialog modal.\n\n\
      For the simple dialog in the following example, a \
      {{!Ocgtk.Message_dialog.class-type-message_dialog_t}[Gtk.MessageDialog]}\n\
      would save some effort. But you’d need to create the dialog contents \
@@ -224,7 +231,9 @@ end
      </object>\n\
      ]}\n\n\
      {b Accessibility}\n\n\
-     [GtkDialog] uses the [GTK_ACCESSIBLE_ROLE_DIALOG] role."]
+     [GtkDialog] uses the \
+     {{!Ocgtk.Enums.type-accessiblerole.constructor-DIALOG}[GTK_ACCESSIBLE_ROLE_DIALOG]} \
+     role."]
 
 class dialog : Raw.Dialog.t -> dialog_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Dialog.t}. *)
@@ -250,7 +259,10 @@ class dialog : Raw.Dialog.t -> dialog_t
  {{!Ocgtk.Dialog.class-type-dialog_t.method-add_action_widget}[Gtk.Dialog.add_action_widget]}.\n\n\
  [GtkDialogs] uses some heuristics to decide whether to add a close\n\
  button to the window decorations. If any of the action buttons use\n\
- the response ID [GTK_RESPONSE_CLOSE] or [GTK_RESPONSE_CANCEL], the\n\
+ the response ID \
+ {{!Ocgtk.Enums.type-responsetype.constructor-CLOSE}[GTK_RESPONSE_CLOSE]} or \
+ {{!Ocgtk.Enums.type-responsetype.constructor-CANCEL}[GTK_RESPONSE_CANCEL]}, \
+ the\n\
  close button is omitted.\n\n\
  Clicking a button that was added as an action widget will emit the\n\
  {{!Ocgtk.Dialog.class-type-dialog_t.method-on_response}[Gtk.Dialog::response]} \
@@ -262,7 +274,8 @@ class dialog : Raw.Dialog.t -> dialog_t
  less than zero). If a dialog receives a delete event, the\n\
  {{!Ocgtk.Dialog.class-type-dialog_t.method-on_response}[Gtk.Dialog::response]} \
  signal will be emitted with the\n\
- [GTK_RESPONSE_DELETE_EVENT] response ID.\n\n\
+ {{!Ocgtk.Enums.type-responsetype.constructor-DELETE_EVENT}[GTK_RESPONSE_DELETE_EVENT]} \
+ response ID.\n\n\
  Dialogs are created with a call to {{!Ocgtk.Dialog.val-new_}[Gtk.Dialog.new]} \
  or\n\
  [Gtk.Dialog.new_with_buttons]. The latter is recommended; it allows\n\
@@ -271,7 +284,9 @@ class dialog : Raw.Dialog.t -> dialog_t
  from user input), can be created by calling \
  {{!Ocgtk.Window.class-type-window_t.method-set_modal}[Gtk.Window.set_modal]}\n\
  on the dialog. When using [Gtk.Dialog.new_with_buttons], you can also\n\
- pass the [GTK_DIALOG_MODAL] flag to make a dialog modal.\n\n\
+ pass the \
+ {{!Ocgtk.Enums.type-dialogflags_flag.constructor-MODAL}[GTK_DIALOG_MODAL]} \
+ flag to make a dialog modal.\n\n\
  For the simple dialog in the following example, a \
  {{!Ocgtk.Message_dialog.class-type-message_dialog_t}[Gtk.MessageDialog]}\n\
  would save some effort. But you’d need to create the dialog contents manually\n\
@@ -335,7 +350,9 @@ class dialog : Raw.Dialog.t -> dialog_t
  </object>\n\
  ]}\n\n\
  {b Accessibility}\n\n\
- [GtkDialog] uses the [GTK_ACCESSIBLE_ROLE_DIALOG] role."]
+ [GtkDialog] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-DIALOG}[GTK_ACCESSIBLE_ROLE_DIALOG]} \
+ role."]
 
 (** {1:constructors Constructors} *)
 

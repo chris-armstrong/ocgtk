@@ -14,8 +14,8 @@ external new_ : Glib_bytes.t -> t = "ml_g_bytes_icon_new"
 (** Creates a new icon for a bytes.
 
     This cannot fail, but loading and interpreting the bytes may fail later on
-    (for example, if g_loadable_icon_load() is called) if the image is invalid.
-*)
+    (for example, if [g_loadable_icon_load ()] is called) if the image is
+    invalid. *)
 
 (* Methods *)
 

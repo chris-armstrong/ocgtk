@@ -13,7 +13,8 @@ type t = [ `simple_action_group | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gio_simple_action_group_get_type"
 
 external new_ : unit -> t = "ml_g_simple_action_group_new"
-(** Creates a new, empty, [GSimpleActionGroup]. *)
+(** Creates a new, empty,
+    {{!Ocgio.Raw.Simple_action_group}[GSimpleActionGroup]}. *)
 
 (* Methods *)
 

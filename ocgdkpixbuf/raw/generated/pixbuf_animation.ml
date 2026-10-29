@@ -68,9 +68,13 @@ external new_from_stream_finish :
 external is_static_image : t -> bool = "ml_gdk_pixbuf_animation_is_static_image"
 (** Checks whether the animation is a static image.
 
-    If you load a file with gdk_pixbuf_animation_new_from_file() and it turns
-    out to be a plain, unanimated image, then this function will return [true].
-    Use gdk_pixbuf_animation_get_static_image() to retrieve the image. *)
+    If you load a file with
+    {{!Ocgdkpixbuf.Raw.Pixbuf_animation.val-new_from_file}[gdk_pixbuf_animation_new_from_file
+                                                           ()]} and it turns out
+    to be a plain, unanimated image, then this function will return [true]. Use
+    {{!Ocgdkpixbuf.Raw.Pixbuf_animation.val-get_static_image}[gdk_pixbuf_animation_get_static_image
+                                                              ()]} to retrieve
+    the image. *)
 
 external get_width : t -> int = "ml_gdk_pixbuf_animation_get_width"
 (** Queries the width of the bounding box of a pixbuf animation. *)

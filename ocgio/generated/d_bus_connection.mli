@@ -75,7 +75,7 @@ class type d_bus_connection_t = object
 
   method call_finish :
     Async_result.async_result_t -> (Gvariant.t, GError.t) result
-  (** Finishes an operation started with g_dbus_connection_call(). *)
+  (** Finishes an operation started with [g_dbus_connection_call ()]. *)
 
   method call_sync :
     string option ->
@@ -102,7 +102,7 @@ class type d_bus_connection_t = object
      another way, if you give a [reply_type] then any non-[None] return\n\
      value will be of this type.\n\n\
      If the [parameters] [GVariant] is floating, it is consumed.\n\
-     This allows convenient 'inline' use of g_variant_new(), e.g.:\n\n\
+     This allows convenient 'inline' use of [g_variant_new ()], e.g.:\n\n\
      {[\n\
     \ g_dbus_connection_call_sync (connection,\n\
     \                              \"org.freedesktop.StringThings\",\n\
@@ -119,17 +119,17 @@ class type d_bus_connection_t = object
     \                              &error);\n\
      ]}\n\n\
      The calling thread is blocked until a reply is received. See\n\
-     g_dbus_connection_call() for the asynchronous version of\n\
+     [g_dbus_connection_call ()] for the asynchronous version of\n\
      this method."]
 
   method close_finish : Async_result.async_result_t -> (bool, GError.t) result
-  (** Finishes an operation started with g_dbus_connection_close(). *)
+  (** Finishes an operation started with [g_dbus_connection_close ()]. *)
 
   method close_sync :
     Cancellable.cancellable_t option -> (bool, GError.t) result
   (** Synchronously closes [connection]. The calling thread is blocked until
-      this is done. See g_dbus_connection_close() for the asynchronous version
-      of this method and more details about what it does. *)
+      this is done. See [g_dbus_connection_close ()] for the asynchronous
+      version of this method and more details about what it does. *)
 
   method emit_signal :
     string option ->
@@ -185,24 +185,24 @@ class type d_bus_connection_t = object
       undefined behavior.
 
       You can unexport the menu model using
-      g_dbus_connection_unexport_menu_model() with the return value of this
+      [g_dbus_connection_unexport_menu_model ()] with the return value of this
       function. *)
 
   method flush_finish : Async_result.async_result_t -> (bool, GError.t) result
-  (** Finishes an operation started with g_dbus_connection_flush(). *)
+  (** Finishes an operation started with [g_dbus_connection_flush ()]. *)
 
   method flush_sync :
     Cancellable.cancellable_t option -> (bool, GError.t) result
   (** Synchronously flushes [connection]. The calling thread is blocked until
-      this is done. See g_dbus_connection_flush() for the asynchronous version
-      of this method and more details about what it does. *)
+      this is done. See [g_dbus_connection_flush ()] for the asynchronous
+      version of this method and more details about what it does. *)
 
   method get_capabilities : unit -> Enums.dbuscapabilityflags
   (** Gets the capabilities negotiated with the remote peer *)
 
   method get_exit_on_close : unit -> bool
   (** Gets whether the process is terminated when [connection] is closed by the
-      remote peer. See [GDBusConnection:exit]-on-close for more details. *)
+      remote peer. See [GDBusConnection:exit-on-close] for more details. *)
 
   method get_flags : unit -> Enums.dbusconnectionflags
   (** Gets the flags used to construct this connection *)
@@ -214,9 +214,9 @@ class type d_bus_connection_t = object
   method get_last_serial : unit -> UInt32.t
   (** Retrieves the last serial number assigned to a [GDBusMessage] on the
       current thread. This includes messages sent via both low-level API such as
-      g_dbus_connection_send_message() as well as high-level API such as
-      g_dbus_connection_emit_signal(), g_dbus_connection_call() or
-      g_dbus_proxy_call(). *)
+      [g_dbus_connection_send_message ()] as well as high-level API such as
+      [g_dbus_connection_emit_signal ()], [g_dbus_connection_call ()] or
+      [g_dbus_proxy_call ()]. *)
 
   method get_peer_credentials : unit -> Credentials.credentials_t option
   (** Gets the credentials of the authenticated peer. This will always return
@@ -248,21 +248,21 @@ class type d_bus_connection_t = object
 
       Note that since filters run in a different thread, there is a race
       condition where it is possible that the filter will be running even after
-      calling g_dbus_connection_remove_filter(), so you cannot just free data
+      calling [g_dbus_connection_remove_filter ()], so you cannot just free data
       that the filter might be using. Instead, you should pass a
-      [GDestroyNotify] to g_dbus_connection_add_filter(), which will be called
-      when it is guaranteed that the data is no longer needed. *)
+      [GDestroyNotify] to [g_dbus_connection_add_filter ()], which will be
+      called when it is guaranteed that the data is no longer needed. *)
 
   method send_message_with_reply_finish :
     Async_result.async_result_t ->
     (D_bus_message.d_bus_message_t, GError.t) result
   (** Finishes an operation started with
-      g_dbus_connection_send_message_with_reply().
+      [g_dbus_connection_send_message_with_reply ()].
 
       Note that [error] is only set if a local in-process error occurred. That
       is to say that the returned [GDBusMessage] object may be of type
-      [G_DBUS_MESSAGE_TYPE_ERROR]. Use g_dbus_message_to_gerror() to transcode
-      this to a [GError].
+      [G_DBUS_MESSAGE_TYPE_ERROR]. Use [g_dbus_message_to_gerror ()] to
+      transcode this to a [GError].
 
       See this \[server\][Gio.DBusConnection] and \[client\][Gio.DBusConnection]
       for an example of how to use this low-level API to send and receive UNIX
@@ -270,7 +270,7 @@ class type d_bus_connection_t = object
 
   method set_exit_on_close : bool -> unit
   (** Sets whether the process should be terminated when [connection] is closed
-      by the remote peer. See [GDBusConnection:exit]-on-close for more details.
+      by the remote peer. See [GDBusConnection:exit-on-close] for more details.
 
       Note that this function should be used with care. Most modern UNIX
       desktops tie the notion of a user session with the session bus, and expect
@@ -286,11 +286,11 @@ class type d_bus_connection_t = object
       signal subscription) in the current thread-default [GMainContext] after
       this function has returned. You should continue to iterate the
       [GMainContext] until the [GDestroyNotify] function passed to
-      g_dbus_connection_signal_subscribe() is called, in order to avoid memory
-      leaks through callbacks queued on the [GMainContext] after it’s stopped
-      being iterated. Alternatively, any idle source with a priority lower than
-      [G_PRIORITY_DEFAULT] that was scheduled after unsubscription, also
-      indicates that all resources of this subscription are released. *)
+      [g_dbus_connection_signal_subscribe ()] is called, in order to avoid
+      memory leaks through callbacks queued on the [GMainContext] after it’s
+      stopped being iterated. Alternatively, any idle source with a priority
+      lower than [G_PRIORITY_DEFAULT] that was scheduled after unsubscription,
+      also indicates that all resources of this subscription are released. *)
 
   method start_message_processing : unit -> unit
   (** If [connection] was created with
@@ -308,11 +308,11 @@ class type d_bus_connection_t = object
 
   method unexport_menu_model : int -> unit
   (** Reverses the effect of a previous call to
-      g_dbus_connection_export_menu_model().
+      [g_dbus_connection_export_menu_model ()].
 
       It is an error to call this function with an ID that wasn't returned from
-      g_dbus_connection_export_menu_model() or to call it with the same ID more
-      than once. *)
+      [g_dbus_connection_export_menu_model ()] or to call it with the same ID
+      more than once. *)
 
   method unregister_object : int -> bool
   (** Unregisters an object. *)
@@ -388,11 +388,12 @@ class d_bus_connection : Raw.D_bus_connection.t -> d_bus_connection_t
 
 val new_finish :
   Async_result.async_result_t -> (d_bus_connection_t, GError.t) result
-(** Finishes an operation started with g_dbus_connection_new(). *)
+(** Finishes an operation started with [g_dbus_connection_new ()]. *)
 
 val new_for_address_finish :
   Async_result.async_result_t -> (d_bus_connection_t, GError.t) result
-(** Finishes an operation started with g_dbus_connection_new_for_address(). *)
+(** Finishes an operation started with [g_dbus_connection_new_for_address ()].
+*)
 
 val new_for_address_sync :
   string ->
@@ -406,14 +407,17 @@ val new_for_address_sync :
      address format}.
 
     This constructor can only be used to initiate client-side connections - use
-    g_dbus_connection_new_sync() if you need to act as the server. In
-    particular, [flags] cannot contain the
-    [G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER],
-    [G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS] or
-    [G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER] flags.
+    {{!Ocgio.D_bus_connection.val-new_sync}[g_dbus_connection_new_sync ()]} if
+    you need to act as the server. In particular, [flags] cannot contain the
+    {{!Ocgio.Enums.type-dbusconnectionflags_flag.constructor-AUTHENTICATION_SERVER}
+     [G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER]},
+    {{!Ocgio.Enums.type-dbusconnectionflags_flag.constructor-AUTHENTICATION_ALLOW_ANONYMOUS}
+     [G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS]} or
+    {{!Ocgio.Enums.type-dbusconnectionflags_flag.constructor-AUTHENTICATION_REQUIRE_SAME_USER}
+     [G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER]} flags.
 
     This is a synchronous failable constructor. See
-    g_dbus_connection_new_for_address() for the asynchronous version.
+    [g_dbus_connection_new_for_address ()] for the asynchronous version.
 
     If [observer] is not [None] it may be used to control the authentication
     process. *)
@@ -428,15 +432,17 @@ val new_sync :
 (** Synchronously sets up a D-Bus connection for exchanging D-Bus messages with
     the end represented by [stream].
 
-    If [stream] is a [GSocketConnection], then the corresponding [GSocket] will
+    If [stream] is a
+    {{!Ocgio.Socket_connection.class-type-socket_connection_t}[GSocketConnection]},
+    then the corresponding {{!Ocgio.Socket.class-type-socket_t}[GSocket]} will
     be put into non-blocking mode.
 
     The D-Bus connection will interact with [stream] from a worker thread. As a
     result, the caller should not interact with [stream] after this method has
-    been called, except by calling g_object_unref() on it.
+    been called, except by calling [g_object_unref ()] on it.
 
     If [observer] is not [None] it may be used to control the authentication
     process.
 
-    This is a synchronous failable constructor. See g_dbus_connection_new() for
-    the asynchronous version. *)
+    This is a synchronous failable constructor. See [g_dbus_connection_new ()]
+    for the asynchronous version. *)

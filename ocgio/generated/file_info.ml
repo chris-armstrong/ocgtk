@@ -115,7 +115,7 @@ class type file_info_t = object
   method get_file_type : unit -> Enums.filetype
   (** Gets a file's type (whether it is a regular file, symlink, etc). This is
       different from the file's content type, see
-      g_file_info_get_content_type().
+      [g_file_info_get_content_type ()].
 
       It is an error to call this if the [GFileInfo] does not contain
       [G_FILE_ATTRIBUTE_STANDARD_TYPE]. *)
@@ -216,8 +216,8 @@ class type file_info_t = object
 
   method set_attribute_status : string -> Enums.fileattributestatus -> bool
   (** Sets the attribute status for an attribute key. This is only needed by
-      external code that implement g_file_set_attributes_from_info() or similar
-      functions.
+      external code that implement [g_file_set_attributes_from_info ()] or
+      similar functions.
 
       The attribute must exist in [info] for this to work. Otherwise [false] is
       returned and [info] is unchanged. *)
@@ -288,7 +288,8 @@ class type file_info_t = object
       info to the given symlink target. *)
 
   method unset_attribute_mask : unit -> unit
-  (** Unsets a mask set by g_file_info_set_attribute_mask(), if one is set. *)
+  (** Unsets a mask set by [g_file_info_set_attribute_mask ()], if one is set.
+  *)
 
   (** {2:conversions Conversions} *)
 

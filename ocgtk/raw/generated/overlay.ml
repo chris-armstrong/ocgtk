@@ -8,9 +8,12 @@
     The position of each overlay widget is determined by its
     {{!Ocgtk.Raw.Widget.val-get_halign}[Gtk.Widget:halign]} and
     {{!Ocgtk.Raw.Widget.val-get_valign}[Gtk.Widget:valign]} properties. E.g. a
-    widget with both alignments set to [GTK_ALIGN_START] will be placed at the
-    top left corner of the [GtkOverlay] container, whereas an overlay with
-    halign set to [GTK_ALIGN_CENTER] and valign set to [GTK_ALIGN_END] will be
+    widget with both alignments set to
+    {{!Ocgtk.Enums.type-align.constructor-START}[GTK_ALIGN_START]} will be
+    placed at the top left corner of the [GtkOverlay] container, whereas an
+    overlay with halign set to
+    {{!Ocgtk.Enums.type-align.constructor-CENTER}[GTK_ALIGN_CENTER]} and valign
+    set to {{!Ocgtk.Enums.type-align.constructor-END}[GTK_ALIGN_END]} will be
     placed a the bottom edge of the [GtkOverlay], horizontally centered. The
     position can be adjusted by setting the margin properties of the child to
     non-zero values.
@@ -83,7 +86,8 @@ external remove_overlay :
   .Widget
   .t ->
   unit = "ml_gtk_overlay_remove_overlay"
-(** Removes an overlay that was added with gtk_overlay_add_overlay(). *)
+(** Removes an overlay that was added with
+    {{!Ocgtk.Raw.Overlay.val-add_overlay}[gtk_overlay_add_overlay ()]}. *)
 
 external get_measure_overlay :
   t ->

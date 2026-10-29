@@ -63,10 +63,10 @@ class type adjustment_t = object
       the emission of the [Gtk.Adjustment::changed] signal is tied to the
       emission of the ::notify signals of the changed properties, it’s possible
       to compress the [Gtk.Adjustment::changed] signals into one by calling
-      g_object_freeze_notify() and g_object_thaw_notify() around the calls to
-      the individual setters.
+      [g_object_freeze_notify ()] and [g_object_thaw_notify ()] around the calls
+      to the individual setters.
 
-      Alternatively, using a single g_object_set() for all the properties to
+      Alternatively, using a single [g_object_set ()] for all the properties to
       change, or using [Gtk.Adjustment.configure] has the same effect. *)
 
   method set_page_increment : float -> unit

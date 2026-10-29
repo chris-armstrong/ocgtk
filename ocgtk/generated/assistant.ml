@@ -119,7 +119,8 @@ class type assistant_t = object
   (** Switches the page to [page_num].
 
       Note that this will only be necessary in custom buttons, as the
-      [assistant] flow can be set with gtk_assistant_set_forward_page_func(). *)
+      [assistant] flow can be set with [gtk_assistant_set_forward_page_func ()].
+  *)
 
   method set_page_complete : Widget.widget_t -> bool -> unit
   (** Sets whether [page] contents are complete.

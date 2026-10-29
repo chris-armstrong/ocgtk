@@ -13,7 +13,7 @@ class type tree_view_column_t = object
   method cell_is_visible : unit -> bool
   (** Returns [true] if any of the cells packed into the [tree_column] are
       visible. For this to be meaningful, you must first initialize the cells
-      with gtk_tree_view_column_cell_set_cell_data() *)
+      with [gtk_tree_view_column_cell_set_cell_data ()] *)
 
   method cell_set_cell_data :
     Tree_model.tree_model_t -> Raw.Tree_iter.t -> bool -> bool -> unit
@@ -45,7 +45,7 @@ class type tree_view_column_t = object
 
   method get_fixed_width : unit -> int
   (** Gets the fixed width of the column. This may not be the actual displayed
-      width of the column; for that, use gtk_tree_view_column_get_width(). *)
+      width of the column; for that, use [gtk_tree_view_column_get_width ()]. *)
 
   method get_max_width : unit -> int
   (** Returns the maximum width in pixels of the [tree_column], or -1 if no
@@ -71,10 +71,10 @@ class type tree_view_column_t = object
       See [Gtk.TreeViewColumn.set_sort_column_id]. *)
 
   method get_sort_indicator : unit -> bool
-  (** Gets the value set by gtk_tree_view_column_set_sort_indicator(). *)
+  (** Gets the value set by [gtk_tree_view_column_set_sort_indicator ()]. *)
 
   method get_sort_order : unit -> Enums.sorttype
-  (** Gets the value set by gtk_tree_view_column_set_sort_order(). *)
+  (** Gets the value set by [gtk_tree_view_column_set_sort_order ()]. *)
 
   method get_spacing : unit -> int
   (** Returns the spacing of [tree_column]. *)
@@ -169,22 +169,23 @@ class type tree_view_column_t = object
   method set_sort_indicator : bool -> unit
   (** Call this function with a [setting] of [true] to display an arrow in the
       header button indicating the column is sorted. Call
-      gtk_tree_view_column_set_sort_order() to change the direction of the
+      [gtk_tree_view_column_set_sort_order ()] to change the direction of the
       arrow. *)
 
   method set_sort_order : Enums.sorttype -> unit
   (** Changes the appearance of the sort indicator.
 
       This does not actually sort the model. Use
-      gtk_tree_view_column_set_sort_column_id() if you want automatic sorting
+      [gtk_tree_view_column_set_sort_column_id ()] if you want automatic sorting
       support. This function is primarily for custom sorting behavior, and
-      should be used in conjunction with gtk_tree_sortable_set_sort_column_id()
-      to do that. For custom models, the mechanism will vary.
+      should be used in conjunction with
+      [gtk_tree_sortable_set_sort_column_id ()] to do that. For custom models,
+      the mechanism will vary.
 
       The sort indicator changes direction to indicate normal sort or reverse
       sort. Note that you must have the sort indicator enabled to see anything
-      when calling this function; see gtk_tree_view_column_set_sort_indicator().
-  *)
+      when calling this function; see
+      [gtk_tree_view_column_set_sort_indicator ()]. *)
 
   method set_spacing : int -> unit
   (** Sets the spacing field of [tree_column], which is the number of pixels to
@@ -208,7 +209,7 @@ class type tree_view_column_t = object
   (** The [GtkCellArea] used to layout cell renderers for this column.
 
       If no area is specified when creating the tree view column with
-      gtk_tree_view_column_new_with_area() a horizontally oriented
+      [gtk_tree_view_column_new_with_area ()] a horizontally oriented
       [GtkCellAreaBox] will be used. *)
 
   (** {2:conversions Conversions} *)

@@ -29,7 +29,7 @@ class type directory_list_t = object
   (** Gets the file whose children are currently enumerated. *)
 
   method get_io_priority : unit -> int
-  (** Gets the IO priority set via gtk_directory_list_set_io_priority(). *)
+  (** Gets the IO priority set via [gtk_directory_list_set_io_priority ()]. *)
 
   method get_monitored : unit -> bool
   (** Returns whether the directory list is monitoring the directory for
@@ -110,7 +110,7 @@ end
      attribute set to the [GFile] they refer to. This way you can get at the \
      file\n\
      that is referred to in the same way you would via \
-     g_file_enumerator_get_child().\n\
+     [g_file_enumerator_get_child ()].\n\
      This means you do not need access to the [GtkDirectoryList], but can access\n\
      the [GFile] directly from the [GFileInfo] when operating with a \
      [GtkListView]\n\
@@ -138,7 +138,7 @@ class directory_list : Raw.Directory_list.t -> directory_list_t
  The [GFileInfo]s returned from a [GtkDirectoryList] have the \"standard::file\"\n\
  attribute set to the [GFile] they refer to. This way you can get at the file\n\
  that is referred to in the same way you would via \
- g_file_enumerator_get_child().\n\
+ [g_file_enumerator_get_child ()].\n\
  This means you do not need access to the [GtkDirectoryList], but can access\n\
  the [GFile] directly from the [GFileInfo] when operating with a [GtkListView]\n\
  or similar."]

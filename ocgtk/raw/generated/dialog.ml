@@ -20,7 +20,10 @@
  or {{!Ocgtk.Raw.Dialog.val-add_action_widget}[Gtk.Dialog.add_action_widget]}.\n\n\
  [GtkDialogs] uses some heuristics to decide whether to add a close\n\
  button to the window decorations. If any of the action buttons use\n\
- the response ID [GTK_RESPONSE_CLOSE] or [GTK_RESPONSE_CANCEL], the\n\
+ the response ID \
+ {{!Ocgtk.Enums.type-responsetype.constructor-CLOSE}[GTK_RESPONSE_CLOSE]} or \
+ {{!Ocgtk.Enums.type-responsetype.constructor-CANCEL}[GTK_RESPONSE_CANCEL]}, \
+ the\n\
  close button is omitted.\n\n\
  Clicking a button that was added as an action widget will emit the\n\
  {{!Ocgtk.Raw.Dialog.val-on_response}[Gtk.Dialog::response]} signal with a \
@@ -32,7 +35,8 @@
  less than zero). If a dialog receives a delete event, the\n\
  {{!Ocgtk.Raw.Dialog.val-on_response}[Gtk.Dialog::response]} signal will be \
  emitted with the\n\
- [GTK_RESPONSE_DELETE_EVENT] response ID.\n\n\
+ {{!Ocgtk.Enums.type-responsetype.constructor-DELETE_EVENT}[GTK_RESPONSE_DELETE_EVENT]} \
+ response ID.\n\n\
  Dialogs are created with a call to \
  {{!Ocgtk.Raw.Dialog.val-new_}[Gtk.Dialog.new]} or\n\
  [Gtk.Dialog.new_with_buttons]. The latter is recommended; it allows\n\
@@ -41,7 +45,9 @@
  from user input), can be created by calling \
  {{!Ocgtk.Raw.Window.val-set_modal}[Gtk.Window.set_modal]}\n\
  on the dialog. When using [Gtk.Dialog.new_with_buttons], you can also\n\
- pass the [GTK_DIALOG_MODAL] flag to make a dialog modal.\n\n\
+ pass the \
+ {{!Ocgtk.Enums.type-dialogflags_flag.constructor-MODAL}[GTK_DIALOG_MODAL]} \
+ flag to make a dialog modal.\n\n\
  For the simple dialog in the following example, a \
  {{!Ocgtk.Raw.Message_dialog}[Gtk.MessageDialog]}\n\
  would save some effort. But you’d need to create the dialog contents manually\n\
@@ -105,7 +111,9 @@
  </object>\n\
  ]}\n\n\
  {b Accessibility}\n\n\
- [GtkDialog] uses the [GTK_ACCESSIBLE_ROLE_DIALOG] role.\n\n\
+ [GtkDialog] uses the \
+ {{!Ocgtk.Enums.type-accessiblerole.constructor-DIALOG}[GTK_ACCESSIBLE_ROLE_DIALOG]} \
+ role.\n\n\
  The class built on this module is in {!Ocgtk.Dialog}."]
 
 type t =

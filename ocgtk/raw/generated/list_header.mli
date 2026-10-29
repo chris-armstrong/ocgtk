@@ -32,7 +32,9 @@ external get_start : t -> int = "ml_gtk_list_header_get_start"
 (** Gets the start position in the model of the section that [self] is currently
     the header for.
 
-    If [self] is unbound, [GTK_INVALID_LIST_POSITION] is returned. *)
+    If [self] is unbound,
+    {{!Ocgtk.Constants.invalid_list_position}[GTK_INVALID_LIST_POSITION]} is
+    returned. *)
 
 external get_n_items : t -> int = "ml_gtk_list_header_get_n_items"
 (** Gets the the number of items in the section.
@@ -51,7 +53,9 @@ external get_end : t -> int = "ml_gtk_list_header_get_end"
 (** Gets the end position in the model of the section that [self] is currently
     the header for.
 
-    If [self] is unbound, [GTK_INVALID_LIST_POSITION] is returned. *)
+    If [self] is unbound,
+    {{!Ocgtk.Constants.invalid_list_position}[GTK_INVALID_LIST_POSITION]} is
+    returned. *)
 
 external get_child :
   t ->
@@ -59,7 +63,8 @@ external get_child :
   .Widget
   .t
   option = "ml_gtk_list_header_get_child"
-(** Gets the child previously set via gtk_list_header_set_child() or [None] if
-    none was set. *)
+(** Gets the child previously set via
+    {{!Ocgtk.Raw.List_header.val-set_child}[gtk_list_header_set_child ()]} or
+    [None] if none was set. *)
 
 (* Properties *)

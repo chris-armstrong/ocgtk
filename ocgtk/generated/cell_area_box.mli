@@ -37,16 +37,21 @@ end
      refers to adding cell renderers with reference to a particular position\n\
      in a [GtkCellAreaBox]. There are two reference positions: the\n\
      start and the end of the box.\n\
-     When the [GtkCellAreaBox] is oriented in the [GTK_ORIENTATION_VERTICAL]\n\
+     When the [GtkCellAreaBox] is oriented in the \
+     {{!Ocgtk.Enums.type-orientation.constructor-VERTICAL}[GTK_ORIENTATION_VERTICAL]}\n\
      orientation, the start is defined as the top of the box and the end is\n\
-     defined as the bottom. In the [GTK_ORIENTATION_HORIZONTAL] orientation\n\
+     defined as the bottom. In the \
+     {{!Ocgtk.Enums.type-orientation.constructor-HORIZONTAL}[GTK_ORIENTATION_HORIZONTAL]} \
+     orientation\n\
      start is defined as the left side and the end is defined as the right\n\
      side.\n\n\
      Alignments of [GtkCellRenderer]s rendered in adjacent rows can be\n\
      configured by configuring the [GtkCellAreaBox] align child cell property\n\
-     with gtk_cell_area_cell_set_property() or by specifying the \"align\"\n\
-     argument to gtk_cell_area_box_pack_start() and \
-     gtk_cell_area_box_pack_end()."]
+     with \
+     {{!Ocgtk.Cell_area.class-type-cell_area_t.method-cell_set_property}[gtk_cell_area_cell_set_property \
+     ()]} or by specifying the \"align\"\n\
+     argument to [gtk_cell_area_box_pack_start ()] and \
+     [gtk_cell_area_box_pack_end ()]."]
 
 class cell_area_box : Raw.Cell_area_box.t -> cell_area_box_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Cell_area_box.t}. *)
@@ -60,15 +65,21 @@ class cell_area_box : Raw.Cell_area_box.t -> cell_area_box_t
  refers to adding cell renderers with reference to a particular position\n\
  in a [GtkCellAreaBox]. There are two reference positions: the\n\
  start and the end of the box.\n\
- When the [GtkCellAreaBox] is oriented in the [GTK_ORIENTATION_VERTICAL]\n\
+ When the [GtkCellAreaBox] is oriented in the \
+ {{!Ocgtk.Enums.type-orientation.constructor-VERTICAL}[GTK_ORIENTATION_VERTICAL]}\n\
  orientation, the start is defined as the top of the box and the end is\n\
- defined as the bottom. In the [GTK_ORIENTATION_HORIZONTAL] orientation\n\
+ defined as the bottom. In the \
+ {{!Ocgtk.Enums.type-orientation.constructor-HORIZONTAL}[GTK_ORIENTATION_HORIZONTAL]} \
+ orientation\n\
  start is defined as the left side and the end is defined as the right\n\
  side.\n\n\
  Alignments of [GtkCellRenderer]s rendered in adjacent rows can be\n\
  configured by configuring the [GtkCellAreaBox] align child cell property\n\
- with gtk_cell_area_cell_set_property() or by specifying the \"align\"\n\
- argument to gtk_cell_area_box_pack_start() and gtk_cell_area_box_pack_end()."]
+ with \
+ {{!Ocgtk.Cell_area.class-type-cell_area_t.method-cell_set_property}[gtk_cell_area_cell_set_property \
+ ()]} or by specifying the \"align\"\n\
+ argument to [gtk_cell_area_box_pack_start ()] and [gtk_cell_area_box_pack_end \
+ ()]."]
 
 (** {1:constructors Constructors} *)
 

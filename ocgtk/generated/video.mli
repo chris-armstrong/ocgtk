@@ -64,7 +64,7 @@ class type video_t = object
   method set_filename : string option -> unit
   (** Makes [self] play the given [filename].
 
-      This is a utility function that calls gtk_video_set_file(), *)
+      This is a utility function that calls [gtk_video_set_file ()], *)
 
   method set_graphics_offload : Enums.graphicsoffloadenabled -> unit
   (** Sets whether to enable graphics offload.

@@ -38,7 +38,7 @@ class type unix_fd_list_t = object
       file descriptor limit.
 
       The index of the file descriptor in the list is returned. If you use this
-      index with g_unix_fd_list_get() then you will receive back a duplicated
+      index with [g_unix_fd_list_get ()] then you will receive back a duplicated
       copy of the same file descriptor. *)
 
   method get : int -> (int, GError.t) result
@@ -46,7 +46,7 @@ class type unix_fd_list_t = object
 
       [index_] specifies the index of the file descriptor to get. It is a
       programmer error for [index_] to be out of range; see
-      g_unix_fd_list_get_length().
+      [g_unix_fd_list_get_length ()].
 
       The file descriptor is duplicated using dup() and set as close-on-exec
       before being returned. You must call close() on it when you are done.
@@ -86,12 +86,14 @@ class unix_fd_list : Raw.Unix_fd_list.t -> unix_fd_list_t
 (** {1:constructors Constructors} *)
 
 val new_ : unit -> unix_fd_list_t
-(** Creates a new [GUnixFDList] containing no file descriptors. *)
+(** Creates a new {{!Ocgio.Unix_fd_list.class-type-unix_fd_list_t}[GUnixFDList]}
+    containing no file descriptors. *)
 
 val new_from_array : int array -> int -> unix_fd_list_t
-(** Creates a new [GUnixFDList] containing the file descriptors given in [fds].
-    The file descriptors become the property of the new list and may no longer
-    be used by the caller. The array itself is owned by the caller.
+(** Creates a new {{!Ocgio.Unix_fd_list.class-type-unix_fd_list_t}[GUnixFDList]}
+    containing the file descriptors given in [fds]. The file descriptors become
+    the property of the new list and may no longer be used by the caller. The
+    array itself is owned by the caller.
 
     Each file descriptor in the array should be set to close-on-exec.
 

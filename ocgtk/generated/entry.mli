@@ -38,7 +38,7 @@ class type entry_t = object
   (** {2:methods Methods} *)
 
   method get_activates_default : unit -> bool
-  (** Retrieves the value set by gtk_entry_set_activates_default(). *)
+  (** Retrieves the value set by [gtk_entry_set_activates_default ()]. *)
 
   method get_attributes : unit -> Ocpango.Attr_list.attr_list_t option
   (** Gets the attribute list of the [GtkEntry].
@@ -56,10 +56,10 @@ class type entry_t = object
       operation, or -1. *)
 
   method get_extra_menu : unit -> Ocgio.Menu_model.menu_model_t option
-  (** Gets the menu model set with gtk_entry_set_extra_menu(). *)
+  (** Gets the menu model set with [gtk_entry_set_extra_menu ()]. *)
 
   method get_has_frame : unit -> bool
-  (** Gets the value set by gtk_entry_set_has_frame(). *)
+  (** Gets the value set by [gtk_entry_set_has_frame ()]. *)
 
   method get_icon_activatable : Enums.entryiconposition -> bool
   (** Returns whether the icon is activatable. *)
@@ -143,7 +143,8 @@ class type entry_t = object
       See [Gtk.Entry.set_progress_fraction]. *)
 
   method get_progress_pulse_step : unit -> float
-  (** Retrieves the pulse step set with gtk_entry_set_progress_pulse_step(). *)
+  (** Retrieves the pulse step set with [gtk_entry_set_progress_pulse_step ()].
+  *)
 
   method get_tabs : unit -> Ocpango.Tab_array.tab_array_t option
   (** Gets the tabstops of the [GtkEntry].
@@ -173,7 +174,7 @@ class type entry_t = object
   (** Indicates that some progress is made, but you don’t know how much.
 
       Causes the entry’s progress indicator to enter “activity mode”, where a
-      block bounces back and forth. Each call to gtk_entry_progress_pulse()
+      block bounces back and forth. Each call to [gtk_entry_progress_pulse ()]
       causes the block to move by a little bit (the amount of movement per pulse
       is determined by [Gtk.Entry.set_progress_pulse_step]). *)
 

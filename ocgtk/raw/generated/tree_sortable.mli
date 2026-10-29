@@ -29,10 +29,11 @@ external set_sort_column_id : t -> int -> Ocgtk_enums.sorttype -> unit
     [GtkTreeSortable::sort-column-changed] signal. [sort_column_id] may either
     be a regular column id, or one of the following special values:
 
-    - [GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID]: the default sort function will
-      be used, if it is set
+    - {{!Ocgtk.Constants.tree_sortable_default_sort_column_id}[GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID]}:
+      the default sort function will be used, if it is set
 
-    - [GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID]: no sorting will occur *)
+    - {{!Ocgtk.Constants.tree_sortable_unsorted_sort_column_id}[GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID]}:
+      no sorting will occur *)
 
 external has_default_sort_func : t -> bool
   = "ml_gtk_tree_sortable_has_default_sort_func"
@@ -44,8 +45,10 @@ external get_sort_column_id : t -> bool * int * Ocgtk_enums.sorttype
   = "ml_gtk_tree_sortable_get_sort_column_id"
 (** Fills in [sort_column_id] and [order] with the current sort column and the
     order. It returns [true] unless the [sort_column_id] is
-    [GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID] or
-    [GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID]. *)
+    {{!Ocgtk.Constants.tree_sortable_default_sort_column_id}[GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID]}
+    or
+    {{!Ocgtk.Constants.tree_sortable_unsorted_sort_column_id}[GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID]}.
+*)
 
 val on_sort_column_changed :
   ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id

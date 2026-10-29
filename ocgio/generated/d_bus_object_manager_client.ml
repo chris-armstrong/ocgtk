@@ -40,7 +40,7 @@ class type d_bus_object_manager_client_t = object
   method get_name_owner : unit -> string option
   (** The unique name that owns the name that [manager] is for or [None] if
       no-one currently owns that name. You can connect to the [GObject::notify]
-      signal to track changes to the [GDBusObjectManagerClient:name]-owner
+      signal to track changes to the [GDBusObjectManagerClient:name-owner]
       property. *)
 
   (** {2:properties Properties} *)

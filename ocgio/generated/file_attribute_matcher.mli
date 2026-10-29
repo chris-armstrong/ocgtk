@@ -51,9 +51,9 @@ class type file_attribute_matcher_t = object
 
   method to_string : unit -> string
   (** Prints what the matcher is matching against. The format will be equal to
-      the format passed to g_file_attribute_matcher_new(). The output however,
-      might not be identical, as the matcher may decide to use a different order
-      or omit needless parts. *)
+      the format passed to [g_file_attribute_matcher_new ()]. The output
+      however, might not be identical, as the matcher may decide to use a
+      different order or omit needless parts. *)
 
   (** {2:conversions Conversions} *)
 
@@ -72,7 +72,9 @@ val new_ : string -> file_attribute_matcher_t
   "Creates a new file attribute matcher, which matches attributes\n\
    against a given string. [GFileAttributeMatchers] are reference\n\
    counted structures, and are created with a reference count of 1. If\n\
-   the number of references falls to 0, the [GFileAttributeMatcher] is\n\
+   the number of references falls to 0, the \
+   {{!Ocgio.File_attribute_matcher.class-type-file_attribute_matcher_t}[GFileAttributeMatcher]} \
+   is\n\
    automatically destroyed.\n\n\
    The [attributes] string should be formatted with specific keys separated\n\
    from namespaces with a double colon. Several \"namespace::key\" strings may \

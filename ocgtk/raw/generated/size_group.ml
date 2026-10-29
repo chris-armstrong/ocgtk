@@ -123,9 +123,12 @@ external set_mode : t -> Ocgtk_enums.sizegroupmode -> unit
 
     The mode of the size group determines whether the widgets in the size group
     should all have the same horizontal requisition
-    ([GTK_SIZE_GROUP_HORIZONTAL]) all have the same vertical requisition
-    ([GTK_SIZE_GROUP_VERTICAL]), or should all have the same requisition in both
-    directions ([GTK_SIZE_GROUP_BOTH]). *)
+    ({{!Ocgtk.Enums.type-sizegroupmode.constructor-HORIZONTAL}[GTK_SIZE_GROUP_HORIZONTAL]})
+    all have the same vertical requisition
+    ({{!Ocgtk.Enums.type-sizegroupmode.constructor-VERTICAL}[GTK_SIZE_GROUP_VERTICAL]}),
+    or should all have the same requisition in both directions
+    ({{!Ocgtk.Enums.type-sizegroupmode.constructor-BOTH}[GTK_SIZE_GROUP_BOTH]}).
+*)
 
 external remove_widget :
   t ->

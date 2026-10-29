@@ -44,25 +44,38 @@
  {{!Ocgtk.Raw.Gesture.val-set_state}[Gtk.Gesture.set_state]} on one will \
  effectively propagate\n\
  the state throughout the group.\n\n\
- By default, all sequences start out in the [GTK_EVENT_SEQUENCE_NONE] state,\n\
+ By default, all sequences start out in the \
+ {{!Ocgtk.Enums.type-eventsequencestate.constructor-NONE}[GTK_EVENT_SEQUENCE_NONE]} \
+ state,\n\
  sequences in this state trigger the gesture event handler, but event\n\
  propagation will continue unstopped by gestures.\n\n\
- If a sequence enters into the [GTK_EVENT_SEQUENCE_DENIED] state, the gesture\n\
+ If a sequence enters into the \
+ {{!Ocgtk.Enums.type-eventsequencestate.constructor-DENIED}[GTK_EVENT_SEQUENCE_DENIED]} \
+ state, the gesture\n\
  group will effectively ignore the sequence, letting events go unstopped\n\
  through the gesture, but the \"slot\" will still remain occupied while\n\
  the touch is active.\n\n\
- If a sequence enters in the [GTK_EVENT_SEQUENCE_CLAIMED] state, the gesture\n\
+ If a sequence enters in the \
+ {{!Ocgtk.Enums.type-eventsequencestate.constructor-CLAIMED}[GTK_EVENT_SEQUENCE_CLAIMED]} \
+ state, the gesture\n\
  group will grab all interaction on the sequence, by:\n\n\
- - Setting the same sequence to [GTK_EVENT_SEQUENCE_DENIED] on every other\n\
+ - Setting the same sequence to \
+ {{!Ocgtk.Enums.type-eventsequencestate.constructor-DENIED}[GTK_EVENT_SEQUENCE_DENIED]} \
+ on every other\n\
  gesture group within the widget, and every gesture on parent widgets\n\
  in the propagation chain.\n\
  - Emitting [Gtk.Gesture::cancel] on every gesture in widgets\n\
  underneath in the propagation chain.\n\
  - Stopping event propagation after the gesture group handles the event.\n\n\
- Note: if a sequence is set early to [GTK_EVENT_SEQUENCE_CLAIMED] on\n\
+ Note: if a sequence is set early to \
+ {{!Ocgtk.Enums.type-eventsequencestate.constructor-CLAIMED}[GTK_EVENT_SEQUENCE_CLAIMED]} \
+ on\n\
  [GDK_TOUCH_BEGIN]/[GDK_BUTTON_PRESS] (so those events are captured before\n\
- reaching the event widget, this implies [GTK_PHASE_CAPTURE]), one similar\n\
- event will be emulated if the sequence changes to [GTK_EVENT_SEQUENCE_DENIED].\n\
+ reaching the event widget, this implies \
+ {{!Ocgtk.Enums.type-propagationphase.constructor-CAPTURE}[GTK_PHASE_CAPTURE]}), \
+ one similar\n\
+ event will be emulated if the sequence changes to \
+ {{!Ocgtk.Enums.type-eventsequencestate.constructor-DENIED}[GTK_EVENT_SEQUENCE_DENIED]}.\n\
  This way event coherence is preserved before event propagation is unstopped\n\
  again.\n\n\
  Sequence states can't be changed freely.\n\
@@ -73,7 +86,9 @@
  On the platforms that support it, [GtkGesture] will handle transparently\n\
  touchpad gesture events. The only precautions users of [GtkGesture] should\n\
  do to enable this support are:\n\n\
- - If the gesture has [GTK_PHASE_NONE], ensuring events of type\n\
+ - If the gesture has \
+ {{!Ocgtk.Enums.type-propagationphase.constructor-NONE}[GTK_PHASE_NONE]}, \
+ ensuring events of type\n\
  [GDK_TOUCHPAD_SWIPE] and [GDK_TOUCHPAD_PINCH] are handled by the [GtkGesture]\n\n\
  The class built on this module is in {!Ocgtk.Gesture}."]
 
@@ -91,11 +106,13 @@ external set_state : t -> Ocgtk_enums.eventsequencestate -> bool
 (** Sets the state of all sequences that [gesture] is currently interacting
     with.
 
-    Sequences start in state [GTK_EVENT_SEQUENCE_NONE], and whenever they change
-    state, they can never go back to that state. Likewise, sequences in state
-    [GTK_EVENT_SEQUENCE_DENIED] cannot turn back to a not denied state. With
-    these rules, the lifetime of an event sequence is constrained to the next
-    four:
+    Sequences start in state
+    {{!Ocgtk.Enums.type-eventsequencestate.constructor-NONE}[GTK_EVENT_SEQUENCE_NONE]},
+    and whenever they change state, they can never go back to that state.
+    Likewise, sequences in state
+    {{!Ocgtk.Enums.type-eventsequencestate.constructor-DENIED}[GTK_EVENT_SEQUENCE_DENIED]}
+    cannot turn back to a not denied state. With these rules, the lifetime of an
+    event sequence is constrained to the next four:
 
     - None
     - None → Denied
@@ -136,11 +153,13 @@ external set_sequence_state :
   = "ml_gtk_gesture_set_sequence_state"
 (** Sets the state of [sequence] in [gesture].
 
-    Sequences start in state [GTK_EVENT_SEQUENCE_NONE], and whenever they change
-    state, they can never go back to that state. Likewise, sequences in state
-    [GTK_EVENT_SEQUENCE_DENIED] cannot turn back to a not denied state. With
-    these rules, the lifetime of an event sequence is constrained to the next
-    four:
+    Sequences start in state
+    {{!Ocgtk.Enums.type-eventsequencestate.constructor-NONE}[GTK_EVENT_SEQUENCE_NONE]},
+    and whenever they change state, they can never go back to that state.
+    Likewise, sequences in state
+    {{!Ocgtk.Enums.type-eventsequencestate.constructor-DENIED}[GTK_EVENT_SEQUENCE_DENIED]}
+    cannot turn back to a not denied state. With these rules, the lifetime of an
+    event sequence is constrained to the next four:
 
     - None
     - None → Denied
@@ -207,10 +226,11 @@ external group : t -> t -> unit = "ml_gtk_gesture_group"
    on one will transfer\n\
    the same value to the others.\n\n\
    Groups also perform an \"implicit grabbing\" of sequences, if a\n\
-   [GdkEventSequence] state is set to [GTK_EVENT_SEQUENCE_CLAIMED]\n\
+   [GdkEventSequence] state is set to \
+   {{!Ocgtk.Enums.type-eventsequencestate.constructor-CLAIMED}[GTK_EVENT_SEQUENCE_CLAIMED]}\n\
    on one group, every other gesture group attached to the same\n\
    [GtkWidget] will switch the state for that sequence to\n\
-   [GTK_EVENT_SEQUENCE_DENIED]."]
+   {{!Ocgtk.Enums.type-eventsequencestate.constructor-DENIED}[GTK_EVENT_SEQUENCE_DENIED]}."]
 
 external get_sequences : t -> Ocgdk_raw.Event_sequence.t list
   = "ml_gtk_gesture_get_sequences"

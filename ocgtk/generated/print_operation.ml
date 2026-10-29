@@ -229,7 +229,7 @@ class type print_operation_t = object
       ([GTK_PRINT_STATUS_PREPARING]), so this function should never be called
       before the data generation phase ([GTK_PRINT_STATUS_GENERATING_DATA]). You
       can connect to the [Gtk.PrintOperation::status-changed] signal and call
-      gtk_print_operation_get_n_pages_to_print() when print status is
+      [gtk_print_operation_get_n_pages_to_print ()] when print status is
       [GTK_PRINT_STATUS_GENERATING_DATA].
 
       This is typically used to track the progress of print operation. *)
@@ -318,11 +318,11 @@ class type print_operation_t = object
      (print));\n\
     \ }\n\
      ]}\n\n\
-     Note that gtk_print_operation_run() can only be called once on a\n\
+     Note that [gtk_print_operation_run ()] can only be called once on a\n\
      given [GtkPrintOperation]."]
 
   method set_allow_async : bool -> unit
-  (** Sets whether gtk_print_operation_run() may return before the print
+  (** Sets whether [gtk_print_operation_run ()] may return before the print
       operation is completed.
 
       Note that some platforms may not allow asynchronous operation. *)

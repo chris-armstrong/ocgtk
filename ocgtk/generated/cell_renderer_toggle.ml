@@ -18,11 +18,11 @@ class type cell_renderer_toggle_t = object
 
   method get_activatable : unit -> bool
   (** Returns whether the cell renderer is activatable. See
-      gtk_cell_renderer_toggle_set_activatable(). *)
+      [gtk_cell_renderer_toggle_set_activatable ()]. *)
 
   method get_active : unit -> bool
   (** Returns whether the cell renderer is active. See
-      gtk_cell_renderer_toggle_set_active(). *)
+      [gtk_cell_renderer_toggle_set_active ()]. *)
 
   method get_radio : unit -> bool
   (** Returns whether we’re rendering radio toggles rather than checkboxes. *)

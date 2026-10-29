@@ -54,8 +54,8 @@ external swap : t -> Tree_iter.t -> Tree_iter.t -> unit
 external set_valuesv :
   t -> Tree_iter.t -> int array -> Gobject.Value.t array -> int -> unit
   = "ml_gtk_tree_store_set_valuesv"
-(** A variant of gtk_tree_store_set_valist() which takes the columns and values
-    as two arrays, instead of using variadic arguments.
+(** A variant of [gtk_tree_store_set_valist ()] which takes the columns and
+    values as two arrays, instead of using variadic arguments.
 
     This function is mainly intended for language bindings or in case the number
     of columns to change is not known until run-time. *)
@@ -90,7 +90,8 @@ external prepend : t -> Tree_iter.t option -> Tree_iter.t
     child of [parent], otherwise it will prepend a row to the top level. The
     [iter] parameter will be changed to point to this new row. The row will be
     empty after this function is called. To fill in values, you need to call
-    gtk_tree_store_set() or gtk_tree_store_set_value(). *)
+    [gtk_tree_store_set ()] or
+    {{!Ocgtk.Raw.Tree_store.val-set_value}[gtk_tree_store_set_value ()]}. *)
 
 external move_before : t -> Tree_iter.t -> Tree_iter.t option -> unit
   = "ml_gtk_tree_store_move_before"
@@ -138,8 +139,8 @@ external insert_with_valuesv :
   Tree_iter.t
   = "ml_gtk_tree_store_insert_with_valuesv_bytecode"
     "ml_gtk_tree_store_insert_with_valuesv_native"
-(** A variant of gtk_tree_store_insert_with_values() which takes the columns and
-    values as two arrays, instead of varargs.
+(** A variant of [gtk_tree_store_insert_with_values ()] which takes the columns
+    and values as two arrays, instead of varargs.
 
     This function is mainly intended for language bindings. *)
 
@@ -159,7 +160,8 @@ external insert_before :
 
     The [iter] parameter will be changed to point to this new row. The row will
     be empty after this function is called. To fill in values, you need to call
-    gtk_tree_store_set() or gtk_tree_store_set_value(). *)
+    [gtk_tree_store_set ()] or
+    {{!Ocgtk.Raw.Tree_store.val-set_value}[gtk_tree_store_set_value ()]}. *)
 
 external insert_after :
   t -> Tree_iter.t option -> Tree_iter.t option -> Tree_iter.t
@@ -177,7 +179,8 @@ external insert_after :
 
     The [iter] parameter will be changed to point to this new row. The row will
     be empty after this function is called. To fill in values, you need to call
-    gtk_tree_store_set() or gtk_tree_store_set_value(). *)
+    [gtk_tree_store_set ()] or
+    {{!Ocgtk.Raw.Tree_store.val-set_value}[gtk_tree_store_set_value ()]}. *)
 
 external insert : t -> Tree_iter.t option -> int -> Tree_iter.t
   = "ml_gtk_tree_store_insert"
@@ -191,7 +194,8 @@ external insert : t -> Tree_iter.t option -> int -> Tree_iter.t
 
     The [iter] parameter will be changed to point to this new row. The row will
     be empty after this function is called. To fill in values, you need to call
-    gtk_tree_store_set() or gtk_tree_store_set_value(). *)
+    [gtk_tree_store_set ()] or
+    {{!Ocgtk.Raw.Tree_store.val-set_value}[gtk_tree_store_set_value ()]}. *)
 
 external clear : t -> unit = "ml_gtk_tree_store_clear"
 (** Removes all rows from [tree_store] *)
@@ -205,4 +209,5 @@ external append : t -> Tree_iter.t option -> Tree_iter.t
 
     The [iter] parameter will be changed to point to this new row. The row will
     be empty after this function is called. To fill in values, you need to call
-    gtk_tree_store_set() or gtk_tree_store_set_value(). *)
+    [gtk_tree_store_set ()] or
+    {{!Ocgtk.Raw.Tree_store.val-set_value}[gtk_tree_store_set_value ()]}. *)

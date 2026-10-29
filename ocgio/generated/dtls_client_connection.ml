@@ -8,7 +8,7 @@ class type dtls_client_connection_t = object
   (** Gets [conn]'s validation flags
 
       This function does not work as originally designed and is impossible to
-      use correctly. See [GDtlsClientConnection:validation]-flags for more
+      use correctly. See [GDtlsClientConnection:validation-flags] for more
       information. *)
 
   method set_server_identity : Socket_connectable.socket_connectable_t -> unit
@@ -23,7 +23,7 @@ class type dtls_client_connection_t = object
       [G_TLS_CERTIFICATE_VALIDATE_ALL] is used.
 
       This function does not work as originally designed and is impossible to
-      use correctly. See [GDtlsClientConnection:validation]-flags for more
+      use correctly. See [GDtlsClientConnection:validation-flags] for more
       information. *)
 
   (** {2:conversions Conversions} *)

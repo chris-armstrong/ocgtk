@@ -38,14 +38,14 @@ external writev_all_finish :
   t -> Async_result.t -> (bool * Gsize.t, GError.t) result
   = "ml_g_output_stream_writev_all_finish"
 (** Finishes an asynchronous stream write operation started with
-    g_output_stream_writev_all_async().
+    [g_output_stream_writev_all_async ()].
 
     As a special exception to the normal conventions for functions that use
     [GError], if this function returns [false] (and sets [error]) then
     [bytes_written] will be set to the number of bytes that were successfully
     written before the error was encountered. This functionality is only
     available from C. If you need it from another language then you must write
-    your own loop around g_output_stream_writev_async(). *)
+    your own loop around [g_output_stream_writev_async ()]. *)
 
 external writev_all :
   t ->
@@ -56,8 +56,9 @@ external writev_all :
 (** Tries to write the bytes contained in the [n_vectors] [vectors] into the
     stream. Will block during the operation.
 
-    This function is similar to g_output_stream_writev(), except it tries to
-    write as many bytes as requested, only stopping on an error.
+    This function is similar to
+    {{!Ocgio.Raw.Output_stream.val-writev}[g_output_stream_writev ()]}, except
+    it tries to write as many bytes as requested, only stopping on an error.
 
     On a successful write of all [n_vectors] vectors, [true] is returned, and
     [bytes_written] is set to the sum of all the sizes of [vectors].
@@ -70,7 +71,7 @@ external writev_all :
     [bytes_written] will be set to the number of bytes that were successfully
     written before the error was encountered. This functionality is only
     available from C. If you need it from another language then you must write
-    your own loop around g_output_stream_write().
+    your own loop around [g_output_stream_write ()].
 
     The content of the individual elements of [vectors] might be changed by this
     function. *)
@@ -96,13 +97,16 @@ external writev :
 
     If [cancellable] is not [None], then the operation can be cancelled by
     triggering the cancellable object from another thread. If the operation was
-    cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. If an
-    operation was partially finished when the operation was cancelled the
-    partial result will be returned, without an error.
+    cancelled, the error
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-CANCELLED}[G_IO_ERROR_CANCELLED]}
+    will be returned. If an operation was partially finished when the operation
+    was cancelled the partial result will be returned, without an error.
 
-    Some implementations of g_output_stream_writev() may have limitations on the
-    aggregate buffer size, and will return [G_IO_ERROR_INVALID_ARGUMENT] if
-    these are exceeded. For example, when writing to a local file on UNIX
+    Some implementations of
+    {{!Ocgio.Raw.Output_stream.val-writev}[g_output_stream_writev ()]} may have
+    limitations on the aggregate buffer size, and will return
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-INVALID_ARGUMENT}[G_IO_ERROR_INVALID_ARGUMENT]}
+    if these are exceeded. For example, when writing to a local file on UNIX
     platforms, the aggregate buffer size must not exceed [G_MAXSSIZE] bytes. *)
 
 external write_finish : t -> Async_result.t -> (int, GError.t) result
@@ -116,29 +120,29 @@ external write_bytes_finish : t -> Async_result.t -> (int, GError.t) result
 external write_bytes :
   t -> Glib_bytes.t -> Cancellable.t option -> (int, GError.t) result
   = "ml_g_output_stream_write_bytes"
-(** A wrapper function for g_output_stream_write() which takes a [GBytes] as
+(** A wrapper function for [g_output_stream_write ()] which takes a [GBytes] as
     input. This can be more convenient for use by language bindings or in other
     cases where the refcounted nature of [GBytes] is helpful over a bare pointer
     interface.
 
     However, note that this function may still perform partial writes, just like
-    g_output_stream_write(). If that occurs, to continue writing, you will need
-    to create a new [GBytes] containing just the remaining bytes, using
-    g_bytes_new_from_bytes(). Passing the same [GBytes] instance multiple times
-    potentially can result in duplicated data in the output stream. *)
+    [g_output_stream_write ()]. If that occurs, to continue writing, you will
+    need to create a new [GBytes] containing just the remaining bytes, using
+    [g_bytes_new_from_bytes ()]. Passing the same [GBytes] instance multiple
+    times potentially can result in duplicated data in the output stream. *)
 
 external write_all_finish :
   t -> Async_result.t -> (bool * Gsize.t, GError.t) result
   = "ml_g_output_stream_write_all_finish"
 (** Finishes an asynchronous stream write operation started with
-    g_output_stream_write_all_async().
+    [g_output_stream_write_all_async ()].
 
     As a special exception to the normal conventions for functions that use
     [GError], if this function returns [false] (and sets [error]) then
     [bytes_written] will be set to the number of bytes that were successfully
     written before the error was encountered. This functionality is only
     available from C. If you need it from another language then you must write
-    your own loop around g_output_stream_write_async(). *)
+    your own loop around [g_output_stream_write_async ()]. *)
 
 external splice_finish : t -> Async_result.t -> (int, GError.t) result
   = "ml_g_output_stream_splice_finish"
@@ -182,7 +186,9 @@ external flush : t -> Cancellable.t option -> (bool, GError.t) result
 
     If [cancellable] is not [None], then the operation can be cancelled by
     triggering the cancellable object from another thread. If the operation was
-    cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. *)
+    cancelled, the error
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-CANCELLED}[G_IO_ERROR_CANCELLED]}
+    will be returned. *)
 
 external close_finish : t -> Async_result.t -> (bool, GError.t) result
   = "ml_g_output_stream_close_finish"
@@ -193,8 +199,8 @@ external close : t -> Cancellable.t option -> (bool, GError.t) result
 (** Closes the stream, releasing resources related to it.
 
     Once the stream is closed, all other operations will return
-    [G_IO_ERROR_CLOSED]. Closing a stream multiple times will not return an
-    error.
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-CLOSED}[G_IO_ERROR_CLOSED]}.
+    Closing a stream multiple times will not return an error.
 
     Closing a stream will automatically flush any outstanding buffers in the
     stream.
@@ -209,17 +215,20 @@ external close : t -> Cancellable.t option -> (bool, GError.t) result
 
     On failure the first error that happened will be reported, but the close
     operation will finish as much as possible. A stream that failed to close
-    will still return [G_IO_ERROR_CLOSED] for all operations. Still, it is
-    important to check and report the error to the user, otherwise there might
-    be a loss of data as all data might not be written.
+    will still return
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-CLOSED}[G_IO_ERROR_CLOSED]} for
+    all operations. Still, it is important to check and report the error to the
+    user, otherwise there might be a loss of data as all data might not be
+    written.
 
     If [cancellable] is not [None], then the operation can be cancelled by
     triggering the cancellable object from another thread. If the operation was
-    cancelled, the error [G_IO_ERROR_CANCELLED] will be returned. Cancelling a
-    close will still leave the stream closed, but there some streams can use a
-    faster close that doesn't block to e.g. check errors. On cancellation (as
-    with any error) there is no guarantee that all written data will reach the
-    target. *)
+    cancelled, the error
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-CANCELLED}[G_IO_ERROR_CANCELLED]}
+    will be returned. Cancelling a close will still leave the stream closed, but
+    there some streams can use a faster close that doesn't block to e.g. check
+    errors. On cancellation (as with any error) there is no guarantee that all
+    written data will reach the target. *)
 
 external clear_pending : t -> unit = "ml_g_output_stream_clear_pending"
 (** Clears the pending flag on [stream]. *)

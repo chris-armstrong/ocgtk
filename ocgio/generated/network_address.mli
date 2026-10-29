@@ -65,23 +65,33 @@ class network_address : Raw.Network_address.t -> network_address_t
 (** {1:constructors Constructors} *)
 
 val new_ : string -> UInt16.t -> network_address_t
-(** Creates a new [GSocketConnectable] for connecting to the given [hostname]
-    and [port].
+(** Creates a new
+    {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}[GSocketConnectable]}
+    for connecting to the given [hostname] and [port].
 
     Note that depending on the configuration of the machine, a [hostname] of
     [localhost] may refer to the IPv4 loopback address only, or to both IPv4 and
-    IPv6; use g_network_address_new_loopback() to create a [GNetworkAddress]
+    IPv6; use
+    {{!Ocgio.Network_address.val-new_loopback}[g_network_address_new_loopback
+                                               ()]} to create a
+    {{!Ocgio.Network_address.class-type-network_address_t}[GNetworkAddress]}
     that is guaranteed to resolve to both addresses. *)
 
 val new_loopback : UInt16.t -> network_address_t
-(** Creates a new [GSocketConnectable] for connecting to the local host over a
-    loopback connection to the given [port]. This is intended for use in
-    connecting to local services which may be running on IPv4 or IPv6.
+(** Creates a new
+    {{!Ocgio.Socket_connectable.class-type-socket_connectable_t}[GSocketConnectable]}
+    for connecting to the local host over a loopback connection to the given
+    [port]. This is intended for use in connecting to local services which may
+    be running on IPv4 or IPv6.
 
     The connectable will return IPv4 and IPv6 loopback addresses, regardless of
-    how the host resolves [localhost]. By contrast, g_network_address_new() will
-    often only return an IPv4 address when resolving [localhost], and an IPv6
-    address for [localhost6].
+    how the host resolves [localhost]. By contrast,
+    {{!Ocgio.Network_address.val-new_}[g_network_address_new ()]} will often
+    only return an IPv4 address when resolving [localhost], and an IPv6 address
+    for [localhost6].
 
-    g_network_address_get_hostname() will always return [localhost] for a
-    [GNetworkAddress] created with this constructor. *)
+    {{!Ocgio.Network_address.class-type-network_address_t.method-get_hostname}[g_network_address_get_hostname
+                                                                               ()]}
+    will always return [localhost] for a
+    {{!Ocgio.Network_address.class-type-network_address_t}[GNetworkAddress]}
+    created with this constructor. *)

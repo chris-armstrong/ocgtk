@@ -36,16 +36,19 @@ module rec Event_controller : sig
     = "ml_gtk_event_controller_set_propagation_phase"
   (** Sets the propagation phase at which a controller handles events.
 
-      If [phase] is [GTK_PHASE_NONE], no automatic event handling will be
-      performed, but other additional gesture maintenance will. *)
+      If [phase] is
+      {{!Ocgtk.Enums.type-propagationphase.constructor-NONE}[GTK_PHASE_NONE]},
+      no automatic event handling will be performed, but other additional
+      gesture maintenance will. *)
 
   external set_propagation_limit : t -> Ocgtk_enums.propagationlimit -> unit
     = "ml_gtk_event_controller_set_propagation_limit"
   (** Sets the event propagation limit on the event controller.
 
-      If the limit is set to [GTK_LIMIT_SAME_NATIVE], the controller won't
-      handle events that are targeted at widgets on a different surface, such as
-      popovers. *)
+      If the limit is set to
+      {{!Ocgtk.Enums.type-propagationlimit.constructor-SAME_NATIVE}[GTK_LIMIT_SAME_NATIVE]},
+      the controller won't handle events that are targeted at widgets on a
+      different surface, such as popovers. *)
 
   external set_name : t -> string option -> unit
     = "ml_gtk_event_controller_set_name"
@@ -316,8 +319,11 @@ and Tooltip : sig
       setting tooltips on [GtkTreeView] rows and cells, [GtkIconViews], etc.
 
       For setting tooltips on [GtkTreeView], please refer to the convenience
-      functions for this: gtk_tree_view_set_tooltip_row() and
-      gtk_tree_view_set_tooltip_cell(). *)
+      functions for this:
+      {{!Ocgtk.Raw.Tree_view.val-set_tooltip_row}[gtk_tree_view_set_tooltip_row
+                                                  ()]} and
+      {{!Ocgtk.Raw.Tree_view.val-set_tooltip_cell}[gtk_tree_view_set_tooltip_cell
+                                                   ()]}. *)
 
   external set_text : t -> string option -> unit = "ml_gtk_tooltip_set_text"
   (** Sets the text of the tooltip to be [text].
@@ -353,8 +359,9 @@ and Tooltip : sig
   (** Replaces the widget packed into the tooltip with [custom_widget].
       [custom_widget] does not get destroyed when the tooltip goes away. By
       default a box with a [GtkImage] and [GtkLabel] is embedded in the tooltip,
-      which can be configured using gtk_tooltip_set_markup() and
-      gtk_tooltip_set_icon(). *)
+      which can be configured using
+      {{!Ocgtk.Raw.Tooltip.val-set_markup}[gtk_tooltip_set_markup ()]} and
+      {{!Ocgtk.Raw.Tooltip.val-set_icon}[gtk_tooltip_set_icon ()]}. *)
 end
 
 and Widget : sig
@@ -411,7 +418,8 @@ and Widget : sig
       When a widget receives a call to the snapshot function, it must send
       synthetic [Gtk.Widget.snapshot] calls to all children. This function
       provides a convenient way of doing this. A widget, when it receives a call
-      to its [Gtk.Widget.snapshot] function, calls gtk_widget_snapshot_child()
+      to its [Gtk.Widget.snapshot] function, calls
+      {{!Ocgtk.Raw.Widget.val-snapshot_child}[gtk_widget_snapshot_child ()]}
       once for each child, passing in the [snapshot] the widget received.
 
       This function takes care of translating the origin of [snapshot], and
@@ -876,10 +884,12 @@ and Widget : sig
       {{!Ocgtk.Raw.Label}[Gtk.Label]}, the label queues a resize to ensure
       there’s enough space for the new text.
 
-      Note that you cannot call gtk_widget_queue_resize() on a widget from
-      inside its implementation of the [Gtk.Widget.size_allocate] virtual
-      method. Calls to gtk_widget_queue_resize() from inside
-      [Gtk.Widget.size_allocate] will be silently ignored.
+      Note that you cannot call
+      {{!Ocgtk.Raw.Widget.val-queue_resize}[gtk_widget_queue_resize ()]} on a
+      widget from inside its implementation of the [Gtk.Widget.size_allocate]
+      virtual method. Calls to
+      {{!Ocgtk.Raw.Widget.val-queue_resize}[gtk_widget_queue_resize ()]} from
+      inside [Gtk.Widget.size_allocate] will be silently ignored.
 
       This function is only for use in widget implementations. *)
 
@@ -955,8 +965,9 @@ and Widget : sig
   (** Measures [widget] in the orientation [orientation] and for the given
       [for_size].
 
-      As an example, if [orientation] is [GTK_ORIENTATION_HORIZONTAL] and
-      [for_size] is 300, this functions will compute the minimum and natural
+      As an example, if [orientation] is
+      {{!Ocgtk.Enums.type-orientation.constructor-HORIZONTAL}[GTK_ORIENTATION_HORIZONTAL]}
+      and [for_size] is 300, this functions will compute the minimum and natural
       width of [widget] if it is allocated at a height of 300 pixels.
 
       See GtkWidget’s geometry management section for a more details on
@@ -2094,7 +2105,9 @@ end
    or its child widgets, the [Gtk.Widget.get_request_mode] virtual\n\
    function must be implemented as well and return the widget's preferred\n\
    request mode. The default implementation of this virtual function\n\
-   returns [GTK_SIZE_REQUEST_CONSTANT_SIZE], which means that the widget will\n\
+   returns \
+   {{!Ocgtk.Enums.type-sizerequestmode.constructor-CONSTANT_SIZE}[GTK_SIZE_REQUEST_CONSTANT_SIZE]}, \
+   which means that the widget will\n\
    only ever get -1 passed as the for_size value to its\n\
    [Gtk.Widget.measure] implementation.\n\n\
    The geometry management system will query a widget hierarchy in\n\
@@ -2102,19 +2115,24 @@ end
    for their minimum sizes it is generally done in two initial passes\n\
    in the {{!Ocgtk.Enums.type-sizerequestmode}[Gtk.SizeRequestMode]} chosen by \
    the toplevel.\n\n\
-   For example, when queried in the normal [GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH] \
+   For example, when queried in the normal \
+   {{!Ocgtk.Enums.type-sizerequestmode.constructor-HEIGHT_FOR_WIDTH}[GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH]} \
    mode:\n\n\
    First, the default minimum and natural width for each widget\n\
    in the interface will be computed using \
    {{!Ocgtk.Raw.Widget.val-measure}[Gtk.Widget.measure]} with an\n\
-   orientation of [GTK_ORIENTATION_HORIZONTAL] and a for_size of -1.\n\
+   orientation of \
+   {{!Ocgtk.Enums.type-orientation.constructor-HORIZONTAL}[GTK_ORIENTATION_HORIZONTAL]} \
+   and a for_size of -1.\n\
    Because the preferred widths for each widget depend on the preferred\n\
    widths of their children, this information propagates up the hierarchy,\n\
    and finally a minimum and natural width is determined for the entire\n\
    toplevel. Next, the toplevel will use the minimum width to query for the\n\
    minimum height contextual to that width using \
    {{!Ocgtk.Raw.Widget.val-measure}[Gtk.Widget.measure]} with an\n\
-   orientation of [GTK_ORIENTATION_VERTICAL] and a for_size of the just computed\n\
+   orientation of \
+   {{!Ocgtk.Enums.type-orientation.constructor-VERTICAL}[GTK_ORIENTATION_VERTICAL]} \
+   and a for_size of the just computed\n\
    width. This will also be a highly recursive operation. The minimum height\n\
    for the minimum width is normally used to set the minimum size constraint\n\
    on the toplevel.\n\n\
@@ -2140,12 +2158,15 @@ end
    For instance, a {{!Ocgtk.Raw.Label}[Gtk.Label]} that does height-for-width \
    word wrapping\n\
    will not expect to have [Gtk.Widget.measure] with an orientation of\n\
-   [GTK_ORIENTATION_VERTICAL] called because that call is specific to a\n\
+   {{!Ocgtk.Enums.type-orientation.constructor-VERTICAL}[GTK_ORIENTATION_VERTICAL]} \
+   called because that call is specific to a\n\
    width-for-height request. In this case the label must return the height\n\
    required for its own minimum possible width. By following this rule any\n\
    widget that handles height-for-width or width-for-height requests will\n\
    always be allocated at least enough space to fit its own content.\n\n\
-   Here are some examples of how a [GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH] widget\n\
+   Here are some examples of how a \
+   {{!Ocgtk.Enums.type-sizerequestmode.constructor-HEIGHT_FOR_WIDTH}[GTK_SIZE_REQUEST_HEIGHT_FOR_WIDTH]} \
+   widget\n\
    generally deals with width-for-height requests:\n\n\
    {[\n\
    static void\n\
@@ -2218,7 +2239,9 @@ end
    [Gtk.Widget.measure] virtual function. It allows you to report\n\
    both a minimum and natural size.\n\n\
    If a widget ends up baseline aligned it will be allocated all the space in\n\
-   the parent as if it was [GTK_ALIGN_FILL], but the selected baseline can be\n\
+   the parent as if it was \
+   {{!Ocgtk.Enums.type-align.constructor-FILL}[GTK_ALIGN_FILL]}, but the \
+   selected baseline can be\n\
    found via {{!Ocgtk.Raw.Widget.val-get_baseline}[Gtk.Widget.get_baseline]}. \
    If the baseline has a\n\
    value other than -1 you need to align the widget such that the baseline\n\

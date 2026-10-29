@@ -55,17 +55,22 @@ type t = [ `notification | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gio_notification_get_type"
 
 external new_ : string -> t = "ml_g_notification_new"
-(** Creates a new [GNotification] with [title] as its title.
+(** Creates a new {{!Ocgio.Raw.Notification}[GNotification]} with [title] as its
+    title.
 
     After populating [notification] with more details, it can be sent to the
-    desktop shell with g_application_send_notification(). Changing any
+    desktop shell with
+    {{!Ocgio.Raw.Application.val-send_notification}[g_application_send_notification
+                                                    ()]}. Changing any
     properties after this call will not have any effect until resending
     [notification]. *)
 
 (* Methods *)
 
 external set_urgent : t -> bool -> unit = "ml_g_notification_set_urgent"
-(** Deprecated in favor of g_notification_set_priority(). *)
+(** Deprecated in favor of
+    {{!Ocgio.Raw.Notification.val-set_priority}[g_notification_set_priority ()]}.
+*)
 
 external set_title : t -> string -> unit = "ml_g_notification_set_title"
 (** Sets the title of [notification] to [title]. *)
@@ -73,7 +78,8 @@ external set_title : t -> string -> unit = "ml_g_notification_set_title"
 external set_priority : t -> Ocgio_enums.notificationpriority -> unit
   = "ml_g_notification_set_priority"
 (** Sets the priority of [notification] to [priority]. See
-    [GNotificationPriority] for possible values. *)
+    {{!Ocgio.Enums.type-notificationpriority}[GNotificationPriority]} for
+    possible values. *)
 
 external set_icon : t -> Icon.t -> unit = "ml_g_notification_set_icon"
 (** Sets the icon of [notification] to [icon]. *)
@@ -98,7 +104,7 @@ external set_default_action : t -> string -> unit
    The action in [detailed_action] must be an application-wide action (it\n\
    must start with \"app.\"). If [detailed_action] contains a target, the\n\
    given action will be activated with that target as its parameter.\n\
-   See g_action_parse_detailed_name() for a description of the format\n\
+   See [g_action_parse_detailed_name ()] for a description of the format\n\
    for [detailed_action].\n\n\
    When no default action is set, the application that the notification\n\
    was sent on is activated."]
@@ -134,5 +140,5 @@ external add_button : t -> string -> string -> unit
    application-wide action (starting with \"app.\"). If [detailed_action]\n\
    contains a target, the action will be activated with that target as\n\
    its parameter.\n\n\
-   See g_action_parse_detailed_name() for a description of the format\n\
+   See [g_action_parse_detailed_name ()] for a description of the format\n\
    for [detailed_action]."]

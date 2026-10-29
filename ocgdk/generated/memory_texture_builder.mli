@@ -42,46 +42,47 @@ class type memory_texture_builder_t = object
       textures, possibly with changing properties in between. *)
 
   method get_bytes : unit -> Glib_bytes.t option
-  (** Gets the bytes previously set via gdk_memory_texture_builder_set_bytes()
-      or [None] if none was set. *)
+  (** Gets the bytes previously set via
+      [gdk_memory_texture_builder_set_bytes ()] or [None] if none was set. *)
 
   method get_color_state : unit -> Raw.Color_state.t
   (** Gets the colorstate previously set via
-      gdk_memory_texture_builder_set_color_state(). *)
+      [gdk_memory_texture_builder_set_color_state ()]. *)
 
   method get_format : unit -> Enums.memoryformat
   (** Gets the format previously set via
-      gdk_memory_texture_builder_set_format(). *)
+      [gdk_memory_texture_builder_set_format ()]. *)
 
   method get_height : unit -> int
-  (** Gets the height previously set via gdk_memory_texture_builder_set_height()
-      or 0 if the height wasn't set. *)
+  (** Gets the height previously set via
+      [gdk_memory_texture_builder_set_height ()] or 0 if the height wasn't set.
+  *)
 
   method get_offset : int -> Gsize.t
   (** Gets the offset previously set via
-      gdk_memory_texture_builder_set_offset(). *)
+      [gdk_memory_texture_builder_set_offset ()]. *)
 
   method get_stride : unit -> Gsize.t
   (** Gets the stride previously set via
-      gdk_memory_texture_builder_set_stride(). *)
+      [gdk_memory_texture_builder_set_stride ()]. *)
 
   method get_stride_for_plane : int -> Gsize.t
   (** Gets the stride previously set via
-      gdk_memory_texture_builder_set_stride_for_plane(). *)
+      [gdk_memory_texture_builder_set_stride_for_plane ()]. *)
 
   method get_update_region : unit -> Occairo.Region.region_t option
   (** Gets the region previously set via
-      gdk_memory_texture_builder_set_update_region() or [None] if none was set.
-  *)
+      [gdk_memory_texture_builder_set_update_region ()] or [None] if none was
+      set. *)
 
   method get_update_texture : unit -> Texture.texture_t option
   (** Gets the texture previously set via
-      gdk_memory_texture_builder_set_update_texture() or [None] if none was set.
-  *)
+      [gdk_memory_texture_builder_set_update_texture ()] or [None] if none was
+      set. *)
 
   method get_width : unit -> int
-  (** Gets the width previously set via gdk_memory_texture_builder_set_width()
-      or 0 if the width wasn't set. *)
+  (** Gets the width previously set via
+      [gdk_memory_texture_builder_set_width ()] or 0 if the width wasn't set. *)
 
   method set_bytes : Glib_bytes.t option -> unit
   (** Sets the data to be shown but the texture.

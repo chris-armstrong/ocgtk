@@ -68,4 +68,6 @@ val alloc : unit -> vec2_t
 
     The contents of the returned structure are undefined.
 
-    Use graphene_vec2_init() to initialize the vector. *)
+    Use
+    {{!Ocgraphene.Vec2.class-type-vec2_t.method-init}[graphene_vec2_init ()]} to
+    initialize the vector. *)

@@ -51,8 +51,8 @@ type t = [ `credentials | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gio_credentials_get_type"
 
 external new_ : unit -> t = "ml_g_credentials_new"
-(** Creates a new [GCredentials] object with credentials matching the the
-    current process. *)
+(** Creates a new {{!Ocgio.Raw.Credentials}[GCredentials]} object with
+    credentials matching the the current process. *)
 
 (* Methods *)
 
@@ -65,4 +65,5 @@ external is_same_user : t -> t -> (bool, GError.t) result
   = "ml_g_credentials_is_same_user"
 (** Checks if [credentials] and [other_credentials] is the same user.
 
-    This operation can fail if [GCredentials] is not supported on the the OS. *)
+    This operation can fail if {{!Ocgio.Raw.Credentials}[GCredentials]} is not
+    supported on the the OS. *)

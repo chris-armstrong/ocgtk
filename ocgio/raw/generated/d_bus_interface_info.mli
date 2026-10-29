@@ -20,34 +20,46 @@ external lookup_signal : t -> string -> D_bus_signal_info.t option
 (** Looks up information about a signal.
 
     The cost of this function is O(n) in number of signals unless
-    g_dbus_interface_info_cache_build() has been used on [info]. *)
+    {{!Ocgio.Raw.D_bus_interface_info.val-cache_build}[g_dbus_interface_info_cache_build
+                                                       ()]} has been used on
+    [info]. *)
 
 external lookup_property : t -> string -> D_bus_property_info.t option
   = "ml_g_dbus_interface_info_lookup_property"
 (** Looks up information about a property.
 
     The cost of this function is O(n) in number of properties unless
-    g_dbus_interface_info_cache_build() has been used on [info]. *)
+    {{!Ocgio.Raw.D_bus_interface_info.val-cache_build}[g_dbus_interface_info_cache_build
+                                                       ()]} has been used on
+    [info]. *)
 
 external lookup_method : t -> string -> D_bus_method_info.t option
   = "ml_g_dbus_interface_info_lookup_method"
 (** Looks up information about a method.
 
     The cost of this function is O(n) in number of methods unless
-    g_dbus_interface_info_cache_build() has been used on [info]. *)
+    {{!Ocgio.Raw.D_bus_interface_info.val-cache_build}[g_dbus_interface_info_cache_build
+                                                       ()]} has been used on
+    [info]. *)
 
 external cache_release : t -> unit = "ml_g_dbus_interface_info_cache_release"
 (** Decrements the usage count for the cache for [info] built by
-    g_dbus_interface_info_cache_build() (if any) and frees the resources used by
-    the cache if the usage count drops to zero. *)
+    {{!Ocgio.Raw.D_bus_interface_info.val-cache_build}[g_dbus_interface_info_cache_build
+                                                       ()]} (if any) and frees
+    the resources used by the cache if the usage count drops to zero. *)
 
 external cache_build : t -> unit = "ml_g_dbus_interface_info_cache_build"
-(** Builds a lookup-cache to speed up g_dbus_interface_info_lookup_method(),
-    g_dbus_interface_info_lookup_signal() and
-    g_dbus_interface_info_lookup_property().
+(** Builds a lookup-cache to speed up
+    {{!Ocgio.Raw.D_bus_interface_info.val-lookup_method}[g_dbus_interface_info_lookup_method
+                                                         ()]},
+    {{!Ocgio.Raw.D_bus_interface_info.val-lookup_signal}[g_dbus_interface_info_lookup_signal
+                                                         ()]} and
+    {{!Ocgio.Raw.D_bus_interface_info.val-lookup_property}[g_dbus_interface_info_lookup_property
+                                                           ()]}.
 
     If this has already been called with [info], the existing cache is used and
     its use count is increased.
 
     Note that [info] cannot be modified until
-    g_dbus_interface_info_cache_release() is called. *)
+    {{!Ocgio.Raw.D_bus_interface_info.val-cache_release}[g_dbus_interface_info_cache_release
+                                                         ()]} is called. *)

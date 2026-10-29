@@ -36,17 +36,21 @@
 
     If you are developing a library with custom widgets that render differently
     than standard components, you may need to add a [GtkStyleProvider] yourself
-    with the [GTK_STYLE_PROVIDER_PRIORITY_FALLBACK] priority, either a
-    [GtkCssProvider] or a custom object implementing the [GtkStyleProvider]
-    interface. This way themes may still attempt to style your UI elements in a
-    different way if needed so.
+    with the
+    {{!Ocgtk.Constants.style_provider_priority_fallback}[GTK_STYLE_PROVIDER_PRIORITY_FALLBACK]}
+    priority, either a [GtkCssProvider] or a custom object implementing the
+    [GtkStyleProvider] interface. This way themes may still attempt to style
+    your UI elements in a different way if needed so.
 
     If you are using custom styling on an applications, you probably want then
     to make your style information prevail to the theme’s, so you must use a
-    [GtkStyleProvider] with the [GTK_STYLE_PROVIDER_PRIORITY_APPLICATION]
+    [GtkStyleProvider] with the
+    {{!Ocgtk.Constants.style_provider_priority_application}[GTK_STYLE_PROVIDER_PRIORITY_APPLICATION]}
     priority, keep in mind that the user settings in
     [XDG_CONFIG_HOME/gtk-4.0/gtk.css] will still take precedence over your
-    changes, as it uses the [GTK_STYLE_PROVIDER_PRIORITY_USER] priority. *)
+    changes, as it uses the
+    {{!Ocgtk.Constants.style_provider_priority_user}[GTK_STYLE_PROVIDER_PRIORITY_USER]}
+    priority. *)
 class type style_context_t = object
   (** {2:methods Methods} *)
 
@@ -180,17 +184,21 @@ class style_context : Raw.Style_context.t -> style_context_t
 
     If you are developing a library with custom widgets that render differently
     than standard components, you may need to add a [GtkStyleProvider] yourself
-    with the [GTK_STYLE_PROVIDER_PRIORITY_FALLBACK] priority, either a
-    [GtkCssProvider] or a custom object implementing the [GtkStyleProvider]
-    interface. This way themes may still attempt to style your UI elements in a
-    different way if needed so.
+    with the
+    {{!Ocgtk.Constants.style_provider_priority_fallback}[GTK_STYLE_PROVIDER_PRIORITY_FALLBACK]}
+    priority, either a [GtkCssProvider] or a custom object implementing the
+    [GtkStyleProvider] interface. This way themes may still attempt to style
+    your UI elements in a different way if needed so.
 
     If you are using custom styling on an applications, you probably want then
     to make your style information prevail to the theme’s, so you must use a
-    [GtkStyleProvider] with the [GTK_STYLE_PROVIDER_PRIORITY_APPLICATION]
+    [GtkStyleProvider] with the
+    {{!Ocgtk.Constants.style_provider_priority_application}[GTK_STYLE_PROVIDER_PRIORITY_APPLICATION]}
     priority, keep in mind that the user settings in
     [XDG_CONFIG_HOME/gtk-4.0/gtk.css] will still take precedence over your
-    changes, as it uses the [GTK_STYLE_PROVIDER_PRIORITY_USER] priority. *)
+    changes, as it uses the
+    {{!Ocgtk.Constants.style_provider_priority_user}[GTK_STYLE_PROVIDER_PRIORITY_USER]}
+    priority. *)
 
 (** {1:constructors Constructors} *)
 

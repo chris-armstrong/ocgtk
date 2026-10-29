@@ -47,7 +47,7 @@ module rec Path : sig
       not support all features of [GskPath].
 
       This function does not clear the existing Cairo path. Call
-      cairo_new_path() if you want this. *)
+      [cairo_new_path ()] if you want this. *)
 
   external ref : t -> t = "ml_gsk_path_ref"
   (** Increases the reference count of a path by one. *)
@@ -105,8 +105,8 @@ module rec Path : sig
       can happen when the path only describes a point or an axis-aligned line.
 
       If the path is empty, false is returned and [bounds] are set to
-      graphene_rect_zero(). This is different from the case where the path is a
-      single point at the origin, where the [bounds] will also be set to the
+      [graphene_rect_zero ()]. This is different from the case where the path is
+      a single point at the origin, where the [bounds] will also be set to the
       zero rectangle but true will be returned. *)
 end
 
@@ -204,7 +204,7 @@ and Path_point : sig
       This is a convenience variant of
       {{!Ocgsk.Raw.Path_point.val-get_tangent}[Gsk.PathPoint.get_tangent]} that
       returns the angle between the tangent and the X axis. The angle can e.g.
-      be used in gtk_snapshot_rotate(). *)
+      be used in [gtk_snapshot_rotate ()]. *)
 
   external get_position : t -> Path.t -> Ocgraphene_raw.Point.t
     = "ml_gsk_path_point_get_position"

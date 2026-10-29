@@ -51,13 +51,13 @@ class type unix_socket_address_t = object
     "Gets [address]'s path, or for abstract sockets the \"name\".\n\n\
      Guaranteed to be zero-terminated, but an abstract socket\n\
      may contain embedded zeros, and thus you should use\n\
-     g_unix_socket_address_get_path_len() to get the true length\n\
+     [g_unix_socket_address_get_path_len ()] to get the true length\n\
      of this string."]
 
   method get_path_len : unit -> Gsize.t
   (** Gets the length of [address]'s path.
 
-      For details, see g_unix_socket_address_get_path(). *)
+      For details, see [g_unix_socket_address_get_path ()]. *)
 
   (** {2:properties Properties} *)
 
@@ -97,41 +97,64 @@ class unix_socket_address : Raw.Unix_socket_address.t -> unix_socket_address_t
 (** {1:constructors Constructors} *)
 
 val new_ : string -> unix_socket_address_t
-(** Creates a new [GUnixSocketAddress] for [path].
+(** Creates a new
+    {{!Ocgio.Unix_socket_address.class-type-unix_socket_address_t}[GUnixSocketAddress]}
+    for [path].
 
     To create abstract socket addresses, on systems that support that, use
-    g_unix_socket_address_new_abstract(). *)
+    {{!Ocgio.Unix_socket_address.val-new_abstract}[g_unix_socket_address_new_abstract
+                                                   ()]}. *)
 
 val new_abstract : int array -> int -> unix_socket_address_t
-(** Creates a new [G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED] [GUnixSocketAddress]
+(** Creates a new
+    {{!Ocgio.Enums.type-unixsocketaddresstype.constructor-ABSTRACT_PADDED}[G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED]}
+    {{!Ocgio.Unix_socket_address.class-type-unix_socket_address_t}[GUnixSocketAddress]}
     for [path]. *)
 
 val new_with_type :
   int array -> int -> Enums.unixsocketaddresstype -> unix_socket_address_t
 [@@ocaml.doc
-  "Creates a new [GUnixSocketAddress] of type [type] with name [path].\n\n\
-   If [type] is [G_UNIX_SOCKET_ADDRESS_PATH], this is equivalent to\n\
-   calling g_unix_socket_address_new().\n\n\
-   If [type] is [G_UNIX_SOCKET_ADDRESS_ANONYMOUS], [path] and [path_len] will be\n\
+  "Creates a new \
+   {{!Ocgio.Unix_socket_address.class-type-unix_socket_address_t}[GUnixSocketAddress]} \
+   of type [type] with name [path].\n\n\
+   If [type] is \
+   {{!Ocgio.Enums.type-unixsocketaddresstype.constructor-PATH}[G_UNIX_SOCKET_ADDRESS_PATH]}, \
+   this is equivalent to\n\
+   calling {{!Ocgio.Unix_socket_address.val-new_}[g_unix_socket_address_new \
+   ()]}.\n\n\
+   If [type] is \
+   {{!Ocgio.Enums.type-unixsocketaddresstype.constructor-ANONYMOUS}[G_UNIX_SOCKET_ADDRESS_ANONYMOUS]}, \
+   [path] and [path_len] will be\n\
    ignored.\n\n\
-   If [path_type] is [G_UNIX_SOCKET_ADDRESS_ABSTRACT], then [path_len]\n\
+   If [path_type] is \
+   {{!Ocgio.Enums.type-unixsocketaddresstype.constructor-ABSTRACT}[G_UNIX_SOCKET_ADDRESS_ABSTRACT]}, \
+   then [path_len]\n\
    bytes of [path] will be copied to the socket's path, and only those\n\
    bytes will be considered part of the name. (If [path_len] is -1,\n\
    then [path] is assumed to be NUL-terminated.) For example, if [path]\n\
-   was \"test\", then calling g_socket_address_get_native_size() on the\n\
+   was \"test\", then calling \
+   {{!Ocgio.Socket_address.class-type-socket_address_t.method-get_native_size}[g_socket_address_get_native_size \
+   ()]} on the\n\
    returned socket would return 7 (2 bytes of overhead, 1 byte for the\n\
    abstract-socket indicator byte, and 4 bytes for the name \"test\").\n\n\
-   If [path_type] is [G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED], then\n\
+   If [path_type] is \
+   {{!Ocgio.Enums.type-unixsocketaddresstype.constructor-ABSTRACT_PADDED}[G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED]}, \
+   then\n\
    [path_len] bytes of [path] will be copied to the socket's path, the\n\
    rest of the path will be padded with 0 bytes, and the entire\n\
    zero-padded buffer will be considered the name. (As above, if\n\
    [path_len] is -1, then [path] is assumed to be NUL-terminated.) In\n\
-   this case, g_socket_address_get_native_size() will always return\n\
+   this case, \
+   {{!Ocgio.Socket_address.class-type-socket_address_t.method-get_native_size}[g_socket_address_get_native_size \
+   ()]} will always return\n\
    the full size of a [struct sockaddr_un], although\n\
-   g_unix_socket_address_get_path_len() will still return just the\n\
+   {{!Ocgio.Unix_socket_address.class-type-unix_socket_address_t.method-get_path_len}[g_unix_socket_address_get_path_len \
+   ()]} will still return just the\n\
    length of [path].\n\n\
-   [G_UNIX_SOCKET_ADDRESS_ABSTRACT] is preferred over\n\
-   [G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED] for new programs. Of course,\n\
+   {{!Ocgio.Enums.type-unixsocketaddresstype.constructor-ABSTRACT}[G_UNIX_SOCKET_ADDRESS_ABSTRACT]} \
+   is preferred over\n\
+   {{!Ocgio.Enums.type-unixsocketaddresstype.constructor-ABSTRACT_PADDED}[G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED]} \
+   for new programs. Of course,\n\
    when connecting to a server created by another process, you must\n\
    use the appropriate type corresponding to how that process created\n\
    its listening socket."]

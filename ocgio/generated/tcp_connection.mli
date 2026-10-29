@@ -23,7 +23,7 @@ class type tcp_connection_t = object
 
   method get_graceful_disconnect : unit -> bool
   (** Checks if graceful disconnects are used. See
-      g_tcp_connection_set_graceful_disconnect(). *)
+      [g_tcp_connection_set_graceful_disconnect ()]. *)
 
   method set_graceful_disconnect : bool -> unit
   (** This enables graceful disconnects on close. A graceful disconnect means

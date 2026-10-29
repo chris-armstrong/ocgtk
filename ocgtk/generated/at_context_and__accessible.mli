@@ -56,8 +56,9 @@ end
 
     The attributes are updated every time a UI element's state changes in a way
     that should be reflected by assistive technologies. For instance, if a
-    [GtkWidget] visibility changes, the [GTK_ACCESSIBLE_STATE_HIDDEN] state will
-    also change to reflect the
+    [GtkWidget] visibility changes, the
+    {{!Ocgtk.Enums.type-accessiblestate.constructor-HIDDEN}[GTK_ACCESSIBLE_STATE_HIDDEN]}
+    state will also change to reflect the
     {{!Ocgtk.Widget.class-type-widget_t.method-get_visible}[Gtk.Widget:visible]}
     property.
 

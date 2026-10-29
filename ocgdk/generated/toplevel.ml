@@ -22,7 +22,7 @@ class type toplevel_t = object
   method focus : UInt32.t -> unit
   (** Sets keyboard focus to [surface].
 
-      In most cases, gtk_window_present_with_time() should be used on a
+      In most cases, [gtk_window_present_with_time ()] should be used on a
       GtkWindow, rather than calling this function. *)
 
   method get_capabilities : unit -> Enums.toplevelcapabilities
@@ -126,7 +126,7 @@ class type toplevel_t = object
   method set_startup_id : string -> unit
   (** Sets the startup notification ID.
 
-      When using GTK, typically you should use gtk_window_set_startup_id()
+      When using GTK, typically you should use [gtk_window_set_startup_id ()]
       instead of this low-level function. *)
 
   method set_title : string -> unit
@@ -142,7 +142,7 @@ class type toplevel_t = object
       manager to do things like center [surface] on [parent] and keep [surface]
       above [parent].
 
-      See gtk_window_set_transient_for() if you’re using GtkWindow. *)
+      See [gtk_window_set_transient_for ()] if you’re using GtkWindow. *)
 
   method show_window_menu : Event.event_t -> bool
   (** Asks the windowing system to show the window menu.

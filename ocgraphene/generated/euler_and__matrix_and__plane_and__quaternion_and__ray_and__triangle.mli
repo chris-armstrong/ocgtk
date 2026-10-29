@@ -20,19 +20,19 @@ class type euler_t = object
   (** Retrieves the first component of the Euler angle vector, depending on the
       order of rotation.
 
-      See also: graphene_euler_get_x() *)
+      See also: [graphene_euler_get_x ()] *)
 
   method get_beta : unit -> float
   (** Retrieves the second component of the Euler angle vector, depending on the
       order of rotation.
 
-      See also: graphene_euler_get_y() *)
+      See also: [graphene_euler_get_y ()] *)
 
   method get_gamma : unit -> float
   (** Retrieves the third component of the Euler angle vector, depending on the
       order of rotation.
 
-      See also: graphene_euler_get_z() *)
+      See also: [graphene_euler_get_z ()] *)
 
   method get_order : unit -> Enums.eulerorder
   (** Retrieves the order used to apply the rotations described in the
@@ -62,7 +62,7 @@ class type euler_t = object
       #graphene_euler_t.
 
       If the #graphene_euler_t [src] is [None], this function is equivalent to
-      calling graphene_euler_init() with all angles set to 0. *)
+      calling [graphene_euler_init ()] with all angles set to 0. *)
 
   method init_from_matrix :
     Raw.Matrix.t option -> Enums.eulerorder -> Raw.Euler.t
@@ -118,9 +118,9 @@ and matrix_t = object
   (** Checks whether the two given #graphene_matrix_t matrices are byte-by-byte
       equal.
 
-      While this function is faster than graphene_matrix_equal(), it can also
+      While this function is faster than [graphene_matrix_equal ()], it can also
       return false negatives, so it should be used in conjuction with either
-      graphene_matrix_equal() or graphene_matrix_near(). For instance:
+      [graphene_matrix_equal ()] or [graphene_matrix_near ()]. For instance:
 
       {[
         if (graphene_matrix_equal_fast (a, b))
@@ -190,7 +190,7 @@ and matrix_t = object
     float -> float -> float -> float -> float -> float -> Raw.Matrix.t
   (** Initializes a #graphene_matrix_t compatible with #graphene_frustum_t.
 
-      See also: graphene_frustum_init_from_matrix() *)
+      See also: [graphene_frustum_init_from_matrix ()] *)
 
   method init_identity : unit -> Raw.Matrix.t
   (** Initializes a #graphene_matrix_t with the identity matrix. *)
@@ -261,8 +261,8 @@ and matrix_t = object
   (** Adds a rotation transformation to [m], using the given [angle] and [axis]
       vector.
 
-      This is the equivalent of calling graphene_matrix_init_rotate() and then
-      multiplying the matrix [m] with the rotation matrix. *)
+      This is the equivalent of calling [graphene_matrix_init_rotate ()] and
+      then multiplying the matrix [m] with the rotation matrix. *)
 
   method rotate_euler : Raw.Euler.t -> unit
   (** Adds a rotation transformation to [m], using the given #graphene_euler_t.
@@ -272,31 +272,31 @@ and matrix_t = object
   (** Adds a rotation transformation to [m], using the given
       #graphene_quaternion_t.
 
-      This is the equivalent of calling graphene_quaternion_to_matrix() and then
-      multiplying [m] with the rotation matrix. *)
+      This is the equivalent of calling [graphene_quaternion_to_matrix ()] and
+      then multiplying [m] with the rotation matrix. *)
 
   method rotate_x : float -> unit
   (** Adds a rotation transformation around the X axis to [m], using the given
       [angle].
 
-      See also: graphene_matrix_rotate() *)
+      See also: [graphene_matrix_rotate ()] *)
 
   method rotate_y : float -> unit
   (** Adds a rotation transformation around the Y axis to [m], using the given
       [angle].
 
-      See also: graphene_matrix_rotate() *)
+      See also: [graphene_matrix_rotate ()] *)
 
   method rotate_z : float -> unit
   (** Adds a rotation transformation around the Z axis to [m], using the given
       [angle].
 
-      See also: graphene_matrix_rotate() *)
+      See also: [graphene_matrix_rotate ()] *)
 
   method scale : float -> float -> float -> unit
   (** Adds a scaling transformation to [m], using the three given factors.
 
-      This is the equivalent of calling graphene_matrix_init_scale() and then
+      This is the equivalent of calling [graphene_matrix_init_scale ()] and then
       multiplying the matrix [m] with the scale matrix. *)
 
   method skew_xy : float -> unit
@@ -312,7 +312,7 @@ and matrix_t = object
   (** Adds a translation transformation to [m] using the coordinates of the
       given #graphene_point3d_t.
 
-      This is the equivalent of calling graphene_matrix_init_translate() and
+      This is the equivalent of calling [graphene_matrix_init_translate ()] and
       then multiplying [m] with the translation matrix. *)
 
   (** {2:conversions Conversions} *)
@@ -394,7 +394,7 @@ and quaternion_t = object
   (** Initializes a #graphene_quaternion_t using the values of the Euler angles
       on each axis.
 
-      See also: graphene_quaternion_init_from_euler() *)
+      See also: [graphene_quaternion_init_from_euler ()] *)
 
   method init_from_euler : Raw.Euler.t -> Raw.Quaternion.t
   (** Initializes a #graphene_quaternion_t using the given #graphene_euler_t. *)
@@ -410,7 +410,7 @@ and quaternion_t = object
   (** Initializes a #graphene_quaternion_t using the values of the Euler angles
       on each axis.
 
-      See also: graphene_quaternion_init_from_euler() *)
+      See also: [graphene_quaternion_init_from_euler ()] *)
 
   method init_from_vec4 : Raw.Vec4.t -> Raw.Quaternion.t
   (** Initializes a #graphene_quaternion_t with the values from [src]. *)
@@ -464,19 +464,19 @@ and ray_t = object
   (** Checks whether the given #graphene_ray_t [r] intersects the given
       #graphene_box_t [b].
 
-      See also: graphene_ray_intersect_box() *)
+      See also: [graphene_ray_intersect_box ()] *)
 
   method intersects_sphere : Raw.Sphere.t -> bool
   (** Checks if the given #graphene_ray_t [r] intersects the given
       #graphene_sphere_t [s].
 
-      See also: graphene_ray_intersect_sphere() *)
+      See also: [graphene_ray_intersect_sphere ()] *)
 
   method intersects_triangle : Raw.Triangle.t -> bool
   (** Checks whether the given #graphene_ray_t [r] intersects the given
       #graphene_triangle_t [b].
 
-      See also: graphene_ray_intersect_triangle() *)
+      See also: [graphene_ray_intersect_triangle ()] *)
 
   (** {2:conversions Conversions} *)
 

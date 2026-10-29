@@ -80,7 +80,8 @@ module rec Layout : sig
       {{!Ocpango.Raw.Layout.val-set_width}[Pango.Layout.set_width]}. To turn off
       wrapping, set the width to -1.
 
-      The default value is [PANGO_WRAP_WORD]. *)
+      The default value is
+      {{!Ocpango.Enums.type-wrapmode.constructor-WORD}[PANGO_WRAP_WORD]}. *)
 
   external set_width : t -> int -> unit = "ml_pango_layout_set_width"
   (** Sets the width to which the lines of the [PangoLayout] should wrap or get
@@ -115,7 +116,8 @@ module rec Layout : sig
 
       Note that tabs and justification conflict with each other: Justification
       will move content away from its tab-aligned positions. The same is true
-      for alignments other than [PANGO_ALIGN_LEFT]. *)
+      for alignments other than
+      {{!Ocpango.Enums.type-alignment.constructor-LEFT}[PANGO_ALIGN_LEFT]}. *)
 
   external set_spacing : t -> int -> unit = "ml_pango_layout_set_spacing"
   (** Sets the amount of spacing in Pango units between the lines of the layout.
@@ -157,9 +159,11 @@ module rec Layout : sig
       If [accel_marker] is nonzero, the given character will mark the character
       following it as an accelerator. For example, [accel_marker] might be an
       ampersand or underscore. All characters marked as an accelerator will
-      receive a [PANGO_UNDERLINE_LOW] attribute, and the first character so
-      marked will be returned in [accel_char]. Two [accel_marker] characters
-      following each other produce a single literal [accel_marker] character. *)
+      receive a
+      {{!Ocpango.Enums.type-underline.constructor-LOW}[PANGO_UNDERLINE_LOW]}
+      attribute, and the first character so marked will be returned in
+      [accel_char]. Two [accel_marker] characters following each other produce a
+      single literal [accel_marker] character. *)
 
   external set_markup : t -> string -> int -> unit
     = "ml_pango_layout_set_markup"
@@ -232,7 +236,7 @@ module rec Layout : sig
       indented by the absolute value of [indent].
 
       The indent setting is ignored if layout alignment is set to
-      [PANGO_ALIGN_CENTER].
+      {{!Ocpango.Enums.type-alignment.constructor-CENTER}[PANGO_ALIGN_CENTER]}.
 
       The default value is 0. *)
 
@@ -258,9 +262,12 @@ module rec Layout : sig
       if your code relies on this behavior.
 
       Height setting only has effect if a positive width is set on [layout] and
-      ellipsization mode of [layout] is not [PANGO_ELLIPSIZE_NONE]. The behavior
-      is undefined if a height other than -1 is set and ellipsization mode is
-      set to [PANGO_ELLIPSIZE_NONE], and may change in the future. *)
+      ellipsization mode of [layout] is not
+      {{!Ocpango.Enums.type-ellipsizemode.constructor-NONE}[PANGO_ELLIPSIZE_NONE]}.
+      The behavior is undefined if a height other than -1 is set and
+      ellipsization mode is set to
+      {{!Ocpango.Enums.type-ellipsizemode.constructor-NONE}[PANGO_ELLIPSIZE_NONE]},
+      and may change in the future. *)
 
   external set_font_description : t -> Font_description.t option -> unit
     = "ml_pango_layout_set_font_description"
@@ -284,7 +291,8 @@ module rec Layout : sig
       ellipsized separately or the entire layout is ellipsized as a whole
       depends on the set height of the layout.
 
-      The default value is [PANGO_ELLIPSIZE_NONE].
+      The default value is
+      {{!Ocpango.Enums.type-ellipsizemode.constructor-NONE}[PANGO_ELLIPSIZE_NONE]}.
 
       See {{!Ocpango.Raw.Layout.val-set_height}[Pango.Layout.set_height]} for
       details. *)
@@ -304,8 +312,10 @@ module rec Layout : sig
       {{!Ocpango.Raw.Context.val-set_base_dir}[Pango.Context.set_base_dir]}).
 
       When the auto-computed direction of a paragraph differs from the base
-      direction of the context, the interpretation of [PANGO_ALIGN_LEFT] and
-      [PANGO_ALIGN_RIGHT] are swapped. *)
+      direction of the context, the interpretation of
+      {{!Ocpango.Enums.type-alignment.constructor-LEFT}[PANGO_ALIGN_LEFT]} and
+      {{!Ocpango.Enums.type-alignment.constructor-RIGHT}[PANGO_ALIGN_RIGHT]} are
+      swapped. *)
 
   external set_attributes : t -> Attr_list.t option -> unit
     = "ml_pango_layout_set_attributes"
@@ -318,7 +328,8 @@ module rec Layout : sig
   (** Sets the alignment for the layout: how partial lines are positioned within
       the horizontal space available.
 
-      The default alignment is [PANGO_ALIGN_LEFT]. *)
+      The default alignment is
+      {{!Ocpango.Enums.type-alignment.constructor-LEFT}[PANGO_ALIGN_LEFT]}. *)
 
   external serialize : t -> Ocpango_enums.layoutserializeflags -> Glib_bytes.t
     = "ml_pango_layout_serialize"
@@ -359,8 +370,9 @@ module rec Layout : sig
   (** Queries whether the layout had to ellipsize any paragraphs.
 
       This returns [true] if the ellipsization mode for [layout] is not
-      [PANGO_ELLIPSIZE_NONE], a positive width is set on [layout], and there are
-      paragraphs exceeding that width that have to be ellipsized. *)
+      {{!Ocpango.Enums.type-ellipsizemode.constructor-NONE}[PANGO_ELLIPSIZE_NONE]},
+      a positive width is set on [layout], and there are paragraphs exceeding
+      that width that have to be ellipsized. *)
 
   external index_to_pos : t -> int -> Rectangle.t
     = "ml_pango_layout_index_to_pos"
@@ -393,8 +405,9 @@ module rec Layout : sig
 
       This function can be used to determine if there are any fonts available to
       render all characters in a certain string, or when used in combination
-      with [PANGO_ATTR_FALLBACK], to check if a certain font supports all the
-      characters in the string. *)
+      with
+      {{!Ocpango.Enums.type-attrtype.constructor-FALLBACK}[PANGO_ATTR_FALLBACK]},
+      to check if a certain font supports all the characters in the string. *)
 
   external get_text : t -> string = "ml_pango_layout_get_text"
   (** Gets the text in the layout.
@@ -446,8 +459,8 @@ module rec Layout : sig
       units.
 
       {{!Ocpango.Raw.Layout.val-get_size}[Pango.Layout.get_size]} returns the
-      width and height scaled by [PANGO_SCALE]. This is simply a convenience
-      function around
+      width and height scaled by {{!Ocpango.Constants.scale}[PANGO_SCALE]}. This
+      is simply a convenience function around
       {{!Ocpango.Raw.Layout.val-get_pixel_extents}[Pango.Layout.get_pixel_extents]}.
   *)
 

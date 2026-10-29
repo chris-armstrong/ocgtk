@@ -30,9 +30,9 @@ class type list_model_t = object
   method get_item_type : unit -> Gobject.Type.t
   (** Gets the type of the items in [list].
 
-      All items returned from g_list_model_get_item() are of the type returned
-      by this function, or a subtype, or if the type is an interface, they are
-      an implementation of that interface.
+      All items returned from [g_list_model_get_item ()] are of the type
+      returned by this function, or a subtype, or if the type is an interface,
+      they are an implementation of that interface.
 
       The item type of a [GListModel] can not change during the life of the
       model. *)
@@ -42,7 +42,7 @@ class type list_model_t = object
 
       Depending on the model implementation, calling this function may be less
       efficient than iterating the list with increasing values for [position]
-      until g_list_model_get_item() returns [None]. *)
+      until [g_list_model_get_item ()] returns [None]. *)
 
   method get_object : int -> [ `object_ ] Gobject.obj option
   (** Get the item at [position].
@@ -54,12 +54,12 @@ class type list_model_t = object
       the list.
 
       This function is meant to be used by language bindings in place of
-      g_list_model_get_item().
+      [g_list_model_get_item ()].
 
-      See also: g_list_model_get_n_items() *)
+      See also: [g_list_model_get_n_items ()] *)
 
   method items_changed : int -> int -> int -> unit
-  (** Emits the [GListModel::items]-changed signal on [list].
+  (** Emits the [GListModel::items-changed] signal on [list].
 
       This function should only be called by classes implementing [GListModel].
       It has to be called after the internal representation of [list] has been

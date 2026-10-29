@@ -43,10 +43,14 @@ external set_model : t -> Ocgio_raw.List_model.t option -> unit
     The model's item type must conform to [self]'s item type. *)
 
 external get_size : t -> int = "ml_gtk_slice_list_model_get_size"
-(** Gets the size set via gtk_slice_list_model_set_size(). *)
+(** Gets the size set via
+    {{!Ocgtk.Raw.Slice_list_model.val-set_size}[gtk_slice_list_model_set_size
+                                                ()]}. *)
 
 external get_offset : t -> int = "ml_gtk_slice_list_model_get_offset"
-(** Gets the offset set via gtk_slice_list_model_set_offset(). *)
+(** Gets the offset set via
+    {{!Ocgtk.Raw.Slice_list_model.val-set_offset}[gtk_slice_list_model_set_offset
+                                                  ()]}. *)
 
 external get_model : t -> Ocgio_raw.List_model.t option
   = "ml_gtk_slice_list_model_get_model"

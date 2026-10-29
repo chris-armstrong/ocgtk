@@ -49,13 +49,17 @@ external new_with_model : Tree_model.t -> t = "ml_gtk_icon_view_new_with_model"
 
 external unset_model_drag_source : t -> unit
   = "ml_gtk_icon_view_unset_model_drag_source"
-(** Undoes the effect of gtk_icon_view_enable_model_drag_source(). Calling this
+(** Undoes the effect of
+    {{!Ocgtk.Raw.Icon_view.val-enable_model_drag_source}[gtk_icon_view_enable_model_drag_source
+                                                         ()]}. Calling this
     method sets [GtkIconView]:reorderable to [false]. *)
 
 external unset_model_drag_dest : t -> unit
   = "ml_gtk_icon_view_unset_model_drag_dest"
-(** Undoes the effect of gtk_icon_view_enable_model_drag_dest(). Calling this
-    method sets [GtkIconView]:reorderable to [false]. *)
+(** Undoes the effect of
+    {{!Ocgtk.Raw.Icon_view.val-enable_model_drag_dest}[gtk_icon_view_enable_model_drag_dest
+                                                       ()]}. Calling this method
+    sets [GtkIconView]:reorderable to [false]. *)
 
 external unselect_path : t -> Tree_path.t -> unit
   = "ml_gtk_icon_view_unselect_path"
@@ -72,8 +76,11 @@ external set_tooltip_item :
   Tree_path.t ->
   unit = "ml_gtk_icon_view_set_tooltip_item"
 (** Sets the tip area of [tooltip] to be the area covered by the item at [path].
-    See also gtk_icon_view_set_tooltip_column() for a simpler alternative. See
-    also gtk_tooltip_set_tip_area(). *)
+    See also
+    {{!Ocgtk.Raw.Icon_view.val-set_tooltip_column}[gtk_icon_view_set_tooltip_column
+                                                   ()]} for a simpler
+    alternative. See also
+    {{!Ocgtk.Raw.Tooltip.val-set_tip_area}[gtk_tooltip_set_tip_area ()]}. *)
 
 external set_tooltip_column : t -> int -> unit
   = "ml_gtk_icon_view_set_tooltip_column"
@@ -85,8 +92,9 @@ external set_tooltip_column : t -> int -> unit
     When enabled, [GtkWidget:has-tooltip] will be set to [true] and [icon_view]
     will connect a [GtkWidget::query-tooltip] signal handler.
 
-    Note that the signal handler sets the text with gtk_tooltip_set_markup(), so
-    &, <, etc have to be escaped in the text. *)
+    Note that the signal handler sets the text with
+    {{!Ocgtk.Raw.Tooltip.val-set_markup}[gtk_tooltip_set_markup ()]}, so &, <,
+    etc have to be escaped in the text. *)
 
 external set_tooltip_cell :
   t ->
@@ -97,9 +105,13 @@ external set_tooltip_cell :
   Cell_renderer.t option ->
   unit = "ml_gtk_icon_view_set_tooltip_cell"
 (** Sets the tip area of [tooltip] to the area which [cell] occupies in the item
-    pointed to by [path]. See also gtk_tooltip_set_tip_area().
+    pointed to by [path]. See also
+    {{!Ocgtk.Raw.Tooltip.val-set_tip_area}[gtk_tooltip_set_tip_area ()]}.
 
-    See also gtk_icon_view_set_tooltip_column() for a simpler alternative. *)
+    See also
+    {{!Ocgtk.Raw.Icon_view.val-set_tooltip_column}[gtk_icon_view_set_tooltip_column
+                                                   ()]} for a simpler
+    alternative. *)
 
 external set_text_column : t -> int -> unit = "ml_gtk_icon_view_set_text_column"
 (** Sets the column with text for [icon_view] to be [column]. The text column
@@ -148,7 +160,8 @@ external set_markup_column : t -> int -> unit
 (** Sets the column with markup information for [icon_view] to be [column]. The
     markup column must be of type [G_TYPE_STRING]. If the markup column is set
     to something, it overrides the text column set by
-    gtk_icon_view_set_text_column(). *)
+    {{!Ocgtk.Raw.Icon_view.val-set_text_column}[gtk_icon_view_set_text_column
+                                                ()]}. *)
 
 external set_margin : t -> int -> unit = "ml_gtk_icon_view_set_margin"
 (** Sets the ::margin property which specifies the space which is inserted at
@@ -206,7 +219,8 @@ external select_path : t -> Tree_path.t -> unit = "ml_gtk_icon_view_select_path"
 
 external select_all : t -> unit = "ml_gtk_icon_view_select_all"
 (** Selects all the icons. [icon_view] must has its selection mode set to
-    [GTK_SELECTION_MULTIPLE]. *)
+    {{!Ocgtk.Enums.type-selectionmode.constructor-MULTIPLE}[GTK_SELECTION_MULTIPLE]}.
+*)
 
 external scroll_to_path : t -> Tree_path.t -> bool -> float -> float -> unit
   = "ml_gtk_icon_view_scroll_to_path"
@@ -253,7 +267,8 @@ external get_selected_items : t -> Tree_path.t list
 (** Creates a list of paths of all selected items. Additionally, if you are
     planning on modifying the model after calling this function, you may want to
     convert the returned list into a list of [GtkTreeRowReferences]. To do this,
-    you can use gtk_tree_row_reference_new().
+    you can use
+    {{!Ocgtk.Raw.Tree_row_reference.val-new_}[gtk_tree_row_reference_new ()]}.
 
     {[
     GtkWidget *icon_view = gtk_icon_view_new ();
@@ -271,7 +286,8 @@ external get_row_spacing : t -> int = "ml_gtk_icon_view_get_row_spacing"
 
 external get_reorderable : t -> bool = "ml_gtk_icon_view_get_reorderable"
 (** Retrieves whether the user can reorder the list via drag-and-drop. See
-    gtk_icon_view_set_reorderable(). *)
+    {{!Ocgtk.Raw.Icon_view.val-set_reorderable}[gtk_icon_view_set_reorderable
+                                                ()]}. *)
 
 external get_pixbuf_column : t -> int = "ml_gtk_icon_view_get_pixbuf_column"
 (** Returns the column with pixbufs for [icon_view]. *)
@@ -327,7 +343,9 @@ external get_cell_rect :
 
 external get_activate_on_single_click : t -> bool
   = "ml_gtk_icon_view_get_activate_on_single_click"
-(** Gets the setting set by gtk_icon_view_set_activate_on_single_click(). *)
+(** Gets the setting set by
+    {{!Ocgtk.Raw.Icon_view.val-set_activate_on_single_click}[gtk_icon_view_set_activate_on_single_click
+                                                             ()]}. *)
 
 external enable_model_drag_source :
   t ->
@@ -357,7 +375,8 @@ external get_cell_area :
 (** The [GtkCellArea] used to layout cell renderers for this view.
 
     If no area is specified when creating the icon view with
-    gtk_icon_view_new_with_area() a [GtkCellAreaBox] will be used. *)
+    {{!Ocgtk.Raw.Icon_view.val-new_with_area}[gtk_icon_view_new_with_area ()]} a
+    [GtkCellAreaBox] will be used. *)
 
 let on_activate_cursor_item ?after obj ~callback =
   let closure =

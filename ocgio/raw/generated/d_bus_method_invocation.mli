@@ -21,12 +21,16 @@ external gtype : unit -> Gobject.Type.t
 external return_value_with_unix_fd_list :
   t -> Gvariant.t option -> Unix_fd_list.t option -> unit
   = "ml_g_dbus_method_invocation_return_value_with_unix_fd_list"
-(** Like g_dbus_method_invocation_return_value() but also takes a [GUnixFDList].
+(** Like
+    {{!Ocgio.Raw.D_bus_method_invocation.val-return_value}[g_dbus_method_invocation_return_value
+                                                           ()]} but also takes a
+    {{!Ocgio.Raw.Unix_fd_list}[GUnixFDList]}.
 
     This method is only available on UNIX.
 
-    This method will take ownership of [invocation]. See [GDBusInterfaceVTable]
-    for more information about the ownership of [invocation]. *)
+    This method will take ownership of [invocation]. See
+    {{!Ocgio.Raw.D_bus_interface_v_table}[GDBusInterfaceVTable]} for more
+    information about the ownership of [invocation]. *)
 
 external return_value : t -> Gvariant.t option -> unit
   = "ml_g_dbus_method_invocation_return_value"
@@ -51,7 +55,8 @@ external return_value : t -> Gvariant.t option -> unit
    // Do not free @invocation here; returning a value does that\n\
    ]}\n\n\
    This method will take ownership of [invocation]. See\n\
-   [GDBusInterfaceVTable] for more information about the ownership of\n\
+   {{!Ocgio.Raw.D_bus_interface_v_table}[GDBusInterfaceVTable]} for more \
+   information about the ownership of\n\
    [invocation].\n\n\
    Since 2.48, if the method call requested for a reply not to be sent\n\
    then this call will sink [parameters] and free [invocation], but\n\
@@ -60,18 +65,20 @@ external return_value : t -> Gvariant.t option -> unit
 
 external return_gerror : t -> GError.t -> unit
   = "ml_g_dbus_method_invocation_return_gerror"
-(** Like g_dbus_method_invocation_return_error() but takes a [GError] instead of
-    the error domain, error code and message.
+(** Like [g_dbus_method_invocation_return_error ()] but takes a [GError] instead
+    of the error domain, error code and message.
 
-    This method will take ownership of [invocation]. See [GDBusInterfaceVTable]
-    for more information about the ownership of [invocation]. *)
+    This method will take ownership of [invocation]. See
+    {{!Ocgio.Raw.D_bus_interface_v_table}[GDBusInterfaceVTable]} for more
+    information about the ownership of [invocation]. *)
 
 external return_dbus_error : t -> string -> string -> unit
   = "ml_g_dbus_method_invocation_return_dbus_error"
 (** Finishes handling a D-Bus method call by returning an error.
 
-    This method will take ownership of [invocation]. See [GDBusInterfaceVTable]
-    for more information about the ownership of [invocation]. *)
+    This method will take ownership of [invocation]. See
+    {{!Ocgio.Raw.D_bus_interface_v_table}[GDBusInterfaceVTable]} for more
+    information about the ownership of [invocation]. *)
 
 external get_sender : t -> string option
   = "ml_g_dbus_method_invocation_get_sender"
@@ -86,10 +93,11 @@ external get_property_info : t -> D_bus_property_info.t option
 
     This will only be set in the case of an invocation in response to a property
     Get or Set call that has been directed to the method call handler for an
-    object on account of its property_get() or property_set() vtable pointers
-    being unset.
+    object on account of its [property_get ()] or [property_set ()] vtable
+    pointers being unset.
 
-    See [GDBusInterfaceVTable] for more information.
+    See {{!Ocgio.Raw.D_bus_interface_v_table}[GDBusInterfaceVTable]} for more
+    information.
 
     If the call was GetAll, [None] will be returned. *)
 
@@ -113,14 +121,17 @@ external get_method_info : t -> D_bus_method_info.t option
 
     If this method invocation is a property Get, Set or GetAll call that has
     been redirected to the method call handler then [None] will be returned. See
-    g_dbus_method_invocation_get_property_info() and [GDBusInterfaceVTable] for
-    more information. *)
+    {{!Ocgio.Raw.D_bus_method_invocation.val-get_property_info}[g_dbus_method_invocation_get_property_info
+                                                                ()]} and
+    {{!Ocgio.Raw.D_bus_interface_v_table}[GDBusInterfaceVTable]} for more
+    information. *)
 
 external get_message : t -> D_bus_message.t
   = "ml_g_dbus_method_invocation_get_message"
-(** Gets the [GDBusMessage] for the method invocation. This is useful if you
-    need to use low-level protocol features, such as UNIX file descriptor
-    passing, that cannot be properly expressed in the [GVariant] API.
+(** Gets the {{!Ocgio.Raw.D_bus_message}[GDBusMessage]} for the method
+    invocation. This is useful if you need to use low-level protocol features,
+    such as UNIX file descriptor passing, that cannot be properly expressed in
+    the [GVariant] API.
 
     See this \[server\]{{!Ocgio.Raw.D_bus_connection}[Gio.DBusConnection]} and
     \[client\]{{!Ocgio.Raw.D_bus_connection}[Gio.DBusConnection]} for an example
@@ -139,8 +150,10 @@ external get_interface_name : t -> string option
    If this method call is a property Get, Set or GetAll call that has\n\
    been redirected to the method call handler then\n\
    \"org.freedesktop.DBus.Properties\" will be returned.  See\n\
-   [GDBusInterfaceVTable] for more information."]
+   {{!Ocgio.Raw.D_bus_interface_v_table}[GDBusInterfaceVTable]} for more \
+   information."]
 
 external get_connection : t -> D_bus_connection.t
   = "ml_g_dbus_method_invocation_get_connection"
-(** Gets the [GDBusConnection] the method was invoked on. *)
+(** Gets the {{!Ocgio.Raw.D_bus_connection}[GDBusConnection]} the method was
+    invoked on. *)

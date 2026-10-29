@@ -10,7 +10,7 @@ class type file_input_stream_t = object
     (File_info.file_info_t, GError.t) result
   (** Queries a file input stream the given [attributes]. This function blocks
       while querying the stream. For the asynchronous (non-blocking) version of
-      this function, see g_file_input_stream_query_info_async(). While the
+      this function, see [g_file_input_stream_query_info_async ()]. While the
       stream is blocked, the stream will set the pending flag internally, and
       any other operations on the stream will fail with [G_IO_ERROR_PENDING]. *)
 

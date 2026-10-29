@@ -32,8 +32,8 @@
     [settings.ini] file next to their [gtk.css] file.
 
     Applications can override system-wide settings by setting the property of
-    the [GtkSettings] object with g_object_set(). This should be restricted to
-    special cases though; [GtkSettings] are not meant as an application
+    the [GtkSettings] object with [g_object_set ()]. This should be restricted
+    to special cases though; [GtkSettings] are not meant as an application
     configuration facility.
 
     There is one [GtkSettings] instance per display. It can be obtained with
@@ -47,7 +47,7 @@ class type settings_t = object
   (** {2:methods Methods} *)
 
   method reset_property : string -> unit
-  (** Undoes the effect of calling g_object_set() to install an
+  (** Undoes the effect of calling [g_object_set ()] to install an
       application-specific value for a setting.
 
       After this call, the setting will again follow the session-wide value for
@@ -321,7 +321,7 @@ class type settings_t = object
   (** When [true], keyboard navigation and other input-related errors will cause
       a beep.
 
-      Since the error bell is implemented using gdk_surface_beep(), the
+      Since the error bell is implemented using [gdk_surface_beep ()], the
       windowing system may offer ways to configure the error bell in many ways,
       such as flashing the window or similar visual effects. *)
 
@@ -329,7 +329,7 @@ class type settings_t = object
   (** When [true], keyboard navigation and other input-related errors will cause
       a beep.
 
-      Since the error bell is implemented using gdk_surface_beep(), the
+      Since the error bell is implemented using [gdk_surface_beep ()], the
       windowing system may offer ways to configure the error bell in many ways,
       such as flashing the window or similar visual effects. *)
 
@@ -763,8 +763,8 @@ class settings : Raw.Settings.t -> settings_t
     [settings.ini] file next to their [gtk.css] file.
 
     Applications can override system-wide settings by setting the property of
-    the [GtkSettings] object with g_object_set(). This should be restricted to
-    special cases though; [GtkSettings] are not meant as an application
+    the [GtkSettings] object with [g_object_set ()]. This should be restricted
+    to special cases though; [GtkSettings] are not meant as an application
     configuration facility.
 
     There is one [GtkSettings] instance per display. It can be obtained with

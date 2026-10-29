@@ -1,8 +1,9 @@
 (* GENERATED CODE - DO NOT EDIT *)
 (* ThreadedResolver: ThreadedResolver *)
 
-(** [GThreadedResolver] is an implementation of [GResolver] which calls the libc
-    lookup functions in threads to allow them to run asynchronously.
+(** {{!Ocgio.Raw.Threaded_resolver}[GThreadedResolver]} is an implementation of
+    {{!Ocgio.Raw.Resolver}[GResolver]} which calls the libc lookup functions in
+    threads to allow them to run asynchronously.
 
     The class built on this module is in {!Ocgio.Threaded_resolver}. *)
 

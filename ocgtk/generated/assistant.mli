@@ -34,8 +34,9 @@
     page statuses.
 
     If you have a case that doesn’t quite fit in [GtkAssistant]s way of handling
-    buttons, you can use the [GTK_ASSISTANT_PAGE_CUSTOM] page type and handle
-    buttons yourself.
+    buttons, you can use the
+    {{!Ocgtk.Enums.type-assistantpagetype.constructor-CUSTOM}[GTK_ASSISTANT_PAGE_CUSTOM]}
+    page type and handle buttons yourself.
 
     [GtkAssistant] maintains a [GtkAssistantPage] object for each added child,
     which holds additional per-child properties. You obtain the
@@ -177,7 +178,8 @@ class type assistant_t = object
   (** Switches the page to [page_num].
 
       Note that this will only be necessary in custom buttons, as the
-      [assistant] flow can be set with gtk_assistant_set_forward_page_func(). *)
+      [assistant] flow can be set with [gtk_assistant_set_forward_page_func ()].
+  *)
 
   method set_page_complete : Widget.widget_t -> bool -> unit
   (** Sets whether [page] contents are complete.
@@ -241,8 +243,9 @@ class assistant : Raw.Assistant.t -> assistant_t
     page statuses.
 
     If you have a case that doesn’t quite fit in [GtkAssistant]s way of handling
-    buttons, you can use the [GTK_ASSISTANT_PAGE_CUSTOM] page type and handle
-    buttons yourself.
+    buttons, you can use the
+    {{!Ocgtk.Enums.type-assistantpagetype.constructor-CUSTOM}[GTK_ASSISTANT_PAGE_CUSTOM]}
+    page type and handle buttons yourself.
 
     [GtkAssistant] maintains a [GtkAssistantPage] object for each added child,
     which holds additional per-child properties. You obtain the

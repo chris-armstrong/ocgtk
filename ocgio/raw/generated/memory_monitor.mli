@@ -67,8 +67,9 @@ val on_low_memory_warning :
 (** Emitted when the system is running low on free memory.
 
     The signal handler should then take the appropriate action depending on the
-    warning level. See the [GMemoryMonitorWarningLevel] documentation for
-    details.
+    warning level. See the
+    {{!Ocgio.Enums.type-memorymonitorwarninglevel}[GMemoryMonitorWarningLevel]}
+    documentation for details.
 
     Since the {{!Ocgio.Raw.Memory_monitor}[Gio.MemoryMonitor]} is a singleton,
     this signal will be emitted in the

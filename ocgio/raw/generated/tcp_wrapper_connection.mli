@@ -25,12 +25,13 @@ external gtype : unit -> Gobject.Type.t
 
 external new_ : Io_stream.t -> Socket_and__socket_connection.Socket.t -> t
   = "ml_g_tcp_wrapper_connection_new"
-(** Wraps [base_io_stream] and [socket] together as a [GSocketConnection]. *)
+(** Wraps [base_io_stream] and [socket] together as a
+    {{!Ocgio.Raw.Socket_connection}[GSocketConnection]}. *)
 
 (* Methods *)
 
 external get_base_io_stream : t -> Io_stream.t
   = "ml_g_tcp_wrapper_connection_get_base_io_stream"
-(** Gets [conn]'s base [GIOStream] *)
+(** Gets [conn]'s base {{!Ocgio.Raw.Io_stream}[GIOStream]} *)
 
 (* Properties *)

@@ -46,4 +46,6 @@ external get_angle : t -> float = "ml_gsk_conic_gradient_node_get_angle"
     The angle is starting at the top and going clockwise, as expressed in the
     css specification:
 
-    angle = 90 - gsk_conic_gradient_node_get_rotation() *)
+    angle = 90 -
+    {{!Ocgsk.Raw.Conic_gradient_node.val-get_rotation}[gsk_conic_gradient_node_get_rotation
+                                                       ()]} *)

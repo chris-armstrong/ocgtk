@@ -16,8 +16,9 @@
     page statuses.
 
     If you have a case that doesn’t quite fit in [GtkAssistant]s way of handling
-    buttons, you can use the [GTK_ASSISTANT_PAGE_CUSTOM] page type and handle
-    buttons yourself.
+    buttons, you can use the
+    {{!Ocgtk.Enums.type-assistantpagetype.constructor-CUSTOM}[GTK_ASSISTANT_PAGE_CUSTOM]}
+    page type and handle buttons yourself.
 
     [GtkAssistant] maintains a [GtkAssistantPage] object for each added child,
     which holds additional per-child properties. You obtain the
@@ -103,7 +104,7 @@ external set_current_page : t -> int -> unit
 (** Switches the page to [page_num].
 
     Note that this will only be necessary in custom buttons, as the [assistant]
-    flow can be set with gtk_assistant_set_forward_page_func(). *)
+    flow can be set with [gtk_assistant_set_forward_page_func ()]. *)
 
 external remove_page : t -> int -> unit = "ml_gtk_assistant_remove_page"
 (** Removes the [page_num]’s page from [assistant]. *)
@@ -123,7 +124,8 @@ external previous_page : t -> unit = "ml_gtk_assistant_previous_page"
     available.
 
     This function is for use when creating pages of the
-    [GTK_ASSISTANT_PAGE_CUSTOM] type. *)
+    {{!Ocgtk.Enums.type-assistantpagetype.constructor-CUSTOM}[GTK_ASSISTANT_PAGE_CUSTOM]}
+    type. *)
 
 external prepend_page :
   t ->
@@ -139,7 +141,8 @@ external next_page : t -> unit = "ml_gtk_assistant_next_page"
     It is a programming error to call this function when there is no next page.
 
     This function is for use when creating pages of the
-    [GTK_ASSISTANT_PAGE_CUSTOM] type. *)
+    {{!Ocgtk.Enums.type-assistantpagetype.constructor-CUSTOM}[GTK_ASSISTANT_PAGE_CUSTOM]}
+    type. *)
 
 external insert_page :
   t ->

@@ -8,10 +8,10 @@ class type tree_model_sort_t = object
   method clear_cache : unit -> unit
   (** This function should almost never be called. It clears the
       [tree_model_sort] of any cached iterators that haven’t been reffed with
-      gtk_tree_model_ref_node(). This might be useful if the child model being
-      sorted is static (and doesn’t change often) and there has been a lot of
-      unreffed access to nodes. As a side effect of this function, all unreffed
-      iters will be invalid. *)
+      [gtk_tree_model_ref_node ()]. This might be useful if the child model
+      being sorted is static (and doesn’t change often) and there has been a lot
+      of unreffed access to nodes. As a side effect of this function, all
+      unreffed iters will be invalid. *)
 
   method convert_child_path_to_path : Raw.Tree_path.t -> Raw.Tree_path.t option
   (** Converts [child_path] to a path relative to [tree_model_sort]. That is,

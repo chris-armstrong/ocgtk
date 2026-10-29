@@ -165,8 +165,9 @@ external new_from_data : Glib_bytes.t -> (t, GError.t) result
     Otherwise this function will internally create a copy of the memory since
     GLib 2.56, or in older versions fail and exit the process.
 
-    If [data] is empty or corrupt, [G_RESOURCE_ERROR_INTERNAL] will be returned.
-*)
+    If [data] is empty or corrupt,
+    {{!Ocgio.Enums.type-resourceerror.constructor-INTERNAL}[G_RESOURCE_ERROR_INTERNAL]}
+    will be returned. *)
 
 (* Methods *)
 
@@ -185,8 +186,9 @@ external open_stream :
 
     [lookup_flags] controls the behaviour of the lookup.
 
-    The only error this can return is [G_RESOURCE_ERROR_NOT_FOUND], if [path]
-    was not found in [resource]. *)
+    The only error this can return is
+    {{!Ocgio.Enums.type-resourceerror.constructor-NOT_FOUND}[G_RESOURCE_ERROR_NOT_FOUND]},
+    if [path] was not found in [resource]. *)
 
 external lookup_data :
   t ->
@@ -207,9 +209,11 @@ external lookup_data :
 
     [lookup_flags] controls the behaviour of the lookup.
 
-    This can return error [G_RESOURCE_ERROR_NOT_FOUND] if [path] was not found
-    in [resource], or [G_RESOURCE_ERROR_INTERNAL] if decompression of a
-    compressed resource failed. *)
+    This can return error
+    {{!Ocgio.Enums.type-resourceerror.constructor-NOT_FOUND}[G_RESOURCE_ERROR_NOT_FOUND]}
+    if [path] was not found in [resource], or
+    {{!Ocgio.Enums.type-resourceerror.constructor-INTERNAL}[G_RESOURCE_ERROR_INTERNAL]}
+    if decompression of a compressed resource failed. *)
 
 external has_children : t -> string -> bool = "ml_g_resource_has_children"
 (** Returns whether the specified [path] in the resource has children. *)
@@ -224,8 +228,9 @@ external get_info :
 
     [lookup_flags] controls the behaviour of the lookup.
 
-    The only error this can return is [G_RESOURCE_ERROR_NOT_FOUND], if [path]
-    was not found in [resource]. *)
+    The only error this can return is
+    {{!Ocgio.Enums.type-resourceerror.constructor-NOT_FOUND}[G_RESOURCE_ERROR_NOT_FOUND]},
+    if [path] was not found in [resource]. *)
 
 external enumerate_children :
   t ->
@@ -238,8 +243,9 @@ external enumerate_children :
     released with [GLib.strfreev].
 
     If [path] is invalid or does not exist in the
-    {{!Ocgio.Raw.Resource}[Gio.Resource]}, [G_RESOURCE_ERROR_NOT_FOUND] will be
-    returned.
+    {{!Ocgio.Raw.Resource}[Gio.Resource]},
+    {{!Ocgio.Enums.type-resourceerror.constructor-NOT_FOUND}[G_RESOURCE_ERROR_NOT_FOUND]}
+    will be returned.
 
     [lookup_flags] controls the behaviour of the lookup. *)
 

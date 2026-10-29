@@ -31,7 +31,7 @@ class type d_bus_method_invocation_t = object
 
       If this method invocation is a property Get, Set or GetAll call that has
       been redirected to the method call handler then [None] will be returned.
-      See g_dbus_method_invocation_get_property_info() and
+      See [g_dbus_method_invocation_get_property_info ()] and
       [GDBusInterfaceVTable] for more information. *)
 
   method get_method_name : unit -> string
@@ -50,8 +50,8 @@ class type d_bus_method_invocation_t = object
 
       This will only be set in the case of an invocation in response to a
       property Get or Set call that has been directed to the method call handler
-      for an object on account of its property_get() or property_set() vtable
-      pointers being unset.
+      for an object on account of its [property_get ()] or [property_set ()]
+      vtable pointers being unset.
 
       See [GDBusInterfaceVTable] for more information.
 
@@ -71,8 +71,8 @@ class type d_bus_method_invocation_t = object
       [invocation]. *)
 
   method return_gerror : GError.t -> unit
-  (** Like g_dbus_method_invocation_return_error() but takes a [GError] instead
-      of the error domain, error code and message.
+  (** Like [g_dbus_method_invocation_return_error ()] but takes a [GError]
+      instead of the error domain, error code and message.
 
       This method will take ownership of [invocation]. See
       [GDBusInterfaceVTable] for more information about the ownership of
@@ -110,7 +110,7 @@ class type d_bus_method_invocation_t = object
 
   method return_value_with_unix_fd_list :
     Gvariant.t option -> Unix_fd_list.unix_fd_list_t option -> unit
-  (** Like g_dbus_method_invocation_return_value() but also takes a
+  (** Like [g_dbus_method_invocation_return_value ()] but also takes a
       [GUnixFDList].
 
       This method is only available on UNIX.

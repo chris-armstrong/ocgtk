@@ -14,13 +14,13 @@ class type unix_socket_address_t = object
     "Gets [address]'s path, or for abstract sockets the \"name\".\n\n\
      Guaranteed to be zero-terminated, but an abstract socket\n\
      may contain embedded zeros, and thus you should use\n\
-     g_unix_socket_address_get_path_len() to get the true length\n\
+     [g_unix_socket_address_get_path_len ()] to get the true length\n\
      of this string."]
 
   method get_path_len : unit -> Gsize.t
   (** Gets the length of [address]'s path.
 
-      For details, see g_unix_socket_address_get_path(). *)
+      For details, see [g_unix_socket_address_get_path ()]. *)
 
   (** {2:properties Properties} *)
 

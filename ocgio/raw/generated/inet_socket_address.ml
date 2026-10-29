@@ -14,11 +14,13 @@ type t = [ `inet_socket_address | `socket_address | `object_ ] Gobject.obj
 external gtype : unit -> Gobject.Type.t = "ml_gio_inet_socket_address_get_type"
 
 external new_ : Inet_address.t -> UInt16.t -> t = "ml_g_inet_socket_address_new"
-(** Creates a new [GInetSocketAddress] for [address] and [port]. *)
+(** Creates a new {{!Ocgio.Raw.Inet_socket_address}[GInetSocketAddress]} for
+    [address] and [port]. *)
 
 external new_from_string : string -> int -> t
   = "ml_g_inet_socket_address_new_from_string"
-(** Creates a new [GInetSocketAddress] for [address] and [port].
+(** Creates a new {{!Ocgio.Raw.Inet_socket_address}[GInetSocketAddress]} for
+    [address] and [port].
 
     If [address] is an IPv6 address, it can also contain a scope ID (separated
     from the address by a [%]). Note that currently this behavior is platform
@@ -47,6 +49,6 @@ external get_flowinfo : t -> UInt32.t = "ml_g_inet_socket_address_get_flowinfo"
 
 external get_address : t -> Inet_address.t
   = "ml_g_inet_socket_address_get_address"
-(** Gets [address]'s [GInetAddress]. *)
+(** Gets [address]'s {{!Ocgio.Raw.Inet_address}[GInetAddress]}. *)
 
 (* Properties *)

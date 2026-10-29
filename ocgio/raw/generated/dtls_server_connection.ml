@@ -20,13 +20,17 @@ external from_gobject : 'a Gobject.obj -> t
 
 external get_authentication_mode : t -> Ocgio_enums.tlsauthenticationmode
   = "ml_g_dtls_server_connection_get_authentication_mode"
-(** The [GTlsAuthenticationMode] for the server. This can be changed before
-    calling g_dtls_connection_handshake() if you want to rehandshake with a
-    different mode from the initial handshake. *)
+(** The {{!Ocgio.Enums.type-tlsauthenticationmode}[GTlsAuthenticationMode]} for
+    the server. This can be changed before calling
+    {{!Ocgio.Raw.Dtls_connection.val-handshake}[g_dtls_connection_handshake ()]}
+    if you want to rehandshake with a different mode from the initial handshake.
+*)
 
 external set_authentication_mode :
   t -> Ocgio_enums.tlsauthenticationmode -> unit
   = "ml_g_dtls_server_connection_set_authentication_mode"
-(** The [GTlsAuthenticationMode] for the server. This can be changed before
-    calling g_dtls_connection_handshake() if you want to rehandshake with a
-    different mode from the initial handshake. *)
+(** The {{!Ocgio.Enums.type-tlsauthenticationmode}[GTlsAuthenticationMode]} for
+    the server. This can be changed before calling
+    {{!Ocgio.Raw.Dtls_connection.val-handshake}[g_dtls_connection_handshake ()]}
+    if you want to rehandshake with a different mode from the initial handshake.
+*)
