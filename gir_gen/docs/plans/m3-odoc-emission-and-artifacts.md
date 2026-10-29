@@ -1,14 +1,15 @@
 # M3 Odoc Translation Slice — emission, wiring, doc HTML diff, PR doc preview
 
-**Status: Phases 0–10 implemented (per-phase status below). The C code-block
+**Status: Phases 0–11 implemented (per-phase status below). The C code-block
 translation phases (formerly 11–14) are dropped from this leg. Phases 11–13,
-cross-reference resolution (PRD §7), added 2026-10-28; not started. Phase 14,
+cross-reference resolution (PRD §7), added 2026-10-28; Phase 11 done, 12 and
+13 not started. Phase 14,
 property doc fallbacks, added 2026-10-29; not started.** Phase 0 and 1: PRs #188 and #190, merged into
 `m3`. Phase 2 and the start of Phase 5: PR #191 (branch `m3-p2`). Phase 4:
 PR #193 (branch `m3-p4`), landed before Phase 3 because the workflow does not
 need it. Conventions page: PR #194. Phase 3: PR #207 (branch
 `m3-phase3`). Phase 5: PR #208 (branch `m3-phase5`). Phase 6: PR #209
-(branch `m3-phase6`). Phase 7: PR #211 (branch `m3-phase7`). Phase 8: branch `m3-phase8`. Phase 9: PR #215 (branch `m3-phase9`). Phase 10: branch `m3-phase10`. Phase 7 onwards: one branch and PR per phase (see the rules below).
+(branch `m3-phase6`). Phase 7: PR #211 (branch `m3-phase7`). Phase 8: branch `m3-phase8`. Phase 9: PR #215 (branch `m3-phase9`). Phase 10: PR #216 (branch `m3-phase10`). Phase 11: branch `m3-phase11`. Phase 7 onwards: one branch and PR per phase (see the rules below).
 **Created: 2026-09-08; revised: 2026-10-05 (both layers in this leg; phases
 renumbered plainly from 3; cache driver and preview moved up to Phases 3 and 4;
 one PR per phase); 2026-10-07 (Phase 4: preview action replaced, previews
@@ -1168,6 +1169,58 @@ The trivially fixable buckets are zero at emission; the rest are recorded as
 TODO counts, not silently dropped.
 
 ### Phase 11 — Cross-references I: the resolver, and links to types and constants
+
+**Status: done** (branch `m3-phase11`). `Doc_index` builds the index from
+the context and the references files; `Doc_resolve` rewrites `Sym_ref` to
+`Ref { path; text }`; `Doc_emit.translate` (parse, resolve, render) is the
+one translation emission sites use, and every site passes `~refs`. A fresh
+`@doc` build has 0 odoc warnings and no unresolved link; 2,808 references
+render as links (the summary's L2 count of linked fragments: Gtk 533,
+Gio 365, Gdk 47, Pango 45, Gsk 20, GdkPixbuf 4). `doc_diff` against
+`m3-phase10` shows only code spans becoming links in every binding package.
+The acceptance links are as planned: `Ocgtk.Button`'s `[Gtk.ToggleButton]`
+goes to `Ocgtk/Toggle_button/class-type-toggle_button_t/` (L2) and to
+`Ocgtk_raw/Toggle_button/` (L1, through `Ocgtk.Raw.Toggle_button`), and
+`Ocgtk.Drag_source`'s `[Gdk.ContentProvider]` links into `ocgdk`.
+Departures from the plan below:
+
+- **No links in class member docs.** odoc 3.2.1 resolves no reference in
+  the doc of a method of a `class` or `class type`: a probe showed every
+  form (another module, a type, a value, a module, `{!method-…}` in the
+  same class type) rendered as `xref-unresolved`, with no warning. The
+  class type's own doc and `val` docs resolve. So L2 method, signal and
+  property accessor docs resolve with `Doc_resolve.class_member`, which
+  links nothing, and their references stay code. The first build without
+  it had 0 warnings but over 400 unresolved links, all in such docs.
+  **Phase 12 is affected:** member links can be made from L1 docs and from
+  L2 module, class type, enum and constant docs, but not from L2 member
+  docs, until odoc resolves them.
+- **Index type in `Types`.** The context carries the index, and `Types`
+  cannot depend on `generate/`, so `Types.doc_index` is the data
+  (namespace → GIR name → kind, and constant → OCaml name) and `Doc_index`
+  builds it. Entries hold no C names yet (Phase 13 adds them) and no OCaml
+  module names: the resolver derives them through `Module_paths`.
+- **PRD §14 question 10.** The references files list only generated
+  classes and records, and all interfaces, enums and bitfields, which are
+  all generated. They listed every constant, including those the
+  generator skips because their type has no OCaml literal form; they now
+  list only generated ones (`Constant_code.is_generated`).
+- **Outcomes, not fallbacks.** `render` cannot know why a `Sym_ref` was not
+  resolved, so it still reports `Sym_ref_degraded`. `resolve` returns one
+  outcome per reference (linked, or a miss reason) instead of a
+  `Sym_ref_unresolved` fallback. `Member_in_other_namespace` is reported
+  already.
+- **The summary is a pure pass.** `generate` prints it per namespace from
+  every GIR doc of the namespace's generated types, enums, bitfields and
+  constants, resolved as L2 docs, rather than counting at the emission
+  sites. It ends with the distinct `Unknown_target` endpoints. Named
+  exceptions, all correct misses: `Gio.SettingsBackend`,
+  `Gtk.PrintUnixDialog` and `Gtk.License` (not generated),
+  `Gio.AsyncReadyCallback` (a callback named with `[type@]`),
+  `PangoAttrInt` and `GtkColumnViewCell` (C names), and
+  ``GdkPixbuf.PixbufLoader` `` (a stray backtick upstream).
+- **Explicit kinds in paths.** Enum and bitfield links use
+  `Enums.type-<e>`, so they cannot resolve to a value of the same name.
 
 *Goal:* gi-docgen fragments that name a type or a constant become odoc links,
 from both layers, to every generated namespace (decision 11). The resolver,
