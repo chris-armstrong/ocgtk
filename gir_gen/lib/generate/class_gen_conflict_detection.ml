@@ -5,7 +5,6 @@ open Types
 module StringSet = Common.StringSet
 
 type module_names = Common.module_names
-type property_filters = Common.property_filters
 
 (* Helper to sanitize class/enum names *)
 let sanitize_name s =

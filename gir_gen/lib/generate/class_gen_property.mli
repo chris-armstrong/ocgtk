@@ -5,25 +5,12 @@ type module_names = Class_gen_helpers.module_names = {
   layer2 : string;
 }
 
-type property_filters = Class_gen_helpers.property_filters = {
-  method_names : string list;
-  base_names : string list;
-}
-
 val sanitize_name : string -> string
 
 val require_type :
   location:string -> gir_type_name:string -> string option -> string
 
 val get_module_names : ctx:Types.generation_context -> string -> module_names
-
-val get_property_filters :
-  ctx:Types.generation_context ->
-  class_name:string ->
-  methods:Types.gir_method list ->
-  Types.gir_property list ->
-  property_filters
-
 val is_same_cluster_class : same_cluster_classes:'a list -> 'a -> bool
 val structural_type_for_class : ctx:'a -> string -> string
 val ocaml_method_name : class_name:'a -> c_type:'b -> Types.gir_method -> string
@@ -49,32 +36,22 @@ val map_param_sig :
   string
 
 val generate_property_code :
-  ctx:Types.generation_context ->
-  class_name:'a ->
-  methods:Types.gir_method list ->
-  seen:StringSet.t ->
   generate_getter:(Types.gir_property -> string -> string) ->
   generate_setter:(Types.gir_property -> string -> string) ->
-  Types.gir_property ->
-  string * StringSet.t
+  Emitted_members.accessors ->
+  string
 
 val generate_property_methods :
   ctx:Types.generation_context ->
   module_name:string ->
   current_layer2_module:StdLabels.String.t ->
-  seen:StringSet.t ->
   same_cluster_classes:'a ->
-  Types.gir_property ->
-  class_name:'b ->
-  methods:Types.gir_method list ->
-  string * StringSet.t
+  Emitted_members.accessors ->
+  string
 
 val generate_property_signatures :
   ctx:Types.generation_context ->
-  class_name:'a ->
-  methods:Types.gir_method list ->
-  seen:StringSet.t ->
   current_layer2_module:StdLabels.String.t ->
-  same_cluster_classes:'b ->
-  Types.gir_property ->
-  string * StringSet.t
+  same_cluster_classes:'a ->
+  Emitted_members.accessors ->
+  string

@@ -13,10 +13,9 @@ let generate_type_declaration ~output_mode:_ ~base_type buf : unit =
 (** Generate constructors section *)
 let generate_constructors_section ~ctx ~class_name ~constructors buf : unit =
   List.iter
-    ~f:(fun (ctor : gir_constructor) ->
-      if Layer1_constructor.should_generate_constructor ~ctx ctor then
-        Layer1_constructor.generate_constructor_decl ~ctx ~class_name ~buf ctor)
-    (constructors |> Option.value ~default:[])
+    ~f:(Layer1_constructor.generate_constructor_decl ~ctx ~class_name ~buf)
+    (Emitted_members.constructors ~ctx
+       (constructors |> Option.value ~default:[]))
 
 (** Generate methods section *)
 let generate_methods_section ~ctx ~class_name ~c_type ~c_symbol_prefix
@@ -25,8 +24,8 @@ let generate_methods_section ~ctx ~class_name ~c_type ~c_symbol_prefix
   List.iter
     ~f:(fun (meth : gir_method) ->
       Layer1_method.generate_method_decl ~ctx ~class_name ~c_type
-        ~c_symbol_prefix ~entity_kind ~buf meth)
-    (List.rev methods)
+        ~c_symbol_prefix ~buf meth)
+    (List.rev (Emitted_members.l1_methods ~ctx ~entity_kind methods))
 
 (** Generate properties section *)
 let generate_properties_section ~ctx ~class_name ~methods ~properties buf : unit
@@ -34,14 +33,12 @@ let generate_properties_section ~ctx ~class_name ~methods ~properties buf : unit
   if List.length properties > 0 then begin
     bprintf buf "(* Properties *)\n\n";
     List.iter
-      ~f:(fun (prop : gir_property) ->
-        Layer1_property.generate_property_decl ~ctx ~class_name ~buf ~methods
-          prop)
-      properties
+      ~f:(Layer1_property.generate_property_decl ~ctx ~class_name ~buf)
+      (Emitted_members.l1_properties ~ctx ~methods properties)
   end
 
-let emit_one_signal ~ctx ~output_mode ~class_name buf signal =
-  match Signal_gen.classify ~ctx signal with
+let emit_one_signal ~ctx ~output_mode ~class_name buf (signal, emission) =
+  match emission with
   | Error reason ->
       Fmt.epr "Skipping signal '%s' for %s (%s)\n" signal.signal_name class_name
         reason
@@ -58,7 +55,9 @@ let emit_one_signal ~ctx ~output_mode ~class_name buf signal =
 
 let generate_signal_bindings_section ~ctx ~output_mode ~class_name
     (signals : gir_signal list) buf : unit =
-  List.iter signals ~f:(emit_one_signal ~ctx ~output_mode ~class_name buf)
+  List.iter
+    (Emitted_members.classified_signals ~ctx signals)
+    ~f:(emit_one_signal ~ctx ~output_mode ~class_name buf)
 
 let generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
     ~constructors ~methods ~properties ~base_type ?c_symbol_prefix ~entity_kind

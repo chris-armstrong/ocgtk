@@ -1164,7 +1164,11 @@ let build_generation_context ~namespace ~repository ~classes ~interfaces ~enums
   let module_groups =
     Dependency_analysis.create_module_groups_table module_groups_list
   in
-  ({ ctx_initial with module_groups }, entities, module_groups_list)
+  let ctx = { ctx_initial with module_groups } in
+  let ctx =
+    { ctx with doc_index = Generate.Doc_index.with_members ~ctx entities }
+  in
+  (ctx, entities, module_groups_list)
 
 (* Main generation function *)
 let generate_bindings filter_file gir_file output_dir reference_files
