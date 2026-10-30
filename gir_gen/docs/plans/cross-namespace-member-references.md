@@ -2,8 +2,8 @@
 
 **Status: done (Phases 1 and 2 2026-10-29, Phase 3 2026-10-30).** Branch
 `cross-ns-member-refs`. Follows the odoc leg
-([m3-odoc-emission-and-artifacts](m3-odoc-emission-and-artifacts.md)), whose
-decision 11 links members only within the doc's own namespace, and lists
+([m3-reference-documentation](m3-reference-documentation.md)), which
+first linked members only within the doc's own namespace, and listed
 "cross-namespace member references" as out of scope.
 
 ## Purpose
@@ -81,7 +81,7 @@ therefore:
    `build_generation_context`.
 
 If the two contexts differ, a references file could list a member the
-generator skipped, which is exactly the broken link decision 11 rules out.
+generator skipped, which is exactly the broken link decision 3 rules out.
 Building both contexts with one shared function is what makes the tables
 trustworthy.
 
@@ -190,7 +190,7 @@ References file sizes, in bytes, before and after:
    indexed, but its references file has no member tables (an older file).
    With all files regenerated it should never occur; keep it so a stale file
    degrades to code instead of failing.
-5. Update decision 11's wording in the odoc plan, the `Doc_resolve` and
+5. Update decision 3's wording in the odoc plan, the `Doc_resolve` and
    `Doc_index` interface docs, and the out-of-scope entry.
 
 *Tests:* `doc_resolve_tests` with a Gdk references fixture carrying member
