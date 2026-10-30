@@ -1,5 +1,5 @@
 opam-version: "2.0"
-version: "2"
+version: "3"
 synopsis: "Virtual package relying on GTK4 system installation"
 description:
   "This package can only be installed if GTK 4 is installed on the system."
@@ -17,8 +17,9 @@ depexts: [
   # Debian/Ubuntu
   ["libgtk-4-dev"] {os-family = "debian"}
 
-  # Fedora/CentOS Stream/openSUSE
+  # Fedora/RHEL/CentOS/OpenSUSE
   ["gtk4-devel"] {os-distribution = "fedora"}
+  ["gtk4-devel"] {os-distribution = "rhel"}
   ["gtk4-devel"] {os-distribution = "centos"}
   ["gtk4-devel"] {os-distribution = "opensuse-leap" | os-distribution = "opensuse-tumbleweed"}
 
@@ -30,6 +31,9 @@ depexts: [
 
   # macOS via Homebrew
   ["gtk4"] {os = "macos" & os-distribution = "homebrew"}
+
+  # macOS via MacPorts
+  ["gtk4"] {os = "macos" & os-distribution = "macports"}
 
   # FreeBSD
   ["gtk4"] {os = "freebsd"}

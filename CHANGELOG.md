@@ -71,14 +71,15 @@ The generated bindings now carry the upstream GTK documentation, and
 
 - **Windows unsupported** — MSYS2 deprecated its MINGW64 environment and no
   longer ships GTK 4 there, and opam cannot yet build OCaml in the UCRT64
-  environment that does. `conf-gtk4` is no longer available on Windows, and
-  the Windows release check is disabled until opam supports UCRT64.
+  environment that does. The packages require the new `conf-gtk4` 3, which
+  is not available on Windows, and the Windows release check is disabled
+  until opam supports UCRT64.
 - **Release checks** now cover Ubuntu 22.04, 24.04, 26.04 and 26.10, Debian
   12 and 13, Fedora 43 and 44, CentOS Stream 9 and 10, openSUSE Leap 16.0
   and Tumbleweed, Alpine 3.24, Arch Linux and macOS (Homebrew). Ubuntu
   25.04, Fedora 40 and openSUSE Leap 15.6 (all end of life) are dropped.
-- **conf-gtk4** — depexts trimmed to the checked platforms: MacPorts and
-  the `rhel` distribution entry are removed.
+- **conf-gtk4 3** — drops the MSYS2 depext and is unavailable on win32;
+  the published `conf-gtk4` 2 is unchanged.
 - **OCaml versions** — CI builds with OCaml 5.5, and the release checks add
   a job that installs every package on OCaml 4.14, the oldest the packages
   accept.
