@@ -5,6 +5,8 @@ with windows, widgets, layout and the application model. They are generated
 from GTK's GObject introspection data, apart from {!Ocgtk.Main} and
 {!Ocgtk.Version}, which are hand-written.
 
+New to ocgtk? Start with {{!page-getting_started}Getting started}.
+
 {{!page-conventions}The conventions page} explains how the bindings are organised and how GObject maps onto OCaml.
 
 {1 Modules}

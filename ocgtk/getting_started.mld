@@ -1,0 +1,139 @@
+{0 Getting started}
+
+This page takes you from an empty directory to a running GTK 4 window
+written in OCaml: install the libraries, set up a dune project, write a
+small counter application, and build and run it. It ends with pointers to
+the rest of the documentation.
+
+You need OCaml 4.14 or later, opam and dune, and a basic grasp of OCaml. You
+don't need to know GTK's C API.
+
+{1 Install}
+
+The packages are not in opam-repository yet, so install them from a clone of
+the repository. First install GTK 4's development files:
+
+{@sh[
+sudo apt-get install libgtk-4-dev     # Debian, Ubuntu
+sudo dnf install gtk4-devel           # Fedora
+brew install gtk4                     # macOS (Homebrew)
+]}
+
+Then pin the packages and install [ocgtk]:
+
+{@sh[
+git clone https://github.com/chris-armstrong/ocgtk.git
+cd ocgtk
+for p in conf-*/; do opam pin add -n -y "${p%/}" "./$p"; done
+opam pin add -n -y .
+opam install ocgtk
+]}
+
+The [conf-*] packages check that the C libraries are installed. Installing
+[ocgtk] also installs the packages it depends on, such as [ocgio] and
+[ocgdk] (see {{!page-conventions.section-libraries}Libraries and namespaces}).
+
+{1 Create a project}
+
+Create a directory with three files:
+
+{@text[
+counter/
+  dune-project
+  dune
+  counter.ml
+]}
+
+[dune-project]:
+
+{@dune[
+(lang dune 3.0)
+]}
+
+[dune]:
+
+{@dune[
+(executable
+ (name counter)
+ (libraries ocgtk))
+]}
+
+[counter.ml]:
+
+{@ocaml[
+open Ocgtk
+
+let activate app =
+  let window = Application_window.new_ app in
+  window#set_title (Some "Counter");
+  window#set_default_size 300 200;
+
+  let count = ref 0 in
+  let label = Label.new_ (Some "Clicked 0 times") in
+  let button = Button.new_with_label "Click me" in
+  ignore
+    (button#on_clicked
+       ~callback:(fun () ->
+         incr count;
+         label#set_label (Printf.sprintf "Clicked %d times" !count))
+       ());
+
+  let box = Box.new_ `VERTICAL 12 in
+  box#set_margin_top 12;
+  box#set_margin_bottom 12;
+  box#set_margin_start 12;
+  box#set_margin_end 12;
+  box#append (label :> Widget.widget_t);
+  box#append (button :> Widget.widget_t);
+
+  window#set_child (Some (box :> Widget.widget_t));
+  window#present ()
+
+let () =
+  let app = Application.new_ (Some "org.example.Counter") [ `DEFAULT_FLAGS ] in
+  ignore (app#on_activate ~callback:(fun () -> activate app) ());
+  exit (app#run 0 None)
+]}
+
+{1 Build and run}
+
+{@sh[
+dune build
+dune exec ./counter.exe
+]}
+
+A window opens with a label and a button. Each click updates the label.
+Closing the window ends the program.
+
+{1 What the program does}
+
+- {b The application.} {!Ocgtk.Application} starts GTK, runs the main loop,
+  and quits when its last window closes. GTK emits its [activate] signal
+  when the application starts, and that is where the window is built. The
+  ID [org.example.Counter] names the application to the desktop. See
+  {{!page-conventions.section-mainloop}The main loop and threads}.
+- {b Creating objects.} Each GTK class has a module ({!Ocgtk.Window},
+  {!Ocgtk.Button}, ...) with its constructors: [Button.new_with_label]
+  wraps [gtk_button_new_with_label]. A constructor returns an OCaml object,
+  and you call its methods with [#]: [window#set_title].
+- {b Upcasting.} [Box#append] and [Window#set_child] take any widget, as a
+  [Widget.widget_t]. OCaml does not convert a [button_t] to a [widget_t] on
+  its own, so the code upcasts with [:>]. See
+  {{!page-conventions.section-upcasting}Upcasting}.
+- {b Signals.} [button#on_clicked ~callback ()] connects a handler to the
+  button's [clicked] signal. Don't leave out the final [()]: without it the
+  handler is never connected. See {{!page-conventions.section-signals}Signals}.
+- {b Optional values.} Where the C API accepts [NULL], the OCaml binding
+  takes an option, such as [Some "Counter"] for the title.
+
+{1 Next steps}
+
+- {{!page-conventions}The conventions page} explains how the bindings are
+  organised: the two layers of each library, the anatomy of a class module,
+  inheritance and casting, properties, memory management and how C types
+  map onto OCaml.
+- {{!page-modules}The module index} lists every GTK class, interface and
+  record. Each module's documentation comes from GTK's own, so the upstream
+  {{:https://docs.gtk.org/gtk4/}GTK 4 documentation} reads the same way.
+- The {{:https://github.com/chris-armstrong/ocgtk/tree/main/ocgtk/examples}examples}
+  include a text editor, a settings panel, a login form and a calculator.

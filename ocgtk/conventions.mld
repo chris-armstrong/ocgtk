@@ -46,7 +46,7 @@ emitted on an object, that can be listened to via a closure. (You will
 interact with signals by registering an OCaml callback function - 
 closures are an internal detail).
 
-{1 Libraries and namespaces}
+{1:libraries Libraries and namespaces}
 
 Each GObject namespace (apart from GLib and GObject, which share [ocglib])
 is its own opam package, containing one library of
@@ -328,7 +328,7 @@ end
 
 Note that [Widget] already implements [Accessible], [Buildable] and [ConstraintTarget], so they won't be added again to the definition of [Window].
 
-{2 Upcasting: how to pass subclass values and use polymorphism}
+{2:upcasting Upcasting: how to pass subclass values and use polymorphism}
 
 Say you have a [button_t], but you want to pass it as a value to a method that
 declares a parameter of [widget_t]. Unlike other object-oriented languages where you
@@ -409,7 +409,7 @@ You may notice modules like [Application_and__window_and__window_group] (in {!Oc
 
 In OCaml, these can't be declared in separate files, but instead need to be declared in an OCaml recursive cluster in the same file i.e. [class type c1 ... and c2 ... end] / [class c1 ... and c2 ... end]. Each individual class is then aliased in a separate module to "flatten" the namespace and hide the recursive classes.
 
-{1 Signals}
+{1:signals Signals}
 
 In both Layer 1 and Layer 2, signals are exposed as a [on_<signal_name>] method/function. They take:
 
