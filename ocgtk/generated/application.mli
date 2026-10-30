@@ -33,7 +33,8 @@ class type application_t =
      {b Automatic resources}\n\n\
      [GtkApplication] will automatically load menus from the [GtkBuilder]\n\
      resource located at \"gtk/menus.ui\", relative to the application's\n\
-     resource base path (see [Gio.Application.set_resource_base_path]).\n\
+     resource base path (see \
+     {{!Ocgio.Application.class-type-application_t.method-set_resource_base_path}[Gio.Application.set_resource_base_path]}).\n\
      The menu with the ID \"menubar\" is taken as the application's\n\
      menubar. Additional menus (most interesting submenus) can be named\n\
      and accessed via \
@@ -107,7 +108,8 @@ class application : Raw.Application.t -> application_t
  {b Automatic resources}\n\n\
  [GtkApplication] will automatically load menus from the [GtkBuilder]\n\
  resource located at \"gtk/menus.ui\", relative to the application's\n\
- resource base path (see [Gio.Application.set_resource_base_path]).\n\
+ resource base path (see \
+ {{!Ocgio.Application.class-type-application_t.method-set_resource_base_path}[Gio.Application.set_resource_base_path]}).\n\
  The menu with the ID \"menubar\" is taken as the application's\n\
  menubar. Additional menus (most interesting submenus) can be named\n\
  and accessed via \

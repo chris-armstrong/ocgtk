@@ -126,8 +126,8 @@ external get_font_desc : t -> Ocpango_raw.Font_description.t option
     different structure. For example, “Helvetica Italic Bold 12” could be
     normalized to “Helvetica Bold Italic 12”.
 
-    Use [Pango.FontDescription.equal] if you want to compare two font
-    descriptions. *)
+    Use {{!Ocpango.Raw.Font_description.val-equal}[Pango.FontDescription.equal]}
+    if you want to compare two font descriptions. *)
 
 external get_font : t -> string option = "ml_gtk_font_chooser_get_font"
 (** Gets the currently-selected font name.
@@ -138,8 +138,8 @@ external get_font : t -> string option = "ml_gtk_font_chooser_get_font"
     different structure. For example, “Helvetica Italic Bold 12” could be
     normalized to “Helvetica Bold Italic 12”.
 
-    Use [Pango.FontDescription.equal] if you want to compare two font
-    descriptions. *)
+    Use {{!Ocpango.Raw.Font_description.val-equal}[Pango.FontDescription.equal]}
+    if you want to compare two font descriptions. *)
 
 (* Properties *)
 

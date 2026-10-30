@@ -1029,25 +1029,6 @@ let generate_enum_files ~refs ~dirs ~generated_stubs namespace enums bitfields =
     end
   end
 
-let load_reference_files reference_files =
-  let open Gir_gen_lib.Types in
-  let converter = cross_reference_namespace_of_sexp in
-  List.fold_left reference_files ~init:StringMap.empty ~f:(fun acc file ->
-      (* NOTE: this loads everything at once into memory so it is slower than a progressive load, but we're embedding something valuable at the start so we don't have a homogenous list to play with *)
-      let cr_namespace = Sexplib.Sexp.load_sexp_conv_exn file converter in
-      let ncr_namespace =
-        {
-          ncr_namespace_name = cr_namespace.cr_namespace_name;
-          ncr_namespace_packages = cr_namespace.cr_namespace_packages;
-          ncr_namespace_c_includes = cr_namespace.cr_namespace_c_includes;
-          ncr_namespace_includes = cr_namespace.cr_namespace_includes;
-          ncr_entities =
-            List.fold_left cr_namespace.cr_entities ~init:StringMap.empty
-              ~f:(fun sm cr -> StringMap.add cr.cr_name cr sm);
-        }
-      in
-      StringMap.add cr_namespace.cr_namespace_name ncr_namespace acc)
-
 (* Hand-written modules in [dir]: layer 1 in raw/core, which [Raw] re-exports,
    or layer 2 in core, which the main library copies in *)
 let core_module_names dir =
@@ -1120,154 +1101,30 @@ let generate_constants_files ~ctx ~dirs =
            constants)
   end
 
-(* The generation context of a namespace, its generated classes, interfaces
-   and records, and their module groups (cycles become one combined module) *)
-let build_generation_context ~namespace ~repository ~classes ~interfaces ~enums
-    ~bitfields ~records ~constants ~cross_references =
-  let open Gir_gen_lib in
-  let generated_classes =
-    List.filter ~f:Generate.Filtering.should_generate_class classes
-  in
-  let generated_interfaces =
-    List.filter ~f:Generate.Filtering.should_generate_interface interfaces
-  in
-  let records =
-    List.filter ~f:Generate.Filtering.should_generate_record records
-  in
-  let ctx_initial : Types.generation_context =
-    {
-      namespace;
-      repository;
-      classes;
-      interfaces;
-      enums;
-      bitfields;
-      records;
-      constants;
-      module_groups = Hashtbl.create 0;
-      current_cycle_classes = [];
-      cross_references;
-      target_library = Raw_library;
-      doc_index =
-        Generate.Doc_index.build ~namespace:namespace.namespace_name ~classes
-          ~interfaces ~records ~enums ~bitfields ~constants ~cross_references;
-    }
-  in
-  let entities : Types.entity list =
-    List.map ~f:Types.entity_of_class generated_classes
-    @ List.map ~f:Types.entity_of_interface generated_interfaces
-    @ List.map ~f:Types.entity_of_record records
-  in
-  let module_groups_list =
-    Dependency_analysis.compute_module_groups ctx_initial entities
-  in
-  let module_groups =
-    Dependency_analysis.create_module_groups_table module_groups_list
-  in
-  let ctx = { ctx_initial with module_groups } in
-  let ctx =
-    { ctx with doc_index = Generate.Doc_index.with_members ~ctx entities }
-  in
-  (ctx, entities, module_groups_list)
+(* Load a namespace, logging what its overrides file did *)
+let load_namespace ?filter_classes ~overrides_file ~reference_files gir_file =
+  overrides_file
+  |> Option.iter (fun file -> Fmt.pr "Loading overrides from %s\n" file);
+  Gir_gen_lib.Namespace_loader.load ?filter_classes ?overrides_file
+    ~reference_files gir_file
+  |> Result.map (fun (loaded : Gir_gen_lib.Namespace_loader.t) ->
+      List.iter loaded.override_warnings ~f:(fun w -> Fmt.epr "Warning: %s\n" w);
+      if not (List.is_empty loaded.ignored_entities) then
+        Fmt.pr "Ignored %d entity(ies): %s\n"
+          (List.length loaded.ignored_entities)
+          (String.concat ~sep:", " loaded.ignored_entities);
+      loaded)
 
-(* Main generation function *)
-let generate_bindings filter_file gir_file output_dir reference_files
-    overrides_file =
-  Fmt.pr "Current directory: %s\n" (Sys.getcwd ());
-  Fmt.pr "Parsing %s ...\n" gir_file;
-
-  (* Log reference files if provided *)
-  if List.length reference_files > 0 then begin
-    Fmt.pr "Using %d reference file(s) for cross-namespace validation:\n"
-      (List.length reference_files);
-    List.iter ~f:(fun path -> Fmt.pr "  - %s\n" path) reference_files
-  end;
-
-  (* ==== INITIALIZATION ==== *)
-  let dirs = output_dirs_of_package output_dir in
-  ensure_generated_dirs dirs;
-
-  (* Track generated C stub files *)
-  let generated_stubs = ref [] in
-
-  (* Read filter file if specified *)
-  let filter_classes =
-    match filter_file with
-    | Some f ->
-        Fmt.pr "Reading filter file: %s\n" f;
-        let classes = Gir_gen_lib.Utils.read_filter_file f in
-        Fmt.pr "Filter includes %d classes\n" (List.length classes);
-        classes
-    | None -> []
-  in
-
-  (* ==== PARSING STAGE ==== *)
-
-  (* Parse GTK GIR file *)
-  let ( repository,
-        namespace,
-        classes,
-        interfaces,
-        gtk_enums,
-        gtk_bitfields,
-        gtk_records,
-        gtk_constants ) =
-    Gir_gen_lib.Parse.Gir_parser.parse_gir_file gir_file filter_classes
-  in
-
-  Fmt.pr "Found %d classes\n" (List.length classes);
-  Fmt.pr "Found %d interfaces\n" (List.length interfaces);
-  Fmt.pr "Found %d Gtk enumerations\n" (List.length gtk_enums);
-  Fmt.pr "Found %d Gtk bitfields\n" (List.length gtk_bitfields);
-  Fmt.pr "Found %d records\n" (List.length gtk_records);
-  Fmt.pr "Found %d constants\n" (List.length gtk_constants);
-
-  (* ==== OVERRIDE APPLICATION STAGE ==== *)
-
-  (* Apply overrides before building type-mapping context. Ignored entities
-     must be absent from ctx so that find_type_mapping_for_gir_type returns
-     None for their types. *)
-  let ( classes,
-        interfaces,
-        gtk_enums,
-        gtk_bitfields,
-        gtk_records,
-        header_overrides ) =
-    Option.fold
-      ~none:(classes, interfaces, gtk_enums, gtk_bitfields, gtk_records, [])
-      ~some:(fun file ->
-        Fmt.pr "Loading overrides from %s\n" file;
-        match Gir_gen_lib.Override_parser.parse_overrides file with
-        | Error e ->
-            Fmt.epr "Error: override parse failed: %s\n"
-              (Gir_gen_lib.Override_parser.format_error e);
-            exit 1
-        | Ok ov ->
-            let result =
-              (* parse_gir_file does not extract top-level namespace functions,
-             so ~functions:[] is correct — there is nothing to filter. *)
-              Gir_gen_lib.Override_apply.apply_overrides ~overrides:ov ~classes
-                ~interfaces ~enums:gtk_enums ~bitfields:gtk_bitfields
-                ~records:gtk_records ~functions:[]
-            in
-            List.iter result.warnings ~f:(fun w -> Fmt.epr "Warning: %s\n" w);
-            if result.ignored_entities <> [] then
-              Fmt.pr "Ignored %d entity(ies): %s\n"
-                (List.length result.ignored_entities)
-                (String.concat ~sep:", " result.ignored_entities);
-            ( result.classes,
-              result.interfaces,
-              result.enums,
-              result.bitfields,
-              result.records,
-              ov.headers ))
-    @@ overrides_file
-  in
-
-  (* ==== PREPROCESSING STAGE ==== *)
-
-  (* Load cross-references early so parent chain can use them *)
-  let cross_references = load_reference_files reference_files in
+(* Write the bindings of a loaded namespace *)
+let generate_namespace ~dirs ~generated_stubs
+    ({ ctx; entities; module_groups = module_groups_list; header_overrides; _ } :
+      Gir_gen_lib.Namespace_loader.t) =
+  let classes = ctx.classes in
+  let interfaces = ctx.interfaces in
+  let gtk_enums = ctx.enums in
+  let gtk_bitfields = ctx.bitfields in
+  let cross_references = ctx.cross_references in
+  let repository = ctx.repository in
 
   (* Build parent lookup table for inheritance chains *)
   let parent_table = Hashtbl.create (List.length classes + 10) in
@@ -1356,11 +1213,6 @@ let generate_bindings filter_file gir_file output_dir reference_files
     aux (Gir_gen_lib.Utils.normalize_class_name name) 0
   in
 
-  let ctx, entities, module_groups_list =
-    build_generation_context ~namespace ~repository ~classes ~interfaces
-      ~enums:gtk_enums ~bitfields:gtk_bitfields ~records:gtk_records
-      ~constants:gtk_constants ~cross_references
-  in
   let all_classes =
     List.filter ~f:Gir_gen_lib.Generate.Filtering.should_generate_class
       ctx.classes
@@ -1540,101 +1392,118 @@ let generate_bindings filter_file gir_file output_dir reference_files
   Fmt.pr "  Generated: dune.inc with %d C stub names\n" (List.length stub_list);
   `Ok ()
 
-(* References generation function *)
-let generate_references ~gir_file ~output_file ~overrides_file =
-  Fmt.pr "Parsing %s for references...\n" gir_file;
+(* Main generation function *)
+let generate_bindings filter_file gir_file output_dir reference_files
+    overrides_file =
+  Fmt.pr "Current directory: %s\n" (Sys.getcwd ());
+  Fmt.pr "Parsing %s ...\n" gir_file;
 
-  let filter_classes = [] in
+  (* Log reference files if provided *)
+  if List.length reference_files > 0 then begin
+    Fmt.pr "Using %d reference file(s) for cross-namespace validation:\n"
+      (List.length reference_files);
+    List.iter ~f:(fun path -> Fmt.pr "  - %s\n" path) reference_files
+  end;
 
-  let ( repository,
-        namespace,
-        classes,
-        interfaces,
-        enums,
-        bitfields,
-        records,
-        constants ) =
-    Gir_gen_lib.Parse.Gir_parser.parse_gir_file gir_file filter_classes
+  (* ==== INITIALIZATION ==== *)
+  let dirs = output_dirs_of_package output_dir in
+  ensure_generated_dirs dirs;
+
+  (* Track generated C stub files *)
+  let generated_stubs = ref [] in
+
+  (* Read filter file if specified *)
+  let filter_classes =
+    match filter_file with
+    | Some f ->
+        Fmt.pr "Reading filter file: %s\n" f;
+        let classes = Gir_gen_lib.Utils.read_filter_file f in
+        Fmt.pr "Filter includes %d classes\n" (List.length classes);
+        classes
+    | None -> []
   in
 
-  (* Apply overrides to filter ignored entities from references *)
-  let classes, interfaces, enums, bitfields, records =
-    Option.fold ~none:(classes, interfaces, enums, bitfields, records)
-      ~some:(fun file ->
-        Fmt.pr "Loading overrides from %s\n" file;
-        match Gir_gen_lib.Override_parser.parse_overrides file with
-        | Error e ->
-            Fmt.epr "Error: override parse failed: %s\n"
-              (Gir_gen_lib.Override_parser.format_error e);
-            exit 1
-        | Ok ov ->
-            let result =
-              (* parse_gir_file does not extract top-level namespace functions,
-             so ~functions:[] is correct — there is nothing to filter. *)
-              Gir_gen_lib.Override_apply.apply_overrides ~overrides:ov ~classes
-                ~interfaces ~enums ~bitfields ~records ~functions:[]
-            in
-            List.iter result.warnings ~f:(fun w -> Fmt.epr "Warning: %s\n" w);
-            ( result.classes,
-              result.interfaces,
-              result.enums,
-              result.bitfields,
-              result.records ))
-    @@ overrides_file
-  in
+  (* ==== PARSING STAGE ==== *)
+  load_namespace ~filter_classes ~overrides_file ~reference_files gir_file
+  |> Result.fold
+       ~error:(fun e ->
+         `Error (false, Gir_gen_lib.Namespace_loader.format_error e))
+       ~ok:(fun (loaded : Gir_gen_lib.Namespace_loader.t) ->
+         let { ctx; _ } : Gir_gen_lib.Namespace_loader.t = loaded in
+         Fmt.pr "Found %d classes\n" (List.length ctx.classes);
+         Fmt.pr "Found %d interfaces\n" (List.length ctx.interfaces);
+         Fmt.pr "Found %d enumerations\n" (List.length ctx.enums);
+         Fmt.pr "Found %d bitfields\n" (List.length ctx.bitfields);
+         Fmt.pr "Found %d generated records\n" (List.length ctx.records);
+         Fmt.pr "Found %d constants\n" (List.length ctx.constants);
+         generate_namespace ~dirs ~generated_stubs loaded)
 
+(* The references file of a loaded namespace: what it generates, for the
+   namespaces that depend on it *)
+let write_references ~output_file
+    ({ ctx; entities; _ } : Gir_gen_lib.Namespace_loader.t) =
+  let open Gir_gen_lib.Generate in
+  let {
+    namespace;
+    repository;
+    classes;
+    interfaces;
+    enums;
+    bitfields;
+    records;
+    constants;
+    _;
+  } =
+    ctx
+  in
   Fmt.pr "References will be written to: %s\n" output_file;
+  let generated =
+    List.fold_left entities ~init:StringMap.empty ~f:(fun map (e : entity) ->
+        StringMap.add e.name e map)
+  in
+  let entity ?members ?enum_members ~cr_name ~cr_c_type cr_type =
+    {
+      cr_name;
+      cr_type;
+      cr_c_type;
+      cr_members = members;
+      cr_enum_members = enum_members;
+    }
+  in
+  (* A class, interface or record that is not generated emits no members *)
+  let typed ~cr_name =
+    entity
+      ?members:
+        (StringMap.find_opt cr_name generated
+        |> Option.map (Doc_index.cross_reference_members ~ctx))
+      ~cr_name
+  in
   let entities =
     (classes
-    |> List.filter ~f:Gir_gen_lib.Generate.Filtering.should_generate_class
+    |> List.filter ~f:Filtering.should_generate_class
     |> List.map ~f:(fun cls ->
-        {
-          cr_name = cls.class_name;
-          cr_type =
-            Crt_Class { parent = cls.parent; implements = cls.implements };
-          cr_c_type = cls.c_type;
-        }))
-    @ (interfaces
-      |> List.map ~f:(fun intf ->
-          {
-            cr_name = intf.interface_name;
-            cr_type = Crt_Interface;
-            cr_c_type = intf.c_type;
-          }))
-    @ List.map
-        ~f:(fun enms ->
-          {
-            cr_name = enms.enum_name;
-            cr_type = Crt_Enum;
-            cr_c_type = enms.enum_c_type;
-          })
-        enums
-    @ List.map
-        ~f:(fun bitfield ->
-          {
-            cr_name = bitfield.bitfield_name;
-            cr_type = Crt_Bitfield;
-            cr_c_type = bitfield.bitfield_c_type;
-          })
-        bitfields
-    @ (records
-      |> List.filter ~f:Gir_gen_lib.Generate.Filtering.should_generate_record
-      |> List.map ~f:(fun rec_ ->
-          {
-            cr_name = rec_.record_name;
-            cr_type =
-              Crt_Record
-                { opaque = rec_.opaque; get_type_func = rec_.glib_get_type };
-            cr_c_type = rec_.c_type;
-          }))
+        typed ~cr_name:cls.class_name ~cr_c_type:cls.c_type
+          (Crt_Class { parent = cls.parent; implements = cls.implements })))
+    @ List.map interfaces ~f:(fun intf ->
+        typed ~cr_name:intf.interface_name ~cr_c_type:intf.c_type Crt_Interface)
+    @ List.map enums ~f:(fun enms ->
+        entity ~cr_name:enms.enum_name ~cr_c_type:enms.enum_c_type
+          ~enum_members:(Doc_index.enum_members enms)
+          Crt_Enum)
+    @ List.map bitfields ~f:(fun bitfield ->
+        entity ~cr_name:bitfield.bitfield_name
+          ~cr_c_type:bitfield.bitfield_c_type
+          ~enum_members:(Doc_index.bitfield_members bitfield)
+          Crt_Bitfield)
+    @ List.map records ~f:(fun rec_ ->
+        typed ~cr_name:rec_.record_name ~cr_c_type:rec_.c_type
+          (Crt_Record
+             { opaque = rec_.opaque; get_type_func = rec_.glib_get_type }))
     @ (constants
-      |> List.filter ~f:Gir_gen_lib.Generate.Constant_code.is_generated
+      |> List.filter ~f:Constant_code.is_generated
       |> List.map ~f:(fun cst ->
-          {
-            cr_name = cst.constant_name;
-            cr_type = Crt_Constant;
-            cr_c_type = cst.constant_c_type;
-          }))
+          entity ~cr_name:cst.constant_name ~cr_c_type:cst.constant_c_type
+            Crt_Constant))
   in
   let crns =
     Gir_gen_lib.Types.
@@ -1653,6 +1522,15 @@ let generate_references ~gir_file ~output_file ~overrides_file =
   let converter = Gir_gen_lib.Types.sexp_of_cross_reference_namespace in
   Sexplib.Sexp.(save_hum output_file (converter crns));
   `Ok ()
+
+let generate_references ~gir_file ~output_file ~overrides_file ~reference_files
+    =
+  Fmt.pr "Parsing %s for references...\n" gir_file;
+  load_namespace ~overrides_file ~reference_files gir_file
+  |> Result.fold
+       ~error:(fun e ->
+         `Error (false, Gir_gen_lib.Namespace_loader.format_error e))
+       ~ok:(write_references ~output_file)
 
 let extract_since_version = Gir_gen_lib.Override_extractor.extract_since_version
 
@@ -2027,6 +1905,10 @@ let references_cmd =
         "The references command parses a GIR file and generates a reference \
          list that can be used for cross-namespace type validation during code \
          generation.";
+      `P
+        "Pass the reference files of the namespaces the GIR file depends on \
+         with -r, as for the generate command: the namespace is loaded the way \
+         generate loads it, so the list matches what generate emits.";
       `S Manpage.s_examples;
       `P "Generate reference list:";
       `Pre "  gir_gen references gir/Gtk-4.0.gir gtk_refs.txt";
@@ -2034,15 +1916,21 @@ let references_cmd =
       `Pre
         "  gir_gen references -o overrides/gtk.sexp gir/Gtk-4.0.gir \
          gtk_refs.txt";
+      `P "Generate reference list with the references of its dependencies:";
+      `Pre
+        "  gir_gen references -o overrides/gdkpixbuf.sexp -r \
+         gio-references.sexp gir/GdkPixbuf-2.0.gir gdkpixbuf-references.sexp";
     ]
   in
   let info = Cmd.info "references" ~doc ~man in
   Cmd.v info
     Term.(
       ret
-        (const (fun gir_file output_file overrides_file ->
-             generate_references ~gir_file ~output_file ~overrides_file)
-        $ gir_file_arg_refs $ output_file_arg_refs $ overrides_arg_refs))
+        (const (fun gir_file output_file overrides_file reference_files ->
+             generate_references ~gir_file ~output_file ~overrides_file
+               ~reference_files)
+        $ gir_file_arg_refs $ output_file_arg_refs $ overrides_arg_refs
+        $ reference_files_arg))
 
 (* Main command *)
 let gir_gen_cmd =

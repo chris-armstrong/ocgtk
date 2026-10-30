@@ -224,7 +224,8 @@ external set_kinetic_scrolling : t -> bool -> unit
 (** Turns kinetic scrolling on or off.
 
     Kinetic scrolling only applies to devices with source
-    [GDK_SOURCE_TOUCHSCREEN]. *)
+    {{!Ocgdk.Enums.type-inputsource.constructor-TOUCHSCREEN}[GDK_SOURCE_TOUCHSCREEN]}.
+*)
 
 external set_has_frame : t -> bool -> unit
   = "ml_gtk_scrolled_window_set_has_frame"

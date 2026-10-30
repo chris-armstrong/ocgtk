@@ -130,11 +130,13 @@
  optionally combined with “|” for bitwise OR, or a single integer value\n\
  e.g., “GTK_INPUT_HINT_EMOJI|GTK_INPUT_HINT_LOWERCASE”, or “emoji|lowercase” \
  or 520).\n\
- - colors (in the format understood by [Gdk.RGBA.parse])\n\
+ - colors (in the format understood by \
+ {{!Ocgdk.Raw.Rgb_a.val-parse}[Gdk.RGBA.parse]})\n\
  - transforms (in the format understood by [Gsk.Transform.parse])\n\
  - Pango attribute lists (in the format understood by \
- [Pango.AttrList.to_string])\n\
- - Pango tab arrays (in the format understood by [Pango.TabArray.to_string])\n\
+ {{!Ocpango.Raw.Attr_list.val-to_string}[Pango.AttrList.to_string]})\n\
+ - Pango tab arrays (in the format understood by \
+ {{!Ocpango.Raw.Tab_array.val-to_string}[Pango.TabArray.to_string]})\n\
  - Pango font descriptions (in the format understood by \
  [Pango.FontDescription.from_string])\n\
  - [GVariant] (in the format understood by [GLib.Variant.parse])\n\

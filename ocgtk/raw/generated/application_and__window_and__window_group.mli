@@ -281,7 +281,8 @@ end
    {b Automatic resources}\n\n\
    [GtkApplication] will automatically load menus from the [GtkBuilder]\n\
    resource located at \"gtk/menus.ui\", relative to the application's\n\
-   resource base path (see [Gio.Application.set_resource_base_path]).\n\
+   resource base path (see \
+   {{!Ocgio.Raw.Application.val-set_resource_base_path}[Gio.Application.set_resource_base_path]}).\n\
    The menu with the ID \"menubar\" is taken as the application's\n\
    menubar. Additional menus (most interesting submenus) can be named\n\
    and accessed via \
@@ -443,8 +444,8 @@ and Window : sig
       minimize it again, or there may not be a window manager in which case
       minimization isn’t possible, etc.
 
-      You can track result of this operation via the [Gdk.Toplevel:state]
-      property. *)
+      You can track result of this operation via the
+      {{!Ocgdk.Raw.Toplevel.val-get_state}[Gdk.Toplevel:state]} property. *)
 
   external unmaximize : t -> unit = "ml_gtk_window_unmaximize"
   (** Asks to unmaximize the window.
@@ -458,8 +459,9 @@ and Window : sig
       the initial state is at the window managers discretion. For example, it
       might decide to maximize a window that almost fills the screen.
 
-      You can track the result of this operation via the [Gdk.Toplevel:state]
-      property, or by listening to notifications on the
+      You can track the result of this operation via the
+      {{!Ocgdk.Raw.Toplevel.val-get_state}[Gdk.Toplevel:state]} property, or by
+      listening to notifications on the
       {{!Ocgtk.Raw.Window.val-is_maximized}[Gtk.Window:maximized]} property. *)
 
   external unfullscreen : t -> unit = "ml_gtk_window_unfullscreen"
@@ -475,8 +477,9 @@ and Window : sig
       If a window is not explicitly fullscreened or unfullscreened before it is
       shown, the initial state is at the window managers discretion.
 
-      You can track the result of this operation via the [Gdk.Toplevel:state]
-      property, or by listening to notifications of the
+      You can track the result of this operation via the
+      {{!Ocgdk.Raw.Toplevel.val-get_state}[Gdk.Toplevel:state]} property, or by
+      listening to notifications of the
       {{!Ocgtk.Raw.Window.val-is_fullscreen}[Gtk.Window:fullscreened]} property.
   *)
 
@@ -712,8 +715,9 @@ and Window : sig
   (** Sets or unsets the application object associated with the window.
 
       The application will be kept alive for at least as long as it has any
-      windows associated with it (see [Gio.Application.hold] for a way to keep
-      it alive without windows).
+      windows associated with it (see
+      {{!Ocgio.Raw.Application.val-hold}[Gio.Application.hold]} for a way to
+      keep it alive without windows).
 
       Normally, the connection between the application and the window will
       remain until the window is destroyed, but you can explicitly remove it by
@@ -758,8 +762,8 @@ and Window : sig
       It’s permitted to call this function before showing a window, in which
       case the window will be minimized before it ever appears onscreen.
 
-      You can track result of this operation via the [Gdk.Toplevel:state]
-      property. *)
+      You can track result of this operation via the
+      {{!Ocgdk.Raw.Toplevel.val-get_state}[Gdk.Toplevel:state]} property. *)
 
   external maximize : t -> unit = "ml_gtk_window_maximize"
   (** Asks to maximize the window, so that it fills the screen.
@@ -775,8 +779,9 @@ and Window : sig
       the initial state is at the window managers discretion. For example, it
       might decide to maximize a window that almost fills the screen.
 
-      You can track the result of this operation via the [Gdk.Toplevel:state]
-      property, or by listening to notifications on the
+      You can track the result of this operation via the
+      {{!Ocgdk.Raw.Toplevel.val-get_state}[Gdk.Toplevel:state]} property, or by
+      listening to notifications on the
       {{!Ocgtk.Raw.Window.val-is_maximized}[Gtk.Window:maximized]} property. *)
 
   external is_suspended : t -> bool = "ml_gtk_window_is_suspended"
@@ -934,8 +939,9 @@ and Window : sig
       afterward, or that the windowing system allows fullscreen windows on any
       given monitor.
 
-      You can track the result of this operation via the [Gdk.Toplevel:state]
-      property, or by listening to notifications of the
+      You can track the result of this operation via the
+      {{!Ocgdk.Raw.Toplevel.val-get_state}[Gdk.Toplevel:state]} property, or by
+      listening to notifications of the
       {{!Ocgtk.Raw.Window.val-is_fullscreen}[Gtk.Window:fullscreened]} property.
   *)
 
@@ -950,8 +956,9 @@ and Window : sig
       If a window is not explicitly fullscreened or unfullscreened before it is
       shown, the initial state is at the window managers discretion.
 
-      You can track the result of this operation via the [Gdk.Toplevel:state]
-      property, or by listening to notifications of the
+      You can track the result of this operation via the
+      {{!Ocgdk.Raw.Toplevel.val-get_state}[Gdk.Toplevel:state]} property, or by
+      listening to notifications of the
       {{!Ocgtk.Raw.Window.val-is_fullscreen}[Gtk.Window:fullscreened]} property.
   *)
 

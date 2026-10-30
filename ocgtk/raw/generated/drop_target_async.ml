@@ -34,7 +34,8 @@
     The ::drag-enter and ::drag-motion handler return a [GdkDragAction] to
     update the status of the ongoing operation. The ::drop handler should decide
     if it ultimately accepts the drop and if it does, it should initiate the
-    data transfer and finish the operation by calling [Gdk.Drop.finish].
+    data transfer and finish the operation by calling
+    {{!Ocgdk.Raw.Drop.val-finish}[Gdk.Drop.finish]}.
 
     Between the ::drag-enter and ::drag-leave signals the widget is a current
     drop target, and will receive the

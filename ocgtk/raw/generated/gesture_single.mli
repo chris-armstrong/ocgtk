@@ -32,8 +32,10 @@ external set_touch_only : t -> bool -> unit
 (** Sets whether to handle only touch events.
 
     If [touch_only] is [true], [gesture] will only handle events of type
-    [GDK_TOUCH_BEGIN], [GDK_TOUCH_UPDATE] or [GDK_TOUCH_END]. If [false], mouse
-    events will be handled too. *)
+    {{!Ocgdk.Enums.type-eventtype.constructor-TOUCH_BEGIN}[GDK_TOUCH_BEGIN]},
+    {{!Ocgdk.Enums.type-eventtype.constructor-TOUCH_UPDATE}[GDK_TOUCH_UPDATE]}
+    or {{!Ocgdk.Enums.type-eventtype.constructor-TOUCH_END}[GDK_TOUCH_END]}. If
+    [false], mouse events will be handled too. *)
 
 external set_exclusive : t -> bool -> unit
   = "ml_gtk_gesture_single_set_exclusive"

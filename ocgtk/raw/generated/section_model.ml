@@ -15,8 +15,8 @@
     signal by calling the
     {{!Ocgtk.Raw.Section_model.val-sections_changed}[Gtk.SectionModel.sections_changed]}
     function. All sections in the given range then need to be queried again. The
-    [Gio.ListModel::items-changed] signal has the same effect, all sections in
-    that range are invalidated, too.
+    {{!Ocgio.Raw.List_model.val-on_items_changed}[Gio.ListModel::items-changed]}
+    signal has the same effect, all sections in that range are invalidated, too.
 
     The class built on this module is in {!Ocgtk.Section_model}. *)
 
@@ -39,13 +39,16 @@ external sections_changed : t -> int -> int -> unit
     a section start. It does not have to cover all positions for which the
     section has changed.
 
-    The [Gio.ListModel::items-changed] implies the effect of the
+    The
+    {{!Ocgio.Raw.List_model.val-on_items_changed}[Gio.ListModel::items-changed]}
+    implies the effect of the
     {{!Ocgtk.Raw.Section_model.val-on_sections_changed}[Gtk.SectionModel::sections-changed]}
     signal for all the items it covers.
 
     It is recommended that when changes to the items cause section changes in a
     larger range, that the larger range is included in the emission of the
-    [Gio.ListModel::items-changed] instead of emitting two signals. *)
+    {{!Ocgio.Raw.List_model.val-on_items_changed}[Gio.ListModel::items-changed]}
+    instead of emitting two signals. *)
 
 external get_section : t -> int -> int * int
   = "ml_gtk_section_model_get_section"

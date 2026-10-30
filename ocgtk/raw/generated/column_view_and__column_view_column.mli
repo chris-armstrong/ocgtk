@@ -264,7 +264,8 @@ module rec Column_view : sig
 
       This list is constant over the lifetime of [self] and can be used to
       monitor changes to the columns of [self] by connecting to the
-      [Gio.ListModel::items-changed] signal. *)
+      {{!Ocgio.Raw.List_model.val-on_items_changed}[Gio.ListModel::items-changed]}
+      signal. *)
 
   external append_column : t -> Column_view_column.t -> unit
     = "ml_gtk_column_view_append_column"

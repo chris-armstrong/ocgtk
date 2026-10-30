@@ -489,10 +489,28 @@ type cross_reference_type =
   | Crt_Constant
 [@@deriving sexp]
 
+type cross_reference_layer_members = {
+  crl_methods : (string * string) list; [@sexp.list]
+  crl_constructors : (string * string) list; [@sexp.list]
+  crl_signals : (string * string) list; [@sexp.list]
+  crl_properties : (string * string) list; [@sexp.list]
+}
+[@@deriving sexp]
+
+type cross_reference_members = {
+  crm_l1 : cross_reference_layer_members;
+  crm_l2 : cross_reference_layer_members;
+  crm_c_methods : (string * string) list; [@sexp.list]
+  crm_c_constructors : (string * string) list; [@sexp.list]
+}
+[@@deriving sexp]
+
 type cross_reference_entity = {
   cr_name : string;
   cr_type : cross_reference_type;
   cr_c_type : string;
+  cr_members : cross_reference_members option; [@sexp.option]
+  cr_enum_members : (string * string) list option; [@sexp.option]
 }
 [@@deriving sexp]
 
@@ -556,20 +574,25 @@ type doc_index_namespace = {
   di_types : doc_type_kind StringMap.t;
   di_constants : string StringMap.t;  (** GIR name to OCaml value name. *)
   di_members : doc_type_members StringMap.t;
-      (** By GIR type name; the current namespace only. *)
+      (** By GIR type name. Another namespace has them only when its references
+          file lists members. *)
   di_enum_members : string StringMap.t StringMap.t;
       (** By enumeration or bitfield GIR name, then by member name in upper case
-          with underscores: the polymorphic variant tag. The current namespace
-          only. *)
+          with underscores: the polymorphic variant tag. Likewise for another
+          namespace. *)
   di_c_types : string StringMap.t;  (** C type name to GIR type name. *)
   di_c_constants : string StringMap.t;
       (** C identifier to GIR constant name. *)
   di_c_symbols : doc_c_symbol StringMap.t;
-      (** By C identifier; the current namespace only. *)
+      (** By C identifier. Likewise for another namespace. *)
+  di_members_listed : bool;
+      (** Whether the member tables are filled: always for the current
+          namespace, and for another one when its references file lists members.
+          An older file has no member tables, so its members can't be checked.
+      *)
 }
 (** What a doc reference into one namespace can link to: its generated types,
-    constants and, for the current namespace, members, keyed by GIR name and by
-    C name (see [Doc_index]). *)
+    constants and members, keyed by GIR name and by C name (see [Doc_index]). *)
 
 type doc_index = doc_index_namespace StringMap.t
 (** The namespaces a doc reference can link into, keyed by GIR namespace name:

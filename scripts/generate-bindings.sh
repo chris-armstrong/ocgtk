@@ -45,7 +45,7 @@ NAMESPACES=(
     "gtk Gtk-4.0 ocgtk"
 )
 
-# Reference files each namespace's generation reads
+# Reference files each namespace's references and generation steps read
 declare -A DEPS=(
     [cairo]=""
     [gio]=""
@@ -88,11 +88,18 @@ mkdir -p "$BUILD_DIR"
 echo "Step 1: Generating cross-namespace reference files..."
 echo "-----------------------------------"
 
+# A references file lists what generation emits, and that depends on the
+# dependencies' references files, so they are written first: NAMESPACES is in
+# dependency order.
 for entry in "${NAMESPACES[@]}"; do
     read -r ns gir _pkg <<< "$entry"
+    refs=()
+    for dep in ${DEPS[$ns]}; do
+        refs+=(-r "$BUILD_DIR/$dep-references.sexp")
+    done
     echo "  Generating $ns references..."
-    "$GIR_GEN" references -o "$OVERRIDES_DIR/$ns.sexp" "$GIR_PATH/$gir.gir" \
-        "$BUILD_DIR/$ns-references.sexp"
+    "$GIR_GEN" references -o "$OVERRIDES_DIR/$ns.sexp" "${refs[@]}" \
+        "$GIR_PATH/$gir.gir" "$BUILD_DIR/$ns-references.sexp"
 done
 
 echo ""

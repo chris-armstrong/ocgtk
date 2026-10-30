@@ -1447,14 +1447,17 @@ val movementstep_to_int : movementstep -> int
 type naturalwrapmode =
   [ `INHERIT
     (** Inherit the minimum size request. In particular, this should be used
-        with [PANGO_WRAP_CHAR]. *)
+        with {{!Ocpango.Enums.type-wrapmode.constructor-CHAR}[PANGO_WRAP_CHAR]}.
+    *)
   | `NONE
     (** Try not to wrap the text. This mode is the closest to GTK3's behavior
         but can lead to a wide label leaving lots of empty space below the text.
     *)
   | `WORD
     (** Attempt to wrap at word boundaries. This is useful in particular when
-        using [PANGO_WRAP_WORD_CHAR] as the wrap mode. *) ]
+        using
+        {{!Ocpango.Enums.type-wrapmode.constructor-WORD_CHAR}[PANGO_WRAP_WORD_CHAR]}
+        as the wrap mode. *) ]
 (** Options for selecting a different wrap mode for natural size requests.
 
     See for example the

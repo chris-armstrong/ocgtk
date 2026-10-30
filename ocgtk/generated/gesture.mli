@@ -248,7 +248,8 @@ end
      Note: if a sequence is set early to \
      {{!Ocgtk.Enums.type-eventsequencestate.constructor-CLAIMED}[GTK_EVENT_SEQUENCE_CLAIMED]} \
      on\n\
-     [GDK_TOUCH_BEGIN]/[GDK_BUTTON_PRESS] (so those events are captured before\n\
+     {{!Ocgdk.Enums.type-eventtype.constructor-TOUCH_BEGIN}[GDK_TOUCH_BEGIN]}/{{!Ocgdk.Enums.type-eventtype.constructor-BUTTON_PRESS}[GDK_BUTTON_PRESS]} \
+     (so those events are captured before\n\
      reaching the event widget, this implies \
      {{!Ocgtk.Enums.type-propagationphase.constructor-CAPTURE}[GTK_PHASE_CAPTURE]}), \
      one similar\n\
@@ -268,8 +269,10 @@ end
      - If the gesture has \
      {{!Ocgtk.Enums.type-propagationphase.constructor-NONE}[GTK_PHASE_NONE]}, \
      ensuring events of type\n\
-     [GDK_TOUCHPAD_SWIPE] and [GDK_TOUCHPAD_PINCH] are handled by the \
-     [GtkGesture]"]
+     {{!Ocgdk.Enums.type-eventtype.constructor-TOUCHPAD_SWIPE}[GDK_TOUCHPAD_SWIPE]} \
+     and \
+     {{!Ocgdk.Enums.type-eventtype.constructor-TOUCHPAD_PINCH}[GDK_TOUCHPAD_PINCH]} \
+     are handled by the [GtkGesture]"]
 
 class gesture : Raw.Gesture.t -> gesture_t
 (** Wraps a raw handle of {!Ocgtk.Raw.Gesture.t}. *)
@@ -345,7 +348,8 @@ class gesture : Raw.Gesture.t -> gesture_t
  Note: if a sequence is set early to \
  {{!Ocgtk.Enums.type-eventsequencestate.constructor-CLAIMED}[GTK_EVENT_SEQUENCE_CLAIMED]} \
  on\n\
- [GDK_TOUCH_BEGIN]/[GDK_BUTTON_PRESS] (so those events are captured before\n\
+ {{!Ocgdk.Enums.type-eventtype.constructor-TOUCH_BEGIN}[GDK_TOUCH_BEGIN]}/{{!Ocgdk.Enums.type-eventtype.constructor-BUTTON_PRESS}[GDK_BUTTON_PRESS]} \
+ (so those events are captured before\n\
  reaching the event widget, this implies \
  {{!Ocgtk.Enums.type-propagationphase.constructor-CAPTURE}[GTK_PHASE_CAPTURE]}), \
  one similar\n\
@@ -365,7 +369,10 @@ class gesture : Raw.Gesture.t -> gesture_t
  - If the gesture has \
  {{!Ocgtk.Enums.type-propagationphase.constructor-NONE}[GTK_PHASE_NONE]}, \
  ensuring events of type\n\
- [GDK_TOUCHPAD_SWIPE] and [GDK_TOUCHPAD_PINCH] are handled by the [GtkGesture]"]
+ {{!Ocgdk.Enums.type-eventtype.constructor-TOUCHPAD_SWIPE}[GDK_TOUCHPAD_SWIPE]} \
+ and \
+ {{!Ocgdk.Enums.type-eventtype.constructor-TOUCHPAD_PINCH}[GDK_TOUCHPAD_PINCH]} \
+ are handled by the [GtkGesture]"]
 
 (** {1:constructors Constructors} *)
 

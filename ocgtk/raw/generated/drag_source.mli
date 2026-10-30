@@ -69,7 +69,8 @@
  can be used to obtain updates about the status of the operation,\n\
  but it is not normally necessary to connect to any signals,\n\
  except for one case: when the supported actions include\n\
- [GDK_ACTION_MOVE], you need to listen for the\n\
+ {{!Ocgdk.Enums.type-dragaction_flag.constructor-MOVE}[GDK_ACTION_MOVE]}, you \
+ need to listen for the\n\
  {{!Ocgtk.Raw.Drag_source.val-on_drag_end}[Gtk.DragSource::drag-end]} signal \
  and delete the\n\
  data after it has been transferred.\n\n\
@@ -120,7 +121,9 @@ external set_actions : t -> Ocgdk_enums.dragaction -> unit
 (** Sets the actions on the [GtkDragSource].
 
     During a DND operation, the actions are offered to potential drop targets.
-    If [actions] include [GDK_ACTION_MOVE], you need to listen to the
+    If [actions] include
+    {{!Ocgdk.Enums.type-dragaction_flag.constructor-MOVE}[GDK_ACTION_MOVE]}, you
+    need to listen to the
     {{!Ocgtk.Raw.Drag_source.val-on_drag_end}[Gtk.DragSource::drag-end]} signal
     and handle [delete_data] being [true].
 

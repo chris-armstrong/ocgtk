@@ -110,7 +110,8 @@ end
      attribute set to the [GFile] they refer to. This way you can get at the \
      file\n\
      that is referred to in the same way you would via \
-     [g_file_enumerator_get_child ()].\n\
+     {{!Ocgio.File_enumerator.class-type-file_enumerator_t.method-get_child}[g_file_enumerator_get_child \
+     ()]}.\n\
      This means you do not need access to the [GtkDirectoryList], but can access\n\
      the [GFile] directly from the [GFileInfo] when operating with a \
      [GtkListView]\n\
@@ -138,7 +139,8 @@ class directory_list : Raw.Directory_list.t -> directory_list_t
  The [GFileInfo]s returned from a [GtkDirectoryList] have the \"standard::file\"\n\
  attribute set to the [GFile] they refer to. This way you can get at the file\n\
  that is referred to in the same way you would via \
- [g_file_enumerator_get_child ()].\n\
+ {{!Ocgio.File_enumerator.class-type-file_enumerator_t.method-get_child}[g_file_enumerator_get_child \
+ ()]}.\n\
  This means you do not need access to the [GtkDirectoryList], but can access\n\
  the [GFile] directly from the [GFileInfo] when operating with a [GtkListView]\n\
  or similar."]

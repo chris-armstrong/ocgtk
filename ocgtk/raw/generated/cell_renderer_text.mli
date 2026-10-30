@@ -134,15 +134,17 @@ external get_ellipsize : t -> Ocpango_enums.ellipsizemode
   = "ml_gtk_cell_renderer_text_get_ellipsize"
 (** Specifies the preferred place to ellipsize the string, if the cell renderer
     does not have enough room to display the entire string. Setting it to
-    [PANGO_ELLIPSIZE_NONE] turns off ellipsizing. See the wrap-width property
-    for another way of making the text fit into a given width. *)
+    {{!Ocpango.Enums.type-ellipsizemode.constructor-NONE}[PANGO_ELLIPSIZE_NONE]}
+    turns off ellipsizing. See the wrap-width property for another way of making
+    the text fit into a given width. *)
 
 external set_ellipsize : t -> Ocpango_enums.ellipsizemode -> unit
   = "ml_gtk_cell_renderer_text_set_ellipsize"
 (** Specifies the preferred place to ellipsize the string, if the cell renderer
     does not have enough room to display the entire string. Setting it to
-    [PANGO_ELLIPSIZE_NONE] turns off ellipsizing. See the wrap-width property
-    for another way of making the text fit into a given width. *)
+    {{!Ocpango.Enums.type-ellipsizemode.constructor-NONE}[PANGO_ELLIPSIZE_NONE]}
+    turns off ellipsizing. See the wrap-width property for another way of making
+    the text fit into a given width. *)
 
 external get_ellipsize_set : t -> bool
   = "ml_gtk_cell_renderer_text_get_ellipsize_set"

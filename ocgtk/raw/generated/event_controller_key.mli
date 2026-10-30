@@ -25,7 +25,7 @@ external get_im_context : t -> Im_context.t option
 external get_group : t -> int = "ml_gtk_event_controller_key_get_group"
 (** Gets the key group of the current event of this [controller].
 
-    See [Gdk.KeyEvent.get_layout]. *)
+    See {{!Ocgdk.Raw.Key_event.val-get_layout}[Gdk.KeyEvent.get_layout]}. *)
 
 external forward :
   t ->

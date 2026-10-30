@@ -580,11 +580,15 @@ external set_size_set : t -> bool -> unit = "ml_gtk_text_tag_set_size_set"
 
 external get_stretch : t -> Ocpango_enums.stretch
   = "ml_gtk_text_tag_get_stretch"
-(** Font stretch as a [PangoStretch], e.g. [PANGO_STRETCH_CONDENSED]. *)
+(** Font stretch as a [PangoStretch], e.g.
+    {{!Ocpango.Enums.type-stretch.constructor-CONDENSED}[PANGO_STRETCH_CONDENSED]}.
+*)
 
 external set_stretch : t -> Ocpango_enums.stretch -> unit
   = "ml_gtk_text_tag_set_stretch"
-(** Font stretch as a [PangoStretch], e.g. [PANGO_STRETCH_CONDENSED]. *)
+(** Font stretch as a [PangoStretch], e.g.
+    {{!Ocpango.Enums.type-stretch.constructor-CONDENSED}[PANGO_STRETCH_CONDENSED]}.
+*)
 
 external get_stretch_set : t -> bool = "ml_gtk_text_tag_get_stretch_set"
 (** Whether the [stretch] property is set. *)
@@ -628,11 +632,13 @@ external set_strikethrough_set : t -> bool -> unit
 (** Whether the [strikethrough] property is set. *)
 
 external get_style : t -> Ocpango_enums.style = "ml_gtk_text_tag_get_style"
-(** Font style as a [PangoStyle], e.g. [PANGO_STYLE_ITALIC]. *)
+(** Font style as a [PangoStyle], e.g.
+    {{!Ocpango.Enums.type-style.constructor-ITALIC}[PANGO_STYLE_ITALIC]}. *)
 
 external set_style : t -> Ocpango_enums.style -> unit
   = "ml_gtk_text_tag_set_style"
-(** Font style as a [PangoStyle], e.g. [PANGO_STYLE_ITALIC]. *)
+(** Font style as a [PangoStyle], e.g.
+    {{!Ocpango.Enums.type-style.constructor-ITALIC}[PANGO_STYLE_ITALIC]}. *)
 
 external get_style_set : t -> bool = "ml_gtk_text_tag_get_style_set"
 (** Whether the [style] property is set. *)
@@ -684,8 +690,10 @@ external get_underline_rgba : t -> Ocgdk_raw.Rgb_a.t
     If not set, underlines will use the foreground color.
 
     If {{!Ocgtk.Raw.Text_tag.val-get_underline}[Gtk.TextTag:underline]} is set
-    to [PANGO_UNDERLINE_ERROR], an alternate color may be applied instead of the
-    foreground. Setting this property will always override those defaults. *)
+    to
+    {{!Ocpango.Enums.type-underline.constructor-ERROR}[PANGO_UNDERLINE_ERROR]},
+    an alternate color may be applied instead of the foreground. Setting this
+    property will always override those defaults. *)
 
 external set_underline_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
   = "ml_gtk_text_tag_set_underline_rgba"
@@ -694,8 +702,10 @@ external set_underline_rgba : t -> Ocgdk_raw.Rgb_a.t -> unit
     If not set, underlines will use the foreground color.
 
     If {{!Ocgtk.Raw.Text_tag.val-get_underline}[Gtk.TextTag:underline]} is set
-    to [PANGO_UNDERLINE_ERROR], an alternate color may be applied instead of the
-    foreground. Setting this property will always override those defaults. *)
+    to
+    {{!Ocpango.Enums.type-underline.constructor-ERROR}[PANGO_UNDERLINE_ERROR]},
+    an alternate color may be applied instead of the foreground. Setting this
+    property will always override those defaults. *)
 
 external get_underline_rgba_set : t -> bool
   = "ml_gtk_text_tag_get_underline_rgba_set"
@@ -714,11 +724,15 @@ external set_underline_set : t -> bool -> unit
 
 external get_variant : t -> Ocpango_enums.variant
   = "ml_gtk_text_tag_get_variant"
-(** Font variant as a [PangoVariant], e.g. [PANGO_VARIANT_SMALL_CAPS]. *)
+(** Font variant as a [PangoVariant], e.g.
+    {{!Ocpango.Enums.type-variant.constructor-SMALL_CAPS}[PANGO_VARIANT_SMALL_CAPS]}.
+*)
 
 external set_variant : t -> Ocpango_enums.variant -> unit
   = "ml_gtk_text_tag_set_variant"
-(** Font variant as a [PangoVariant], e.g. [PANGO_VARIANT_SMALL_CAPS]. *)
+(** Font variant as a [PangoVariant], e.g.
+    {{!Ocpango.Enums.type-variant.constructor-SMALL_CAPS}[PANGO_VARIANT_SMALL_CAPS]}.
+*)
 
 external get_variant_set : t -> bool = "ml_gtk_text_tag_get_variant_set"
 (** Whether the [variant] property is set. *)

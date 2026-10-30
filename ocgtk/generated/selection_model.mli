@@ -34,11 +34,12 @@
      [Gtk.SelectionModel.selection_changed]} function. The positions given in
     that signal may have their selection state changed, though that is not a
     requirement. If new items added to the model via the
-    [Gio.ListModel::items-changed] signal are selected or not is up to the
-    implementation.
+    {{!Ocgio.List_model.class-type-list_model_t.method-on_items_changed}[Gio.ListModel::items-changed]}
+    signal are selected or not is up to the implementation.
 
-    Note that items added via [Gio.ListModel::items-changed] may already be
-    selected and no
+    Note that items added via
+    {{!Ocgio.List_model.class-type-list_model_t.method-on_items_changed}[Gio.ListModel::items-changed]}
+    may already be selected and no
     {{!Ocgtk.Selection_model.class-type-selection_model_t.method-on_selection_changed}
      [Gtk.SelectionModel::selection-changed]} will be emitted for them. So to
     track which items are selected, it is necessary to listen to both signals.
@@ -183,11 +184,12 @@ class selection_model : Raw.Selection_model.t -> selection_model_t
      [Gtk.SelectionModel.selection_changed]} function. The positions given in
     that signal may have their selection state changed, though that is not a
     requirement. If new items added to the model via the
-    [Gio.ListModel::items-changed] signal are selected or not is up to the
-    implementation.
+    {{!Ocgio.List_model.class-type-list_model_t.method-on_items_changed}[Gio.ListModel::items-changed]}
+    signal are selected or not is up to the implementation.
 
-    Note that items added via [Gio.ListModel::items-changed] may already be
-    selected and no
+    Note that items added via
+    {{!Ocgio.List_model.class-type-list_model_t.method-on_items_changed}[Gio.ListModel::items-changed]}
+    may already be selected and no
     {{!Ocgtk.Selection_model.class-type-selection_model_t.method-on_selection_changed}
      [Gtk.SelectionModel::selection-changed]} will be emitted for them. So to
     track which items are selected, it is necessary to listen to both signals.

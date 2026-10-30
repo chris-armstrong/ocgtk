@@ -357,18 +357,20 @@ external get_gtk_error_bell : t -> bool = "ml_gtk_settings_get_gtk_error_bell"
 (** When [true], keyboard navigation and other input-related errors will cause a
     beep.
 
-    Since the error bell is implemented using [gdk_surface_beep ()], the
-    windowing system may offer ways to configure the error bell in many ways,
-    such as flashing the window or similar visual effects. *)
+    Since the error bell is implemented using
+    {{!Ocgdk.Raw.Surface.val-beep}[gdk_surface_beep ()]}, the windowing system
+    may offer ways to configure the error bell in many ways, such as flashing
+    the window or similar visual effects. *)
 
 external set_gtk_error_bell : t -> bool -> unit
   = "ml_gtk_settings_set_gtk_error_bell"
 (** When [true], keyboard navigation and other input-related errors will cause a
     beep.
 
-    Since the error bell is implemented using [gdk_surface_beep ()], the
-    windowing system may offer ways to configure the error bell in many ways,
-    such as flashing the window or similar visual effects. *)
+    Since the error bell is implemented using
+    {{!Ocgdk.Raw.Surface.val-beep}[gdk_surface_beep ()]}, the windowing system
+    may offer ways to configure the error bell in many ways, such as flashing
+    the window or similar visual effects. *)
 
 external get_gtk_font_name : t -> string = "ml_gtk_settings_get_gtk_font_name"
 (** The default font to use.

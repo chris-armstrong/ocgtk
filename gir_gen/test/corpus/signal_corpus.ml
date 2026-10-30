@@ -22,32 +22,14 @@ type classification_outcome =
 (* Cross-namespace reference loading                                  *)
 (* ================================================================= *)
 
-(* Mirrors [load_reference_files] in [gir_gen/bin/gir_gen.ml] so the corpus
-   classifier sees the same cross-namespace knowledge the production
-   generator does. Without this the [classify_type] cross-ns branch falls off
-   to [Tk_Unknown] for every external type and the histogram over-reports
+(* The classifier needs the cross-namespace knowledge the production generator
+   has. Without it the [classify_type] cross-ns branch falls off to
+   [Tk_Unknown] for every external type and the histogram over-reports
    skips. *)
-let load_reference_files (reference_files : string list) :
-    generation_context_namespace_cross_references StringMap.t =
-  let converter = cross_reference_namespace_of_sexp in
-  List.fold_left
-    (fun acc file ->
-      let cr_namespace = Sexplib.Sexp.load_sexp_conv_exn file converter in
-      let ncr_namespace =
-        {
-          ncr_namespace_name = cr_namespace.cr_namespace_name;
-          ncr_namespace_packages = cr_namespace.cr_namespace_packages;
-          ncr_namespace_c_includes = cr_namespace.cr_namespace_c_includes;
-          ncr_namespace_includes = cr_namespace.cr_namespace_includes;
-          ncr_entities =
-            List.fold_left
-              (fun sm (cr : cross_reference_entity) ->
-                StringMap.add cr.cr_name cr sm)
-              StringMap.empty cr_namespace.cr_entities;
-        }
-      in
-      StringMap.add cr_namespace.cr_namespace_name ncr_namespace acc)
-    StringMap.empty reference_files
+let load_reference_files reference_files =
+  match Gir_gen_lib.Namespace_loader.load_reference_files reference_files with
+  | Ok cross_references -> cross_references
+  | Error e -> Alcotest.fail (Gir_gen_lib.Namespace_loader.format_error e)
 
 (* ================================================================= *)
 (* Build a minimal generation context from parsed entities            *)
