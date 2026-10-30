@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Task (ocgio.Ocgio.Task)</title><meta charset="utf-8"/><link rel="stylesheet" href="../../../odoc.support/odoc.css"/><meta name="generator" content="odoc 3.2.2"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="../../../odoc.support/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="odoc"><nav class="odoc-nav"><a href="../index.html">Up</a> – <a href="../../../index.html">Index</a> &#x00BB; <a href="../../index.html">ocgio</a> &#x00BB; <a href="../index.html">Ocgio</a> &#x00BB; Task</nav><header class="odoc-preamble"><h1>Module <code><span>Ocgio.Task</span></code></h1><p>A <code>GTask</code> represents and manages a cancellable ‘task’.</p><p>Its methods, signals and properties are on <a href="class-type-task_t/index.html"><code>task_t</code></a>. Its full description is under <a href="#description" title="description">Description</a>. Its constructors are under <a href="#constructors" title="constructors">Constructors</a>. The functions it is built on are in <a href="../../Ocgio_raw/Task/index.html"><code>Ocgio.Raw.Task</code></a>.</p></header><div class="odoc-tocs"><nav class="odoc-toc odoc-local-toc"><ul><li><a href="#class">Class</a></li><li><a href="#description">Description</a></li><li><a href="#constructors">Constructors</a></li></ul></nav></div><div class="odoc-content"><h2 id="class"><a href="#class" class="anchor"></a>Class</h2><div class="odoc-spec"><div class="spec class-type anchored" id="class-type-task_t"><a href="#class-type-task_t" class="anchor"></a><code><span><span class="keyword">class</span> <span class="keyword">type</span>  </span><span><a href="class-type-task_t/index.html">task_t</a></span><span> = <span class="keyword">object</span> ... <span class="keyword">end</span></span></code></div><div class="spec-doc"><p><b>The methods, signals and properties of a <code>Task</code>.</b></p></div></div><div class="odoc-spec"><div class="spec class anchored" id="class-task"><a href="#class-task" class="anchor"></a><code><span><span class="keyword">class</span> </span><span><a href="class-task/index.html">task</a></span><span> : <span><a href="../../Ocgio_raw/Task/index.html#type-t">Ocgio.Raw.Task.t</a> <span class="arrow">&#45;&gt;</span></span> <a href="class-type-task_t/index.html">task_t</a></span></code></div><div class="spec-doc"><p>Wraps a raw handle of <a href="../../Ocgio_raw/Task/index.html#type-t"><code>Ocgio.Raw.Task.t</code></a>.</p></div></div><h2 id="description"><a href="#description" class="anchor"></a>Description</h2><p>A <code>GTask</code> represents and manages a cancellable ‘task’.</p><p><b>Asynchronous operations</b></p><p>The most common usage of <code>GTask</code> is as a <a href="../Async_result/class-type-async_result_t/index.html" title="Ocgio.Async_result.async_result_t"><code>Gio.AsyncResult</code></a>, to manage data during an asynchronous operation. You call <code>Gio.Task.new</code> in the ‘start’ method, followed by <code>Gio.Task.set_task_data</code> and the like if you need to keep some additional data associated with the task, and then pass the task object around through your asynchronous operation. Eventually, you will call a method such as <code>Gio.Task.return_pointer</code> or <a href="class-type-task_t/index.html#method-return_error" title="Ocgio.Task.task_t.return_error"><code>Gio.Task.return_error</code></a>, which will save the value you give it and then invoke the task’s callback function in the thread-default main context (see <code>GLib.MainContext.push_thread_default</code>) where it was created (waiting until the next iteration of the main loop first, if necessary). The caller will pass the <code>GTask</code> back to the operation’s finish function (as a <a href="../Async_result/class-type-async_result_t/index.html" title="Ocgio.Async_result.async_result_t"><code>Gio.AsyncResult</code></a>), and you can use <code>Gio.Task.propagate_pointer</code> or the like to extract the return value.</p><p>Using <code>GTask</code> requires the thread-default <code>GLib.MainContext</code> from when the <code>GTask</code> was constructed to be running at least until the task has completed and its data has been freed.</p><p>If a <code>GTask</code> has been constructed and its callback set, it is an error to not call <code>g_task_return_*()</code> on it. GLib will warn at runtime if this happens (since 2.76).</p><p>Here is an example for using <code>GTask</code> as a <a href="../Async_result/class-type-async_result_t/index.html" title="Ocgio.Async_result.async_result_t"><code>Gio.AsyncResult</code></a>:</p><pre class="language-ocaml"><code>typedef struct {
+  CakeFrostingType frosting;
+  char *message;
+} DecorationData;
+
+static void
+decoration_data_free (DecorationData *decoration)
+{
+  g_free (decoration-&gt;message);
+  g_slice_free (DecorationData, decoration);
+}
+
+static void
+baked_cb (Cake     *cake,
+          gpointer  user_data)
+{
+  GTask *task = user_data;
+  DecorationData *decoration = g_task_get_task_data (task);
+  GError *error = NULL;
+
+  if (cake == NULL)
+    {
+      g_task_return_new_error (task, BAKER_ERROR, BAKER_ERROR_NO_FLOUR,
+                               &quot;Go to the supermarket&quot;);
+      g_object_unref (task);
+      return;
+    }
+
+  if (!cake_decorate (cake, decoration-&gt;frosting, decoration-&gt;message, &amp;error))
+    {
+      g_object_unref (cake);
+      // g_task_return_error() takes ownership of error
+      g_task_return_error (task, error);
+      g_object_unref (task);
+      return;
+    }
+
+  g_task_return_pointer (task, cake, g_object_unref);
+  g_object_unref (task);
+}
+
+void
+baker_bake_cake_async (Baker               *self,
+                       guint                radius,
+                       CakeFlavor           flavor,
+                       CakeFrostingType     frosting,
+                       const char          *message,
+                       GCancellable        *cancellable,
+                       GAsyncReadyCallback  callback,
+                       gpointer             user_data)
+{
+  GTask *task;
+  DecorationData *decoration;
+  Cake  *cake;
+
+  task = g_task_new (self, cancellable, callback, user_data);
+  if (radius &lt; 3)
+    {
+      g_task_return_new_error (task, BAKER_ERROR, BAKER_ERROR_TOO_SMALL,
+                               &quot;%ucm radius cakes are silly&quot;,
+                               radius);
+      g_object_unref (task);
+      return;
+    }
+
+  cake = _baker_get_cached_cake (self, radius, flavor, frosting, message);
+  if (cake != NULL)
+    {
+      // _baker_get_cached_cake() returns a reffed cake
+      g_task_return_pointer (task, cake, g_object_unref);
+      g_object_unref (task);
+      return;
+    }
+
+  decoration = g_slice_new (DecorationData);
+  decoration-&gt;frosting = frosting;
+  decoration-&gt;message = g_strdup (message);
+  g_task_set_task_data (task, decoration, (GDestroyNotify) decoration_data_free);
+
+  _baker_begin_cake (self, radius, flavor, cancellable, baked_cb, task);
+}
+
+Cake *
+baker_bake_cake_finish (Baker         *self,
+                        GAsyncResult  *result,
+                        GError       **error)
+{
+  g_return_val_if_fail (g_task_is_valid (result, self), NULL);
+
+  return g_task_propagate_pointer (G_TASK (result), error);
+}</code></pre><p><b>Chained asynchronous operations</b></p><p><code>GTask</code> also tries to simplify asynchronous operations that internally chain together several smaller asynchronous operations. <a href="class-type-task_t/index.html#method-get_cancellable" title="Ocgio.Task.task_t.get_cancellable"><code>Gio.Task.get_cancellable</code></a>, <code>Gio.Task.get_context</code>, and <a href="class-type-task_t/index.html#method-get_priority" title="Ocgio.Task.task_t.get_priority"><code>Gio.Task.get_priority</code></a> allow you to get back the task’s <a href="../Cancellable/class-type-cancellable_t/index.html" title="Ocgio.Cancellable.cancellable_t"><code>Gio.Cancellable</code></a>, <code>GLib.MainContext</code>, and I/O priority when starting a new subtask, so you don’t have to keep track of them yourself. <code>Gio.Task.attach_source</code> simplifies the case of waiting for a source to fire (automatically using the correct <code>GLib.MainContext</code> and priority).</p><p>Here is an example for chained asynchronous operations:</p><pre class="language-ocaml"><code>typedef struct {
+  Cake *cake;
+  CakeFrostingType frosting;
+  char *message;
+} BakingData;
+
+static void
+decoration_data_free (BakingData *bd)
+{
+  if (bd-&gt;cake)
+    g_object_unref (bd-&gt;cake);
+  g_free (bd-&gt;message);
+  g_slice_free (BakingData, bd);
+}
+
+static void
+decorated_cb (Cake         *cake,
+              GAsyncResult *result,
+              gpointer      user_data)
+{
+  GTask *task = user_data;
+  GError *error = NULL;
+
+  if (!cake_decorate_finish (cake, result, &amp;error))
+    {
+      g_object_unref (cake);
+      g_task_return_error (task, error);
+      g_object_unref (task);
+      return;
+    }
+
+  // baking_data_free() will drop its ref on the cake, so we have to
+  // take another here to give to the caller.
+  g_task_return_pointer (task, g_object_ref (cake), g_object_unref);
+  g_object_unref (task);
+}
+
+static gboolean
+decorator_ready (gpointer user_data)
+{
+  GTask *task = user_data;
+  BakingData *bd = g_task_get_task_data (task);
+
+  cake_decorate_async (bd-&gt;cake, bd-&gt;frosting, bd-&gt;message,
+                       g_task_get_cancellable (task),
+                       decorated_cb, task);
+
+  return G_SOURCE_REMOVE;
+}
+
+static void
+baked_cb (Cake     *cake,
+          gpointer  user_data)
+{
+  GTask *task = user_data;
+  BakingData *bd = g_task_get_task_data (task);
+  GError *error = NULL;
+
+  if (cake == NULL)
+    {
+      g_task_return_new_error (task, BAKER_ERROR, BAKER_ERROR_NO_FLOUR,
+                               &quot;Go to the supermarket&quot;);
+      g_object_unref (task);
+      return;
+    }
+
+  bd-&gt;cake = cake;
+
+  // Bail out now if the user has already cancelled
+  if (g_task_return_error_if_cancelled (task))
+    {
+      g_object_unref (task);
+      return;
+    }
+
+  if (cake_decorator_available (cake))
+    decorator_ready (task);
+  else
+    {
+      GSource *source;
+
+      source = cake_decorator_wait_source_new (cake);
+      // Attach @source to @task’s GMainContext and have it call
+      // decorator_ready() when it is ready.
+      g_task_attach_source (task, source, decorator_ready);
+      g_source_unref (source);
+    }
+}
+
+void
+baker_bake_cake_async (Baker               *self,
+                       guint                radius,
+                       CakeFlavor           flavor,
+                       CakeFrostingType     frosting,
+                       const char          *message,
+                       gint                 priority,
+                       GCancellable        *cancellable,
+                       GAsyncReadyCallback  callback,
+                       gpointer             user_data)
+{
+  GTask *task;
+  BakingData *bd;
+
+  task = g_task_new (self, cancellable, callback, user_data);
+  g_task_set_priority (task, priority);
+
+  bd = g_slice_new0 (BakingData);
+  bd-&gt;frosting = frosting;
+  bd-&gt;message = g_strdup (message);
+  g_task_set_task_data (task, bd, (GDestroyNotify) baking_data_free);
+
+  _baker_begin_cake (self, radius, flavor, cancellable, baked_cb, task);
+}
+
+Cake *
+baker_bake_cake_finish (Baker         *self,
+                        GAsyncResult  *result,
+                        GError       **error)
+{
+  g_return_val_if_fail (g_task_is_valid (result, self), NULL);
+
+  return g_task_propagate_pointer (G_TASK (result), error);
+}</code></pre><p><b>Asynchronous operations from synchronous ones</b></p><p>You can use <code>Gio.Task.run_in_thread</code> to turn a synchronous operation into an asynchronous one, by running it in a thread. When it completes, the result will be dispatched to the thread-default main context (see <code>GLib.MainContext.push_thread_default</code>) where the <code>GTask</code> was created.</p><p>Running a task in a thread:</p><pre class="language-ocaml"><code>typedef struct {
+  guint radius;
+  CakeFlavor flavor;
+  CakeFrostingType frosting;
+  char *message;
+} CakeData;
+
+static void
+cake_data_free (CakeData *cake_data)
+{
+  g_free (cake_data-&gt;message);
+  g_slice_free (CakeData, cake_data);
+}
+
+static void
+bake_cake_thread (GTask         *task,
+                  gpointer       source_object,
+                  gpointer       task_data,
+                  GCancellable  *cancellable)
+{
+  Baker *self = source_object;
+  CakeData *cake_data = task_data;
+  Cake *cake;
+  GError *error = NULL;
+
+  cake = bake_cake (baker, cake_data-&gt;radius, cake_data-&gt;flavor,
+                    cake_data-&gt;frosting, cake_data-&gt;message,
+                    cancellable, &amp;error);
+  if (cake)
+    g_task_return_pointer (task, cake, g_object_unref);
+  else
+    g_task_return_error (task, error);
+}
+
+void
+baker_bake_cake_async (Baker               *self,
+                       guint                radius,
+                       CakeFlavor           flavor,
+                       CakeFrostingType     frosting,
+                       const char          *message,
+                       GCancellable        *cancellable,
+                       GAsyncReadyCallback  callback,
+                       gpointer             user_data)
+{
+  CakeData *cake_data;
+  GTask *task;
+
+  cake_data = g_slice_new (CakeData);
+  cake_data-&gt;radius = radius;
+  cake_data-&gt;flavor = flavor;
+  cake_data-&gt;frosting = frosting;
+  cake_data-&gt;message = g_strdup (message);
+  task = g_task_new (self, cancellable, callback, user_data);
+  g_task_set_task_data (task, cake_data, (GDestroyNotify) cake_data_free);
+  g_task_run_in_thread (task, bake_cake_thread);
+  g_object_unref (task);
+}
+
+Cake *
+baker_bake_cake_finish (Baker         *self,
+                        GAsyncResult  *result,
+                        GError       **error)
+{
+  g_return_val_if_fail (g_task_is_valid (result, self), NULL);
+
+  return g_task_propagate_pointer (G_TASK (result), error);
+}</code></pre><p><b>Adding cancellability to uncancellable tasks</b></p><p>Finally, <code>Gio.Task.run_in_thread</code> and <code>Gio.Task.run_in_thread_sync</code> can be used to turn an uncancellable operation into a cancellable one. If you call <a href="class-type-task_t/index.html#method-set_return_on_cancel" title="Ocgio.Task.task_t.set_return_on_cancel"><code>Gio.Task.set_return_on_cancel</code></a>, passing <code>true</code>, then if the task’s <a href="../Cancellable/class-type-cancellable_t/index.html" title="Ocgio.Cancellable.cancellable_t"><code>Gio.Cancellable</code></a> is cancelled, it will return control back to the caller immediately, while allowing the task thread to continue running in the background (and simply discarding its result when it finally does finish). Provided that the task thread is careful about how it uses locks and other externally-visible resources, this allows you to make ‘GLib-friendly’ asynchronous and cancellable synchronous variants of blocking APIs.</p><p>Cancelling a task:</p><pre class="language-ocaml"><code>static void
+bake_cake_thread (GTask         *task,
+                  gpointer       source_object,
+                  gpointer       task_data,
+                  GCancellable  *cancellable)
+{
+  Baker *self = source_object;
+  CakeData *cake_data = task_data;
+  Cake *cake;
+  GError *error = NULL;
+
+  cake = bake_cake (baker, cake_data-&gt;radius, cake_data-&gt;flavor,
+                    cake_data-&gt;frosting, cake_data-&gt;message,
+                    &amp;error);
+  if (error)
+    {
+      g_task_return_error (task, error);
+      return;
+    }
+
+  // If the task has already been cancelled, then we don’t want to add
+  // the cake to the cake cache. Likewise, we don’t  want to have the
+  // task get cancelled in the middle of updating the cache.
+  // g_task_set_return_on_cancel() will return %TRUE here if it managed
+  // to disable return-on-cancel, or %FALSE if the task was cancelled
+  // before it could.
+  if (g_task_set_return_on_cancel (task, FALSE))
+    {
+      // If the caller cancels at this point, their
+      // GAsyncReadyCallback won’t be invoked until we return,
+      // so we don’t have to worry that this code will run at
+      // the same time as that code does. But if there were
+      // other functions that might look at the cake cache,
+      // then we’d probably need a GMutex here as well.
+      baker_add_cake_to_cache (baker, cake);
+      g_task_return_pointer (task, cake, g_object_unref);
+    }
+}
+
+void
+baker_bake_cake_async (Baker               *self,
+                       guint                radius,
+                       CakeFlavor           flavor,
+                       CakeFrostingType     frosting,
+                       const char          *message,
+                       GCancellable        *cancellable,
+                       GAsyncReadyCallback  callback,
+                       gpointer             user_data)
+{
+  CakeData *cake_data;
+  GTask *task;
+
+  cake_data = g_slice_new (CakeData);
+
+  ...
+
+  task = g_task_new (self, cancellable, callback, user_data);
+  g_task_set_task_data (task, cake_data, (GDestroyNotify) cake_data_free);
+  g_task_set_return_on_cancel (task, TRUE);
+  g_task_run_in_thread (task, bake_cake_thread);
+}
+
+Cake *
+baker_bake_cake_sync (Baker               *self,
+                      guint                radius,
+                      CakeFlavor           flavor,
+                      CakeFrostingType     frosting,
+                      const char          *message,
+                      GCancellable        *cancellable,
+                      GError             **error)
+{
+  CakeData *cake_data;
+  GTask *task;
+  Cake *cake;
+
+  cake_data = g_slice_new (CakeData);
+
+  ...
+
+  task = g_task_new (self, cancellable, NULL, NULL);
+  g_task_set_task_data (task, cake_data, (GDestroyNotify) cake_data_free);
+  g_task_set_return_on_cancel (task, TRUE);
+  g_task_run_in_thread_sync (task, bake_cake_thread);
+
+  cake = g_task_propagate_pointer (task, error);
+  g_object_unref (task);
+  return cake;
+}</code></pre><p><b>Porting from <a href="../Simple_async_result/class-type-simple_async_result_t/index.html" title="Ocgio.Simple_async_result.simple_async_result_t"><code>Gio.SimpleAsyncResult</code></a></b></p><p><code>GTask</code>’s API attempts to be simpler than <a href="../Simple_async_result/class-type-simple_async_result_t/index.html" title="Ocgio.Simple_async_result.simple_async_result_t"><code>Gio.SimpleAsyncResult</code></a>’s in several ways:</p><ul><li>You can save task-specific data with <code>Gio.Task.set_task_data</code>, and retrieve it later with <code>Gio.Task.get_task_data</code>. This replaces the abuse of <code>Gio.SimpleAsyncResult.set_op_res_gpointer</code> for the same purpose with <a href="../Simple_async_result/class-type-simple_async_result_t/index.html" title="Ocgio.Simple_async_result.simple_async_result_t"><code>Gio.SimpleAsyncResult</code></a>.</li><li>In addition to the task data, <code>GTask</code> also keeps track of the priority, <a href="../Cancellable/class-type-cancellable_t/index.html" title="Ocgio.Cancellable.cancellable_t"><code>Gio.Cancellable</code></a>, and <code>GLib.MainContext</code> associated with the task, so tasks that consist of a chain of simpler asynchronous operations will have easy access to those values when starting each sub-task.</li><li><a href="class-type-task_t/index.html#method-return_error_if_cancelled" title="Ocgio.Task.task_t.return_error_if_cancelled"><code>Gio.Task.return_error_if_cancelled</code></a> provides simplified handling for cancellation. In addition, cancellation overrides any other <code>GTask</code> return value by default, like <a href="../Simple_async_result/class-type-simple_async_result_t/index.html" title="Ocgio.Simple_async_result.simple_async_result_t"><code>Gio.SimpleAsyncResult</code></a> does when <a href="../Simple_async_result/class-type-simple_async_result_t/index.html#method-set_check_cancellable" title="Ocgio.Simple_async_result.simple_async_result_t.set_check_cancellable"><code>Gio.SimpleAsyncResult.set_check_cancellable</code></a> is called. (You can use <a href="class-type-task_t/index.html#method-set_check_cancellable" title="Ocgio.Task.task_t.set_check_cancellable"><code>Gio.Task.set_check_cancellable</code></a> to turn off that behavior.) On the other hand, <code>Gio.Task.run_in_thread</code> guarantees that it will always run your <code>task_func</code>, even if the task’s <a href="../Cancellable/class-type-cancellable_t/index.html" title="Ocgio.Cancellable.cancellable_t"><code>Gio.Cancellable</code></a> is already cancelled before the task gets a chance to run; you can start your <code>task_func</code> with a <a href="class-type-task_t/index.html#method-return_error_if_cancelled" title="Ocgio.Task.task_t.return_error_if_cancelled"><code>Gio.Task.return_error_if_cancelled</code></a> check if you need the old behavior.</li><li>The ‘return’ methods (eg, <code>Gio.Task.return_pointer</code>) automatically cause the task to be ‘completed’ as well, and there is no need to worry about the ‘complete’ vs ‘complete in idle’ distinction. (<code>GTask</code> automatically figures out whether the task’s callback can be invoked directly, or if it needs to be sent to another <code>GLib.MainContext</code>, or delayed until the next iteration of the current <code>GLib.MainContext</code>.)</li><li>The ‘finish’ functions for <code>GTask</code> based operations are generally much simpler than <a href="../Simple_async_result/class-type-simple_async_result_t/index.html" title="Ocgio.Simple_async_result.simple_async_result_t"><code>Gio.SimpleAsyncResult</code></a> ones, normally consisting of only a single call to <code>Gio.Task.propagate_pointer</code> or the like. Since <code>Gio.Task.propagate_pointer</code> ‘steals’ the return value from the <code>GTask</code>, it is not necessary to juggle pointers around to prevent it from being freed twice.</li><li>With <a href="../Simple_async_result/class-type-simple_async_result_t/index.html" title="Ocgio.Simple_async_result.simple_async_result_t"><code>Gio.SimpleAsyncResult</code></a>, it was common to call <a href="../Simple_async_result/class-type-simple_async_result_t/index.html#method-propagate_error" title="Ocgio.Simple_async_result.simple_async_result_t.propagate_error"><code>Gio.SimpleAsyncResult.propagate_error</code></a> from the <code>_finish()</code> wrapper function, and have virtual method implementations only deal with successful returns. This behavior is deprecated, because it makes it difficult for a subclass to chain to a parent class’s async methods. Instead, the wrapper function should just be a simple wrapper, and the virtual method should call an appropriate <code>g_task_propagate_</code> function. Note that wrapper methods can now use <a href="../Async_result/class-type-async_result_t/index.html#method-legacy_propagate_error" title="Ocgio.Async_result.async_result_t.legacy_propagate_error"><code>Gio.AsyncResult.legacy_propagate_error</code></a> to do old-style <a href="../Simple_async_result/class-type-simple_async_result_t/index.html" title="Ocgio.Simple_async_result.simple_async_result_t"><code>Gio.SimpleAsyncResult</code></a> error-returning behavior, and <code>Gio.AsyncResult.is_tagged</code> to check if a result is tagged as having come from the <code>_async()</code> wrapper function (for ‘short-circuit’ results, such as when passing <code>0</code> to <code>Gio.InputStream.read_async</code>).</li></ul><p><b>Thread-safety considerations</b></p><p>Due to some infelicities in the API design, there is a thread-safety concern that users of <code>GTask</code> have to be aware of:</p><p>If the <code>main</code> thread drops its last reference to the source object or the task data before the task is finalized, then the finalizers of these objects may be called on the worker thread.</p><p>This is a problem if the finalizers use non-threadsafe API, and can lead to hard-to-debug crashes. Possible workarounds include:</p><ul><li>Clear task data in a signal handler for <code>notify::completed</code></li><li>Keep iterating a main context in the main thread and defer dropping the reference to the source object to that main context when the task is finalized</li></ul><h2 id="constructors"><a href="#constructors" class="anchor"></a>Constructors</h2><p>This class is not instantiated directly - it is used as a return value by methods on other classes.</p></div></body></html>
