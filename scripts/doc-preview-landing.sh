@@ -73,12 +73,14 @@ fi
     <main class="content">
       <h1>${TITLE}</h1>
 EOF
-    # The conventions page covers every package but odoc renders it in
+    # These pages cover every package but odoc renders them in
     # ocgtk's page tree, and no package's pages can link another's.
     if [ -f "$HTML_DIR/ocgtk/conventions.html" ]; then
         cat <<EOF
       <h2>Reference</h2>
       <ul>
+        <li><a href="ocgtk/getting_started.html">Getting started</a>: install
+          ocgtk and write a first GTK 4 application.</li>
         <li><a href="ocgtk/conventions.html">Conventions</a>: how each
           library is structured, where to find classes, methods, types and
           signals, and how they are mapped in OCaml.</li>

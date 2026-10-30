@@ -65,6 +65,10 @@ Currently unsupported:
 
 ## Quick Start
 
+To write an application with ocgtk, see the getting started guide,
+[`ocgtk/getting_started.mld`](ocgtk/getting_started.mld), also in the
+rendered docs. The steps below build this repository.
+
 Install system dependencies (Ubuntu/Debian):
 
 ```bash
