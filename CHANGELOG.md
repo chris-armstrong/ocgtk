@@ -4,7 +4,7 @@ All notable changes to **ocgtk** are documented here. Entries are grouped by
 release; the `0.1~preview*` series is the initial preview track toward a
 usable OCaml GTK 4 binding library.
 
-## [Unreleased]
+## [0.1~preview3] — 2026-10-30
 
 ### Breaking: one package per library
 
@@ -83,6 +83,8 @@ The generated bindings now carry the upstream GTK documentation, and
 - **OCaml versions** — CI builds with OCaml 5.5, and the release checks add
   a job that installs every package on OCaml 4.14, the oldest the packages
   accept.
+
+[0.1~preview3]: https://github.com/chris-armstrong/ocgtk/releases/tag/v0.1-preview3
 
 ## [0.1~preview2] — 2026-06-24
 
