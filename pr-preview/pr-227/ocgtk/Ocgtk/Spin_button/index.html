@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Spin_button (ocgtk.Ocgtk.Spin_button)</title><meta charset="utf-8"/><link rel="stylesheet" href="../../../odoc.support/odoc.css"/><meta name="generator" content="odoc 3.2.2"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><script src="../../../odoc.support/highlight.pack.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="odoc"><nav class="odoc-nav"><a href="../index.html">Up</a> – <a href="../../../index.html">Index</a> &#x00BB; <a href="../../index.html">ocgtk</a> &#x00BB; <a href="../index.html">Ocgtk</a> &#x00BB; Spin_button</nav><header class="odoc-preamble"><h1>Module <code><span>Ocgtk.Spin_button</span></code></h1><p>Allows to enter or change numeric values.</p><p>Its methods, signals and properties are on <a href="class-type-spin_button_t/index.html"><code>spin_button_t</code></a>. Its full description is under <a href="#description" title="description">Description</a>. Its constructors are under <a href="#constructors" title="constructors">Constructors</a>. The functions it is built on are in <a href="../../Ocgtk_raw/Spin_button/index.html"><code>Ocgtk.Raw.Spin_button</code></a>.</p></header><div class="odoc-tocs"><nav class="odoc-toc odoc-local-toc"><ul><li><a href="#class">Class</a></li><li><a href="#description">Description</a></li><li><a href="#constructors">Constructors</a></li></ul></nav></div><div class="odoc-content"><h2 id="class"><a href="#class" class="anchor"></a>Class</h2><div class="odoc-spec"><div class="spec class-type anchored" id="class-type-spin_button_t"><a href="#class-type-spin_button_t" class="anchor"></a><code><span><span class="keyword">class</span> <span class="keyword">type</span>  </span><span><a href="class-type-spin_button_t/index.html">spin_button_t</a></span><span> = <span class="keyword">object</span> ... <span class="keyword">end</span></span></code></div><div class="spec-doc"><p><b>The methods, signals and properties of a <code>SpinButton</code>.</b></p></div></div><div class="odoc-spec"><div class="spec class anchored" id="class-spin_button"><a href="#class-spin_button" class="anchor"></a><code><span><span class="keyword">class</span> </span><span><a href="class-spin_button/index.html">spin_button</a></span><span> : <span><a href="../../Ocgtk_raw/Spin_button/index.html#type-t">Ocgtk.Raw.Spin_button.t</a> <span class="arrow">&#45;&gt;</span></span> <a href="class-type-spin_button_t/index.html">spin_button_t</a></span></code></div><div class="spec-doc"><p>Wraps a raw handle of <a href="../../Ocgtk_raw/Spin_button/index.html#type-t"><code>Ocgtk.Raw.Spin_button.t</code></a>.</p></div></div><h2 id="description"><a href="#description" class="anchor"></a>Description</h2><p>Allows to enter or change numeric values.</p><p>An example GtkSpinButton</p><p>Rather than having to directly type a number into a <code>GtkEntry</code>, <code>GtkSpinButton</code> allows the user to click on one of two arrows to increment or decrement the displayed value. A value can still be typed in, with the bonus that it can be checked to ensure it is in a given range.</p><p>The main properties of a <code>GtkSpinButton</code> are through an adjustment. See the <a href="../Adjustment/class-type-adjustment_t/index.html" title="Ocgtk.Adjustment.adjustment_t"><code>Gtk.Adjustment</code></a> documentation for more details about an adjustment's properties.</p><p>Note that <code>GtkSpinButton</code> will by default make its entry large enough to accommodate the lower and upper bounds of the adjustment. If this is not desired, the automatic sizing can be turned off by explicitly setting <a href="../Editable/class-type-editable_t/index.html#method-get_width_chars" title="Ocgtk.Editable.editable_t.get_width_chars"><code>Gtk.Editable:width-chars</code></a> to a value != -1.</p><p><b>Using a GtkSpinButton to get an integer</b></p><pre class="language-ocaml"><code>// Provides a function to retrieve an integer value from a GtkSpinButton
+// and creates a spin button to model percentage values.
+
+int
+grab_int_value (GtkSpinButton *button,
+                gpointer       user_data)
+{
+  return gtk_spin_button_get_value_as_int (button);
+}
+
+void
+create_integer_spin_button (void)
+{
+
+  GtkWidget *window, *button;
+  GtkAdjustment *adjustment;
+
+  adjustment = gtk_adjustment_new (50.0, 0.0, 100.0, 1.0, 5.0, 0.0);
+
+  window = gtk_window_new ();
+
+  // creates the spinbutton, with no decimal places
+  button = gtk_spin_button_new (adjustment, 1.0, 0);
+  gtk_window_set_child (GTK_WINDOW (window), button);
+
+  gtk_window_present (GTK_WINDOW (window));
+}</code></pre><p><b>Using a GtkSpinButton to get a floating point value</b></p><pre class="language-ocaml"><code>// Provides a function to retrieve a floating point value from a
+// GtkSpinButton, and creates a high precision spin button.
+
+float
+grab_float_value (GtkSpinButton *button,
+                  gpointer       user_data)
+{
+  return gtk_spin_button_get_value (button);
+}
+
+void
+create_floating_spin_button (void)
+{
+  GtkWidget *window, *button;
+  GtkAdjustment *adjustment;
+
+  adjustment = gtk_adjustment_new (2.500, 0.0, 5.0, 0.001, 0.1, 0.0);
+
+  window = gtk_window_new ();
+
+  // creates the spinbutton, with three decimal places
+  button = gtk_spin_button_new (adjustment, 0.001, 3);
+  gtk_window_set_child (GTK_WINDOW (window), button);
+
+  gtk_window_present (GTK_WINDOW (window));
+}</code></pre><p><b>Shortcuts and Gestures</b></p><p>The following signals have default keybindings:</p><ul><li><a href="class-type-spin_button_t/index.html#method-on_change_value" title="Ocgtk.Spin_button.spin_button_t.on_change_value"><code>Gtk.SpinButton::change-value</code></a></li></ul><p><b>CSS nodes</b></p><pre class="language-ocaml"><code>spinbutton.horizontal
+├── text
+│    ├── undershoot.left
+│    ╰── undershoot.right
+├── button.down
+╰── button.up</code></pre><pre class="language-ocaml"><code>spinbutton.vertical
+├── button.up
+├── text
+│    ├── undershoot.left
+│    ╰── undershoot.right
+╰── button.down</code></pre><p><code>GtkSpinButton</code>s main CSS node has the name spinbutton. It creates subnodes for the entry and the two buttons, with these names. The button nodes have the style classes .up and .down. The <code>GtkText</code> subnodes (if present) are put below the text node. The orientation of the spin button is reflected in the .vertical or .horizontal style class on the main node.</p><p><b>Accessibility</b></p><p><code>GtkSpinButton</code> uses the <a href="../Enums/index.html#type-accessiblerole.SPIN_BUTTON" title="Ocgtk.Enums.accessiblerole.`SPIN_BUTTON"><code>Gtk.AccessibleRole.spin_button</code></a> role.</p><h2 id="constructors"><a href="#constructors" class="anchor"></a>Constructors</h2><div class="odoc-spec"><div class="spec value anchored" id="val-new_"><a href="#val-new_" class="anchor"></a><code><span><span class="keyword">val</span> new_ : <span><span><a href="../Adjustment/class-type-adjustment_t/index.html">Adjustment.adjustment_t</a> option</span> <span class="arrow">&#45;&gt;</span></span> <span>float <span class="arrow">&#45;&gt;</span></span> <span>int <span class="arrow">&#45;&gt;</span></span> <a href="class-type-spin_button_t/index.html">spin_button_t</a></span></code></div><div class="spec-doc"><p>Creates a new <code>GtkSpinButton</code>.</p></div></div><div class="odoc-spec"><div class="spec value anchored" id="val-new_with_range"><a href="#val-new_with_range" class="anchor"></a><code><span><span class="keyword">val</span> new_with_range : <span>float <span class="arrow">&#45;&gt;</span></span> <span>float <span class="arrow">&#45;&gt;</span></span> <span>float <span class="arrow">&#45;&gt;</span></span> <a href="class-type-spin_button_t/index.html">spin_button_t</a></span></code></div><div class="spec-doc"><p>Creates a new <code>GtkSpinButton</code> with the given properties.</p><p>This is a convenience constructor that allows creation of a numeric <code>GtkSpinButton</code> without manually creating an adjustment. The value is initially set to the minimum value and a page increment of 10 * <code>step</code> is the default. The precision of the spin button is equivalent to the precision of <code>step</code>.</p><p>Note that the way in which the precision is derived works best if <code>step</code> is a power of ten. If the resulting precision is not suitable for your needs, use <a href="class-type-spin_button_t/index.html#method-set_digits" title="Ocgtk.Spin_button.spin_button_t.set_digits"><code>Gtk.SpinButton.set_digits</code></a> to correct it.</p></div></div></div></body></html>
