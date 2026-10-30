@@ -17,7 +17,7 @@ depends: [
   "ocgio" {= version}
   "ocpango" {= version}
   "ocpangocairo" {= version}
-  "conf-gtk4" {>= "2"}
+  "conf-gtk4" {>= "3"}
   "dune-configurator" {build}
   "alcotest" {with-test}
   "odoc" {with-doc}

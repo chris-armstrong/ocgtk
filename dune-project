@@ -142,7 +142,7 @@
   (ocpangocairo
    (= :version))
   (conf-gtk4
-   (>= 2))
+   (>= 3))
   (dune-configurator :build)
   (alcotest :with-test)))
 
@@ -170,7 +170,7 @@
   (ocpangocairo
    (= :version))
   (conf-gtk4
-   (>= 2))
+   (>= 3))
   (dune-configurator :build)
   (alcotest :with-test)))
 
@@ -200,6 +200,6 @@
   (ocpangocairo
    (= :version))
   (conf-gtk4
-   (>= 2))
+   (>= 3))
   (dune-configurator :build)
   (alcotest :with-test)))
