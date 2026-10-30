@@ -17,8 +17,9 @@ depexts: [
   # Debian/Ubuntu
   ["libgtk-4-dev"] {os-family = "debian"}
 
-  # Fedora/CentOS Stream/openSUSE
+  # Fedora/RHEL/CentOS/OpenSUSE
   ["gtk4-devel"] {os-distribution = "fedora"}
+  ["gtk4-devel"] {os-distribution = "rhel"}
   ["gtk4-devel"] {os-distribution = "centos"}
   ["gtk4-devel"] {os-distribution = "opensuse-leap" | os-distribution = "opensuse-tumbleweed"}
 
@@ -31,14 +32,19 @@ depexts: [
   # macOS via Homebrew
   ["gtk4"] {os = "macos" & os-distribution = "homebrew"}
 
+  # macOS via MacPorts
+  ["gtk4"] {os = "macos" & os-distribution = "macports"}
+
+  # MSYS2
+  ["mingw-w64-x86_64-gtk4"] {os-distribution = "msys2"}
+
   # FreeBSD
   ["gtk4"] {os = "freebsd"}
 ]
 
 build: [
-  ["pkg-config" "--short-errors" "--print-errors" "gtk4"]
+  ["pkg-config" "--short-errors" "--print-errors" "gtk4"] {os != "win32" | os-distribution = "msys2"}
 ]
 
-# Windows is unsupported until the opam MSYS2 UCRT64 toolchain is available.
-available: os != "win32"
+available: os != "win32" | os-distribution = "msys2"
 flags: conf
