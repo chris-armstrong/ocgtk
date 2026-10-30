@@ -67,7 +67,4 @@ let test_nullable_parameters () =
 (* ========================================================================= *)
 
 let tests =
-  [
-    Alcotest.test_case "Nullable parameters (Phase 5.3)" `Quick
-      test_nullable_parameters;
-  ]
+  [ Alcotest.test_case "Nullable parameters" `Quick test_nullable_parameters ]

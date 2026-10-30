@@ -18,9 +18,6 @@
  * - Program name get/set
  * - List conversions (GList/GSList <-> OCaml list)
  * - Error handling (GError)
- *
- * Additional GLib bindings (main loop, I/O channels, etc.) will be
- * added in Phase 2.
  */
 
 #include <string.h>

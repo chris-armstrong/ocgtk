@@ -221,8 +221,7 @@ let test_camlparam_limitation () =
 let tests =
   [
     Alcotest.test_case "Widget generation" `Quick test_widget_generation;
-    Alcotest.test_case "All methods generated (Phase 5.2)" `Quick
-      test_all_methods_generated;
+    Alcotest.test_case "All methods generated" `Quick test_all_methods_generated;
     Alcotest.test_case "CAMLparam limitation (>5 params)" `Quick
       test_camlparam_limitation;
     Alcotest.test_case "Generated code quality" `Quick

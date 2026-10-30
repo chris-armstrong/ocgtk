@@ -114,8 +114,8 @@ let is_void_type (gir_type : gir_type) =
   | None -> false
 
 (** Return true when [gir_type] represents a callback / varargs parameter that
-    cannot be marshalled until Milestone 4. GIR callback types typically have
-    names containing "Func" or "Callback" (case-insensitive). *)
+    cannot be marshalled yet. GIR callback types typically have names containing
+    "Func" or "Callback" (case-insensitive). *)
 let is_callback_type (gir_type : gir_type) =
   let lower = String.lowercase_ascii gir_type.name in
   String.mem ~sub:"func" lower || String.mem ~sub:"callback" lower
@@ -243,7 +243,7 @@ let classify ~ctx ~gir_type : result =
       (make_marshaller ~ocaml_type:"Gobject.Value.t" ~getter_expr:"v"
          ~setter_expr:"()" ())
   else if is_callback_type gir_type then
-    Unsupported "callback parameters require Milestone 4"
+    Unsupported "callback parameters are not supported"
   else
     (* Look up a primitive mapping before falling back to classify_type *)
     let primitive_result =

@@ -1,4 +1,4 @@
-(* Phase 6 tests: classify_type unit tests and cross-namespace array element
+(* classify_type unit tests and cross-namespace array element
    type resolution.
 
    classify_type: same-namespace (enum, bitfield, class, interface, record,

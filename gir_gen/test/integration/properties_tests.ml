@@ -121,7 +121,6 @@ let test_properties_only_class () =
 let tests =
   [
     Alcotest.test_case "Property generation" `Quick test_property_generation;
-    Alcotest.test_case "C property generation (Phase 5.2)" `Quick
-      test_c_property_generation;
+    Alcotest.test_case "C property generation" `Quick test_c_property_generation;
     Alcotest.test_case "Properties-only class" `Quick test_properties_only_class;
   ]

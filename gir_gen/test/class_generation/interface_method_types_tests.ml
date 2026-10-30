@@ -1,4 +1,4 @@
-(* Tests for Phase 7: Layer 2 interface method types.
+(* Tests for layer 2 interface method types.
  *
  * Verifies:
  *   1. A class with a method returning an interface type generates proper wrapping:

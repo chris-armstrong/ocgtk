@@ -1,6 +1,5 @@
 (* Signal_gen pure-data API unit tests.
-   All 14 test cases from the Phase 2 plan — replaces the 4 old tests
-   that called the now-removed generate_signal_class function. *)
+*)
 
 open Containers
 open Gir_gen_lib.Types
@@ -655,7 +654,7 @@ let test_l2_has_no_inherit_signals_line () =
       "L2 method output should not contain any 'inherit *_signals' clause"
 
 (* ========================================================================= *)
-(* Stage 2 integration: generate_ml_interface emits L1 signal bindings       *)
+(* Integration: generate_ml_interface emits L1 signal bindings       *)
 (* ========================================================================= *)
 
 module Ml_interface = Gir_gen_lib.Generate.Ml_interface
@@ -696,7 +695,7 @@ let test_l1_let_in_generated_module_impl () =
     (Ml_ast_helpers.find_let_binding ast "on_clicked")
 
 (* ========================================================================= *)
-(* Stage 3: class_gen body contains on_signal method forwarders               *)
+(* class_gen body contains on_signal method forwarders               *)
 (* ========================================================================= *)
 
 module Class_gen = Gir_gen_lib.Generate.Class_gen

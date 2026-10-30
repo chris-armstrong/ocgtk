@@ -121,8 +121,7 @@ let handle_button_click ui text () =
   state_ref := new_state;
   update_display ui ()
 
-(* GDK keysym constants for non-printable keys.
-   GDK_KEY_* constants are not yet generated (Milestone 4), hardcode for now. *)
+(* GDK keysym values for non-printable keys. *)
 let gdk_key_return = 0xff0d
 let gdk_key_kp_enter = 0xff8d
 let gdk_key_escape = 0xff1b

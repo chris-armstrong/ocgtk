@@ -23,10 +23,38 @@ usable OCaml GTK 4 binding library.
 - **Three libraries per package** — `<pkg>.enums`, `<pkg>.raw` and `<pkg>`;
   users depend on `<pkg>` alone. The raw libraries install their C headers
   (`gio_decls.h`, ...), so C stubs include them without a directory.
-- **Docs** — every `inherit` line in the class documentation now links to
-  the parent class, and each package has its own index page.
 - **Tests** live in each package's `tests/` directory, and run only for that
   package under `opam install --with-test`.
+
+### API documentation
+
+The generated bindings now carry the upstream GTK documentation, and
+`dune build @doc` produces browsable odoc HTML for every package.
+
+- **Upstream docs in every binding** — the documentation in each library's
+  GObject Introspection (GIR) file is translated from its markdown dialect
+  to odoc markup and emitted on modules, classes, methods, constructors,
+  signals, properties, enums and constants, in both the low-level
+  `Oc<ns>.Raw` modules and the object-oriented modules.
+- **Rewritten for OCaml** — C idioms are replaced with their OCaml forms
+  (`%TRUE` is `true`, `%NULL` is `None`, `gboolean` is `bool`), and
+  sentences telling the caller to free or unref a value are removed, since
+  the garbage collector owns every value.
+- **Cross-references link** — references to other types, methods, signals,
+  properties, enum values and constants (written as gi-docgen links, gtk-doc
+  `#Type`/`%CONSTANT` sigils or C function names) link to the generated
+  OCaml item, across packages. References to anything not generated, such
+  as GLib or GObject, stay as code. odoc 3.2 does not resolve links in the
+  docs of class methods, so the references there also stay as code.
+- **Class pages** — each class module starts with a short guide to the
+  page, its class type lists its parent class and interfaces and groups its
+  members under Signals, Methods, Properties and Conversions, and every
+  class has a Constructors section that says why when there are none.
+  Undocumented constructors and properties get a generated description with
+  a link to the upstream C documentation.
+- **Index and conventions pages** — each package has an index page and a
+  list of its modules, and a conventions page explains the two binding
+  layers, naming, type mappings, signals and properties.
 
 ### Packaging
 

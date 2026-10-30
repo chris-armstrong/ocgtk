@@ -91,7 +91,7 @@ type block =
 type t = { blocks : block list }
 
 (** One lossy or degraded translation, with enough payload to classify and count
-    it for the warnings report (GIR plan Phase 5). *)
+    it in the generator's report. *)
 type fallback =
   | Inline_code_unbalanced of string
       (** v1 inline code would break its span — rendered as escaped plain prose.

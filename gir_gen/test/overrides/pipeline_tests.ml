@@ -1,5 +1,5 @@
-(* Pipeline tests for the override system (tier 2 — see Phase 1.5 of
- * docs/plans/completed/test-suite-remediation.md).
+(* Pipeline tests for the override system (tier 2 — see
+ * the test classification in gir_gen/test/GIR_GEN_TESTING.md).
  *
  * Verifies that override-based filtering propagates correctly through the
  * complete in-process pipeline:

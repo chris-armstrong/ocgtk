@@ -10,7 +10,7 @@ module Value = Gobject.Value
 module Type = Gobject.Type
 module Helpers = Gobject_test_helpers
 
-(** {2 M1: multi-param dispatch with bool return (true)} *)
+(** {2 Multi-param dispatch with bool return (true)} *)
 
 let test_mixed_params_bool_return_true () =
   let btn_obj = Ocgtk.Raw.Button.new_ () in
@@ -33,7 +33,7 @@ let test_mixed_params_bool_return_true () =
   check bool "obj arg captured as Some" true
     (match !obj_captured with Some _ -> true | None -> false)
 
-(** {2 M2: multi-param dispatch with bool return (false)} *)
+(** {2 Multi-param dispatch with bool return (false)} *)
 
 let test_mixed_params_bool_return_false () =
   let btn_obj = Ocgtk.Raw.Button.new_ () in
@@ -45,7 +45,7 @@ let test_mixed_params_bool_return_false () =
   in
   check bool "return value is false" false result
 
-(** {2 M3: void return with 0 params} *)
+(** {2 Void return with 0 params} *)
 
 let test_void_return_0_params () =
   let called = ref false in
@@ -53,7 +53,7 @@ let test_void_return_0_params () =
   Helpers.invoke_closure_void closure;
   check bool "closure was invoked" true !called
 
-(** {2 M5: nullable GObject param} *)
+(** {2 Nullable GObject param} *)
 
 let test_null_gobject_param () =
   let obj_captured = ref None in
@@ -88,7 +88,7 @@ let test_non_null_gobject_param () =
     | Some obj -> Gobject.same obj btn_obj
     | None -> false)
 
-(** {2 M4: exception escape} *)
+(** {2 Exception escape} *)
 
 let test_exception_escape () =
   Helpers.reset_closure_exception_flag ();
@@ -99,7 +99,7 @@ let test_exception_escape () =
   check bool "exception flag is set after escape" true
     (Helpers.check_closure_exception_flag ())
 
-(** {2 M8: int return copy-back} *)
+(** {2 Int return copy-back} *)
 
 let test_int_return () =
   let closure =
@@ -108,7 +108,7 @@ let test_int_return () =
   let result = Helpers.invoke_closure_return_int closure in
   check int "int return is 99" 99 result
 
-(** {2 M9: flags dispatch} *)
+(** {2 Flags dispatch} *)
 
 type test_flags = A | B | AB
 
@@ -134,7 +134,7 @@ let test_flags_dispatch () =
   check int "flags list length" (List.length expected)
     (List.length !flags_captured)
 
-(** {2 M6: GC safety} *)
+(** {2 GC safety} *)
 
 let test_gc_safety () =
   let errors = ref 0 in

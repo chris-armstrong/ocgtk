@@ -1,4 +1,4 @@
-(* Tests for M3 doc parsing: <doc>, <doc-deprecated>, deprecation attributes,
+(* Tests for doc parsing: <doc>, <doc-deprecated>, deprecation attributes,
  * and <doc:format> capture into the GIR AST.
  *
  * Synthetic XML uses Helpers.wrap_namespace; real-GIR spot checks use the

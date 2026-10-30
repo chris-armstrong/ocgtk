@@ -1033,7 +1033,7 @@ CAMLprim value ml_g_signal_emit_by_name(value obj, value signal_name)
 }
 
 /* ==================================================================== */
-/* Object Creation (from Phase 1) */
+/* Object Creation */
 /* ==================================================================== */
 
 CAMLprim value ml_g_object_new(value type)
