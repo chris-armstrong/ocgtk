@@ -1,6 +1,6 @@
-(* Header pipeline tests — multi-library header generation (Stage 8).
-   Tier 2 — pipeline test (see Phase 1.5 of
-   docs/plans/completed/test-suite-remediation.md): in-process, multi-module, no
+(* Header pipeline tests — multi-library header generation.
+   Tier 2 — pipeline test (see
+   the test classification in gir_gen/test/GIR_GEN_TESTING.md): in-process, multi-module, no
    subprocess invocation of gir_gen.exe.
 
    Verifies that the complete cross-namespace header system works
@@ -42,7 +42,7 @@ let generate_header ctx =
 (* Header Pipeline Test Cases *)
 (* ========================================================================= *)
 
-(* Stage 8 Test: Header generation with Gdk cross-references *)
+(* Header generation with Gdk cross-references *)
 let test_header_generation_with_gdk_cross_references () =
   let gdk_map =
     StringMap.add "Texture"
@@ -59,7 +59,7 @@ let test_header_generation_with_gdk_cross_references () =
   assert_header_guard_format header_content "_gtk_decls_h_";
   assert_local_include_exists header_content "gdk_decls.h"
 
-(* Stage 8 Test: Header generation with multiple dependencies *)
+(* Header generation with multiple dependencies *)
 let test_header_generation_with_multiple_dependencies () =
   let gdk_map =
     StringMap.add "Texture"
@@ -80,7 +80,7 @@ let test_header_generation_with_multiple_dependencies () =
   assert_local_include_exists header_content "gdk_decls.h";
   assert_local_include_exists header_content "gio_decls.h"
 
-(* Stage 8 Test: Header with no dependencies has no includes *)
+(* Header with no dependencies has no includes *)
 let test_header_no_dependencies_no_includes () =
   let ctx = make_single_ns_ctx "Gdk" StringMap.empty in
   let header_content = generate_header ctx in
@@ -94,7 +94,7 @@ let test_header_no_dependencies_no_includes () =
   assert_local_include_not_exists header_content "gio_decls.h";
   assert_local_include_not_exists header_content "gsk_decls.h"
 
-(* Stage 8 Test: Base namespaces are filtered from dependencies *)
+(* Base namespaces are filtered from dependencies *)
 let test_base_namespaces_filtered () =
   let glib_map =
     StringMap.add "Object"
@@ -108,7 +108,7 @@ let test_base_namespaces_filtered () =
   let header_content = generate_header ctx in
   assert_local_include_not_exists header_content "glib_decls.h"
 
-(* Stage 8 Test: Gsk with Gdk dependency header structure *)
+(* Gsk with Gdk dependency header structure *)
 let test_gsk_with_gdk_dependency () =
   let gdk_map =
     StringMap.add "Surface"
@@ -123,7 +123,7 @@ let test_gsk_with_gdk_dependency () =
   assert_header_guard_format header_content "_gsk_decls_h_";
   assert_local_include_exists header_content "gdk_decls.h"
 
-(* Stage 8 Test: Complete dependency chain Gtk -> Gsk -> Gdk *)
+(* Complete dependency chain Gtk -> Gsk -> Gdk *)
 let test_complete_dependency_chain () =
   let gsk_map =
     StringMap.add "Renderer"
@@ -150,16 +150,16 @@ let test_complete_dependency_chain () =
 
 let tests =
   [
-    Alcotest.test_case "Header generation with Gdk cross-references (Stage 8)"
-      `Quick test_header_generation_with_gdk_cross_references;
-    Alcotest.test_case "Header generation with multiple dependencies (Stage 8)"
-      `Quick test_header_generation_with_multiple_dependencies;
-    Alcotest.test_case "Header with no dependencies has no includes (Stage 8)"
-      `Quick test_header_no_dependencies_no_includes;
-    Alcotest.test_case "Base namespaces filtered from dependencies (Stage 8)"
-      `Quick test_base_namespaces_filtered;
-    Alcotest.test_case "Gsk with Gdk dependency header structure (Stage 8)"
-      `Quick test_gsk_with_gdk_dependency;
-    Alcotest.test_case "Complete dependency chain Gtk -> Gsk -> Gdk (Stage 8)"
-      `Quick test_complete_dependency_chain;
+    Alcotest.test_case "Header generation with Gdk cross-references" `Quick
+      test_header_generation_with_gdk_cross_references;
+    Alcotest.test_case "Header generation with multiple dependencies" `Quick
+      test_header_generation_with_multiple_dependencies;
+    Alcotest.test_case "Header with no dependencies has no includes" `Quick
+      test_header_no_dependencies_no_includes;
+    Alcotest.test_case "Base namespaces filtered from dependencies" `Quick
+      test_base_namespaces_filtered;
+    Alcotest.test_case "Gsk with Gdk dependency header structure" `Quick
+      test_gsk_with_gdk_dependency;
+    Alcotest.test_case "Complete dependency chain Gtk -> Gsk -> Gdk" `Quick
+      test_complete_dependency_chain;
   ]

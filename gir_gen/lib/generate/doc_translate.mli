@@ -3,8 +3,8 @@
    Two pure stages joined by a flat AST ([Doc_ast]): [Doc_parse.parse] reads
    the gi-docgen markdown dialect (plus the legacy gtk-doc sigils) into the
    AST; [Doc_render.render] walks the AST to odoc markup. [translate] here
-   is their composition, and is the entry point emission sites will call
-   (Phase 2 of the M3 plan). The module does no I/O, holds no global state,
+   is their composition, without reference resolution
+   ([Doc_emit.translate] adds it). The module does no I/O, holds no global state,
    and is deterministic: the same input always yields the same output.
 
    See [Doc_ast] for the AST types and the parse/render split invariant,

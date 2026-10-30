@@ -1,4 +1,4 @@
-(* Tests for Phase 4: Layer 2 interface inheritance.
+(* Tests for layer 2 interface inheritance.
  *
  * Verifies that when a class has <implements name="MyIface"/>, the generated
  * Layer 2 g<MyClass>.ml:

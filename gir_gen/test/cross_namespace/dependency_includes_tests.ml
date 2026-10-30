@@ -1,4 +1,4 @@
-(* Cross-namespace tests - Stage 4: Generate Dependency Header Includes
+(* Cross-namespace tests: Generate Dependency Header Includes
 
    Tests that generated header files contain #include directives for dependency
    namespaces' header files. This allows dependent libraries to access type
@@ -40,7 +40,7 @@ let create_context_with_cross_references ~namespace ~deps =
     ~repository:(Type_factory.make_gir_repository ())
     ~cross_references ()
 
-(* Stage 4 Test: Header includes dependency headers for cross-namespace types.
+(* Header includes dependency headers for cross-namespace types.
      When generating gtk_decls.h with Gdk and Gio as dependencies,
      the header should include gdk_decls.h and gio_decls.h.
      
@@ -59,14 +59,14 @@ let test_header_includes_dependency_headers () =
       ~gtk_enums:[] ~gtk_bitfields:[] ~records:[] ~interfaces:[] ()
   in
 
-  Helpers.log_generated_c_code "gtk_decls.h (Stage 4 dependency includes test)"
+  Helpers.log_generated_c_code "gtk_decls.h (dependency includes test)"
     header_content;
 
   (* Verify dependency headers are included using AST-based validation *)
   C_validation.assert_local_include_exists header_content "gdk_decls.h";
   C_validation.assert_local_include_exists header_content "gio_decls.h"
 
-(* Stage 4 Test: Dependency headers are sorted alphabetically.
+(* Dependency headers are sorted alphabetically.
     This ensures consistent output across runs. *)
 let test_dependency_headers_sorted_alphabetically () =
   (* Create context with dependencies in non-alphabetical order *)
@@ -109,7 +109,7 @@ let test_dependency_headers_sorted_alphabetically () =
     Alcotest.fail
       "Dependency headers should be sorted alphabetically (Gdk < Gio < Gsk)"
 
-(* Stage 4 Test: Header uses lowercase namespace in include filename.
+(* Header uses lowercase namespace in include filename.
      The include directive should be #include "gdk_decls.h" not #include "Gdk_decls.h". *)
 let test_include_uses_lowercase_namespace () =
   (* Create context with mixed-case namespace *)
@@ -129,7 +129,7 @@ let test_include_uses_lowercase_namespace () =
   (* Verify uppercase is NOT used using AST-based validation *)
   assert_local_include_not_exists header_content "Gdk_decls.h"
 
-(* Stage 4 Test: Helper function get_dependency_namespaces works correctly.
+(* Helper function get_dependency_namespaces works correctly.
     Extracts unique namespace names from cross_references map. *)
 let test_get_dependency_namespaces_extracts_unique_namespaces () =
   let open Gir_gen_lib.Types in
@@ -160,7 +160,7 @@ let test_get_dependency_namespaces_extracts_unique_namespaces () =
   | [] -> Alcotest.fail "Expected at least one dependency"
   | first :: _ -> Alcotest.(check string) "Dependency should be Gdk" "Gdk" first
 
-(* Stage 4 Test: No dependency headers when cross_references is empty.
+(* No dependency headers when cross_references is empty.
      When there are no cross-namespace types, no #include directives should be generated. *)
 let test_no_includes_when_no_dependencies () =
   (* Create context with no cross-references *)
@@ -184,15 +184,14 @@ let test_no_includes_when_no_dependencies () =
 let tests =
   [
     Alcotest.test_case
-      "Header includes dependency headers for cross-namespace types (Stage 4)"
-      `Quick test_header_includes_dependency_headers;
-    Alcotest.test_case "Dependency headers sorted alphabetically (Stage 4)"
-      `Quick test_dependency_headers_sorted_alphabetically;
-    Alcotest.test_case "Include uses lowercase namespace (Stage 4)" `Quick
+      "Header includes dependency headers for cross-namespace types" `Quick
+      test_header_includes_dependency_headers;
+    Alcotest.test_case "Dependency headers sorted alphabetically" `Quick
+      test_dependency_headers_sorted_alphabetically;
+    Alcotest.test_case "Include uses lowercase namespace" `Quick
       test_include_uses_lowercase_namespace;
-    Alcotest.test_case
-      "get_dependency_namespaces extracts unique namespaces (Stage 4)" `Quick
-      test_get_dependency_namespaces_extracts_unique_namespaces;
-    Alcotest.test_case "No includes when no dependencies (Stage 4)" `Quick
+    Alcotest.test_case "get_dependency_namespaces extracts unique namespaces"
+      `Quick test_get_dependency_namespaces_extracts_unique_namespaces;
+    Alcotest.test_case "No includes when no dependencies" `Quick
       test_no_includes_when_no_dependencies;
   ]

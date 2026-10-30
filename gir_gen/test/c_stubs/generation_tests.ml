@@ -705,7 +705,7 @@ let test_nullable_record_parameter () =
     (C_validation.calls_c_function func "gtk_widget_set_nullable_record")
 
 (* ========================================================================= *)
-(* Header File Naming Tests (Stage 1: Phase 2) *)
+(* Header File Naming Tests *)
 (* ========================================================================= *)
 
 let test_header_file_naming () =
@@ -873,7 +873,7 @@ let tests =
       test_boxed_record_transfer_none_emits_g_boxed_copy;
     Alcotest.test_case "Boxed record transfer-full does not emit g_boxed_copy"
       `Quick test_boxed_record_transfer_full_no_g_boxed_copy;
-    (* Header file naming tests (Stage 1: Phase 2) *)
+    (* Header file naming tests *)
     Alcotest.test_case "Header file uses <ns>_decls.h naming" `Quick
       test_header_file_naming;
     Alcotest.test_case "Header guard uses _<ns>_decls_h_ format" `Quick

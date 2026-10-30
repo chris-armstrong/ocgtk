@@ -171,7 +171,7 @@ let test_enum_naming_conventions () =
     "HORIZONTAL"
 
 (* ========================================================================= *)
-(* Stage 4: .ml file emission tests                                           *)
+(* .ml file emission tests                                                    *)
 (* ========================================================================= *)
 
 (** Verify that the generator emits a <ns>_enums.ml alongside the .mli. *)
@@ -229,9 +229,8 @@ let test_mli_has_val_for_of_int () =
 
 let tests =
   [
-    Alcotest.test_case "Enum generation (Phase 5.3)" `Quick test_enum_generation;
-    Alcotest.test_case "Bitfield generation (Phase 5.3)" `Quick
-      test_bitfield_generation;
+    Alcotest.test_case "Enum generation" `Quick test_enum_generation;
+    Alcotest.test_case "Bitfield generation" `Quick test_bitfield_generation;
     Alcotest.test_case "Multiple enums in one file" `Quick test_multiple_enums;
     Alcotest.test_case "Single value enum" `Quick test_single_value_enum;
     Alcotest.test_case "Enum naming conventions" `Quick

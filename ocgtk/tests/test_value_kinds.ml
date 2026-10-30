@@ -37,8 +37,8 @@ let test_gobject () =
   check_int_eq "Drop_target -> KIND_GOBJECT" kind_gobject (classify_int dt)
 
 let test_gir_record () =
-  (* TreePath is a boxed gir_record allocated via the GType-aware path
-     introduced in PR #126. Its custom block must classify as
+  (* TreePath is a boxed gir_record allocated via the GType-aware
+     path. Its custom block must classify as
      KIND_GIR_RECORD so Signal_marshaller routes record-typed arguments
      through ml_gir_record_ptr_val rather than the GObject accessor. *)
   let p = Raw.Tree_path.new_ () in

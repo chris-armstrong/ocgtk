@@ -521,8 +521,7 @@ let test_signal_handler_l2_forwarder () =
   in
   if List.mem "Gbutton_signals.button_signals" inherit_clauses then
     Alcotest.fail
-      "button class must not inherit from Gbutton_signals.button_signals after \
-       Stage 3"
+      "button class must not inherit from Gbutton_signals.button_signals"
 
 (* ========================================================================= *)
 (* Test 13: Class Accessor Method *)

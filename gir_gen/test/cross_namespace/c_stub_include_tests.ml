@@ -1,4 +1,4 @@
-(* Cross-namespace tests - Stage 5: Update C Stub File Header Include
+(* Cross-namespace tests: Update C Stub File Header Include
 
    Tests that generated C stub files include the library-specific `<ns>_decls.h`
    header. This ensures that
@@ -20,7 +20,7 @@ let create_test_context ~namespace =
     ~repository:(Type_factory.make_gir_repository ())
     ()
 
-(* Stage 5 Test: C stub file includes library-specific decls header.
+(* C stub file includes library-specific decls header.
    When generating C stubs for a namespace, the file should include
    `<ns>_decls.h`. *)
 let test_c_stub_includes_namespace_decls () =
@@ -32,13 +32,13 @@ let test_c_stub_includes_namespace_decls () =
     Gir_gen_lib.Generate.C_stub_helpers.generate_c_file_header ~ctx ()
   in
 
-  Helpers.log_generated_c_code
-    "c_stub_header.c (Stage 5 namespace decls include test)" header_content;
+  Helpers.log_generated_c_code "c_stub_header.c (namespace decls include test)"
+    header_content;
 
   (* Verify the namespace-specific header is included using AST-based validation *)
   assert_local_include_exists header_content "gtk_decls.h"
 
-(* Stage 5 Test: C stub file includes correct header for Gdk namespace. *)
+(* C stub file includes correct header for Gdk namespace. *)
 let test_c_stub_includes_gdk_decls () =
   (* Create context for Gdk namespace *)
   let ctx = create_test_context ~namespace:"Gdk" in
@@ -51,7 +51,7 @@ let test_c_stub_includes_gdk_decls () =
   (* Verify gdk_decls.h is included *)
   assert_local_include_exists header_content "gdk_decls.h"
 
-(* Stage 5 Test: C stub file includes correct header for Gio namespace. *)
+(* C stub file includes correct header for Gio namespace. *)
 let test_c_stub_includes_gio_decls () =
   (* Create context for Gio namespace *)
   let ctx = create_test_context ~namespace:"Gio" in
@@ -64,7 +64,7 @@ let test_c_stub_includes_gio_decls () =
   (* Verify gio_decls.h is included *)
   assert_local_include_exists header_content "gio_decls.h"
 
-(* Stage 5 Test: C stub file uses lowercase namespace in header include.
+(* C stub file uses lowercase namespace in header include.
    The include should be `#include "gtk_decls.h"` not `#include "Gtk_decls.h"`. *)
 let test_c_stub_uses_lowercase_namespace () =
   (* Create context with mixed-case namespace *)
@@ -81,7 +81,7 @@ let test_c_stub_uses_lowercase_namespace () =
   (* Verify uppercase is NOT used using AST-based validation *)
   assert_local_include_not_exists header_content "Gtk_decls.h"
 
-(* Stage 5 Test: Namespace is derived from context correctly.
+(* Namespace is derived from context correctly.
    The namespace should come from ctx.namespace.namespace_name. *)
 let test_namespace_derived_from_context () =
   (* Test multiple namespaces to verify correct derivation *)
@@ -98,15 +98,14 @@ let test_namespace_derived_from_context () =
 
 let tests =
   [
-    Alcotest.test_case
-      "C stub file includes namespace-specific decls header (Stage 5)" `Quick
-      test_c_stub_includes_namespace_decls;
-    Alcotest.test_case "C stub file includes gdk_decls.h (Stage 5)" `Quick
+    Alcotest.test_case "C stub file includes namespace-specific decls header"
+      `Quick test_c_stub_includes_namespace_decls;
+    Alcotest.test_case "C stub file includes gdk_decls.h" `Quick
       test_c_stub_includes_gdk_decls;
-    Alcotest.test_case "C stub file includes gio_decls.h (Stage 5)" `Quick
+    Alcotest.test_case "C stub file includes gio_decls.h" `Quick
       test_c_stub_includes_gio_decls;
-    Alcotest.test_case "C stub uses lowercase namespace (Stage 5)" `Quick
+    Alcotest.test_case "C stub uses lowercase namespace" `Quick
       test_c_stub_uses_lowercase_namespace;
-    Alcotest.test_case "Namespace derived from context (Stage 5)" `Quick
+    Alcotest.test_case "Namespace derived from context" `Quick
       test_namespace_derived_from_context;
   ]

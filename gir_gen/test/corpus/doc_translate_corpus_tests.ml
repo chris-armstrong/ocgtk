@@ -1,10 +1,10 @@
 (* Corpus smoke test for Doc_translate: parse + render every bundled GIR
    <doc> element (all nine gir/*.gir files) in memory, in both contexts,
-   asserting the load-bearing invariants from the M3 plan:
+   asserting the load-bearing invariants of the translator:
 
    - invariant 1 (comment safety): the rendered output never contains an
      unneutralised (* or *) — as the final-comment sanitisation of Doc_emit
-     (Phase 2) will also guarantee, but for the translator's raw output;
+     will also guarantee, but for the translator's raw output;
    - invariant 2 (escaping): no bare @ outside odoc code spans — a literal
      @ would start a tag, so every literal @ in prose must be \@-escaped —
      and balanced { } braces in prose (escaped ones excluded; code spans

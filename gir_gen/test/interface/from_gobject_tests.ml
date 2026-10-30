@@ -1,4 +1,4 @@
-(* Tests for Phase 2: from_gobject C stub generation.
+(* Tests for from_gobject C stub generation.
  *
  * Verifies:
  *   1. Utility functions gtype_macro_of_type_name and cast_macro_of_type_name
@@ -201,7 +201,7 @@ let test_from_gobject_inside_version_guard () =
     (C_validation.uses_correct_return_macro f "Val_GtkMyIface")
 
 (* ========================================================================= *)
-(* Phase 3: from_gobject external declaration in Layer 1 .mli / .ml files    *)
+(* from_gobject external declaration in Layer 1 .mli / .ml files             *)
 (* ========================================================================= *)
 
 (** Run gir_gen.exe on [gir_content], return the raw .mli text and the parsed
@@ -343,17 +343,17 @@ let test_suite =
        guard",
       `Quick,
       test_from_gobject_inside_version_guard );
-    (* Phase 3: from_gobject external in Layer 1 .mli / .ml files *)
-    ( "phase3: from_gobject external present in .mli when glib:type-name set",
+    (* from_gobject external in Layer 1 .mli / .ml files *)
+    ( "from_gobject external present in .mli when glib:type-name set",
       `Quick,
       test_from_gobject_external_in_mli );
-    ( "phase3: from_gobject external present in .ml when glib:type-name set",
+    ( "from_gobject external present in .ml when glib:type-name set",
       `Quick,
       test_from_gobject_external_in_ml );
-    ( "phase3: from_gobject absent from .mli when no glib:type-name",
+    ( "from_gobject absent from .mli when no glib:type-name",
       `Quick,
       test_no_from_gobject_in_mli_when_no_type_name );
-    ( "phase3: type t appears before from_gobject in .mli",
+    ( "type t appears before from_gobject in .mli",
       `Quick,
       test_type_t_before_from_gobject );
   ]

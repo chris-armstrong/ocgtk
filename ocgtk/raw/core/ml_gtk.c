@@ -41,7 +41,7 @@ CAMLprim value ml_gtk_init(value argv)
 
 /* GTK4 Note: gtk_main/gtk_main_quit were removed.
  * For testing, we use GLib's main loop directly.
- * Production apps should use GtkApplication (Phase 6.2). */
+ * Production apps should use GtkApplication. */
 
 static GMainLoop *main_loop = NULL;
 

@@ -12,7 +12,7 @@
 #
 # Optional environment variables (all shown as-is, HTML-escaped):
 #   DOC_PREVIEW_TITLE     Heading text. Default: "ocgtk documentation preview"
-#   DOC_PREVIEW_REF       What was built, e.g. "PR #193 (m3-p4)" or "main"
+#   DOC_PREVIEW_REF       What was built, e.g. "PR #42 (my-branch)" or "main"
 #   DOC_PREVIEW_SHA       Commit SHA that was built
 #   DOC_PREVIEW_SHA_URL   Link target for the SHA (e.g. the GitHub commit page)
 #   DOC_PREVIEW_WARNINGS  odoc warnings from the build: the total and its

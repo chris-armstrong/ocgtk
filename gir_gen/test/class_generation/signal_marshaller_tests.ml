@@ -388,7 +388,7 @@ let test_callback_type_is_unsupported () =
     Type_factory.make_gir_type ~name:"DestroyFunc" ~c_type:"GDestroyNotify" ()
   in
   let result = classify ~ctx ~gir_type in
-  assert_unsupported ~label:"callback type" result "Milestone 4"
+  assert_unsupported ~label:"callback type" result "not supported"
 
 let test_void_none_return () =
   let ctx = gtk_ctx () in
@@ -438,7 +438,7 @@ let tests =
       test_garray_is_unsupported;
     Alcotest.test_case "Gtk.TextIter boxed is Unsupported" `Quick
       test_boxed_textiter_is_unsupported;
-    Alcotest.test_case "callback type is Unsupported (Milestone 4)" `Quick
+    Alcotest.test_case "callback type is Unsupported" `Quick
       test_callback_type_is_unsupported;
     Alcotest.test_case "void/none return maps to unit" `Quick
       test_void_none_return;

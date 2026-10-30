@@ -102,7 +102,7 @@ val classify : ctx:generation_context -> gir_type:gir_type -> result
     otherwise. Currently unsupported cases include:
     - Array types ([GLib.Array])
     - Boxed record types (e.g. [Gtk.TextIter])
-    - Callback parameter types (deferred to Milestone 4) *)
+    - Callback parameter types *)
 
 val render_l1_type : current_class:string -> marshaller -> string
 (** [render_l1_type ~current_class m] returns the OCaml type expression for [m]

@@ -1,4 +1,4 @@
-(* Compilation Tests - Multi-Library Header Compilation (Stage 8)
+(* Compilation Tests - Multi-Library Header Compilation
 
    Tests that C code patterns for cross-namespace types are syntactically correct.
    These tests verify header structures and include patterns using AST validation.
@@ -10,7 +10,7 @@ open C_validation
 (* Header Structure Validation Tests *)
 (* ========================================================================= *)
 
-(* Stage 8 Test: Gdk header structure is correct *)
+(* Gdk header structure is correct *)
 let test_gdk_header_structure () =
   let header_content =
     {|
@@ -44,7 +44,7 @@ value copy_GdkTexture(const GdkTexture *ptr);
     "Should find GdkTexture_val declaration" true
     (List.mem "GdkTexture_val" decls)
 
-(* Stage 8 Test: Gtk header with Gdk dependency includes gdk_decls.h *)
+(* Gtk header with Gdk dependency includes gdk_decls.h *)
 let test_gtk_header_includes_gdk () =
   let header_content =
     {|
@@ -74,7 +74,7 @@ value GtkWidget_val(value v);
   (* Critical: Verify gdk_decls.h is included *)
   assert_local_include_exists header_content "gdk_decls.h"
 
-(* Stage 8 Test: Multi-level dependency chain headers *)
+(* Multi-level dependency chain headers *)
 let test_multi_level_dependency_headers () =
   (* Gsk header includes Gdk *)
   let gsk_header =
@@ -118,7 +118,7 @@ let test_multi_level_dependency_headers () =
   assert_local_include_exists gtk_header "gdk_decls.h";
   assert_local_include_exists gtk_header "gsk_decls.h"
 
-(* Stage 8 Test: Headers with circular include guards prevent redefinition *)
+(* Headers with circular include guards prevent redefinition *)
 let test_header_guards_prevent_redefinition () =
   (* Gdk header - base of chain *)
   let gdk_header =
@@ -157,7 +157,7 @@ let test_header_guards_prevent_redefinition () =
   (* Verify no circular includes (gdk should not include gtk) *)
   assert_local_include_not_exists gdk_header "gtk_decls.h"
 
-(* Stage 8 Test: Type converter macros are syntactically correct *)
+(* Type converter macros are syntactically correct *)
 let test_type_converter_macro_syntax () =
   let header_content =
     {|
@@ -200,7 +200,7 @@ value copy_GdkSurface(const GdkSurface *ptr);
     "Should find GdkSurface_val declaration" true
     (List.mem "GdkSurface_val" decls)
 
-(* Stage 8 Test: Complex cross-namespace header with multiple types *)
+(* Complex cross-namespace header with multiple types *)
 let test_complex_cross_namespace_header () =
   (* Gtk header with multiple Gdk type dependencies *)
   let header_content =
@@ -240,7 +240,7 @@ value ml_gtk_widget_multi_gdk(value self, value texture, value surface);
     "Should find GtkWidget_val declaration" true
     (List.mem "GtkWidget_val" decls)
 
-(* Stage 8 Test: Error handling declarations with cross-namespace types *)
+(* Error handling declarations with cross-namespace types *)
 let test_error_handling_header () =
   let header_content =
     {|
@@ -282,19 +282,18 @@ let test_error_handling_header () =
 
 let tests =
   [
-    Alcotest.test_case "Gdk header structure is correct (Stage 8)" `Quick
+    Alcotest.test_case "Gdk header structure is correct" `Quick
       test_gdk_header_structure;
-    Alcotest.test_case "Gtk header includes gdk_decls.h (Stage 8)" `Quick
+    Alcotest.test_case "Gtk header includes gdk_decls.h" `Quick
       test_gtk_header_includes_gdk;
-    Alcotest.test_case "Multi-level dependency chain headers (Stage 8)" `Quick
+    Alcotest.test_case "Multi-level dependency chain headers" `Quick
       test_multi_level_dependency_headers;
-    Alcotest.test_case "Header guards prevent redefinition (Stage 8)" `Quick
+    Alcotest.test_case "Header guards prevent redefinition" `Quick
       test_header_guards_prevent_redefinition;
-    Alcotest.test_case "Type converter macro syntax is correct (Stage 8)" `Quick
+    Alcotest.test_case "Type converter macro syntax is correct" `Quick
       test_type_converter_macro_syntax;
-    Alcotest.test_case "Complex cross-namespace header (Stage 8)" `Quick
+    Alcotest.test_case "Complex cross-namespace header" `Quick
       test_complex_cross_namespace_header;
-    Alcotest.test_case
-      "Error handling header with cross-namespace types (Stage 8)" `Quick
+    Alcotest.test_case "Error handling header with cross-namespace types" `Quick
       test_error_handling_header;
   ]

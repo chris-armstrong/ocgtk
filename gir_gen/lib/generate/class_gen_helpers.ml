@@ -1,4 +1,4 @@
-(* Helper functions extracted from class_gen.ml (Phase 1) *)
+(* Helper functions extracted from class_gen.ml *)
 
 open StdLabels
 open Types
