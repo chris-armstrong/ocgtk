@@ -1,0 +1,54 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* InetSocketAddress: InetSocketAddress *)
+
+(** An IPv4 or IPv6 socket address. That is, the combination of a
+    {{!Ocgio.Raw.Inet_address}[Gio.InetAddress]} and a port number.
+
+    In UNIX terms, [GInetSocketAddress] corresponds to a [struct sockaddr_in6]
+    or [struct sockaddr_in]).
+
+    The class built on this module is in {!Ocgio.Inet_socket_address}. *)
+
+type t = [ `inet_socket_address | `socket_address | `object_ ] Gobject.obj
+
+external gtype : unit -> Gobject.Type.t = "ml_gio_inet_socket_address_get_type"
+
+external new_ : Inet_address.t -> UInt16.t -> t = "ml_g_inet_socket_address_new"
+(** Creates a new {{!Ocgio.Raw.Inet_socket_address}[GInetSocketAddress]} for
+    [address] and [port]. *)
+
+external new_from_string : string -> int -> t
+  = "ml_g_inet_socket_address_new_from_string"
+(** Creates a new {{!Ocgio.Raw.Inet_socket_address}[GInetSocketAddress]} for
+    [address] and [port].
+
+    If [address] is an IPv6 address, it can also contain a scope ID (separated
+    from the address by a [%]). Note that currently this behavior is platform
+    specific. This may change in a future release. *)
+
+(* Methods *)
+
+external get_scope_id : t -> UInt32.t = "ml_g_inet_socket_address_get_scope_id"
+(** Gets the [sin6_scope_id] field from [address], which must be an IPv6
+    address.
+
+    If not overridden this value will be inherited from
+    {{!Ocgio.Raw.Inet_socket_address.val-get_address}[Gio.InetSocketAddress:address]}.
+*)
+
+external get_port : t -> UInt16.t = "ml_g_inet_socket_address_get_port"
+(** Gets [address]'s port. *)
+
+external get_flowinfo : t -> UInt32.t = "ml_g_inet_socket_address_get_flowinfo"
+(** Gets the [sin6_flowinfo] field from [address], which must be an IPv6
+    address.
+
+    If not overridden this value will be inherited from
+    {{!Ocgio.Raw.Inet_socket_address.val-get_address}[Gio.InetSocketAddress:address]}.
+*)
+
+external get_address : t -> Inet_address.t
+  = "ml_g_inet_socket_address_get_address"
+(** Gets [address]'s {{!Ocgio.Raw.Inet_address}[GInetAddress]}. *)
+
+(* Properties *)

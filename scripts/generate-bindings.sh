@@ -5,7 +5,15 @@
 # Set GIR_PATH to override the default location of GIR files
 # Default: bundled gir/ directory at the repository root
 #
-# Override files (ocgtk/overrides/<ns>.sexp) are committed to the repository
+# Each namespace is one package at the repository root (ocgio/, ocgtk/, ...).
+# gir_gen writes its three libraries into the package directory:
+#   <pkg>/raw/generated/    layer 1, C stubs, <ns>_decls.h, dune.inc
+#   <pkg>/enums/generated/  enumerations and bitfields
+#   <pkg>/generated/        layer 2, raw.ml, enums.ml, constants
+# and deletes any file in those directories that the run did not write, so
+# renamed or newly ignored types leave nothing behind.
+#
+# Override files (overrides/<ns>.sexp) are committed to the repository
 # and passed via -o to both 'references' and 'generate' commands:
 #   - In 'references': ignored entities are excluded from the reference output
 #     so downstream namespaces don't try to map to types that won't be generated
@@ -20,11 +28,35 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 # GIR data files live at the repository root
 GIR_PATH="${1:-${GIR_PATH:-$REPO_ROOT/gir}}"
-# The ocgtk subproject contains overrides, sources and build artefacts
-OCGTK_DIR="$REPO_ROOT/ocgtk"
-BUILD_DIR="$OCGTK_DIR/_build/references"
+BUILD_DIR="$REPO_ROOT/_build/references"
 GIR_GEN="$REPO_ROOT/_build/default/gir_gen/bin/gir_gen.exe"
-OVERRIDES_DIR="$OCGTK_DIR/overrides"
+OVERRIDES_DIR="$REPO_ROOT/overrides"
+
+# Namespaces in dependency order: name, GIR file, package directory
+NAMESPACES=(
+    "cairo cairo-1.0 occairo"
+    "gio Gio-2.0 ocgio"
+    "graphene Graphene-1.0 ocgraphene"
+    "gdkpixbuf GdkPixbuf-2.0 ocgdkpixbuf"
+    "pango Pango-1.0 ocpango"
+    "pangocairo PangoCairo-1.0 ocpangocairo"
+    "gdk Gdk-4.0 ocgdk"
+    "gsk Gsk-4.0 ocgsk"
+    "gtk Gtk-4.0 ocgtk"
+)
+
+# Reference files each namespace's references and generation steps read
+declare -A DEPS=(
+    [cairo]=""
+    [gio]=""
+    [graphene]=""
+    [gdkpixbuf]="gio"
+    [pango]="cairo gio"
+    [pangocairo]="cairo pango gio"
+    [gdk]="cairo pango pangocairo gdkpixbuf gio"
+    [gsk]="cairo gio gdk pangocairo pango gdkpixbuf graphene"
+    [gtk]="cairo gio gdk graphene gdkpixbuf pango pangocairo gsk"
+)
 
 echo "==================================="
 echo "OCaml GTK Bindings Generator"
@@ -56,118 +88,36 @@ mkdir -p "$BUILD_DIR"
 echo "Step 1: Generating cross-namespace reference files..."
 echo "-----------------------------------"
 
-echo "  [1/9] Generating Cairo references..."
-"$GIR_GEN" references -o "$OVERRIDES_DIR/cairo.sexp" "$GIR_PATH/cairo-1.0.gir" "$BUILD_DIR/cairo-references.sexp"
-
-echo "  [2/9] Generating GIO references..."
-"$GIR_GEN" references -o "$OVERRIDES_DIR/gio.sexp" "$GIR_PATH/Gio-2.0.gir" "$BUILD_DIR/gio-references.sexp"
-
-echo "  [3/9] Generating GDK references..."
-"$GIR_GEN" references -o "$OVERRIDES_DIR/gdk.sexp" "$GIR_PATH/Gdk-4.0.gir" "$BUILD_DIR/gdk-references.sexp"
-
-echo "  [4/9] Generating Graphene references..."
-"$GIR_GEN" references -o "$OVERRIDES_DIR/graphene.sexp" "$GIR_PATH/Graphene-1.0.gir" "$BUILD_DIR/graphene-references.sexp"
-
-echo "  [5/9] Generating GdkPixbuf references..."
-"$GIR_GEN" references -o "$OVERRIDES_DIR/gdkpixbuf.sexp" "$GIR_PATH/GdkPixbuf-2.0.gir" "$BUILD_DIR/gdkpixbuf-references.sexp"
-
-echo "  [6/9] Generating Pango references..."
-"$GIR_GEN" references -o "$OVERRIDES_DIR/pango.sexp" "$GIR_PATH/Pango-1.0.gir" "$BUILD_DIR/pango-references.sexp"
-
-echo "  [7/9] Generating GSK references..."
-"$GIR_GEN" references -o "$OVERRIDES_DIR/gsk.sexp" "$GIR_PATH/Gsk-4.0.gir" "$BUILD_DIR/gsk-references.sexp"
-
-echo "  [8/9] Generating PangoCairo references..."
-"$GIR_GEN" references -o "$OVERRIDES_DIR/pangocairo.sexp" "$GIR_PATH/PangoCairo-1.0.gir" "$BUILD_DIR/pangocairo-references.sexp"
-
-echo "  [9/9] Generating GTK references..."
-"$GIR_GEN" references -o "$OVERRIDES_DIR/gtk.sexp" "$GIR_PATH/Gtk-4.0.gir" "$BUILD_DIR/gtk-references.sexp"
+# A references file lists what generation emits, and that depends on the
+# dependencies' references files, so they are written first: NAMESPACES is in
+# dependency order.
+for entry in "${NAMESPACES[@]}"; do
+    read -r ns gir _pkg <<< "$entry"
+    refs=()
+    for dep in ${DEPS[$ns]}; do
+        refs+=(-r "$BUILD_DIR/$dep-references.sexp")
+    done
+    echo "  Generating $ns references..."
+    "$GIR_GEN" references -o "$OVERRIDES_DIR/$ns.sexp" "${refs[@]}" \
+        "$GIR_PATH/$gir.gir" "$BUILD_DIR/$ns-references.sexp"
+done
 
 echo ""
 echo "Step 2: Generating OCaml bindings..."
 echo "-----------------------------------"
 
-echo "  [1/9] Generating Cairo bindings..."
-"$GIR_GEN" generate -o "$OVERRIDES_DIR/cairo.sexp" "$GIR_PATH/cairo-1.0.gir" "$OCGTK_DIR/src/cairo"
-
-echo ""
-echo "  [2/9] Generating GIO bindings..."
-"$GIR_GEN" generate -o "$OVERRIDES_DIR/gio.sexp" "$GIR_PATH/Gio-2.0.gir" "$OCGTK_DIR/src/gio"
-
-echo ""
-echo "  [3/9] Generating GDK bindings (with Cairo, GIO references)..."
-"$GIR_GEN" generate \
-    -o "$OVERRIDES_DIR/gdk.sexp" \
-    -r "$BUILD_DIR/cairo-references.sexp" \
-    -r "$BUILD_DIR/pango-references.sexp" \
-    -r "$BUILD_DIR/pangocairo-references.sexp" \
-    -r "$BUILD_DIR/gdkpixbuf-references.sexp" \
-    -r "$BUILD_DIR/gio-references.sexp" \
-    "$GIR_PATH/Gdk-4.0.gir" \
-    "$OCGTK_DIR/src/gdk"
-
-echo ""
-echo "  [4/9] Generating Graphene bindings..."
-"$GIR_GEN" generate \
-    -o "$OVERRIDES_DIR/graphene.sexp" \
-    "$GIR_PATH/Graphene-1.0.gir" \
-    "$OCGTK_DIR/src/graphene"
-
-echo ""
-echo "  [5/9] Generating GdkPixbuf bindings (with GIO references)..."
-"$GIR_GEN" generate \
-    -o "$OVERRIDES_DIR/gdkpixbuf.sexp" \
-    -r "$BUILD_DIR/gio-references.sexp" \
-    "$GIR_PATH/GdkPixbuf-2.0.gir" \
-    "$OCGTK_DIR/src/gdkpixbuf"
-
-echo ""
-echo "  [6/9] Generating Pango bindings (with Cairo, GIO references)..."
-"$GIR_GEN" generate \
-    -o "$OVERRIDES_DIR/pango.sexp" \
-    -r "$BUILD_DIR/cairo-references.sexp" \
-    -r "$BUILD_DIR/gio-references.sexp" \
-    "$GIR_PATH/Pango-1.0.gir" \
-    "$OCGTK_DIR/src/pango"
-
-echo ""
-echo "  [7/9] Generating PangoCairo bindings (with Cairo, Pango, GIO references)..."
-"$GIR_GEN" generate \
-    -o "$OVERRIDES_DIR/pangocairo.sexp" \
-    -r "$BUILD_DIR/cairo-references.sexp" \
-    -r "$BUILD_DIR/pango-references.sexp" \
-    -r "$BUILD_DIR/gio-references.sexp" \
-    "$GIR_PATH/PangoCairo-1.0.gir" \
-    "$OCGTK_DIR/src/pangocairo"
-
-echo ""
-echo "  [8/9] Generating GSK bindings (with Cairo, GIO, GDK, Graphene references)..."
-"$GIR_GEN" generate \
-    -o "$OVERRIDES_DIR/gsk.sexp" \
-    -r "$BUILD_DIR/cairo-references.sexp" \
-    -r "$BUILD_DIR/gio-references.sexp" \
-    -r "$BUILD_DIR/gdk-references.sexp" \
-    -r "$BUILD_DIR/pangocairo-references.sexp" \
-    -r "$BUILD_DIR/pango-references.sexp" \
-    -r "$BUILD_DIR/gdkpixbuf-references.sexp" \
-    -r "$BUILD_DIR/graphene-references.sexp" \
-    "$GIR_PATH/Gsk-4.0.gir" \
-    "$OCGTK_DIR/src/gsk"
-
-echo ""
-echo "  [9/9] Generating GTK bindings (with all references)..."
-"$GIR_GEN" generate \
-    -o "$OVERRIDES_DIR/gtk.sexp" \
-    -r "$BUILD_DIR/cairo-references.sexp" \
-    -r "$BUILD_DIR/gio-references.sexp" \
-    -r "$BUILD_DIR/gdk-references.sexp" \
-    -r "$BUILD_DIR/graphene-references.sexp" \
-    -r "$BUILD_DIR/gdkpixbuf-references.sexp" \
-    -r "$BUILD_DIR/pango-references.sexp" \
-    -r "$BUILD_DIR/pangocairo-references.sexp" \
-    -r "$BUILD_DIR/gsk-references.sexp" \
-    "$GIR_PATH/Gtk-4.0.gir" \
-    "$OCGTK_DIR/src/gtk"
+for entry in "${NAMESPACES[@]}"; do
+    read -r ns gir pkg <<< "$entry"
+    refs=()
+    for dep in ${DEPS[$ns]}; do
+        refs+=(-r "$BUILD_DIR/$dep-references.sexp")
+    done
+    echo ""
+    echo "  Generating $ns bindings into $pkg/..."
+    mkdir -p "$REPO_ROOT/$pkg"
+    "$GIR_GEN" generate -o "$OVERRIDES_DIR/$ns.sexp" "${refs[@]}" \
+        "$GIR_PATH/$gir.gir" "$REPO_ROOT/$pkg"
+done
 
 echo ""
 echo "Step 3: Formatting generated OCaml..."
@@ -176,32 +126,45 @@ echo "-----------------------------------"
 # signatures and wrapping so the diff against committed bindings stays
 # bounded to genuine semantic changes.
 if command -v ocamlformat >/dev/null 2>&1; then
-    for ns in cairo gio gdk graphene gdkpixbuf pango pangocairo gsk gtk; do
-        gen_dir="$OCGTK_DIR/src/$ns/generated"
-        if [ -d "$gen_dir" ]; then
-            (cd "$gen_dir" && ocamlformat -i *.ml *.mli 2>/dev/null) || true
-        fi
+    for entry in "${NAMESPACES[@]}"; do
+        read -r _ns _gir pkg <<< "$entry"
+        for sub in raw/generated enums/generated generated; do
+            gen_dir="$REPO_ROOT/$pkg/$sub"
+            if [ -d "$gen_dir" ]; then
+                (cd "$gen_dir" && ocamlformat -i ./*.ml ./*.mli 2>/dev/null) || true
+            fi
+        done
     done
     echo "  ocamlformat applied to all generated .ml/.mli files."
 else
     echo "  ocamlformat not on PATH; skipping format step."
-    echo "  Run 'cd ocgtk && ocamlformat -i src/*/generated/*.ml*' manually."
+    echo "  Run 'ocamlformat -i' on each package's generated .ml/.mli manually."
 fi
+
+# The generated dune files are committed as 'dune fmt' leaves them, so a
+# regeneration must format them too or the tree is never clean.
+for entry in "${NAMESPACES[@]}"; do
+    read -r _ns _gir pkg <<< "$entry"
+    for sub in enums/generated generated; do
+        dune_file="$REPO_ROOT/$pkg/$sub/dune"
+        if [ -f "$dune_file" ]; then
+            dune format-dune-file "$dune_file" > "$dune_file.fmt"
+            mv "$dune_file.fmt" "$dune_file"
+        fi
+    done
+done
+echo "  dune format-dune-file applied to the generated dune files."
 
 echo ""
 echo "==================================="
 echo "✓ Code generation complete!"
 echo "==================================="
 echo ""
-echo "Generated files are in:"
-echo "  - ocgtk/src/cairo/generated/"
-echo "  - ocgtk/src/gio/generated/"
-echo "  - ocgtk/src/gdk/generated/"
-echo "  - ocgtk/src/graphene/generated/"
-echo "  - ocgtk/src/gdkpixbuf/generated/"
-echo "  - ocgtk/src/pango/generated/"
-echo "  - ocgtk/src/pangocairo/generated/"
-echo "  - ocgtk/src/gsk/generated/"
-echo "  - ocgtk/src/gtk/generated/"
+echo "Generated files are in each package's generated/, raw/generated/ and"
+echo "enums/generated/ directories:"
+for entry in "${NAMESPACES[@]}"; do
+    read -r _ns _gir pkg <<< "$entry"
+    echo "  - $pkg/"
+done
 echo ""
 echo "You can now run: dune build"

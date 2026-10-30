@@ -1,0 +1,67 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* IconPaintable: IconPaintable *)
+
+(** Contains information found when looking up an icon in [GtkIconTheme] or
+    loading it from a file.
+
+    [GtkIconPaintable] implements [GdkPaintable] and [GtkSymbolicPaintable].
+
+    The class built on this module is in {!Ocgtk.Icon_paintable}. *)
+
+type t = [ `icon_paintable | `object_ ] Gobject.obj
+
+external gtype : unit -> Gobject.Type.t = "ml_gtk_icon_paintable_get_type"
+
+external new_for_file : Ocgio_raw.File.t -> int -> int -> t
+  = "ml_gtk_icon_paintable_new_for_file"
+(** Creates a [GtkIconPaintable] for a file with a given size and scale.
+
+    The icon can then be rendered by using it as a [GdkPaintable]. *)
+
+(* Methods *)
+
+external is_symbolic : t -> bool = "ml_gtk_icon_paintable_is_symbolic"
+(** Checks if the icon is symbolic or not.
+
+    This currently uses only the file name and not the file contents for
+    determining this. This behaviour may change in the future. *)
+
+external get_icon_name : t -> string option
+  = "ml_gtk_icon_paintable_get_icon_name"
+[@@ocaml.doc
+  "Get the icon name being used for this icon.\n\n\
+   When an icon looked up in the icon theme was not available, the\n\
+   icon theme may use fallback icons - either those specified to\n\
+   {{!Ocgtk.Raw.Icon_theme.val-lookup_icon}[gtk_icon_theme_lookup_icon ()]} or \
+   the always-available\n\
+   \"image-missing\". The icon chosen is returned by this function.\n\n\
+   If the icon was created without an icon theme, this function\n\
+   returns [None]."]
+
+external get_file : t -> Ocgio_raw.File.t option
+  = "ml_gtk_icon_paintable_get_file"
+(** Gets the [GFile] that was used to load the icon.
+
+    Returns [None] if the icon was not loaded from a file. *)
+
+(* Properties *)
+
+external get_scale : t -> int = "ml_gtk_icon_paintable_get_scale"
+(** Get property: [scale] ([gint], default [1]). See
+    {{:https://docs.gtk.org/gtk4/property.IconPaintable.scale.html}upstream
+     docs}. *)
+
+external set_scale : t -> int -> unit = "ml_gtk_icon_paintable_set_scale"
+(** Set property: [scale] ([gint], default [1]). See
+    {{:https://docs.gtk.org/gtk4/property.IconPaintable.scale.html}upstream
+     docs}. *)
+
+external get_size : t -> int = "ml_gtk_icon_paintable_get_size"
+(** Get property: [size] ([gint], default [16]). See
+    {{:https://docs.gtk.org/gtk4/property.IconPaintable.size.html}upstream docs}.
+*)
+
+external set_size : t -> int -> unit = "ml_gtk_icon_paintable_set_size"
+(** Set property: [size] ([gint], default [16]). See
+    {{:https://docs.gtk.org/gtk4/property.IconPaintable.size.html}upstream docs}.
+*)

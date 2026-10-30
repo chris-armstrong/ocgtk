@@ -1,6 +1,0 @@
-(* GENERATED CODE - DO NOT EDIT *)
-(* Library wrapper module - re-exports Gdk as the public API *)
-
-module Gdk = Gdk
-module Gdk_enums = Gdk_enums
-module Gdk_constants = Gdk_constants

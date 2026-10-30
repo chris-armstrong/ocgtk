@@ -69,7 +69,9 @@ let test_naming_lowercases () =
       ~value_type:utf8_type ()
   in
   has "lowercased name in mli"
-    (generate_constants_interface ~namespace:ns [ c ])
+    (generate_constants_interface
+       ~refs:(Gir_gen_lib.Generate.Doc_resolve.no_links ~namespace:ns)
+       ~namespace:ns [ c ])
     "val accessible_attribute_background : string"
 
 let test_naming_mixed_case () =
@@ -95,7 +97,9 @@ let test_type_mapping () =
       in
       has
         ("type " ^ label ^ " -> " ^ ocaml_type)
-        (generate_constants_interface ~namespace:ns [ c ])
+        (generate_constants_interface
+           ~refs:(Gir_gen_lib.Generate.Doc_resolve.no_links ~namespace:ns)
+           ~namespace:ns [ c ])
         (Fmt.str "val %s : %s" (String.lowercase_ascii label) ocaml_type))
     [
       ("gint", gint_type, "int");
@@ -186,7 +190,11 @@ let test_doc_with_since () =
     mk ~name:"BG" ~c_type:"BG" ~value:"x" ~value_type:utf8_type
       ~doc:"Background color." ~version:"4.14" ()
   in
-  let mli = generate_constants_interface ~namespace:ns [ c ] in
+  let mli =
+    generate_constants_interface
+      ~refs:(Gir_gen_lib.Generate.Doc_resolve.no_links ~namespace:ns)
+      ~namespace:ns [ c ]
+  in
   has "doc text" mli "(** Background color.";
   has "@since tag" mli "@since 4.14 *)";
   has "val line" mli "val bg : string"
@@ -196,7 +204,11 @@ let test_doc_without_version () =
     mk ~name:"BG" ~c_type:"BG" ~value:"x" ~value_type:utf8_type
       ~doc:"Background color." ()
   in
-  let mli = generate_constants_interface ~namespace:ns [ c ] in
+  let mli =
+    generate_constants_interface
+      ~refs:(Gir_gen_lib.Generate.Doc_resolve.no_links ~namespace:ns)
+      ~namespace:ns [ c ]
+  in
   has "doc with no @since" mli "(** Background color. *)";
   lacks "no @since when version absent" mli "@since"
 
@@ -206,12 +218,20 @@ let test_version_only_fallback () =
     mk ~name:"BG" ~c_type:"GTK_BG" ~value:"x" ~value_type:utf8_type
       ~version:"4.14" ()
   in
-  let mli = generate_constants_interface ~namespace:ns [ c ] in
+  let mli =
+    generate_constants_interface
+      ~refs:(Gir_gen_lib.Generate.Doc_resolve.no_links ~namespace:ns)
+      ~namespace:ns [ c ]
+  in
   has "version-only fallback doc" mli "(** [GTK_BG] @since 4.14 *)"
 
 let test_no_doc_no_version () =
   let c = mk ~name:"BG" ~c_type:"BG" ~value:"x" ~value_type:utf8_type () in
-  let mli = generate_constants_interface ~namespace:ns [ c ] in
+  let mli =
+    generate_constants_interface
+      ~refs:(Gir_gen_lib.Generate.Doc_resolve.no_links ~namespace:ns)
+      ~namespace:ns [ c ]
+  in
   lacks "no doc line" mli "(**";
   has "val still emitted" mli "val bg : string"
 
@@ -224,7 +244,11 @@ let test_unmappable_skipped_in_mli () =
   let bad =
     mk ~name:"DROP" ~c_type:"DROP" ~value:"x" ~value_type:unknown_type ()
   in
-  let mli = generate_constants_interface ~namespace:ns [ good; bad ] in
+  let mli =
+    generate_constants_interface
+      ~refs:(Gir_gen_lib.Generate.Doc_resolve.no_links ~namespace:ns)
+      ~namespace:ns [ good; bad ]
+  in
   has "mappable constant kept" mli "val keep : int";
   lacks "unmappable constant dropped" mli "val drop";
   lacks "unmappable name absent" mli "drop"
@@ -240,7 +264,11 @@ let test_unmappable_skipped_in_ml () =
 (* ---------- empty list ------------------------------------------------ *)
 
 let test_empty_interface () =
-  let mli = generate_constants_interface ~namespace:ns [] in
+  let mli =
+    generate_constants_interface
+      ~refs:(Gir_gen_lib.Generate.Doc_resolve.no_links ~namespace:ns)
+      ~namespace:ns []
+  in
   has "header present" mli "(* GENERATED CODE - DO NOT EDIT *)";
   has "namespace banner" mli "(* Gtk Constants *)";
   lacks "no val when empty" mli "val "
@@ -252,7 +280,9 @@ let test_empty_implementation () =
 
 let test_header_namespace () =
   has "banner uses given namespace"
-    (generate_constants_interface ~namespace:"Pango" [])
+    (generate_constants_interface
+       ~refs:(Gir_gen_lib.Generate.Doc_resolve.no_links ~namespace:"Pango")
+       ~namespace:"Pango" [])
     "(* Pango Constants *)"
 
 (* ---------- suite ----------------------------------------------------- *)

@@ -1,0 +1,24 @@
+; ocgio.raw: layer 1 (externals and abstract types) and all C stubs.
+; The generator writes generated/; to regenerate, run
+; scripts/generate-bindings.sh from the repository root.
+
+(include_subdirs unqualified)
+
+(include generated/dune.inc)
+
+(library
+ (name ocgio_raw)
+ (public_name ocgio.raw)
+ (synopsis "Gio layer 1: externals and abstract types")
+ (flags :standard -w -3-6-9-27-32-33-34-50 -open Ocglib)
+ (libraries ocglib ocgio.enums ocgio.raw.stubs)
+ (foreign_stubs
+  (language c)
+  (names ml_gio)
+  (flags
+   :standard
+   -Igenerated
+   -Icore
+   (:include cflag-gio.sexp)
+   -Wno-deprecated-declarations))
+ (install_c_headers gio_decls gio_core))

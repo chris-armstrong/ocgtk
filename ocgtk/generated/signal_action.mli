@@ -1,0 +1,48 @@
+(** Emits a signal on a widget.
+
+    Its methods, signals and properties are on {!class-type-signal_action_t}.
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Signal_action}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [SignalAction].}
+
+    Inherits from:
+    {{!Ocgtk.Shortcut_action.class-type-shortcut_action_t}Ocgtk.Shortcut_action}
+
+    Emits a signal on a widget.
+
+    Signals that are used in this way are referred to as keybinding signals, and
+    they are expected to be defined with the [G_SIGNAL_ACTION] flag. *)
+class type signal_action_t = object
+  inherit Shortcut_action.shortcut_action_t
+
+  (** {2:methods Methods} *)
+
+  method get_signal_name : unit -> string
+  (** Returns the name of the signal that will be emitted. *)
+
+  (** {2:conversions Conversions} *)
+
+  method as_signal_action : Raw.Signal_action.t
+end
+
+class signal_action : Raw.Signal_action.t -> signal_action_t
+(** Wraps a raw handle of {!Ocgtk.Raw.Signal_action.t}. *)
+
+(** {1:description Description}
+
+    Emits a signal on a widget.
+
+    Signals that are used in this way are referred to as keybinding signals, and
+    they are expected to be defined with the [G_SIGNAL_ACTION] flag. *)
+
+(** {1:constructors Constructors} *)
+
+val new_ : string -> signal_action_t
+(** Creates an action that when activated, emits the given action signal on the
+    provided widget.
+
+    It will also unpack the args into arguments passed to the signal. *)

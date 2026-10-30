@@ -1,4 +1,4 @@
-(* Cross-namespace tests - Stage 2: Remove External Enum Forward Declarations
+(* Cross-namespace tests: Remove External Enum Forward Declarations
    
    Tests that generated header files do NOT contain forward declarations
    for external enums. External enum declarations now come from included headers. *)
@@ -35,7 +35,7 @@ let create_context_with_external_enum () =
     ~repository:(Type_factory.make_gir_repository ())
     ()
 
-(* Stage 2 Test: Generated header should NOT contain forward declarations
+(* Generated header should NOT contain forward declarations
    for external enums. These declarations now come from included headers. *)
 let test_header_does_not_contain_external_enum_decls () =
   let ctx = create_context_with_external_enum () in
@@ -47,7 +47,7 @@ let test_header_does_not_contain_external_enum_decls () =
       ~interfaces:[] ()
   in
 
-  Helpers.log_generated_c_code "gtk_decls.h (Stage 2 test)" header_content;
+  Helpers.log_generated_c_code "gtk_decls.h (test)" header_content;
 
   (* Positive: local GTK enum forward declarations SHOULD be present *)
   assert_forward_decl_exists header_content "GtkWrapMode" "Val_";
@@ -58,7 +58,7 @@ let test_header_does_not_contain_external_enum_decls () =
   assert_forward_decl_not_exists header_content "GdkTextureType" "Val_";
   assert_forward_decl_not_exists header_content "GdkTextureType_val" ""
 
-(* Stage 2 Test: Verify that generate_forward_decls only processes local enums *)
+(* Verify that generate_forward_decls only processes local enums *)
 let test_generate_forward_decls_only_local_enums () =
   let open Gir_gen_lib.Types in
   (* Create a local enum *)
@@ -71,6 +71,7 @@ let test_generate_forward_decls_only_local_enums () =
       enum_doc = None;
       enum_version = None;
       enum_os = None;
+      deprecation = None;
     }
   in
 
@@ -84,6 +85,7 @@ let test_generate_forward_decls_only_local_enums () =
       enum_doc = None;
       enum_version = None;
       enum_os = None;
+      deprecation = None;
     }
   in
 
@@ -108,7 +110,7 @@ let test_generate_forward_decls_only_local_enums () =
   in
   Alcotest.(check string) "Empty enum list produces empty output" "" empty_decls
 
-(* Stage 2 Test: Verify enum proto emission function was removed from public API *)
+(* Verify enum proto emission function was removed from public API *)
 let test_emit_enum_proto_not_exported () =
   (* The emit_enum_proto function should no longer be exported from C_stubs.
      We verify this by checking that the function signature is not exposed. *)
@@ -134,11 +136,10 @@ let test_emit_enum_proto_not_exported () =
 let tests =
   [
     Alcotest.test_case
-      "Header does not contain external enum forward declarations (Stage 2)"
-      `Quick test_header_does_not_contain_external_enum_decls;
-    Alcotest.test_case
-      "generate_forward_decls only processes local enums (Stage 2)" `Quick
-      test_generate_forward_decls_only_local_enums;
-    Alcotest.test_case "emit_enum_proto not exported from C_stubs (Stage 2)"
-      `Quick test_emit_enum_proto_not_exported;
+      "Header does not contain external enum forward declarations" `Quick
+      test_header_does_not_contain_external_enum_decls;
+    Alcotest.test_case "generate_forward_decls only processes local enums"
+      `Quick test_generate_forward_decls_only_local_enums;
+    Alcotest.test_case "emit_enum_proto not exported from C_stubs" `Quick
+      test_emit_enum_proto_not_exported;
   ]

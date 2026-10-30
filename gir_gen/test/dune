@@ -58,8 +58,28 @@
   signature_tests
   ; Constants generation (pure unit)
   constant_code_tests
+  enum_code_tests
+  entity_doc_tests
+  class_gen_inheritance_tests
+  ; Doc_translate — pure translation engine (no wiring)
+  doc_translate_test_helpers
+  doc_parse_tests
+  doc_render_tests
+  doc_c_idiom_tests
+  doc_translate_tests
+  ; Doc_translate corpus smoke test (in-memory, both contexts)
+  doc_translate_corpus_tests
+  ; Doc_emit — item doc assembly (tags last, comment safety, @since)
+  doc_emit_tests
+  ; Doc_resolve / Doc_index / Emitted_members — cross-reference links
+  member_fixture
+  emitted_members_tests
+  doc_resolve_tests
+  doc_index_tests
   ; Dune library/stub-batch generation (pure unit)
   dune_file_tests
+  ; Library layout: module paths, raw.ml, dune stanzas (pure unit)
+  module_paths_tests
   ; Layer 2 — Class Generation (pure unit/pipeline)
   method_wrapper_tests
   constructor_wrapper_tests
@@ -67,6 +87,7 @@
   signal_marshaller_tests
   ; Interface — parsing only (pure unit, no subprocess)
   parsing_tests
+  doc_parsing_tests
   ; Cross-namespace (pure unit/pipeline)
   no_external_enum_decls_tests
   no_external_bitfield_decls_tests
@@ -134,13 +155,17 @@
   records_tests
   properties_tests
   edge_cases_tests
+  layout_tests
   ; Signal corpus — uses cross-namespace reference files produced by
   ; gir_gen.exe references rules in corpus/dune.
   signal_corpus
-  signal_corpus_tests)
+  signal_corpus_tests
+  ; References files against the tables generation computes
+  references_consistency_tests)
  (deps
   %{exe:../bin/gir_gen.exe}
   (source_tree %{workspace_root}/gir)
+  (source_tree %{workspace_root}/overrides)
   corpus/signal_corpus_baseline.sexp
   corpus/cairo-references.sexp
   corpus/gio-references.sexp
@@ -155,7 +180,10 @@
   (setenv
    "GIR_DATA_DIR"
    "%{workspace_root}/gir"
-   (run %{test})))
+   (setenv
+    "OVERRIDES_DIR"
+    "%{workspace_root}/overrides"
+    (run %{test}))))
  (preprocess
   (pps ppx_sexp_conv))
  (libraries

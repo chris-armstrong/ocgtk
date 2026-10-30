@@ -17,12 +17,15 @@ The generator (`gir_gen`) reads a GIR file, applies per-namespace override rules
 performs dependency analysis, and writes:
 
 - C FFI stub files (`ml_*_gen.c`)
-- OCaml low-level binding modules (`widget.ml/mli`, etc.)
-- OCaml high-level class wrapper modules (`gWidget.ml/mli`, etc.)
-- Build rules (`dune-generated.inc`)
+- OCaml low-level binding modules (`<pkg>/raw/generated/widget.ml/mli`, etc.)
+- OCaml high-level class wrapper modules (`<pkg>/generated/widget.ml/mli`, etc.)
+- Enum and bitfield types (`<pkg>/enums/generated/oc<ns>_enums.ml/mli`)
+- Build rules (`dune.inc` for the raw library, whole `dune` files for the
+  other two)
 
 Nine namespaces are covered: Cairo, Gio, Gdk, Graphene, GdkPixbuf, Pango,
-PangoCairo, Gsk, and Gtk. The generated files are committed to the repository;
+PangoCairo, Gsk, and Gtk, each an opam package of its own (`occairo`, `ocgio`,
+..., `ocgtk`). The generated files are committed to the repository;
 the generator is re-run whenever it changes or when the GIR files are updated.
 
 ---
@@ -31,7 +34,11 @@ the generator is re-run whenever it changes or when the GIR files are updated.
 
 ```
 <repo root>/
-├── dune-workspace              # spans ocgtk/ and gir_gen/
+├── dune-project                # declares every package below
+├── configurator/               # config_flags.exe (pkg-config flags for the C stubs)
+├── overrides/                  # per-namespace generation overrides (<ns>.sexp)
+├── conf-*/                     # conf packages for the C libraries
+├── ocglib/                     # handwritten runtime (GObject, GLib, closures)
 ├── gir/                        # bundled GIR data files (9 namespaces)
 ├── scripts/                    # build and generation scripts
 │   └── generate-bindings.sh   # regenerate all 9 namespaces
@@ -42,24 +49,36 @@ the generator is re-run whenever it changes or when the GIR files are updated.
 │   │   └── generate/           # AST → generated source files
 │   ├── test/                   # generator test suite
 │   └── docs/                   # generator-specific docs
-└── ocgtk/                      # GTK bindings (main dune project)
-    ├── overrides/               # per-namespace generation overrides (<ns>.sexp)
-    └── src/
-        ├── common/              # handwritten runtime (GObject, GLib, closures)
-        └── <ns>/                # one directory per namespace (gtk, gdk, gio, …)
-            ├── core/            # handwritten namespace extras
-            └── generated/       # owned entirely by gir_gen
+└── oc<ns>/                     # one package per namespace (occairo, ocgio, …, ocgtk)
+    ├── generated/               # library oc<ns>: layer 2, raw.ml, enums.ml (gir_gen)
+    ├── core/                    # optional: handwritten modules of the main library
+    ├── raw/                     # library oc<ns>.raw: layer 0 and layer 1
+    │   ├── dune                 # handwritten; includes generated/dune.inc
+    │   ├── core/                # handwritten C and layer 1 extras
+    │   └── generated/           # owned entirely by gir_gen
+    ├── enums/generated/         # library oc<ns>.enums (gir_gen)
+    ├── tests/
+    ├── dune, index.mld          # the package's documentation page
+    └── examples/                # ocgtk only
 ```
+
+Each namespace has three libraries. `oc<ns>.enums` holds one pure-OCaml module,
+`Oc<ns>_enums`. `oc<ns>.raw` holds the C stubs and the Layer 1 modules, and
+depends only on other raw and enums libraries. `oc<ns>` holds Layer 2, and
+re-exports the other two as `Oc<ns>.Raw` and `Oc<ns>.Enums`; users depend on it
+alone. The raw and main libraries are compiled with `-open Ocglib`.
 
 ### Why core/ and generated/ are separate
 
-`generated/` is overwritten every time `scripts/generate-bindings.sh` runs. Putting
+Every `generated/` directory is overwritten every time
+`scripts/generate-bindings.sh` runs, and the generator deletes any file there that
+it did not write. Putting
 handwritten code there would destroy it on the next regeneration. `core/` is the place
 for things gir_gen cannot express: manual bindings for opaque types, wrappers around
 GLib functions that aren't in GIR, or corrections for cases where the generator
 produces something suboptimal.
 
-`common/` holds the handwritten runtime that all namespaces depend on: the GObject
+`ocglib/` holds the handwritten runtime that all namespaces depend on: the GObject
 value system, GLib bindings, closure support, GError, GVariant, and the C helper
 header `wrappers.h`. None of this is generated — these are the foundations that the
 generated code builds on.
@@ -116,22 +135,22 @@ Signals appear at Layer 1 as plain functions. Parameterless void signals use
 
 Layer 1 is rarely used directly by application code.
 
-### Layer 2 — OO Classes (`gButton.ml` / `gButton.mli`)
+### Layer 2 — OO Classes (`<pkg>/generated/button.ml` / `button.mli`)
 
 OCaml classes that wrap Layer 1 and present a natural object-oriented API:
 
 ```ocaml
-(* gButton.mli — generated (abbreviated) *)
+(* button.mli — generated (abbreviated) *)
 class type button_t = object
+  inherit Widget.widget_t
   method get_label : unit -> string option
   method set_label : string -> unit
   method on_clicked :
     ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
-  method as_button : Button.t
-  inherit GWidget.widget_t
+  method as_button : Raw.Button.t
 end
 
-class button : Button.t -> button_t
+class button : Raw.Button.t -> button_t
 ```
 
 Key design points:
@@ -155,7 +174,7 @@ Key design points:
 - **Internal unwrapping**: inside a Layer 2 method body, class-typed parameters are
   unwrapped to Layer 1 via `v#as_widget` before passing to Layer 1 functions.
 
-- **`as_<class>` accessor**: every Layer 2 class exposes `method as_button : Button.t`
+- **`as_<class>` accessor**: every Layer 2 class exposes `method as_button : Raw.Button.t`
   (and, via inheritance, `as_widget`, `as_object_`, etc.) for the cases where Layer 1
   types are needed directly.
 
@@ -163,34 +182,32 @@ Signals at Layer 2 forward to Layer 1 for simple cases, or wrap the callback to
 convert between Layer 1 values and Layer 2 class instances when GObject parameters
 are involved.
 
-### Entry-Point Module (`ocgtk_gtk.ml`)
+### Main module, `Raw` and `Enums`
 
-Each namespace has a generated entry-point module that flattens the Layer 2 namespace:
+Each library's main module (`Ocgtk`, `Ocgtk_raw`) is generated by dune: one alias
+per module of the library (`module Button = Ocgtk__Button`). The generator adds
+two modules to the main library:
 
 ```ocaml
-(* ocgtk_gtk.ml — generated (excerpt) *)
-module Widget =
-  GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-module Button = GButton
-module Box = GBox
-(* ... ~650 more ... *)
-module Wrappers = struct
-  module Widget = Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
-  module Button = Button
-  (* ... *)
-end
+(* raw.ml — generated (excerpt): one alias per Layer 1 module *)
+module Button = Ocgtk_raw.Button
+module Widget = Ocgtk_raw.Widget
+(* ... *)
+
+(* enums.ml — generated *)
+include Ocgtk_enums
 ```
 
-These are **pure module aliases** — the compiler erases them completely. They serve
-two purposes: giving users short names (`Gtk.Button` instead of the long cyclic
-module name), and enabling dead code elimination (§7).
+The aliases are **pure module aliases** — the compiler erases them completely.
+They give users short names (`Ocgtk.Button`, `Ocgtk.Raw.Button`) and keep dead
+code elimination working (§7).
 
 ---
 
 ## gir_gen Pipeline
 
 ```
-gir/<ns>.gir        ocgtk/overrides/<ns>.sexp
+gir/<ns>.gir        overrides/<ns>.sexp
       │                         │
       ▼                         ▼
 parse/gir_parser.ml       override_parser.ml
@@ -247,7 +264,7 @@ Strongly Connected Components (SCC) algorithm identifies which groups of entitie
 form mutual cycles.
 
 Entities not in any cycle are **singletons** — they get their own file:
-`button.ml`, `gButton.ml`.
+`button.ml` in each of `raw/generated/` and `generated/`.
 
 Entities in a cycle are **combined** into a single file using `module rec`. The file
 name is derived by sorting the members alphabetically and joining with `_and_`:
@@ -257,10 +274,10 @@ Application + Window + WindowGroup
   → application_and__window_and__window_group.ml
 ```
 
-This produces the long module names visible in the generated code:
+This produces long module names:
 
 ```
-GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
 ```
 
 ### Why the long names exist
@@ -269,21 +286,35 @@ OCaml's module name is derived from the file name, so combining classes into one
 file directly produces the compound name. The name reflects exactly which classes
 share a compilation unit due to cyclic dependencies in the GIR.
 
-### Flattening via module aliases
+### One module per member
 
-Application code should not have to spell out these compound names. The entry-point
-module (`ocgtk_gtk.ml`) provides aliases:
+Application code should not have to spell out these compound names. Each member
+of a cycle also gets a module of its own in both layers, which re-exports its part
+of the combined module:
 
 ```ocaml
-module Widget =
-  GEvent_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+(* raw/generated/widget.ml — Layer 1 *)
+include
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+  .Widget
+
+(* generated/widget.ml — Layer 2 *)
+class type widget_t =
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+  .widget_t
+class widget =
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+  .widget
 ```
 
-These aliases are **compiler-erased**: they generate no runtime code and create no
-linker dependency. An application that opens `Ocgtk_gtk.Gtk` and uses `Widget`
-creates exactly the same binary as one that spells out the full name — but if the
-application never uses `Widget` at all, the compiler does not reference the combined
-module, and the linker excludes it entirely.
+So `Ocgtk.Widget.widget_t` and `Ocgtk.Raw.Widget.t` work, and other namespaces
+write `Ocgtk_raw.Widget.t`; no cluster name appears outside its own namespace.
+Layer 2 code outside a group also refers to its members through their own
+modules (`inherit Widget.widget_t`, `get_child : unit -> Widget.widget_t option`),
+so a compound name appears only in the group's combined module and its member
+modules, which refer to each other through it (a member module naming another
+would make the member modules depend on each other). The combined modules stay
+public (dune's main module lists them), since the member modules re-export them.
 
 ---
 
@@ -308,7 +339,8 @@ Key cases:
 - **Out parameters**: GIR `direction="out"` parameters are collected and returned
   alongside (or instead of) the function's primary return value.
 
-- **Enums and bitfields**: `enum_code.ml` generates a `<ns>_enums.mli` with
+- **Enums and bitfields**: `enum_code.ml` generates `oc<ns>_enums.mli` (the
+  `oc<ns>.enums` library, re-exported as `Oc<ns>.Enums`) with
   polymorphic variant types and `_of_int` / `_to_int` converters.
 
 - **Version guards**: entities added in later GTK versions get `#if GTK_CHECK_VERSION`
@@ -327,10 +359,10 @@ not transitively referenced by the program is excluded from the final binary.
 
 ### The class-alias problem
 
-If the entry-point module contained:
+If a module re-exported a class with a class alias:
 
 ```ocaml
-class button = GButton.button  (* WRONG *)
+class button = Button.button  (* WRONG *)
 ```
 
 this would create a runtime dependency. OCaml class values hold method dispatch
@@ -340,12 +372,13 @@ tables; a class alias reads that table from the other module at startup, pulling
 
 ### How the generated code avoids this
 
-1. **One class per file**: every class lives in its own `gWidget.ml`, `gButton.ml`,
+1. **One class per file**: every class lives in its own `button.ml`, `window.ml`,
    etc. The compilation-unit boundary is the elimination unit.
 
-2. **Module aliases, not class aliases**: the entry-point uses
-   `module Button = GButton`, which is a pure module alias — compiler-erased,
-   creates zero linker references.
+2. **Module aliases, not class aliases**: dune's main module has
+   `module Button = Ocgtk__Button`, and `raw.ml` has
+   `module Button = Ocgtk_raw.Button`: pure module aliases — compiler-erased,
+   creating zero linker references.
 
 3. **Class types are type-level only**: `class type button_t = object ... end`
    generates no runtime code and creates no linker dependency. This is why the
@@ -408,20 +441,22 @@ Key points:
 
 - **GLib and GObject are not generated**: they provide the runtime infrastructure
   (type system, memory management, data structures). The parts we need are bound
-  manually in `ocgtk/src/common/`.
+  manually in `ocglib/`.
 
 - **Reference files**: `gir_gen references` produces a `.sexp` file listing every
   exported entity from a namespace with its fully-qualified OCaml module path. When
   generating namespace B, the reference files for its dependencies are loaded so
-  that `A.Widget` resolves to `Ocgtk_a.A.Wrappers.Widget.t`.
+  that `A.Widget` resolves to `Oca_raw.Widget.t` in Layer 1 and
+  `Oca.Widget.widget_t` in Layer 2.
 
 - **`<ns>_decls.h`**: each namespace generates a C header with the type macros for
   its classes and records. When generating C stubs that reference a cross-namespace
   type, the appropriate `<ns>_decls.h` is included.
 
 - **`scripts/generate-bindings.sh`** orchestrates the two-phase process: first
-  generate reference files for all namespaces, then generate bindings with those
-  references available.
+  generate reference files for all namespaces in dependency order, each with its
+  dependencies' reference files (what a namespace emits depends on them), then
+  generate bindings with those references available.
 
 ---
 

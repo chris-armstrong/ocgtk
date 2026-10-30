@@ -1,4 +1,4 @@
-(* Cross-namespace tests - Stage 4: Generate Dependency Header Includes
+(* Cross-namespace tests: Generate Dependency Header Includes
    Part 2: Exclusion of base namespaces
 
    Tests that GLib, GModule, and GObject are NOT included as dependencies
@@ -55,7 +55,7 @@ let create_context_with_base_namespace_refs () =
     ~repository:(Type_factory.make_gir_repository ())
     ~cross_references ()
 
-(* Stage 4 Test: GLib is NOT included as a dependency.
+(* GLib is NOT included as a dependency.
    GLib is a base library that doesn't need explicit header inclusion. *)
 let test_glib_not_included_as_dependency () =
   let ctx = create_context_with_base_namespace_refs () in
@@ -67,13 +67,12 @@ let test_glib_not_included_as_dependency () =
       ~interfaces:[] ()
   in
 
-  Helpers.log_generated_c_code "gtk_decls.h (Stage 4 exclusion test)"
-    header_content;
+  Helpers.log_generated_c_code "gtk_decls.h (exclusion test)" header_content;
 
   (* Verify GLib header is NOT included using AST-based validation *)
-  assert_local_include_not_exists header_content "generated/glib_decls.h"
+  assert_local_include_not_exists header_content "glib_decls.h"
 
-(* Stage 4 Test: GModule is NOT included as a dependency.
+(* GModule is NOT included as a dependency.
    GModule is a base library that doesn't need explicit header inclusion. *)
 let test_gmodule_not_included_as_dependency () =
   let ctx = create_context_with_base_namespace_refs () in
@@ -86,9 +85,9 @@ let test_gmodule_not_included_as_dependency () =
   in
 
   (* Verify GModule header is NOT included using AST-based validation *)
-  assert_local_include_not_exists header_content "generated/gmodule_decls.h"
+  assert_local_include_not_exists header_content "gmodule_decls.h"
 
-(* Stage 4 Test: GObject is NOT included as a dependency.
+(* GObject is NOT included as a dependency.
    GObject is a base library that doesn't need explicit header inclusion. *)
 let test_gobject_not_included_as_dependency () =
   let ctx = create_context_with_base_namespace_refs () in
@@ -101,9 +100,9 @@ let test_gobject_not_included_as_dependency () =
   in
 
   (* Verify GObject header is NOT included using AST-based validation *)
-  assert_local_include_not_exists header_content "generated/gobject_decls.h"
+  assert_local_include_not_exists header_content "gobject_decls.h"
 
-(* Stage 4 Test: Non-base namespaces ARE included.
+(* Non-base namespaces ARE included.
    Gdk should be included even though GLib/GObject/GModule are excluded. *)
 let test_non_base_namespaces_are_included () =
   let ctx = create_context_with_base_namespace_refs () in
@@ -116,9 +115,9 @@ let test_non_base_namespaces_are_included () =
   in
 
   (* Verify Gdk header IS included using AST-based validation *)
-  assert_local_include_exists header_content "generated/gdk_decls.h"
+  assert_local_include_exists header_content "gdk_decls.h"
 
-(* Stage 4 Test: Helper function filters base namespaces correctly.
+(* Helper function filters base namespaces correctly.
    get_dependency_namespaces should exclude GLib, GModule, GObject. *)
 let test_get_dependency_namespaces_filters_base_namespaces () =
   let open Gir_gen_lib.Types in
@@ -128,6 +127,8 @@ let test_get_dependency_namespaces_filters_base_namespaces () =
       cr_name = "Test";
       cr_type = Crt_Class { parent = None; implements = [] };
       cr_c_type = "Test";
+      cr_members = None;
+      cr_enum_members = None;
     }
   in
   let dummy_map = StringMap.add "Test" dummy_cr StringMap.empty in
@@ -158,15 +159,14 @@ let test_get_dependency_namespaces_filters_base_namespaces () =
 
 let tests =
   [
-    Alcotest.test_case "GLib not included as dependency (Stage 4)" `Quick
+    Alcotest.test_case "GLib not included as dependency" `Quick
       test_glib_not_included_as_dependency;
-    Alcotest.test_case "GModule not included as dependency (Stage 4)" `Quick
+    Alcotest.test_case "GModule not included as dependency" `Quick
       test_gmodule_not_included_as_dependency;
-    Alcotest.test_case "GObject not included as dependency (Stage 4)" `Quick
+    Alcotest.test_case "GObject not included as dependency" `Quick
       test_gobject_not_included_as_dependency;
-    Alcotest.test_case "Non-base namespaces are included (Stage 4)" `Quick
+    Alcotest.test_case "Non-base namespaces are included" `Quick
       test_non_base_namespaces_are_included;
-    Alcotest.test_case
-      "get_dependency_namespaces filters base namespaces (Stage 4)" `Quick
-      test_get_dependency_namespaces_filters_base_namespaces;
+    Alcotest.test_case "get_dependency_namespaces filters base namespaces"
+      `Quick test_get_dependency_namespaces_filters_base_namespaces;
   ]

@@ -1,0 +1,12 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* DeleteEvent: DeleteEvent *)
+
+(** An event related to closing a top-level surface.
+
+    The class built on this module is in {!Ocgdk.Delete_event}. *)
+
+type t = [ `delete_event | `event ] Gobject.obj
+
+external gtype : unit -> Gobject.Type.t = "ml_gdk_delete_event_get_type"
+
+(* Methods *)

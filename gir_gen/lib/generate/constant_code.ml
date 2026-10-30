@@ -27,9 +27,11 @@ let ocaml_type_of_gir_type_name type_name =
         Some t
     | _ -> None
   in
-  match List.assoc_opt type_name Type_mappings.type_mappings with
-  | Some tm -> serializable tm.ocaml_type
-  | None -> None
+  Option.bind (List.assoc_opt type_name Type_mappings.type_mappings) (fun tm ->
+      serializable tm.ocaml_type)
+
+let is_generated (cst : gir_constant) =
+  Option.is_some (ocaml_type_of_gir_type_name cst.value_type.name)
 
 (** Serialize a constant value string to an OCaml literal or construction
     expression for [ocaml_type]. *)
@@ -46,15 +48,17 @@ let serialize_value ~ocaml_type value =
   | "UInt32.t" -> "UInt32.of_int " ^ value
   | "UInt64.t" -> "UInt64.of_int " ^ value
   | "Gsize.t" -> "Gsize.of_int " ^ value
-  | _ -> value (* unreachable: ocaml_type_of_gir_type_name filters first *)
+  | other ->
+      (* ocaml_type_of_gir_type_name filters to the cases above *)
+      Fmt.failwith "serialize_value: unmapped OCaml type %s" other
 
 (** Iterate [constants], resolving each one's OCaml type. Calls [emit] for every
     mappable constant. For unmappable types, warns to stderr when
     [warn_unmappable] is true and otherwise skips silently — the warning is
     emitted by whichever pass runs first (the .mli pass), so the .ml pass passes
     [false] to avoid duplicating it. Sharing this iterator removes the
-    duplicated resolve/type-check/skip logic that previously existed between the
-    .mli and .ml emitters. *)
+    duplicated resolve/type-check/skip logic that the .mli and .ml emitters
+    would otherwise each repeat. *)
 let iter_mappable_constants ~warn_unmappable ~emit constants =
   List.iter
     ~f:(fun (cst : gir_constant) ->
@@ -67,32 +71,29 @@ let iter_mappable_constants ~warn_unmappable ~emit constants =
       | Some ocaml_type -> emit ~ocaml_name ~ocaml_type cst)
     constants
 
-(** Emit the OCamldoc line preceding a [val] declaration, using [constant_doc]
-    (sanitized) and the native [version] attribute rendered as [@since]. *)
-let emit_doc buf (cst : gir_constant) =
-  match cst.constant_doc with
-  | Some doc ->
-      let doc_text = Utils.sanitize_doc doc in
-      bprintf buf "(** %s" doc_text;
-      (match cst.version with
-      | Some v -> bprintf buf "\n    @since %s" v
-      | None -> ());
-      bprintf buf " *)\n"
-  | None -> (
-      match cst.version with
-      | Some v -> bprintf buf "(** [%s] @since %s *)\n" cst.constant_c_type v
-      | None -> ())
+(** The doc for a [val] declaration: [constant_doc] translated through
+    [Doc_emit], with the native [version] rendered as [@since]. With no doc but
+    a version, a synthetic line naming the C type stands in; with neither, there
+    is no doc. *)
+let constant_doc ~refs (cst : gir_constant) =
+  let fallback =
+    Option.map (fun _ -> Fmt.str "[%s]" cst.constant_c_type) cst.version
+  in
+  Doc_emit.item_doc ~indent:"" ?since:cst.version ?fallback ~refs
+    ~context:Doc_translate.Member cst.constant_doc
 
 (** Generate the .mli content for the constants of a namespace. Returns just the
     file header when [constants] is empty. *)
-let generate_constants_interface ~namespace constants =
+let generate_constants_interface ~refs ~namespace constants =
   let buf = Buffer.create 4096 in
   bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
   bprintf buf "(* %s Constants *)\n\n" namespace;
   iter_mappable_constants ~warn_unmappable:true
     ~emit:(fun ~ocaml_name ~ocaml_type cst ->
-      emit_doc buf cst;
-      bprintf buf "val %s : %s\n\n" ocaml_name ocaml_type)
+      let doc = constant_doc ~refs cst in
+      bprintf buf "%s" (Doc_emit.before_item doc);
+      bprintf buf "val %s : %s\n\n" ocaml_name ocaml_type;
+      bprintf buf "%s" (Doc_emit.after_item doc))
     constants;
   Buffer.contents buf
 
@@ -108,28 +109,3 @@ let generate_constants_implementation ~namespace constants =
       bprintf buf "let %s = %s\n" ocaml_name value)
     constants;
   Buffer.contents buf
-
-(** Generate both <ns>_constants.mli and <ns>_constants.ml under [output_dir]
-    for the constants carried by [ctx]. Does nothing when there are no
-    constants, so namespaces without constants (e.g. Cairo) produce no constants
-    module. *)
-let generate_constants_files ~ctx ~namespace ~output_dir =
-  let constants = ctx.constants in
-  if List.length constants = 0 then ()
-  else begin
-    let ns_lower = String.lowercase_ascii namespace in
-    let mli_path =
-      Filename.concat output_dir (Fmt.str "%s_constants.mli" ns_lower)
-    in
-    let ml_path =
-      Filename.concat output_dir (Fmt.str "%s_constants.ml" ns_lower)
-    in
-    let write path content =
-      let oc = open_out path in
-      output_string oc content;
-      close_out oc;
-      Fmt.pr "Writing %s...\n" path
-    in
-    write mli_path (generate_constants_interface ~namespace constants);
-    write ml_path (generate_constants_implementation ~namespace constants)
-  end

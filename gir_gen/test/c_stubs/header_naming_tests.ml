@@ -24,6 +24,7 @@ let create_test_context_with_namespace namespace_name =
       repository_c_includes = [];
       repository_includes = [];
       repository_packages = [];
+      repository_doc_format = None;
     }
   in
 
@@ -39,6 +40,8 @@ let create_test_context_with_namespace namespace_name =
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
     cross_references = StringMap.empty;
+    target_library = Raw_library;
+    doc_index = StringMap.empty;
   }
 
 (* ========================================================================= *)

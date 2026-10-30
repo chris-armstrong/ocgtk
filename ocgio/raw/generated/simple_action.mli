@@ -1,0 +1,141 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* SimpleAction: SimpleAction *)
+
+(** A [GSimpleAction] is the obvious simple implementation of the
+    {{!Ocgio.Raw.Action}[Gio.Action]} interface. This is the easiest way to
+    create an action for purposes of adding it to a
+    {{!Ocgio.Raw.Simple_action_group}[Gio.SimpleActionGroup]}.
+
+    The class built on this module is in {!Ocgio.Simple_action}. *)
+
+type t = [ `simple_action | `object_ ] Gobject.obj
+
+external gtype : unit -> Gobject.Type.t = "ml_gio_simple_action_get_type"
+
+external new_ : string -> Gvariant_type.t option -> t = "ml_g_simple_action_new"
+(** Creates a new action.
+
+    The created action is stateless. See
+    {{!Ocgio.Raw.Simple_action.val-new_stateful}[g_simple_action_new_stateful
+                                                 ()]} to create an action that
+    has state. *)
+
+external new_stateful : string -> Gvariant_type.t option -> Gvariant.t -> t
+  = "ml_g_simple_action_new_stateful"
+(** Creates a new stateful action.
+
+    All future state values must have the same [GVariantType] as the initial
+    [state].
+
+    If the [state] [GVariant] is floating, it is consumed. *)
+
+(* Methods *)
+
+external set_state_hint : t -> Gvariant.t option -> unit
+  = "ml_g_simple_action_set_state_hint"
+(** Sets the state hint for the action.
+
+    See {{!Ocgio.Raw.Action.val-get_state_hint}[g_action_get_state_hint ()]} for
+    more information about action state hints. *)
+
+external set_state : t -> Gvariant.t -> unit = "ml_g_simple_action_set_state"
+(** Sets the state of the action.
+
+    This directly updates the 'state' property to the given value.
+
+    This should only be called by the implementor of the action. Users of the
+    action should not attempt to directly modify the 'state' property. Instead,
+    they should call
+    {{!Ocgio.Raw.Action.val-change_state}[g_action_change_state ()]} to request
+    the change.
+
+    If the [value] GVariant is floating, it is consumed. *)
+
+external set_enabled : t -> bool -> unit = "ml_g_simple_action_set_enabled"
+(** Sets the action as enabled or not.
+
+    An action must be enabled in order to be activated or in order to have its
+    state changed from outside callers.
+
+    This should only be called by the implementor of the action. Users of the
+    action should not attempt to modify its enabled flag. *)
+
+(* Properties *)
+
+external get_name : t -> string = "ml_g_simple_action_get_name"
+(** The name of the action. This is mostly meaningful for identifying the action
+    once it has been added to a
+    {{!Ocgio.Raw.Simple_action_group}[GSimpleActionGroup]}. *)
+
+external get_parameter_type : t -> Gvariant_type.t
+  = "ml_g_simple_action_get_parameter_type"
+(** The type of the parameter that must be given when activating the action. *)
+
+external get_state_type : t -> Gvariant_type.t
+  = "ml_g_simple_action_get_state_type"
+(** The [GVariantType] of the state that the action has, or [None] if the action
+    is stateless. *)
+
+val on_activate :
+  ?after:bool ->
+  t ->
+  callback:(parameter:Gvariant.t -> unit) ->
+  Gobject.Signal.handler_id
+(** Indicates that the action was just activated.
+
+    [parameter] will always be of the expected type, i.e. the parameter type
+    specified when the action was created. If an incorrect type is given when
+    activating the action, this signal is not emitted.
+
+    Since GLib 2.40, if no handler is connected to this signal then the default
+    behaviour for boolean-stated actions with a [None] parameter type is to
+    toggle them via the
+    {{!Ocgio.Raw.Simple_action.val-on_change_state}[GSimpleAction::change-state]}
+    signal. For stateful actions where the state type is equal to the parameter
+    type, the default is to forward them directly to
+    {{!Ocgio.Raw.Simple_action.val-on_change_state}[GSimpleAction::change-state]}.
+    This should allow almost all users of
+    {{!Ocgio.Raw.Simple_action}[GSimpleAction]} to connect only one handler or
+    the other. *)
+
+val on_change_state :
+  ?after:bool ->
+  t ->
+  callback:(value:Gvariant.t -> unit) ->
+  Gobject.Signal.handler_id
+(** Indicates that the action just received a request to change its state.
+
+    [value] will always be of the correct state type, i.e. the type of the
+    initial state passed to
+    {{!Ocgio.Raw.Simple_action.val-new_stateful}[g_simple_action_new_stateful
+                                                 ()]}. If an incorrect type is
+    given when requesting to change the state, this signal is not emitted.
+
+    If no handler is connected to this signal then the default behaviour is to
+    call
+    {{!Ocgio.Raw.Simple_action.val-set_state}[g_simple_action_set_state ()]} to
+    set the state to the requested value. If you connect a signal handler then
+    no default action is taken. If the state should change then you must call
+    {{!Ocgio.Raw.Simple_action.val-set_state}[g_simple_action_set_state ()]}
+    from the handler.
+
+    An example of a 'change-state' handler:
+
+    {[
+    static void
+    change_volume_state (GSimpleAction *action,
+                         GVariant      *value,
+                         gpointer       user_data)
+    {
+      gint requested;
+
+      requested = g_variant_get_int32 (value);
+
+      // Volume only goes from 0 to 10
+      if (0 <= requested && requested <= 10)
+        g_simple_action_set_state (action, value);
+    }
+    ]}
+
+    The handler need not set the state to the requested value. It could set it
+    to any value at all, or take some other action. *)

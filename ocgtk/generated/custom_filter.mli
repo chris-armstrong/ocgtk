@@ -1,0 +1,28 @@
+(** Determines whether to include items with a callback.
+
+    Its methods, signals and properties are on {!class-type-custom_filter_t}.
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Custom_filter}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [CustomFilter].}
+
+    Inherits from: {{!Ocgtk.Filter.class-type-filter_t}Ocgtk.Filter}
+
+    Determines whether to include items with a callback. *)
+class type custom_filter_t = object
+  inherit Filter.filter_t
+
+  (** {2:conversions Conversions} *)
+
+  method as_custom_filter : Raw.Custom_filter.t
+end
+
+class custom_filter : Raw.Custom_filter.t -> custom_filter_t
+(** Wraps a raw handle of {!Ocgtk.Raw.Custom_filter.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

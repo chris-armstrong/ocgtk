@@ -1,0 +1,668 @@
+(** The classes of {!Ocgio.Socket}, {!Ocgio.Socket_connection}, defined together
+    because they refer to each other. Each has a module of its own that
+    re-exports it; use that module rather than this one. *)
+
+(** {b The methods, signals and properties of a [Socket].}
+
+    Implements:
+    - {{!Ocgio.Datagram_based.class-type-datagram_based_t}Ocgio.Datagram_based}
+    - {{!Ocgio.Initable.class-type-initable_t}Ocgio.Initable}
+
+    A [GSocket] is a low-level networking primitive. It is a more or less direct
+    mapping of the BSD socket API in a portable GObject based API. It supports
+    both the UNIX socket implementations and winsock2 on Windows.
+
+    [GSocket] is the platform independent base upon which the higher level
+    network primitives are based. Applications are not typically meant to use it
+    directly, but rather through classes like
+    {{!Ocgio.Socket_client.class-type-socket_client_t}[Gio.SocketClient]},
+    {{!Ocgio.Socket_service.class-type-socket_service_t}[Gio.SocketService]} and
+    {{!Ocgio.Socket_connection.class-type-socket_connection_t}[Gio.SocketConnection]}.
+    However there may be cases where direct use of [GSocket] is useful.
+
+    [GSocket] implements the
+    {{!Ocgio.Initable.class-type-initable_t}[Gio.Initable]} interface, so if it
+    is manually constructed by e.g. [GObject.Object.new] you must call
+    {{!Ocgio.Initable.class-type-initable_t.method-init}[Gio.Initable.init]} and
+    check the results before using the object. This is done automatically in
+    {{!Ocgio.Socket.val-new_}[Gio.Socket.new]} and
+    {{!Ocgio.Socket.val-new_from_fd}[Gio.Socket.new_from_fd]}, so these
+    functions can return [None].
+
+    Sockets operate in two general modes, blocking or non-blocking. When in
+    blocking mode all operations (which don’t take an explicit blocking
+    parameter) block until the requested operation is finished or there is an
+    error. In non-blocking mode all calls that would block return immediately
+    with a [G_IO_ERROR_WOULD_BLOCK] error. To know when a call would
+    successfully run you can call [Gio.Socket.condition_check], or
+    [Gio.Socket.condition_wait]. You can also use [Gio.Socket.create_source] and
+    attach it to a [GLib.MainContext] to get callbacks when I/O is possible.
+    Note that all sockets are always set to non blocking mode in the system, and
+    blocking mode is emulated in [GSocket].
+
+    When working in non-blocking mode applications should always be able to
+    handle getting a [G_IO_ERROR_WOULD_BLOCK] error even when some other
+    function said that I/O was possible. This can easily happen in case of a
+    race condition in the application, but it can also happen for other reasons.
+    For instance, on Windows a socket is always seen as writable until a write
+    returns [G_IO_ERROR_WOULD_BLOCK].
+
+    [GSocket]s can be either connection oriented or datagram based. For
+    connection oriented types you must first establish a connection by either
+    connecting to an address or accepting a connection from another address. For
+    connectionless socket types the target/source address is specified or
+    received in each I/O operation.
+
+    All socket file descriptors are set to be close-on-exec.
+
+    Note that creating a [GSocket] causes the signal [SIGPIPE] to be ignored for
+    the remainder of the program. If you are writing a command-line utility that
+    uses [GSocket], you may need to take into account the fact that your program
+    will not automatically be killed if it tries to write to [stdout] after it
+    has been closed.
+
+    Like most other APIs in GLib, [GSocket] is not inherently thread safe. To
+    use a [GSocket] concurrently from multiple threads, you must implement your
+    own locking.
+
+    {b Nagle’s algorithm}
+
+    Since GLib 2.80, [GSocket] will automatically set the [TCP_NODELAY] option
+    on all [G_SOCKET_TYPE_STREAM] sockets. This disables
+    {{:https://en.wikipedia.org/wiki/Nagle%27s_algorithm}Nagle’s algorithm} as
+    it typically does more harm than good on modern networks.
+
+    If your application needs Nagle’s algorithm enabled, call
+    {{!Ocgio.Socket.class-type-socket_t.method-set_option}[Gio.Socket.set_option]}
+    after constructing a [GSocket] to enable it:
+
+    {[
+    socket = g_socket_new (…, G_SOCKET_TYPE_STREAM, …);
+    if (socket != NULL)
+      {
+        g_socket_set_option (socket, IPPROTO_TCP, TCP_NODELAY, FALSE, &local_error);
+        // handle error if needed
+      }
+    ]} *)
+class type socket_t = object
+  inherit Datagram_based.datagram_based_t
+  inherit Initable.initable_t
+
+  (** {2:methods Methods} *)
+
+  method accept :
+    Cancellable.cancellable_t option -> (socket_t, GError.t) result
+  (** Accept incoming connections on a connection-based socket. This removes the
+      first outstanding connection request from the listening socket and creates
+      a [GSocket] object for it.
+
+      The [socket] must be bound to a local address with [g_socket_bind ()] and
+      must be listening for incoming connections ([g_socket_listen ()]).
+
+      If there are no outstanding connections then the operation will block or
+      return [G_IO_ERROR_WOULD_BLOCK] if non-blocking I/O is enabled. To be
+      notified of an incoming connection, wait for the [G_IO_IN] condition. *)
+
+  method bind :
+    Socket_address.socket_address_t -> bool -> (bool, GError.t) result
+  (** When a socket is created it is attached to an address family, but it
+      doesn't have an address in this family. [g_socket_bind ()] assigns the
+      address (sometimes called name) of the socket.
+
+      It is generally required to bind to a local address before you can receive
+      connections. (See [g_socket_listen ()] and [g_socket_accept ()] ). In
+      certain situations, you may also want to bind a socket that will be used
+      to initiate connections, though this is not normally required.
+
+      If [socket] is a TCP socket, then [allow_reuse] controls the setting of
+      the [SO_REUSEADDR] socket option; normally it should be [true] for server
+      sockets (sockets that you will eventually call [g_socket_accept ()] on),
+      and [false] for client sockets. (Failing to set this flag on a server
+      socket may cause [g_socket_bind ()] to return [G_IO_ERROR_ADDRESS_IN_USE]
+      if the server program is stopped and then immediately restarted.)
+
+      If [socket] is a UDP socket, then [allow_reuse] determines whether or not
+      other UDP sockets can be bound to the same address at the same time. In
+      particular, you can have several UDP sockets bound to the same address,
+      and they will all receive all of the multicast and broadcast packets sent
+      to that address. (The behavior of unicast UDP packets to an address with
+      multiple listeners is not defined.) *)
+
+  method check_connect_result : unit -> (bool, GError.t) result
+  (** Checks and resets the pending connect error for the socket. This is used
+      to check for errors when [g_socket_connect ()] is used in non-blocking
+      mode. *)
+
+  method close : unit -> (bool, GError.t) result
+  [@@ocaml.doc
+    "Closes the socket, shutting down any active connection.\n\n\
+     Closing a socket does not wait for all outstanding I/O operations\n\
+     to finish, so the caller should not rely on them to be guaranteed\n\
+     to complete even if the close returns with no error.\n\n\
+     Once the socket is closed, all other operations will return\n\
+     [G_IO_ERROR_CLOSED]. Closing a socket multiple times will not\n\
+     return an error.\n\n\
+     Sockets will be automatically closed when the last reference\n\
+     is dropped, but you might want to call this function to make sure\n\
+     resources are released as early as possible.\n\n\
+     Beware that due to the way that TCP works, it is possible for\n\
+     recently-sent data to be lost if either you close a socket while the\n\
+     [G_IO_IN] condition is set, or else if the remote connection tries to\n\
+     send something to you after you close the socket but before it has\n\
+     finished reading all of the data you sent. There is no easy generic\n\
+     way to avoid this problem; the easiest fix is to design the network\n\
+     protocol such that the client will never send data \"out of turn\".\n\
+     Another solution is for the server to half-close the connection by\n\
+     calling [g_socket_shutdown ()] with only the [shutdown_write] flag set,\n\
+     and then wait for the client to notice this and close its side of the\n\
+     connection, after which the server can safely call [g_socket_close ()].\n\
+     (This is what [GTcpConnection] does if you call\n\
+     [g_tcp_connection_set_graceful_disconnect ()]. But of course, this\n\
+     only works if the client will close its connection after the server\n\
+     does.)"]
+
+  method connect :
+    Socket_address.socket_address_t ->
+    Cancellable.cancellable_t option ->
+    (bool, GError.t) result
+  (** Connect the socket to the specified remote address.
+
+      For connection oriented socket this generally means we attempt to make a
+      connection to the [address]. For a connection-less socket it sets the
+      default address for [g_socket_send ()] and discards all incoming datagrams
+      from other sources.
+
+      Generally connection oriented sockets can only connect once, but
+      connection-less sockets can connect multiple times to change the default
+      address.
+
+      If the connect call needs to do network I/O it will block, unless
+      non-blocking I/O is enabled. Then [G_IO_ERROR_PENDING] is returned and the
+      user can be notified of the connection finishing by waiting for the
+      G_IO_OUT condition. The result of the connection must then be checked with
+      [g_socket_check_connect_result ()]. *)
+
+  method connection_factory_create_connection : unit -> socket_connection_t
+  (** Creates a [GSocketConnection] subclass of the right type for [socket]. *)
+
+  method get_available_bytes : unit -> int
+  (** Get the amount of data pending in the OS input buffer, without blocking.
+
+      If [socket] is a UDP or SCTP socket, this will return the size of just the
+      next packet, even if additional packets are buffered after that one.
+
+      Note that on Windows, this function is rather inefficient in the UDP case,
+      and so if you know any plausible upper bound on the size of the incoming
+      packet, it is better to just do a [g_socket_receive ()] with a buffer of
+      that size, rather than calling [g_socket_get_available_bytes ()] first and
+      then doing a receive of exactly the right size. *)
+
+  method get_blocking : unit -> bool
+  (** Gets the blocking mode of the socket. For details on blocking I/O, see
+      [g_socket_set_blocking ()]. *)
+
+  method get_broadcast : unit -> bool
+  (** Gets the broadcast setting on [socket]; if [true], it is possible to send
+      packets to broadcast addresses. *)
+
+  method get_credentials : unit -> (Credentials.credentials_t, GError.t) result
+  (** Returns the credentials of the foreign process connected to this socket,
+      if any (e.g. it is only supported for [G_SOCKET_FAMILY_UNIX] sockets).
+
+      If this operation isn't supported on the OS, the method fails with the
+      [G_IO_ERROR_NOT_SUPPORTED] error. On Linux this is implemented by reading
+      the [SO_PEERCRED] option on the underlying socket.
+
+      This method can be expected to be available on the following platforms:
+
+      - Linux since GLib 2.26
+      - OpenBSD since GLib 2.30
+      - Solaris, Illumos and OpenSolaris since GLib 2.40
+      - NetBSD since GLib 2.42
+      - macOS, tvOS, iOS since GLib 2.66
+
+      Other ways to obtain credentials from a foreign peer includes the
+      [GUnixCredentialsMessage] type and [g_unix_connection_send_credentials ()]
+      / [g_unix_connection_receive_credentials ()] functions. *)
+
+  method get_family : unit -> Enums.socketfamily
+  (** Gets the socket family of the socket. *)
+
+  method get_fd : unit -> int
+  (** Returns the underlying OS socket object. On unix this is a socket file
+      descriptor, and on Windows this is a Winsock2 SOCKET handle. This may be
+      useful for doing platform specific or otherwise unusual operations on the
+      socket. *)
+
+  method get_keepalive : unit -> bool
+  (** Gets the keepalive mode of the socket. For details on this, see
+      [g_socket_set_keepalive ()]. *)
+
+  method get_listen_backlog : unit -> int
+  (** Gets the listen backlog setting of the socket. For details on this, see
+      [g_socket_set_listen_backlog ()]. *)
+
+  method get_local_address :
+    unit -> (Socket_address.socket_address_t, GError.t) result
+  (** Try to get the local address of a bound socket. This is only useful if the
+      socket has been bound to a local address, either explicitly or implicitly
+      when connecting. *)
+
+  method get_multicast_loopback : unit -> bool
+  (** Gets the multicast loopback setting on [socket]; if [true] (the default),
+      outgoing multicast packets will be looped back to multicast listeners on
+      the same host. *)
+
+  method get_multicast_ttl : unit -> int
+  (** Gets the multicast time-to-live setting on [socket]; see
+      [g_socket_set_multicast_ttl ()] for more details. *)
+
+  method get_protocol : unit -> Enums.socketprotocol
+  (** Gets the socket protocol id the socket was created with. In case the
+      protocol is unknown, -1 is returned. *)
+
+  method get_remote_address :
+    unit -> (Socket_address.socket_address_t, GError.t) result
+  (** Try to get the remote address of a connected socket. This is only useful
+      for connection oriented sockets that have been connected. *)
+
+  method get_socket_type : unit -> Enums.sockettype
+  (** Gets the socket type of the socket. *)
+
+  method get_timeout : unit -> int
+  (** Gets the timeout setting of the socket. For details on this, see
+      [g_socket_set_timeout ()]. *)
+
+  method get_ttl : unit -> int
+  (** Gets the unicast time-to-live setting on [socket]; see
+      [g_socket_set_ttl ()] for more details. *)
+
+  method is_closed : unit -> bool
+  (** Checks whether a socket is closed. *)
+
+  method is_connected : unit -> bool
+  (** Check whether the socket is connected. This is only useful for
+      connection-oriented sockets.
+
+      If using [g_socket_shutdown ()], this function will return [true] until
+      the socket has been shut down for reading and writing. If you do a
+      non-blocking connect, this function will not return [true] until after you
+      call [g_socket_check_connect_result ()]. *)
+
+  method join_multicast_group :
+    Inet_address.inet_address_t ->
+    bool ->
+    string option ->
+    (bool, GError.t) result
+  (** Registers [socket] to receive multicast messages sent to [group]. [socket]
+      must be a [G_SOCKET_TYPE_DATAGRAM] socket, and must have been bound to an
+      appropriate interface and port with [g_socket_bind ()].
+
+      If [iface] is [None], the system will automatically pick an interface to
+      bind to based on [group].
+
+      If [source_specific] is [true], source-specific multicast as defined in
+      RFC 4604 is used. Note that on older platforms this may fail with a
+      [G_IO_ERROR_NOT_SUPPORTED] error.
+
+      To bind to a given source-specific multicast address, use
+      [g_socket_join_multicast_group_ssm ()] instead. *)
+
+  method join_multicast_group_ssm :
+    Inet_address.inet_address_t ->
+    Inet_address.inet_address_t option ->
+    string option ->
+    (bool, GError.t) result
+  (** Registers [socket] to receive multicast messages sent to [group]. [socket]
+      must be a [G_SOCKET_TYPE_DATAGRAM] socket, and must have been bound to an
+      appropriate interface and port with [g_socket_bind ()].
+
+      If [iface] is [None], the system will automatically pick an interface to
+      bind to based on [group].
+
+      If [source_specific] is not [None], use source-specific multicast as
+      defined in RFC 4604. Note that on older platforms this may fail with a
+      [G_IO_ERROR_NOT_SUPPORTED] error.
+
+      Note that this function can be called multiple times for the same [group]
+      with different [source_specific] in order to receive multicast packets
+      from more than one source. *)
+
+  method leave_multicast_group :
+    Inet_address.inet_address_t ->
+    bool ->
+    string option ->
+    (bool, GError.t) result
+  (** Removes [socket] from the multicast group defined by [group], [iface], and
+      [source_specific] (which must all have the same values they had when you
+      joined the group).
+
+      [socket] remains bound to its address and port, and can still receive
+      unicast messages after calling this.
+
+      To unbind to a given source-specific multicast address, use
+      [g_socket_leave_multicast_group_ssm ()] instead. *)
+
+  method leave_multicast_group_ssm :
+    Inet_address.inet_address_t ->
+    Inet_address.inet_address_t option ->
+    string option ->
+    (bool, GError.t) result
+  (** Removes [socket] from the multicast group defined by [group], [iface], and
+      [source_specific] (which must all have the same values they had when you
+      joined the group).
+
+      [socket] remains bound to its address and port, and can still receive
+      unicast messages after calling this. *)
+
+  method listen : unit -> (bool, GError.t) result
+  (** Marks the socket as a server socket, i.e. a socket that is used to accept
+      incoming requests using [g_socket_accept ()].
+
+      Before calling this the socket must be bound to a local address using
+      [g_socket_bind ()].
+
+      To set the maximum amount of outstanding clients, use
+      [g_socket_set_listen_backlog ()]. *)
+
+  method receive_bytes :
+    Gsize.t ->
+    int64 ->
+    Cancellable.cancellable_t option ->
+    (Glib_bytes.t, GError.t) result
+  (** Receives data (up to [size] bytes) from a socket.
+
+      This function is a variant of [Gio.Socket.receive] which returns a
+      [GLib.Bytes] rather than a plain buffer.
+
+      Pass [-1] to [timeout_us] to block indefinitely until data is received (or
+      the connection is closed, or there is an error). Pass [0] to use the
+      default timeout from [Gio.Socket:timeout], or pass a positive number to
+      wait for that many microseconds for data before returning
+      [G_IO_ERROR_TIMED_OUT]. *)
+
+  method send_message :
+    Socket_address.socket_address_t option ->
+    Raw.Output_vector.t array ->
+    int ->
+    Raw.Socket_control_message.t array option ->
+    int ->
+    int ->
+    Cancellable.cancellable_t option ->
+    (int, GError.t) result
+  (** Send data to [address] on [socket]. For sending multiple messages see
+      [g_socket_send_messages ()]; for easier use, see [g_socket_send ()] and
+      [g_socket_send_to ()].
+
+      If [address] is [None] then the message is sent to the default receiver
+      (set by [g_socket_connect ()]).
+
+      [vectors] must point to an array of [GOutputVector] structs and
+      [num_vectors] must be the length of this array. (If [num_vectors] is -1,
+      then [vectors] is assumed to be terminated by a [GOutputVector] with a
+      [None] buffer pointer.) The [GOutputVector] structs describe the buffers
+      that the sent data will be gathered from. Using multiple [GOutputVectors]
+      is more memory-efficient than manually copying data from multiple sources
+      into a single buffer, and more network-efficient than making multiple
+      calls to [g_socket_send ()].
+
+      [messages], if non-[None], is taken to point to an array of [num_messages]
+      [GSocketControlMessage] instances. These correspond to the control
+      messages to be sent on the socket. If [num_messages] is -1 then [messages]
+      is treated as a null-terminated array.
+
+      [flags] modify how the message is sent. The commonly available arguments
+      for this are available in the [GSocketMsgFlags] enum, but the values there
+      are the same as the system values, and the flags are passed in as-is, so
+      you can pass in system-specific flags too.
+
+      If the socket is in blocking mode the call will block until there is space
+      for the data in the socket queue. If there is no space available and the
+      socket is in non-blocking mode a [G_IO_ERROR_WOULD_BLOCK] error will be
+      returned. To be notified when space is available, wait for the [G_IO_OUT]
+      condition. Note though that you may still receive [G_IO_ERROR_WOULD_BLOCK]
+      from [g_socket_send ()] even if you were previously notified of a
+      [G_IO_OUT] condition. (On Windows in particular, this is very common due
+      to the way the underlying APIs work.)
+
+      The sum of the sizes of each [GOutputVector] in vectors must not be
+      greater than [G_MAXSSIZE]. If the message can be larger than this, then it
+      is mandatory to use the [g_socket_send_message_with_timeout ()] function.
+
+      On error -1 is returned and [error] is set accordingly. *)
+
+  method set_blocking : bool -> unit
+  (** Sets the blocking mode of the socket. In blocking mode all operations
+      (which don’t take an explicit blocking parameter) block until they succeed
+      or there is an error. In non-blocking mode all functions return results
+      immediately or with a [G_IO_ERROR_WOULD_BLOCK] error.
+
+      All sockets are created in blocking mode. However, note that the platform
+      level socket is always non-blocking, and blocking mode is a GSocket level
+      feature. *)
+
+  method set_broadcast : bool -> unit
+  (** Sets whether [socket] should allow sending to broadcast addresses. This is
+      [false] by default. *)
+
+  method set_keepalive : bool -> unit
+  (** Sets or unsets the [SO_KEEPALIVE] flag on the underlying socket. When this
+      flag is set on a socket, the system will attempt to verify that the remote
+      socket endpoint is still present if a sufficiently long period of time
+      passes with no data being exchanged. If the system is unable to verify the
+      presence of the remote endpoint, it will automatically close the
+      connection.
+
+      This option is only functional on certain kinds of sockets. (Notably,
+      [G_SOCKET_PROTOCOL_TCP] sockets.)
+
+      The exact time between pings is system- and protocol-dependent, but will
+      normally be at least two hours. Most commonly, you would set this flag on
+      a server socket if you want to allow clients to remain idle for long
+      periods of time, but also want to ensure that connections are eventually
+      garbage-collected if clients crash or become unreachable. *)
+
+  method set_listen_backlog : int -> unit
+  (** Sets the maximum number of outstanding connections allowed when listening
+      on this socket. If more clients than this are connecting to the socket and
+      the application is not handling them on time then the new connections will
+      be refused.
+
+      Note that this must be called before [g_socket_listen ()] and has no
+      effect if called after that. *)
+
+  method set_multicast_loopback : bool -> unit
+  (** Sets whether outgoing multicast packets will be received by sockets
+      listening on that multicast address on the same host. This is [true] by
+      default. *)
+
+  method set_multicast_ttl : int -> unit
+  (** Sets the time-to-live for outgoing multicast datagrams on [socket]. By
+      default, this is 1, meaning that multicast packets will not leave the
+      local network. *)
+
+  method set_option : int -> int -> int -> (bool, GError.t) result
+  (** Sets the value of an integer-valued option on [socket], as with
+      setsockopt(). (If you need to set a non-integer-valued option, you will
+      need to call setsockopt() directly.)
+
+      The [<gio/gnetworking.h>] header pulls in system headers that will define
+      most of the standard/portable socket options. For unusual socket protocols
+      or platform-dependent options, you may need to include additional headers.
+  *)
+
+  method set_timeout : int -> unit
+  (** Sets the time in seconds after which I/O operations on [socket] will time
+      out if they have not yet completed.
+
+      On a blocking socket, this means that any blocking [GSocket] operation
+      will time out after [timeout] seconds of inactivity, returning
+      [G_IO_ERROR_TIMED_OUT].
+
+      On a non-blocking socket, calls to [g_socket_condition_wait ()] will also
+      fail with [G_IO_ERROR_TIMED_OUT] after the given time. Sources created
+      with [g_socket_create_source ()] will trigger after [timeout] seconds of
+      inactivity, with the requested condition set, at which point calling
+      [g_socket_receive ()], [g_socket_send ()],
+      [g_socket_check_connect_result ()], etc, will fail with
+      [G_IO_ERROR_TIMED_OUT].
+
+      If [timeout] is 0 (the default), operations will never time out on their
+      own.
+
+      Note that if an I/O operation is interrupted by a signal, this may cause
+      the timeout to be reset. *)
+
+  method set_ttl : int -> unit
+  (** Sets the time-to-live for outgoing unicast packets on [socket]. By default
+      the platform-specific default value is used. *)
+
+  method shutdown : bool -> bool -> (bool, GError.t) result
+  (** Shut down part or all of a full-duplex connection.
+
+      If [shutdown_read] is [true] then the receiving side of the connection is
+      shut down, and further reading is disallowed.
+
+      If [shutdown_write] is [true] then the sending side of the connection is
+      shut down, and further writing is disallowed.
+
+      It is allowed for both [shutdown_read] and [shutdown_write] to be [true].
+
+      One example where it is useful to shut down only one side of a connection
+      is graceful disconnect for TCP connections where you close the sending
+      side, then wait for the other side to close the connection, thus ensuring
+      that the other side saw all sent data. *)
+
+  method speaks_ipv4 : unit -> bool
+  (** Checks if a socket is capable of speaking IPv4.
+
+      IPv4 sockets are capable of speaking IPv4. On some operating systems and
+      under some combinations of circumstances IPv6 sockets are also capable of
+      speaking IPv4. See RFC 3493 section 3.7 for more information.
+
+      No other types of sockets are currently considered as being capable of
+      speaking IPv4. *)
+
+  (** {2:properties Properties} *)
+
+  method type_ : Enums.sockettype
+  (** The socket’s type. *)
+
+  (** {2:conversions Conversions} *)
+
+  method as_socket : Raw.Socket.t
+end
+
+(** {b The methods, signals and properties of a [SocketConnection].}
+
+    Inherits from: {{!Ocgio.Io_stream.class-type-io_stream_t}Ocgio.Io_stream}
+
+    [GSocketConnection] is a
+    {{!Ocgio.Io_stream.class-type-io_stream_t}[Gio.IOStream]} for a connected
+    socket. They can be created either by
+    {{!Ocgio.Socket_client.class-type-socket_client_t}[Gio.SocketClient]} when
+    connecting to a host, or by
+    {{!Ocgio.Socket_listener.class-type-socket_listener_t}[Gio.SocketListener]}
+    when accepting a new client.
+
+    The type of the [GSocketConnection] object returned from these calls depends
+    on the type of the underlying socket that is in use. For instance, for a
+    TCP/IP connection it will be a
+    {{!Ocgio.Tcp_connection.class-type-tcp_connection_t}[Gio.TcpConnection]}.
+
+    Choosing what type of object to construct is done with the socket connection
+    factory, and it is possible for third parties to register custom socket
+    connection types for specific combination of socket family/type/protocol
+    using [Gio.SocketConnection.factory_register_type].
+
+    To close a [GSocketConnection], use
+    {{!Ocgio.Io_stream.class-type-io_stream_t.method-close}[Gio.IOStream.close]}.
+    Closing both substreams of the
+    {{!Ocgio.Io_stream.class-type-io_stream_t}[Gio.IOStream]} separately will
+    not close the underlying {{!Ocgio.Socket.class-type-socket_t}[Gio.Socket]}.
+*)
+and socket_connection_t = object
+  inherit Io_stream.io_stream_t
+
+  (** {2:methods Methods} *)
+
+  method connect :
+    Socket_address.socket_address_t ->
+    Cancellable.cancellable_t option ->
+    (bool, GError.t) result
+  (** Connect [connection] to the specified remote address. *)
+
+  method connect_finish : Async_result.async_result_t -> (bool, GError.t) result
+  (** Gets the result of a [g_socket_connection_connect_async ()] call. *)
+
+  method get_local_address :
+    unit -> (Socket_address.socket_address_t, GError.t) result
+  (** Try to get the local address of a socket connection. *)
+
+  method get_remote_address :
+    unit -> (Socket_address.socket_address_t, GError.t) result
+  [@@ocaml.doc
+    "Try to get the remote address of a socket connection.\n\n\
+     Since GLib 2.40, when used with [g_socket_client_connect ()] or\n\
+     [g_socket_client_connect_async ()], during emission of\n\
+     [G_SOCKET_CLIENT_CONNECTING], this function will return the remote\n\
+     address that will be used for the connection.  This allows\n\
+     applications to print e.g. \"Connecting to example.com\n\
+     (10.42.77.3)...\"."]
+
+  method get_socket : unit -> socket_t
+  (** Gets the underlying [GSocket] object of the connection. This can be useful
+      if you want to do something unusual on it not supported by the
+      [GSocketConnection] APIs. *)
+
+  method is_connected : unit -> bool
+  (** Checks if [connection] is connected. This is equivalent to calling
+      [g_socket_is_connected ()] on [connection]'s underlying [GSocket]. *)
+
+  (** {2:conversions Conversions} *)
+
+  method as_socket_connection : Raw.Socket_connection.t
+end
+
+(** Wraps a raw handle of {!Ocgio.Raw.Socket.t}. *)
+class socket : Raw.Socket.t -> socket_t
+(** Wraps a raw handle of {!Ocgio.Raw.Socket_connection.t}. *)
+
+and socket_connection : Raw.Socket_connection.t -> socket_connection_t
+
+val new_ :
+  Enums.socketfamily ->
+  Enums.sockettype ->
+  Enums.socketprotocol ->
+  (socket_t, GError.t) result
+(** Creates a new {{!Ocgio.Socket.class-type-socket_t}[GSocket]} with the
+    defined family, type and protocol. If [protocol] is 0
+    ({{!Ocgio.Enums.type-socketprotocol.constructor-DEFAULT}[G_SOCKET_PROTOCOL_DEFAULT]})
+    the default protocol type for the family and type is used.
+
+    The [protocol] is a family and type specific int that specifies what kind of
+    protocol to use. {{!Ocgio.Enums.type-socketprotocol}[GSocketProtocol]} lists
+    several common ones. Many families only support one protocol, and use 0 for
+    this, others support several and using 0 means to use the default protocol
+    for the family and type.
+
+    The protocol id is passed directly to the operating system, so you can use
+    protocols not listed in
+    {{!Ocgio.Enums.type-socketprotocol}[GSocketProtocol]} if you know the
+    protocol number used for it. *)
+
+val new_from_fd : int -> (socket_t, GError.t) result
+(** Creates a new {{!Ocgio.Socket.class-type-socket_t}[GSocket]} from a native
+    file descriptor or winsock SOCKET handle.
+
+    This reads all the settings from the file descriptor so that all properties
+    should work. Note that the file descriptor will be set to non-blocking mode,
+    independent on the blocking mode of the
+    {{!Ocgio.Socket.class-type-socket_t}[GSocket]}.
+
+    On success, the returned {{!Ocgio.Socket.class-type-socket_t}[GSocket]}
+    takes ownership of [fd]. On failure, the caller must close [fd] themselves.
+
+    Since GLib 2.46, it is no longer a fatal error to call this on a non-socket
+    descriptor. Instead, a GError will be set with code
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-FAILED}[G_IO_ERROR_FAILED]} *)

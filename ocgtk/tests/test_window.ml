@@ -14,9 +14,9 @@ open Alcotest
 (* Try to initialize GTK once for all tests *)
 let gtk_available =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     true
-  with GMain.Error _ -> false
+  with Main.Error _ -> false
 
 (* Helper to skip tests when GTK is not available *)
 let require_gtk f () = if not gtk_available then skip () else f ()
@@ -31,7 +31,7 @@ let test_window_module_accessible () =
 
 let test_window_creation () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let window = Application_and__window_and__window_group.Window.new_ () in
     check bool "Window created" true true;
 
@@ -40,23 +40,23 @@ let test_window_creation () =
     in
     check bool "Window as_widget works" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_window_title () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let window = Window.create () in
 
     Window.set_title window "Test Window";
     check string "Window title" "Test Window" (Window.get_title window)
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_window_default_size () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let window = Window.create () in
 
     Window.set_default_size window ~width:800 ~height:600;
@@ -64,12 +64,12 @@ let test_window_default_size () =
     check int "Window width" 800 w;
     check int "Window height" 600 h
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_window_resizable () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let window = Window.create () in
 
     Window.set_resizable window false;
@@ -78,12 +78,12 @@ let test_window_resizable () =
     Window.set_resizable window true;
     check bool "Window resizable" true (Window.get_resizable window)
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_window_modal () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let window = Window.create () in
 
     Window.set_modal window true;
@@ -92,12 +92,12 @@ let test_window_modal () =
     Window.set_modal window false;
     check bool "Window not modal" false (Window.get_modal window)
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_window_child () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let window = Window.create () in
     let box = Box.create ~orientation:`VERTICAL ~spacing:0 in
     let box_widget = Box.as_widget box in
@@ -114,12 +114,12 @@ let test_window_child () =
     in
     check bool "Window child removed" true child_removed
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_window_actions () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let window = Window.create () in
 
     (* These just should not crash *)
@@ -134,52 +134,52 @@ let test_window_actions () =
     Window.destroy window2;
     check bool "Window destroy works" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
-(* ========== High-Level GWindow Tests ========== *)
+(* ========== High-Level Window Tests ========== *)
 
 let test_gwindow_wrapper () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
 
-    let window = GWindow.window ~title:"Test" ~width:400 ~height:300 () in
-    check string "GWindow title" "Test" window#title;
+    let window = Window.window ~title:"Test" ~width:400 ~height:300 () in
+    check string "Window title" "Test" window#title;
 
     window#set_title "New Title";
-    check string "GWindow title updated" "New Title" window#title;
+    check string "Window title updated" "New Title" window#title;
 
     let w, h = window#get_default_size in
-    check int "GWindow width" 400 w;
-    check int "GWindow height" 300 h;
+    check int "Window width" 400 w;
+    check int "Window height" 300 h;
 
     window#set_resizable false;
-    check bool "GWindow not resizable" false window#resizable;
+    check bool "Window not resizable" false window#resizable;
 
     window#set_modal true;
-    check bool "GWindow modal" true window#modal
+    check bool "Window modal" true window#modal
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_gwindow_child () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
 
-    let window = GWindow.window () in
-    let box = GBox.vbox ~spacing:5 () in
+    let window = Window.window () in
+    let box = Box.vbox ~spacing:5 () in
 
     window#add (box :> GObj.widget);
     let has_child = match window#child with Some _ -> true | None -> false in
-    check bool "GWindow has child" true has_child;
+    check bool "Window has child" true has_child;
 
     window#set_child None;
     let child_removed =
       match window#child with None -> true | Some _ -> false
     in
-    check bool "GWindow child removed" true child_removed
+    check bool "Window child removed" true child_removed
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* ========== GtkScrolled_window Tests ========== *)
@@ -191,19 +191,19 @@ let test_scrolled_window_module_accessible () =
 
 let test_scrolled_window_creation () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let sw = Scrolled_window.new_ () in
     check bool "Scrolled_window created" true true;
 
     let _widget = Scrolled_window.as_widget sw in
     check bool "Scrolled_window as_widget works" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_scrolled_window_policy () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let sw = Scrolled_window.new_ () in
 
     Scrolled_window.set_policy sw `ALWAYS `NEVER;
@@ -214,12 +214,12 @@ let test_scrolled_window_policy () =
     check bool "Horizontal policy AUTOMATIC" true true;
     check bool "Vertical policy EXTERNAL" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_scrolled_window_min_content_size () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let sw = Scrolled_window.new_ () in
 
     Scrolled_window.set_min_content_width sw 200;
@@ -229,12 +229,12 @@ let test_scrolled_window_min_content_size () =
     check int "Min content height" 150
       (Scrolled_window.get_min_content_height sw)
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_scrolled_window_child () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let sw = Scrolled_window.new_ () in
     let box = Box.create ~orientation:`VERTICAL ~spacing:0 in
     let box_widget = Box.as_widget box in
@@ -251,12 +251,12 @@ let test_scrolled_window_child () =
     in
     check bool "Scrolled_window child removed" true child_removed
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_scrolled_window_scrollbars () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let sw = Scrolled_window.new_ () in
 
     (* Scrollbars may or may not exist depending on policy *)
@@ -264,14 +264,14 @@ let test_scrolled_window_scrollbars () =
     let _v = Scrolled_window.get_vscrollbar sw in
     check bool "Scrollbar getters work" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* ========== High-Level GScrolledWindow Tests ========== *)
 
 let test_gscrolled_window_wrapper () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
 
     let sw =
       GScrolledWindow.scrolled_window ~hpolicy:`ALWAYS ~vpolicy:`AUTOMATIC
@@ -291,7 +291,7 @@ let test_gscrolled_window_wrapper () =
       (`NEVER = h2 && `NEVER = v2)
       true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* ========== GtkFrame Tests ========== *)
@@ -302,7 +302,7 @@ let test_frame_module_accessible () =
 
 let test_frame_creation () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let _frame = Frame.create () in
     check bool "Frame created without label" true true;
 
@@ -312,12 +312,12 @@ let test_frame_creation () =
     let _widget = Frame.as_widget frame_with_label in
     check bool "Frame as_widget works" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_frame_label () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let frame_test = Frame.create () in
 
     Frame.set_label frame_test (Some "My Label");
@@ -331,12 +331,12 @@ let test_frame_label () =
     in
     check bool "Frame label removed" true label_removed
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_frame_label_xalign () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let frame = Frame.create () in
 
     Frame.set_label_xalign frame 0.5;
@@ -346,12 +346,12 @@ let test_frame_label_xalign () =
     check (float 0.01) "Frame label xalign right" 1.0
       (Frame.get_label_xalign frame)
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_frame_child () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let frame = Frame.create () in
     let box = Box.create ~orientation:`HORIZONTAL ~spacing:0 in
     let box_widget = Box.as_widget box in
@@ -368,97 +368,97 @@ let test_frame_child () =
     in
     check bool "Frame child removed" true child_removed
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
-(* ========== High-Level GFrame Tests ========== *)
+(* ========== High-Level Frame Tests ========== *)
 
 let test_gframe_wrapper () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
 
-    let frame = GFrame.frame ~label:"Test Frame" ~label_xalign:0.5 () in
+    let frame = Frame.frame ~label:"Test Frame" ~label_xalign:0.5 () in
 
     (match frame#label with
-    | Some lbl -> check string "GFrame label" "Test Frame" lbl
-    | None -> check bool "GFrame label not set" false true);
+    | Some lbl -> check string "Frame label" "Test Frame" lbl
+    | None -> check bool "Frame label not set" false true);
 
-    check (float 0.01) "GFrame xalign" 0.5 frame#label_xalign;
+    check (float 0.01) "Frame xalign" 0.5 frame#label_xalign;
 
     frame#set_label (Some "New Label");
     (match frame#label with
-    | Some lbl -> check string "GFrame label updated" "New Label" lbl
-    | None -> check bool "GFrame label update failed" false true);
+    | Some lbl -> check string "Frame label updated" "New Label" lbl
+    | None -> check bool "Frame label update failed" false true);
 
     frame#set_label_xalign 1.0;
-    check (float 0.01) "GFrame xalign updated" 1.0 frame#label_xalign
+    check (float 0.01) "Frame xalign updated" 1.0 frame#label_xalign
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* ========== Integration Tests ========== *)
 
 let test_window_with_box () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
 
     let window =
-      GWindow.window ~title:"Window with Box" ~width:400 ~height:300 ()
+      Window.window ~title:"Window with Box" ~width:400 ~height:300 ()
     in
-    let box = GBox.vbox ~spacing:10 () in
+    let box = Box.vbox ~spacing:10 () in
     window#add (box :> GObj.widget);
 
     let has_child = match window#child with Some _ -> true | None -> false in
     check bool "Window contains box" true has_child
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_window_with_scrolled_window () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
 
-    let window = GWindow.window ~title:"Window with Scrolled" () in
+    let window = Window.window ~title:"Window with Scrolled" () in
     let sw =
       GScrolledWindow.scrolled_window ~hpolicy:`AUTOMATIC ~vpolicy:`AUTOMATIC ()
     in
-    let box = GBox.vbox () in
+    let box = Box.vbox () in
 
     sw#add (box :> GObj.widget);
     window#add (sw :> GObj.widget);
 
     check bool "Window with scrolled window and box" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_window_with_frame () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
 
-    let window = GWindow.window () in
-    let frame = GFrame.frame ~label:"Content Frame" () in
-    let grid = GGrid.create () in
+    let window = Window.window () in
+    let frame = Frame.frame ~label:"Content Frame" () in
+    let grid = Grid.create () in
 
     frame#add (grid :> GObj.widget);
     window#add (frame :> GObj.widget);
 
     check bool "Window with frame and grid" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_complex_nesting () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
 
     let window =
-      GWindow.window ~title:"Complex Layout" ~width:800 ~height:600 ()
+      Window.window ~title:"Complex Layout" ~width:800 ~height:600 ()
     in
-    let vbox = GBox.vbox ~spacing:5 () in
+    let vbox = Box.vbox ~spacing:5 () in
     let sw = GScrolledWindow.scrolled_window () in
-    let frame = GFrame.frame ~label:"Content" () in
-    let grid = GGrid.create ~row_spacing:5 ~column_spacing:5 () in
+    let frame = Frame.frame ~label:"Content" () in
+    let grid = Grid.create ~row_spacing:5 ~column_spacing:5 () in
 
     frame#add (grid :> GObj.widget);
     sw#add (frame :> GObj.widget);
@@ -467,7 +467,7 @@ let test_complex_nesting () =
 
     check bool "Complex nesting works" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let () =

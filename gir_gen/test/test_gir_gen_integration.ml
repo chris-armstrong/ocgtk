@@ -9,9 +9,8 @@ let () =
   Alcotest.run "GIR Generator Integration"
     [
       (* Layer 2 — interface tests that call gir_gen.exe *)
-      ("Interface Inheritance (Phase 4)", Interface_inheritance_tests.test_suite);
-      ( "Interface Method Types (Phase 7)",
-        Interface_method_types_tests.test_suite );
+      ("Interface Inheritance", Interface_inheritance_tests.test_suite);
+      ("Interface Method Types", Interface_method_types_tests.test_suite);
       (* Interface C stubs — from_gobject generation (calls gir_gen.exe) *)
       ("From GObject Generation", From_gobject_tests.test_suite);
       (* Cross-namespace regression test (calls gir_gen.exe) *)
@@ -27,8 +26,10 @@ let () =
       ("Records", Records_tests.tests);
       ("Properties", Properties_tests.tests);
       ("Edge Cases", Edge_cases_tests.tests);
+      ("Library Layout", Layout_tests.tests);
       (* Signal corpus — needs gir_gen.exe references for cross-namespace
          classification, so it lives with the integration suite. *)
       ("Signal Corpus", Signal_corpus.tests);
       ("Signal Corpus Regression", Signal_corpus_tests.tests);
+      ("References Consistency", References_consistency_tests.tests);
     ]

@@ -1,0 +1,44 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* BuildableParseContext: BuildableParseContext *)
+
+(** Provides context for parsing GtkBuilder UI files.
+
+    [GtkBuildableParseContext] is an opaque struct.
+
+    The class built on this module is in {!Ocgtk.Buildable_parse_context}. *)
+
+type t = [ `buildable_parse_context ] Gobject.obj
+
+(* Methods *)
+external get_position : t -> int * int
+  = "ml_gtk_buildable_parse_context_get_position"
+[@@ocaml.doc
+  "Retrieves the current line number and the number of the character on\n\
+   that line. Intended for use in error messages; there are no strict\n\
+   semantics for what constitutes the \"current\" line number other than\n\
+   \"the best number we could come up with for error messages.\""]
+
+external get_element_stack : t -> string array
+  = "ml_gtk_buildable_parse_context_get_element_stack"
+(** Retrieves the element stack from the internal state of the parser.
+
+    The returned [GPtrArray] is an array of strings where the last item is the
+    currently open tag (as would be returned by
+    {{!Ocgtk.Raw.Buildable_parse_context.val-get_element}[gtk_buildable_parse_context_get_element
+                                                          ()]}) and the previous
+    item is its immediate parent.
+
+    This function is intended to be used in the start_element and end_element
+    handlers where
+    {{!Ocgtk.Raw.Buildable_parse_context.val-get_element}[gtk_buildable_parse_context_get_element
+                                                          ()]} would merely
+    return the name of the element that is being processed. *)
+
+external get_element : t -> string option
+  = "ml_gtk_buildable_parse_context_get_element"
+(** Retrieves the name of the currently open element.
+
+    If called from the start_element or end_element handlers this will give the
+    element_name as passed to those functions. For the parent elements, see
+    {{!Ocgtk.Raw.Buildable_parse_context.val-get_element_stack}[gtk_buildable_parse_context_get_element_stack
+                                                                ()]}. *)

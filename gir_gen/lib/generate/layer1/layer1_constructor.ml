@@ -27,15 +27,12 @@ let format_constructor_external ~ocaml_ctor_name ~signature ~ml_name ctor =
   Layer1_helpers.format_external ~ocaml_name:ocaml_ctor_name ~signature ~ml_name
     ~param_count
 
-(** Check if a constructor should be generated in the interface. Delegates to
-    the shared [Filtering.should_generate_constructor] so that layer 0 (C stubs)
-    and layer 1 (OCaml externals) agree on what is emitted. *)
-let should_generate_constructor ~ctx (ctor : gir_constructor) =
-  Filtering.should_generate_constructor ~ctx ctor
-
 (** Generate a single constructor declaration and write it to the buffer *)
 let generate_constructor_decl ~ctx ~class_name ~buf (ctor : gir_constructor) =
-  bprintf buf "(** Create a new %s *)\n" class_name;
+  let doc =
+    Entity_doc.constructor ~refs:(Doc_resolve.env_of_ctx ctx) ~class_name ctor
+  in
+  bprintf buf "%s" (Doc_emit.before_item doc);
   let ml_name = Utils.ml_constructor_name ~class_name ~constructor:ctor in
   let ocaml_ctor_name = Utils.ocaml_constructor_name ~class_name ctor in
 
@@ -43,4 +40,4 @@ let generate_constructor_decl ~ctx ~class_name ~buf (ctor : gir_constructor) =
   let decl =
     format_constructor_external ~ocaml_ctor_name ~signature ~ml_name ctor
   in
-  bprintf buf "%s" decl
+  bprintf buf "%s%s" decl (Doc_emit.after_item doc)

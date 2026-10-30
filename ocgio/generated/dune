@@ -1,0 +1,12 @@
+; GENERATED CODE - DO NOT EDIT
+
+(library
+ (name ocgio)
+ (public_name ocgio)
+ (synopsis "OCaml bindings for Gio")
+ (flags :standard -w -3-6-9-27-32-33-34-50-7 -open Ocglib)
+ (libraries ocglib ocgio.raw ocgio.enums))
+
+(documentation
+ (package ocgio)
+ (mld_files modules))

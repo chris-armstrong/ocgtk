@@ -48,4 +48,3 @@ module StringSet : sig
 end
 
 type module_names = { layer1 : string; layer2 : string }
-type property_filters = { method_names : string list; base_names : string list }

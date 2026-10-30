@@ -1,0 +1,12 @@
+; GENERATED CODE - DO NOT EDIT
+
+(library
+ (name occairo)
+ (public_name occairo)
+ (synopsis "OCaml bindings for cairo")
+ (flags :standard -w -3-6-9-27-32-33-34-50-7 -open Ocglib)
+ (libraries ocglib occairo.raw occairo.enums))
+
+(documentation
+ (package occairo)
+ (mld_files modules))

@@ -1,0 +1,214 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* PixbufLoader: PixbufLoader *)
+
+(** Incremental image loader.
+
+    [GdkPixbufLoader] provides a way for applications to drive the process of
+    loading an image, by letting them send the image data directly to the loader
+    instead of having the loader read the data from a file. Applications can use
+    this functionality instead of [gdk_pixbuf_new_from_file()] or
+    [gdk_pixbuf_animation_new_from_file()] when they need to parse image data in
+    small chunks. For example, it should be used when reading an image from a
+    (potentially) slow network connection, or when loading an extremely large
+    file.
+
+    To use [GdkPixbufLoader] to load an image, create a new instance, and call
+    [GdkPixbuf.PixbufLoader.write] to send the data to it. When done,
+    {{!Ocgdkpixbuf.Raw.Pixbuf_loader.val-close}[GdkPixbuf.PixbufLoader.close]}
+    should be called to end the stream and finalize everything.
+
+    The loader will emit three important signals throughout the process:
+
+    - {{!Ocgdkpixbuf.Raw.Pixbuf_loader.val-on_size_prepared}[GdkPixbuf.PixbufLoader::size-prepared]}
+      will be emitted as soon as the image has enough information to determine
+      the size of the image to be used. If you want to scale the image while
+      loading it, you can call
+      {{!Ocgdkpixbuf.Raw.Pixbuf_loader.val-set_size}[GdkPixbuf.PixbufLoader.set_size]}
+      in response to this signal.
+    - {{!Ocgdkpixbuf.Raw.Pixbuf_loader.val-on_area_prepared}[GdkPixbuf.PixbufLoader::area-prepared]}
+      will be emitted as soon as the pixbuf of the desired has been allocated.
+      You can obtain the [GdkPixbuf] instance by calling
+      {{!Ocgdkpixbuf.Raw.Pixbuf_loader.val-get_pixbuf}[GdkPixbuf.PixbufLoader.get_pixbuf]}.
+      If you want to use it, simply acquire a reference to it. You can also call
+      [gdk_pixbuf_loader_get_pixbuf()] later to get the same pixbuf.
+    - {{!Ocgdkpixbuf.Raw.Pixbuf_loader.val-on_area_updated}[GdkPixbuf.PixbufLoader::area-updated]}
+      will be emitted every time a region is updated. This way you can update a
+      partially completed image. Note that you do not know anything about the
+      completeness of an image from the updated area. For example, in an
+      interlaced image you will need to make several passes before the image is
+      done loading.
+
+    {b Loading an animation}
+
+    Loading an animation is almost as easy as loading an image. Once the first
+    {{!Ocgdkpixbuf.Raw.Pixbuf_loader.val-on_area_prepared}[GdkPixbuf.PixbufLoader::area-prepared]}
+    signal has been emitted, you can call
+    {{!Ocgdkpixbuf.Raw.Pixbuf_loader.val-get_animation}[GdkPixbuf.PixbufLoader.get_animation]}
+    to get the {{!Ocgdkpixbuf.Raw.Pixbuf_animation}[GdkPixbuf.PixbufAnimation]}
+    instance, and then call and [GdkPixbuf.PixbufAnimation.get_iter] to get a
+    {{!Ocgdkpixbuf.Raw.Pixbuf_animation_iter}[GdkPixbuf.PixbufAnimationIter]} to
+    retrieve the pixbuf for the desired time stamp.
+
+    The class built on this module is in {!Ocgdkpixbuf.Pixbuf_loader}. *)
+
+type t = [ `pixbuf_loader | `object_ ] Gobject.obj
+
+external gtype : unit -> Gobject.Type.t = "ml_gdk_pixbuf_pixbuf_loader_get_type"
+
+external new_ : unit -> t = "ml_gdk_pixbuf_loader_new"
+(** Creates a new pixbuf loader object. *)
+
+external new_with_mime_type : string -> (t, GError.t) result
+  = "ml_gdk_pixbuf_loader_new_with_mime_type"
+[@@ocaml.doc
+  "Creates a new pixbuf loader object that always attempts to parse\n\
+   image data as if it were an image of MIME type [mime_type], instead of\n\
+   identifying the type automatically.\n\n\
+   This function is useful if you want an error if the image isn't the\n\
+   expected MIME type; for loading image formats that can't be reliably\n\
+   identified by looking at the data; or if the user manually forces a\n\
+   specific MIME type.\n\n\
+   The list of supported mime types depends on what image loaders\n\
+   are installed, but typically \"image/png\", \"image/jpeg\", \"image/gif\",\n\
+   \"image/tiff\" and \"image/x-xpixmap\" are among the supported mime types.\n\
+   To obtain the full list of supported mime types, call\n\
+   {{!Ocgdkpixbuf.Raw.Pixbuf_format.val-get_mime_types}[gdk_pixbuf_format_get_mime_types \
+   ()]} on each of the {{!Ocgdkpixbuf.Raw.Pixbuf_format}[GdkPixbufFormat]}\n\
+   structs returned by [gdk_pixbuf_get_formats ()]."]
+
+external new_with_type : string -> (t, GError.t) result
+  = "ml_gdk_pixbuf_loader_new_with_type"
+[@@ocaml.doc
+  "Creates a new pixbuf loader object that always attempts to parse\n\
+   image data as if it were an image of type [image_type], instead of\n\
+   identifying the type automatically.\n\n\
+   This function is useful if you want an error if the image isn't the\n\
+   expected type; for loading image formats that can't be reliably\n\
+   identified by looking at the data; or if the user manually forces\n\
+   a specific type.\n\n\
+   The list of supported image formats depends on what image loaders\n\
+   are installed, but typically \"png\", \"jpeg\", \"gif\", \"tiff\" and\n\
+   \"xpm\" are among the supported formats. To obtain the full list of\n\
+   supported image formats, call \
+   {{!Ocgdkpixbuf.Raw.Pixbuf_format.val-get_name}[gdk_pixbuf_format_get_name \
+   ()]} on each\n\
+   of the {{!Ocgdkpixbuf.Raw.Pixbuf_format}[GdkPixbufFormat]} structs returned \
+   by [gdk_pixbuf_get_formats ()]."]
+
+(* Methods *)
+
+external write_bytes : t -> Glib_bytes.t -> (bool, GError.t) result
+  = "ml_gdk_pixbuf_loader_write_bytes"
+(** Parses the next contents of the given image buffer. *)
+
+external set_size : t -> int -> int -> unit = "ml_gdk_pixbuf_loader_set_size"
+(** Causes the image to be scaled while it is loaded.
+
+    The desired image size can be determined relative to the original size of
+    the image by calling
+    {{!Ocgdkpixbuf.Raw.Pixbuf_loader.val-set_size}[gdk_pixbuf_loader_set_size
+                                                   ()]} from a signal handler
+    for the ::size-prepared signal.
+
+    Attempts to set the desired image size are ignored after the emission of the
+    ::size-prepared signal. *)
+
+external get_pixbuf : t -> Pixbuf.t option = "ml_gdk_pixbuf_loader_get_pixbuf"
+[@@ocaml.doc
+  "Queries the {{!Ocgdkpixbuf.Raw.Pixbuf}[GdkPixbuf]} that a pixbuf loader is \
+   currently creating.\n\n\
+   In general it only makes sense to call this function after the\n\
+   {{!Ocgdkpixbuf.Raw.Pixbuf_loader.val-on_area_prepared}[GdkPixbuf.PixbufLoader::area-prepared]} \
+   signal has been\n\
+   emitted by the loader; this means that enough data has been read\n\
+   to know the size of the image that will be allocated.\n\n\
+   If the loader has not received enough data via [gdk_pixbuf_loader_write ()],\n\
+   then this function returns [None].\n\n\
+   The returned pixbuf will be the same in all future calls to the loader,\n\
+   so if you want to keep using it, you should acquire a reference to it.\n\n\
+   Additionally, if the loader is an animation, it will return the \"static\n\
+   image\" of the animation (see \
+   {{!Ocgdkpixbuf.Raw.Pixbuf_animation.val-get_static_image}[gdk_pixbuf_animation_get_static_image \
+   ()]})."]
+
+external get_format : t -> Pixbuf_format.t option
+  = "ml_gdk_pixbuf_loader_get_format"
+(** Obtains the available information about the format of the currently loading
+    image file. *)
+
+external get_animation : t -> Pixbuf_animation.t option
+  = "ml_gdk_pixbuf_loader_get_animation"
+(** Queries the {{!Ocgdkpixbuf.Raw.Pixbuf_animation}[GdkPixbufAnimation]} that a
+    pixbuf loader is currently creating.
+
+    In general it only makes sense to call this function after the
+    {{!Ocgdkpixbuf.Raw.Pixbuf_loader.val-on_area_prepared}[GdkPixbuf.PixbufLoader::area-prepared]}
+    signal has been emitted by the loader.
+
+    If the loader doesn't have enough bytes yet, and hasn't emitted the
+    [area-prepared] signal, this function will return [None]. *)
+
+external close : t -> (bool, GError.t) result = "ml_gdk_pixbuf_loader_close"
+(** Informs a pixbuf loader that no further writes with
+    [gdk_pixbuf_loader_write ()] will occur, so that it can free its internal
+    loading structures.
+
+    This function also tries to parse any data that hasn't yet been parsed; if
+    the remaining data is partial or corrupt, an error will be returned.
+
+    If [false] is returned, [error] will be set to an error from the
+    [GDK_PIXBUF_ERROR] or [G_FILE_ERROR] domains.
+
+    If you're just cancelling a load rather than expecting it to be finished,
+    passing [None] for [error] to ignore it is reasonable.
+
+    Remember that this function does not release a reference on the loader, so
+    you will need to explicitly release any reference you hold. *)
+
+let on_area_prepared ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"area-prepared" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_area_updated ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let x =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_int v
+        in
+        let y =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_int v
+        in
+        let width =
+          let v = Gobject.Closure.nth argv ~pos:3 in
+          Gobject.Value.get_int v
+        in
+        let height =
+          let v = Gobject.Closure.nth argv ~pos:4 in
+          Gobject.Value.get_int v
+        in
+        callback ~x ~y ~width ~height)
+  in
+  Gobject.Signal.connect obj ~name:"area-updated" ~callback:closure
+    ~after:(Option.value after ~default:false)
+
+let on_closed ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"closed" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_size_prepared ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let width =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_int v
+        in
+        let height =
+          let v = Gobject.Closure.nth argv ~pos:2 in
+          Gobject.Value.get_int v
+        in
+        callback ~width ~height)
+  in
+  Gobject.Signal.connect obj ~name:"size-prepared" ~callback:closure
+    ~after:(Option.value after ~default:false)

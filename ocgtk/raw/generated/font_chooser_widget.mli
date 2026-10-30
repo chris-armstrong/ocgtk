@@ -1,0 +1,44 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* FontChooserWidget: FontChooserWidget *)
+
+(** The [GtkFontChooserWidget] widget lets the user select a font.
+
+    It is used in the [GtkFontChooserDialog] widget to provide a dialog for
+    selecting fonts.
+
+    To set the font which is initially selected, use
+    {{!Ocgtk.Raw.Font_chooser.val-set_font}[Gtk.FontChooser.set_font]} or
+    {{!Ocgtk.Raw.Font_chooser.val-set_font_desc}[Gtk.FontChooser.set_font_desc]}.
+
+    To get the selected font use
+    {{!Ocgtk.Raw.Font_chooser.val-get_font}[Gtk.FontChooser.get_font]} or
+    {{!Ocgtk.Raw.Font_chooser.val-get_font_desc}[Gtk.FontChooser.get_font_desc]}.
+
+    To change the text which is shown in the preview area, use
+    {{!Ocgtk.Raw.Font_chooser.val-set_preview_text}[Gtk.FontChooser.set_preview_text]}.
+
+    {b CSS nodes}
+
+    [GtkFontChooserWidget] has a single CSS node with name fontchooser.
+
+    The class built on this module is in {!Ocgtk.Font_chooser_widget}. *)
+
+type t =
+  [ `font_chooser_widget | `widget | `initially_unowned | `object_ ] Gobject.obj
+
+external gtype : unit -> Gobject.Type.t = "ml_gtk_font_chooser_widget_get_type"
+
+external new_ : unit -> t = "ml_gtk_font_chooser_widget_new"
+(** Creates a new [GtkFontChooserWidget]. *)
+
+(* Methods *)
+(* Properties *)
+
+external get_tweak_action : t -> Ocgio_raw.Action.t
+  = "ml_gtk_font_chooser_widget_get_tweak_action"
+(** A toggle action that can be used to switch to the tweak page of the font
+    chooser widget, which lets the user tweak the OpenType features and
+    variation axes of the selected font.
+
+    The action will be enabled or disabled depending on whether the selected
+    font has any features or axes. *)

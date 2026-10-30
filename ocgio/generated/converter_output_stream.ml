@@ -1,0 +1,39 @@
+class type converter_output_stream_t = object
+  inherit Filter_output_stream.filter_output_stream_t
+  inherit Pollable_output_stream.pollable_output_stream_t
+
+  (** {2:methods Methods} *)
+
+  method get_converter : unit -> Converter.converter_t
+  (** Gets the [GConverter] that is used by [converter_stream]. *)
+
+  (** {2:conversions Conversions} *)
+
+  method as_converter_output_stream : Raw.Converter_output_stream.t
+end
+
+(* High-level class for ConverterOutputStream *)
+class converter_output_stream (obj : Raw.Converter_output_stream.t) :
+  converter_output_stream_t =
+  object (self)
+    inherit
+      Filter_output_stream.filter_output_stream
+        (obj :> Raw.Filter_output_stream.t)
+
+    inherit
+      Pollable_output_stream.pollable_output_stream
+        (Raw.Pollable_output_stream.from_gobject obj)
+
+    method get_converter : unit -> Converter.converter_t =
+      fun () ->
+        new Converter.converter (Raw.Converter_output_stream.get_converter obj)
+
+    method as_converter_output_stream = obj
+  end
+
+let new_ (base_stream : Output_stream.output_stream_t)
+    (converter : Converter.converter_t) : converter_output_stream_t =
+  let base_stream = base_stream#as_output_stream in
+  let converter = converter#as_converter in
+  let obj_ = Raw.Converter_output_stream.new_ base_stream converter in
+  new converter_output_stream obj_

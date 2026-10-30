@@ -1,0 +1,24 @@
+; ocgraphene.raw: layer 1 (externals and abstract types) and all C stubs.
+; The generator writes generated/; to regenerate, run
+; scripts/generate-bindings.sh from the repository root.
+
+(include_subdirs unqualified)
+
+(include generated/dune.inc)
+
+(library
+ (name ocgraphene_raw)
+ (public_name ocgraphene.raw)
+ (synopsis "Graphene layer 1: externals and abstract types")
+ (flags :standard -w -3-6-9-27-32-33-34-50 -open Ocglib)
+ (libraries ocglib ocgraphene.enums ocgraphene.raw.stubs)
+ (foreign_stubs
+  (language c)
+  (names ml_graphene)
+  (flags
+   :standard
+   -Igenerated
+   -Icore
+   (:include cflag-graphene.sexp)
+   -Wno-deprecated-declarations))
+ (install_c_headers graphene_decls graphene_core))

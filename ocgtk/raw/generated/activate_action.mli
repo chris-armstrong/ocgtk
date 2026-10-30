@@ -1,0 +1,15 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* ActivateAction: ActivateAction *)
+
+(** Activates a widget.
+
+    Widgets are activated by calling
+    {{!Ocgtk.Raw.Widget.val-activate}[Gtk.Widget.activate]}.
+
+    The class built on this module is in {!Ocgtk.Activate_action}. *)
+
+type t = [ `activate_action | `shortcut_action | `object_ ] Gobject.obj
+
+external gtype : unit -> Gobject.Type.t = "ml_gtk_activate_action_get_type"
+
+(* Methods *)

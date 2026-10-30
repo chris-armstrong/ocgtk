@@ -1,0 +1,45 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* GestureSwipe: GestureSwipe *)
+
+(** Recognizes swipe gestures.
+
+    After a press/move/.../move/release sequence happens, the
+    {{!Ocgtk.Raw.Gesture_swipe.val-on_swipe}[Gtk.GestureSwipe::swipe]} signal
+    will be emitted, providing the velocity and directionality of the sequence
+    at the time it was lifted.
+
+    If the velocity is desired in intermediate points,
+    {{!Ocgtk.Raw.Gesture_swipe.val-get_velocity}[Gtk.GestureSwipe.get_velocity]}
+    can be called in a [Gtk.Gesture::update] handler.
+
+    All velocities are reported in pixels/sec units.
+
+    The class built on this module is in {!Ocgtk.Gesture_swipe}. *)
+
+type t =
+  [ `gesture_swipe | `gesture_single | `gesture | `event_controller | `object_ ]
+  Gobject.obj
+
+external gtype : unit -> Gobject.Type.t = "ml_gtk_gesture_swipe_get_type"
+
+external new_ : unit -> t = "ml_gtk_gesture_swipe_new"
+(** Returns a newly created [GtkGesture] that recognizes swipes. *)
+
+(* Methods *)
+
+external get_velocity : t -> bool * float * float
+  = "ml_gtk_gesture_swipe_get_velocity"
+(** Gets the current velocity.
+
+    If the gesture is recognized, this function returns [true] and fills in
+    [velocity_x] and [velocity_y] with the recorded velocity, as per the last
+    events processed. *)
+
+val on_swipe :
+  ?after:bool ->
+  t ->
+  callback:(velocity_x:float -> velocity_y:float -> unit) ->
+  Gobject.Signal.handler_id
+(** Emitted when the recognized gesture is finished.
+
+    Velocity and direction are a product of previously recorded events. *)

@@ -13,10 +13,9 @@ let generate_type_declaration ~output_mode:_ ~base_type buf : unit =
 (** Generate constructors section *)
 let generate_constructors_section ~ctx ~class_name ~constructors buf : unit =
   List.iter
-    ~f:(fun (ctor : gir_constructor) ->
-      if Layer1_constructor.should_generate_constructor ~ctx ctor then
-        Layer1_constructor.generate_constructor_decl ~ctx ~class_name ~buf ctor)
-    (constructors |> Option.value ~default:[])
+    ~f:(Layer1_constructor.generate_constructor_decl ~ctx ~class_name ~buf)
+    (Emitted_members.constructors ~ctx
+       (constructors |> Option.value ~default:[]))
 
 (** Generate methods section *)
 let generate_methods_section ~ctx ~class_name ~c_type ~c_symbol_prefix
@@ -25,8 +24,8 @@ let generate_methods_section ~ctx ~class_name ~c_type ~c_symbol_prefix
   List.iter
     ~f:(fun (meth : gir_method) ->
       Layer1_method.generate_method_decl ~ctx ~class_name ~c_type
-        ~c_symbol_prefix ~entity_kind ~buf meth)
-    (List.rev methods)
+        ~c_symbol_prefix ~buf meth)
+    (List.rev (Emitted_members.l1_methods ~ctx ~entity_kind methods))
 
 (** Generate properties section *)
 let generate_properties_section ~ctx ~class_name ~methods ~properties buf : unit
@@ -34,14 +33,12 @@ let generate_properties_section ~ctx ~class_name ~methods ~properties buf : unit
   if List.length properties > 0 then begin
     bprintf buf "(* Properties *)\n\n";
     List.iter
-      ~f:(fun (prop : gir_property) ->
-        Layer1_property.generate_property_decl ~ctx ~class_name ~buf ~methods
-          prop)
-      properties
+      ~f:(Layer1_property.generate_property_decl ~ctx ~class_name ~buf)
+      (Emitted_members.l1_properties ~ctx ~methods properties)
   end
 
-let emit_one_signal ~ctx ~output_mode ~class_name buf signal =
-  match Signal_gen.classify ~ctx signal with
+let emit_one_signal ~ctx ~output_mode ~class_name buf (signal, emission) =
+  match emission with
   | Error reason ->
       Fmt.epr "Skipping signal '%s' for %s (%s)\n" signal.signal_name class_name
         reason
@@ -49,14 +46,18 @@ let emit_one_signal ~ctx ~output_mode ~class_name buf signal =
       match output_mode with
       | Layer1_helpers.Interface ->
           Buffer.add_string buf
-            (Signal_gen.emit_l1_val ~current_class:class_name emission)
+            (Signal_gen.emit_l1_val
+               ~refs:(Doc_resolve.env_of_ctx ctx)
+               ~current_class:class_name emission)
       | Layer1_helpers.Implementation ->
           Buffer.add_string buf
             (Signal_gen.emit_l1_let ~current_class:class_name emission))
 
 let generate_signal_bindings_section ~ctx ~output_mode ~class_name
     (signals : gir_signal list) buf : unit =
-  List.iter signals ~f:(emit_one_signal ~ctx ~output_mode ~class_name buf)
+  List.iter
+    (Emitted_members.classified_signals ~ctx signals)
+    ~f:(emit_one_signal ~ctx ~output_mode ~class_name buf)
 
 let generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
     ~constructors ~methods ~properties ~base_type ?c_symbol_prefix ~entity_kind
@@ -76,11 +77,10 @@ let generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
       let c_stub = Fmt.str "ml_%s_%s_get_type" ns_snake class_snake in
       bprintf buf "external gtype : unit -> Gobject.Type.t = \"%s\"\n\n" c_stub
   | _ -> ());
-  (match from_gobject_c_name with
-  | Some c_name ->
+  Option.iter (fun c_name ->
       bprintf buf "external from_gobject : 'a Gobject.obj -> t = \"%s\"\n\n"
-        c_name
-  | None -> ());
+        c_name)
+  @@ from_gobject_c_name;
   generate_constructors_section ~ctx ~class_name ~constructors buf;
   generate_methods_section ~ctx ~class_name ~c_type ~c_symbol_prefix
     ~entity_kind ~methods buf;
@@ -91,6 +91,7 @@ let generate_ml_interface ~ctx ~output_mode ~class_name ~class_doc ~c_type
     ~parent_chain ~constructors ~methods ~properties ?c_symbol_prefix
     ~entity_kind ?from_gobject_c_name ?(signals = []) ?glib_get_type () : string
     =
+  let ctx = Module_paths.raw_library_ctx ctx in
   let buf = Buffer.create 1024 in
 
   let class_type_name, base_type =
@@ -101,18 +102,24 @@ let generate_ml_interface ~ctx ~output_mode ~class_name ~class_doc ~c_type
   bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
   bprintf buf "(* %s: %s *)\n\n" class_type_name class_name;
 
-  (match class_doc with
-  | Some doc -> bprintf buf "(** %s *)\n" (Utils.sanitize_doc doc)
-  | None -> ());
+  (* The blank line makes this a floating module comment. Without it, the
+     comment attaches to the first type, odoc no longer shows it as the
+     module's synopsis on parent pages, and ocamlformat keeps it there. *)
+  Option.iter (fun doc -> bprintf buf "%s\n\n" (Doc_emit.floating doc))
+  @@ Entity_doc.l1_module
+       ~refs:(Doc_resolve.env_of_ctx ctx)
+       ~class_name ~class_doc;
   generate_ml_interface_internal ~ctx ~output_mode ~class_name ~c_type
     ~constructors ~methods ~properties ?c_symbol_prefix ~base_type ~entity_kind
     ?from_gobject_c_name ~signals ?glib_get_type buf;
   Buffer.contents buf
 
-(** Format module declaration (module rec X | and X) *)
-let format_module_declaration buf module_name is_start : unit =
-  if is_start then bprintf buf "module rec %s" module_name
-  else bprintf buf "\nand %s\n" module_name
+(** Format module declaration (module rec X | and X), after the arm's doc
+    comment when it has one *)
+let format_module_declaration buf ~doc module_name is_start : unit =
+  if is_start then
+    bprintf buf "%smodule rec %s" (Doc_emit.before_item doc) module_name
+  else bprintf buf "\n%sand %s\n" (Doc_emit.before_item doc) module_name
 
 (** Generate module signature for a single entity *)
 let generate_module_signature ~ctx ~entity ~base_type ?from_gobject_c_name buf :
@@ -170,8 +177,16 @@ let generate_combined_module_entity ~ctx ~output_mode ~entity
   in
   let is_start = index = 0 in
   let from_gobject_c_name = from_gobject_c_name_for_entity entity in
+  (* Only the interface's docs reach odoc. *)
+  let doc =
+    if is_impl then None
+    else
+      Entity_doc.l1_module
+        ~refs:(Doc_resolve.env_of_ctx ctx)
+        ~class_name ~class_doc:entity.doc
+  in
 
-  format_module_declaration buf module_name is_start;
+  format_module_declaration buf ~doc module_name is_start;
 
   if is_impl then begin
     bprintf buf " : sig\n";
@@ -184,16 +199,24 @@ let generate_combined_module_entity ~ctx ~output_mode ~entity
 
   generate_module_implementation ~ctx ~output_mode ~entity ~base_type
     ?from_gobject_c_name buf;
-  bprintf buf "end\n"
+  bprintf buf "end\n%s" (Doc_emit.after_item doc)
 
 (* Generate combined modules for cyclic dependencies *)
 let generate_combined_ml_modules ~ctx ~output_mode ~entities
     ~parent_chain_for_entity ?(from_gobject_c_name_for_entity = fun _ -> None)
     () : string =
+  let ctx = Module_paths.raw_library_ctx ctx in
   let buf = Buffer.create 4096 in
 
   bprintf buf "(* GENERATED CODE - DO NOT EDIT *)\n";
   bprintf buf "(* Combined modules for cyclic dependencies *)\n\n";
+  (match output_mode with
+  | Layer1_helpers.Implementation -> ()
+  | Layer1_helpers.Interface ->
+      Option.iter (fun doc -> bprintf buf "%s\n\n" (Doc_emit.floating doc))
+      @@ Entity_doc.combined_module ~namespace:ctx.namespace.namespace_name
+           ~layer:Entity_doc.Layer1
+           ~class_names:(List.map ~f:(fun e -> e.name) entities));
 
   let sorted_entities =
     List.sort ~cmp:(fun e1 e2 -> String.compare e1.name e2.name) entities
@@ -206,3 +229,35 @@ let generate_combined_ml_modules ~ctx ~output_mode ~entities
     sorted_entities;
 
   Buffer.contents buf
+
+(* Each member of a cycle lives inside the combined module, so dune's main
+   module of the raw library has no alias for it. A file per member restores
+   the short path ([Ocgio_raw.File] for [App_info_cycle_<hash>.File]) that
+   other namespaces and [Raw] refer to; the strengthened signature keeps its
+   types equal to the combined module's. *)
+let generate_cycle_member_shim ~output_mode ~refs ~combined_module_name
+    ~member_name ~member_doc =
+  let member =
+    combined_module_name ^ "." ^ Utils.module_name_of_class member_name
+  in
+  let body =
+    match output_mode with
+    | Layer1_helpers.Interface ->
+        (* The member's doc is on its declaration in the combined module,
+           which the included signature does not carry, so the shim repeats
+           it. *)
+        let preamble =
+          Entity_doc.l1_module ~refs ~class_name:member_name
+            ~class_doc:member_doc
+          |> Option.fold ~none:"" ~some:(fun doc ->
+              Doc_emit.floating doc ^ "\n\n")
+        in
+        Fmt.str "%sinclude module type of struct\n  include %s\nend\n" preamble
+          member
+    | Layer1_helpers.Implementation -> Fmt.str "include %s\n" member
+  in
+  Fmt.str
+    "(* GENERATED CODE - DO NOT EDIT *)\n\
+     (* %s, a member of the cyclic module %s *)\n\n\
+     %s"
+    member_name combined_module_name body

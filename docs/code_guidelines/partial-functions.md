@@ -40,7 +40,7 @@ let parse_int s =
 | `String.get` | `String.get_opt` or bounds check |
 | `Array.get` | bounds check first |
 | `Option.get` | `Option.value ~default:` or pattern match |
-| `Stdlib.(=)` | Type-specific equality (e.g., `String.equal`) |
+| `Stdlib.(=)`, `(<>)`, `compare` on non-`int` types | Type-specific equality (e.g., `String.equal`); see [core-idioms.md](./core-idioms.md) |
 
 ---
 
@@ -78,10 +78,8 @@ let name = Option.get maybe_name  (* Crashes if None! *)
 (* With default value *)
 let name = Option.value maybe_name ~default:"anonymous"
 
-(* With explicit handling *)
-let name = match maybe_name with
-  | Some n -> n
-  | None -> generate_default_name ()
+(* Lazily computed default *)
+let name = Option.fold ~none:generate_default_name ~some:Fun.id maybe_name
 
 (* With Result conversion *)
 let name =
@@ -93,7 +91,9 @@ let name =
 
 ## 5. Use Type-Specific Equality
 
-See [core-idioms.md](./core-idioms.md) for the project-wide policy on polymorphic equality.
+Structural equality is banned on every type except `int`. See
+[core-idioms.md](./core-idioms.md) for the full policy and the `Option` handling
+rule (`Option.iter` / `Option.map` instead of `None -> ()` or `None -> <default>`).
 
 ---
 
@@ -159,5 +159,7 @@ Before submitting code, verify:
 - [ ] No `Map.find` - use `Map.find_opt`
 - [ ] No `int_of_string` - use `int_of_string_opt`
 - [ ] No `Option.get` - use `Option.value ~default:` or pattern match
-- [ ] No `Stdlib.(=)` - use type-specific equality
+- [ ] No `match … | None -> ()` - use `Option.iter`
+- [ ] No `match … | None -> <default>` - use `Option.map` + `Option.value` or `Option.fold`
+- [ ] No `=`, `<>` or `compare` on non-`int` types - use type-specific equality
 - [ ] Any intentional partial functions have `_exn` suffix

@@ -52,6 +52,8 @@ See [core-idioms.md](./core-idioms.md) for module extraction heuristics.
 - Prefer pattern matching over if-else chains.
 - Destructure fields in the pattern itself, not after matching.
 - Use or-patterns for shared handling; avoid deeply nested `match`.
+- Never `match x with Some v -> f v | None -> ()`: use `x |> Option.iter @@ fun v -> f v` (parenthesise the lambda if more statements follow; `x |> Option.iter f` if `f` is named).
+- Never `match x with Some v -> f v | None -> <default>`: use `Option.map f x |> Option.value ~default:…` or `Option.fold`.
 
 ## Partial Functions — BANNED
 
@@ -62,7 +64,9 @@ See [core-idioms.md](./core-idioms.md) for module extraction heuristics.
 | `Map.find` / `Hashtbl.find` | `*_opt` variants |
 | `int_of_string` / `float_of_string` | `*_opt` variants |
 | `Option.get` | `Option.value ~default:` or pattern match |
-| `Stdlib.(=)` | `String.equal`, `Int.equal`, etc. |
+| `=`, `<>`, `compare` on non-`int` types | `String.equal`, `Char.equal`, `Bool.equal`, etc. |
+
+Structural equality is banned everywhere except on `int`. `=` / `<>` are permitted only when both operands are `int`.
 
 Intentional partial functions must have `_exn` suffix.
 
@@ -82,7 +86,7 @@ Intentional partial functions must have `_exn` suffix.
 
 ## OCaml Idioms
 
-See [core-idioms.md](./core-idioms.md) for bind operators vs pipelines, polymorphic equality ban, and module extraction heuristics.
+See [core-idioms.md](./core-idioms.md) for bind operators vs pipelines, structural equality ban, Option handling, and module extraction heuristics.
 
 - Labeled args when 2+ params have the same type or unclear position.
 - Parameter order: most-general first.

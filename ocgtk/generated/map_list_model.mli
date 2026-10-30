@@ -1,0 +1,117 @@
+(** A list model that maps the items in another model to different items.
+
+    Its methods, signals and properties are on {!class-type-map_list_model_t}.
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Map_list_model}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [MapListModel].}
+
+    Implements:
+    - {{!Ocgio.List_model.class-type-list_model_t}Ocgio.List_model}
+    - {{!Ocgtk.Section_model.class-type-section_model_t}Ocgtk.Section_model}
+
+    A list model that maps the items in another model to different items.
+
+    [GtkMapListModel] uses a [Gtk.MapListModelMapFunc].
+
+    Example: Create a list of [GtkEventControllers]
+
+    {[
+    static gpointer
+    map_to_controllers (gpointer widget,
+                        gpointer data)
+    {
+      gpointer result = gtk_widget_observe_controllers (widget);
+      g_object_unref (widget);
+      return result;
+    }
+
+    widgets = gtk_widget_observe_children (widget);
+
+    controllers = gtk_map_list_model_new (widgets,
+                                          map_to_controllers,
+                                          NULL, NULL);
+
+    model = gtk_flatten_list_model_new (GTK_TYPE_EVENT_CONTROLLER,
+                                        controllers);
+    ]}
+
+    [GtkMapListModel] will attempt to discard the mapped objects as soon as they
+    are no longer needed and recreate them if necessary.
+
+    [GtkMapListModel] passes through sections from the underlying model. *)
+class type map_list_model_t = object
+  inherit Ocgio.List_model.list_model_t
+  inherit Section_model.section_model_t
+
+  (** {2:methods Methods} *)
+
+  method get_model : unit -> Ocgio.List_model.list_model_t option
+  (** Gets the model that is currently being mapped or [None] if none. *)
+
+  method has_map : unit -> bool
+  (** Checks if a map function is currently set on [self]. *)
+
+  method set_model : Ocgio.List_model.list_model_t option -> unit
+  (** Sets the model to be mapped.
+
+      GTK makes no effort to ensure that [model] conforms to the item type
+      expected by the map function. It assumes that the caller knows what they
+      are doing and have set up an appropriate map function. *)
+
+  (** {2:properties Properties} *)
+
+  method item_type : Gobject.Type.t
+  (** The type of items. See [Gio.ListModel.get_item_type]. *)
+
+  method n_items : int
+  (** The number of items. See [Gio.ListModel.get_n_items]. *)
+
+  (** {2:conversions Conversions} *)
+
+  method as_map_list_model : Raw.Map_list_model.t
+end
+
+class map_list_model : Raw.Map_list_model.t -> map_list_model_t
+(** Wraps a raw handle of {!Ocgtk.Raw.Map_list_model.t}. *)
+
+(** {1:description Description}
+
+    A list model that maps the items in another model to different items.
+
+    [GtkMapListModel] uses a [Gtk.MapListModelMapFunc].
+
+    Example: Create a list of [GtkEventControllers]
+
+    {[
+    static gpointer
+    map_to_controllers (gpointer widget,
+                        gpointer data)
+    {
+      gpointer result = gtk_widget_observe_controllers (widget);
+      g_object_unref (widget);
+      return result;
+    }
+
+    widgets = gtk_widget_observe_children (widget);
+
+    controllers = gtk_map_list_model_new (widgets,
+                                          map_to_controllers,
+                                          NULL, NULL);
+
+    model = gtk_flatten_list_model_new (GTK_TYPE_EVENT_CONTROLLER,
+                                        controllers);
+    ]}
+
+    [GtkMapListModel] will attempt to discard the mapped objects as soon as they
+    are no longer needed and recreate them if necessary.
+
+    [GtkMapListModel] passes through sections from the underlying model. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

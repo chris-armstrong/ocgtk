@@ -1,0 +1,22 @@
+{0 cairo records}
+
+{!Occairo} has one module for each cairo record, with the externals they are built on in {!Occairo.Raw} and the enumerations and bitfields in {!Occairo.Enums}. See {%html:<a href="../ocgtk/conventions.html">the conventions page</a>%} for how the bindings are organised: the two layers, the anatomy of a class module, and how names, types, signals and properties are mapped.
+
+{1 Records}
+
+{!modules:
+  Occairo.Context
+  Occairo.Device
+  Occairo.Font_face
+  Occairo.Font_options
+  Occairo.Glyph
+  Occairo.Matrix
+  Occairo.Path
+  Occairo.Pattern
+  Occairo.Rectangle
+  Occairo.Rectangle_int
+  Occairo.Region
+  Occairo.Scaled_font
+  Occairo.Surface
+  Occairo.Text_cluster
+}

@@ -1,22 +1,22 @@
 (** GTK initialization tests *)
 
 open Alcotest
-open Ocgtk_gtk
+open Ocgtk
 
 let test_gmain_module_exists () =
-  (* Test that GMain module is accessible *)
-  check bool "GMain module exists" true true
+  (* Test that Main module is accessible *)
+  check bool "Main module exists" true true
 
 let test_gtk_init_api_exists () =
   (* Test that init function exists *)
-  let _ = GMain.init in
-  check bool "GMain.init function exists" true true
+  let _ = Main.init in
+  check bool "Main.init function exists" true true
 
 let test_main_loop_api_exists () =
   (* Test that main loop functions exist *)
-  let _ = GMain.main in
-  let _ = GMain.quit in
-  let _ = GMain.iteration in
+  let _ = Main.main in
+  let _ = Main.quit in
+  let _ = Main.iteration in
   check bool "Main loop API exists" true true
 
 let test_gtk_init_with_display () =
@@ -30,7 +30,7 @@ let () =
     [
       ( "api",
         [
-          test_case "GMain module" `Quick test_gmain_module_exists;
+          test_case "Main module" `Quick test_gmain_module_exists;
           test_case "init exists" `Quick test_gtk_init_api_exists;
           test_case "main loop exists" `Quick test_main_loop_api_exists;
         ] );

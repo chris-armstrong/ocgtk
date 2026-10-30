@@ -1,0 +1,50 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* Spinner: Spinner *)
+
+(** Displays an icon-size spinning animation.
+
+    It is often used as an alternative to a
+    {{!Ocgtk.Raw.Progress_bar}[Gtk.ProgressBar]} for displaying indefinite
+    activity, instead of actual progress.
+
+    An example GtkSpinner
+
+    To start the animation, use
+    {{!Ocgtk.Raw.Spinner.val-start}[Gtk.Spinner.start]}, to stop it use
+    {{!Ocgtk.Raw.Spinner.val-stop}[Gtk.Spinner.stop]}.
+
+    {b CSS nodes}
+
+    [GtkSpinner] has a single CSS node with the name spinner. When the animation
+    is active, the :checked pseudoclass is added to this node.
+
+    {b Accessibility}
+
+    [GtkSpinner] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-PROGRESS_BAR}[Gtk.AccessibleRole.progress_bar]}
+    role.
+
+    The class built on this module is in {!Ocgtk.Spinner}. *)
+
+type t = [ `spinner | `widget | `initially_unowned | `object_ ] Gobject.obj
+
+external gtype : unit -> Gobject.Type.t = "ml_gtk_spinner_get_type"
+
+external new_ : unit -> t = "ml_gtk_spinner_new"
+(** Returns a new spinner widget. Not yet started. *)
+
+(* Methods *)
+
+external stop : t -> unit = "ml_gtk_spinner_stop"
+(** Stops the animation of the spinner. *)
+
+external start : t -> unit = "ml_gtk_spinner_start"
+(** Starts the animation of the spinner. *)
+
+external set_spinning : t -> bool -> unit = "ml_gtk_spinner_set_spinning"
+(** Sets the activity of the spinner. *)
+
+external get_spinning : t -> bool = "ml_gtk_spinner_get_spinning"
+(** Returns whether the spinner is spinning. *)
+
+(* Properties *)

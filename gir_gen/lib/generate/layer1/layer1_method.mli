@@ -5,8 +5,8 @@ val generate_method_decl :
   class_name:string ->
   c_type:string ->
   c_symbol_prefix:string option ->
-  entity_kind:Filtering.entity_kind ->
   buf:Buffer.t ->
   Types.gir_method ->
   unit
-(** Generate a single method declaration and write it to the buffer. *)
+(** Generate a single method declaration and write it to the buffer. The caller
+    selects the methods ({!Emitted_members.l1_methods}). *)

@@ -1,3 +1,6 @@
+(documentation
+ (package ocgtk))
+
 (env
  (dev
   (flags :standard %{dune-warnings})))

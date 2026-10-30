@@ -1,0 +1,121 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* UnixSocketAddress: UnixSocketAddress *)
+
+(** Support for UNIX-domain (also known as local) sockets, corresponding to
+    [struct sockaddr_un].
+
+    UNIX domain sockets are generally visible in the filesystem. However, some
+    systems support abstract socket names which are not visible in the
+    filesystem and not affected by the filesystem permissions, visibility, etc.
+    Currently this is only supported under Linux. If you attempt to use abstract
+    sockets on other systems, function calls may return
+    [G_IO_ERROR_NOT_SUPPORTED] errors. You can use
+    [Gio.UnixSocketAddress.abstract_names_supported] to see if abstract names
+    are supported.
+
+    Since GLib 2.72, [GUnixSocketAddress] is available on all platforms. It
+    requires underlying system support (such as Windows 10 with [AF_UNIX]) at
+    run time.
+
+    Before GLib 2.72, [<gio/gunixsocketaddress.h>] belonged to the UNIX-specific
+    GIO interfaces, thus you had to use the [gio-unix-2.0.pc] pkg-config file
+    when using it. This is no longer necessary since GLib 2.72.
+
+    The class built on this module is in {!Ocgio.Unix_socket_address}. *)
+
+type t = [ `unix_socket_address | `socket_address | `object_ ] Gobject.obj
+
+external gtype : unit -> Gobject.Type.t = "ml_gio_unix_socket_address_get_type"
+
+external new_ : string -> t = "ml_g_unix_socket_address_new"
+(** Creates a new {{!Ocgio.Raw.Unix_socket_address}[GUnixSocketAddress]} for
+    [path].
+
+    To create abstract socket addresses, on systems that support that, use
+    {{!Ocgio.Raw.Unix_socket_address.val-new_abstract}[g_unix_socket_address_new_abstract
+                                                       ()]}. *)
+
+external new_abstract : int array -> int -> t
+  = "ml_g_unix_socket_address_new_abstract"
+(** Creates a new
+    {{!Ocgio.Enums.type-unixsocketaddresstype.constructor-ABSTRACT_PADDED}[G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED]}
+    {{!Ocgio.Raw.Unix_socket_address}[GUnixSocketAddress]} for [path]. *)
+
+external new_with_type :
+  int array -> int -> Ocgio_enums.unixsocketaddresstype -> t
+  = "ml_g_unix_socket_address_new_with_type"
+[@@ocaml.doc
+  "Creates a new {{!Ocgio.Raw.Unix_socket_address}[GUnixSocketAddress]} of \
+   type [type] with name [path].\n\n\
+   If [type] is \
+   {{!Ocgio.Enums.type-unixsocketaddresstype.constructor-PATH}[G_UNIX_SOCKET_ADDRESS_PATH]}, \
+   this is equivalent to\n\
+   calling \
+   {{!Ocgio.Raw.Unix_socket_address.val-new_}[g_unix_socket_address_new ()]}.\n\n\
+   If [type] is \
+   {{!Ocgio.Enums.type-unixsocketaddresstype.constructor-ANONYMOUS}[G_UNIX_SOCKET_ADDRESS_ANONYMOUS]}, \
+   [path] and [path_len] will be\n\
+   ignored.\n\n\
+   If [path_type] is \
+   {{!Ocgio.Enums.type-unixsocketaddresstype.constructor-ABSTRACT}[G_UNIX_SOCKET_ADDRESS_ABSTRACT]}, \
+   then [path_len]\n\
+   bytes of [path] will be copied to the socket's path, and only those\n\
+   bytes will be considered part of the name. (If [path_len] is -1,\n\
+   then [path] is assumed to be NUL-terminated.) For example, if [path]\n\
+   was \"test\", then calling \
+   {{!Ocgio.Raw.Socket_address.val-get_native_size}[g_socket_address_get_native_size \
+   ()]} on the\n\
+   returned socket would return 7 (2 bytes of overhead, 1 byte for the\n\
+   abstract-socket indicator byte, and 4 bytes for the name \"test\").\n\n\
+   If [path_type] is \
+   {{!Ocgio.Enums.type-unixsocketaddresstype.constructor-ABSTRACT_PADDED}[G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED]}, \
+   then\n\
+   [path_len] bytes of [path] will be copied to the socket's path, the\n\
+   rest of the path will be padded with 0 bytes, and the entire\n\
+   zero-padded buffer will be considered the name. (As above, if\n\
+   [path_len] is -1, then [path] is assumed to be NUL-terminated.) In\n\
+   this case, \
+   {{!Ocgio.Raw.Socket_address.val-get_native_size}[g_socket_address_get_native_size \
+   ()]} will always return\n\
+   the full size of a [struct sockaddr_un], although\n\
+   {{!Ocgio.Raw.Unix_socket_address.val-get_path_len}[g_unix_socket_address_get_path_len \
+   ()]} will still return just the\n\
+   length of [path].\n\n\
+   {{!Ocgio.Enums.type-unixsocketaddresstype.constructor-ABSTRACT}[G_UNIX_SOCKET_ADDRESS_ABSTRACT]} \
+   is preferred over\n\
+   {{!Ocgio.Enums.type-unixsocketaddresstype.constructor-ABSTRACT_PADDED}[G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED]} \
+   for new programs. Of course,\n\
+   when connecting to a server created by another process, you must\n\
+   use the appropriate type corresponding to how that process created\n\
+   its listening socket."]
+
+(* Methods *)
+
+external get_path_len : t -> Gsize.t = "ml_g_unix_socket_address_get_path_len"
+(** Gets the length of [address]'s path.
+
+    For details, see
+    {{!Ocgio.Raw.Unix_socket_address.val-get_path}[g_unix_socket_address_get_path
+                                                   ()]}. *)
+
+external get_path : t -> string = "ml_g_unix_socket_address_get_path"
+[@@ocaml.doc
+  "Gets [address]'s path, or for abstract sockets the \"name\".\n\n\
+   Guaranteed to be zero-terminated, but an abstract socket\n\
+   may contain embedded zeros, and thus you should use\n\
+   {{!Ocgio.Raw.Unix_socket_address.val-get_path_len}[g_unix_socket_address_get_path_len \
+   ()]} to get the true length\n\
+   of this string."]
+
+external get_is_abstract : t -> bool
+  = "ml_g_unix_socket_address_get_is_abstract"
+(** Tests if [address] is abstract. *)
+
+external get_address_type : t -> Ocgio_enums.unixsocketaddresstype
+  = "ml_g_unix_socket_address_get_address_type"
+(** Gets [address]'s type. *)
+
+(* Properties *)
+
+external get_abstract : t -> bool = "ml_g_unix_socket_address_get_abstract"
+(** Whether or not this is an abstract address *)

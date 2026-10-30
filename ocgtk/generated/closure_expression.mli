@@ -1,0 +1,31 @@
+(** An expression using a custom [GClosure] to compute the value from its
+    parameters.
+
+    Its methods, signals and properties are on
+    {!class-type-closure_expression_t}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Closure_expression}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [ClosureExpression].}
+
+    Inherits from: {{!Ocgtk.Expression.class-type-expression_t}Ocgtk.Expression}
+
+    An expression using a custom [GClosure] to compute the value from its
+    parameters. *)
+class type closure_expression_t = object
+  inherit Expression.expression_t
+
+  (** {2:conversions Conversions} *)
+
+  method as_closure_expression : Raw.Closure_expression.t
+end
+
+class closure_expression : Raw.Closure_expression.t -> closure_expression_t
+(** Wraps a raw handle of {!Ocgtk.Raw.Closure_expression.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

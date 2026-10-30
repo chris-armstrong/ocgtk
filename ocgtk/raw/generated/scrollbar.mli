@@ -1,0 +1,74 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* Scrollbar: Scrollbar *)
+
+(** Shows a horizontal or vertical scrollbar.
+
+    An example GtkScrollbar
+
+    Its position and movement are controlled by the adjustment that is passed to
+    or created by {{!Ocgtk.Raw.Scrollbar.val-new_}[Gtk.Scrollbar.new]}. See
+    {{!Ocgtk.Raw.Adjustment}[Gtk.Adjustment]} for more details. The
+    {{!Ocgtk.Raw.Adjustment.val-get_value}[Gtk.Adjustment:value]} field sets the
+    position of the thumb and must be between
+    {{!Ocgtk.Raw.Adjustment.val-get_lower}[Gtk.Adjustment:lower]} and
+    {{!Ocgtk.Raw.Adjustment.val-get_upper}[Gtk.Adjustment:upper]} -
+    {{!Ocgtk.Raw.Adjustment.val-get_page_size}[Gtk.Adjustment:page-size]}. The
+    {{!Ocgtk.Raw.Adjustment.val-get_page_size}[Gtk.Adjustment:page-size]}
+    represents the size of the visible scrollable area.
+
+    The fields
+    {{!Ocgtk.Raw.Adjustment.val-get_step_increment}[Gtk.Adjustment:step-increment]}
+    and
+    {{!Ocgtk.Raw.Adjustment.val-get_page_increment}[Gtk.Adjustment:page-increment]}
+    fields are added to or subtracted from the
+    {{!Ocgtk.Raw.Adjustment.val-get_value}[Gtk.Adjustment:value]} when the user
+    asks to move by a step (using e.g. the cursor arrow keys) or by a page
+    (using e.g. the Page Down/Up keys).
+
+    {b CSS nodes}
+
+    {[
+    scrollbar
+    ╰── range[.fine-tune]
+        ╰── trough
+            ╰── slider
+    ]}
+
+    [GtkScrollbar] has a main CSS node with name scrollbar and a subnode for its
+    contents. The main node gets the .horizontal or .vertical style classes
+    applied, depending on the scrollbar's orientation.
+
+    The range node gets the style class .fine-tune added when the scrollbar is
+    in 'fine-tuning' mode.
+
+    Other style classes that may be added to scrollbars inside
+    {{!Ocgtk.Raw.Scrolled_window}[Gtk.ScrolledWindow]} include the positional
+    classes (.left, .right, .top, .bottom) and style classes related to overlay
+    scrolling (.overlay-indicator, .dragging, .hovering).
+
+    {b Accessibility}
+
+    [GtkScrollbar] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-SCROLLBAR}[Gtk.AccessibleRole.scrollbar]}
+    role.
+
+    The class built on this module is in {!Ocgtk.Scrollbar}. *)
+
+type t = [ `scrollbar | `widget | `initially_unowned | `object_ ] Gobject.obj
+
+external gtype : unit -> Gobject.Type.t = "ml_gtk_scrollbar_get_type"
+
+external new_ : Ocgtk_enums.orientation -> Adjustment.t option -> t
+  = "ml_gtk_scrollbar_new"
+(** Creates a new scrollbar with the given orientation. *)
+
+(* Methods *)
+
+external set_adjustment : t -> Adjustment.t option -> unit
+  = "ml_gtk_scrollbar_set_adjustment"
+(** Makes the scrollbar use the given adjustment. *)
+
+external get_adjustment : t -> Adjustment.t = "ml_gtk_scrollbar_get_adjustment"
+(** Returns the scrollbar's adjustment. *)
+
+(* Properties *)

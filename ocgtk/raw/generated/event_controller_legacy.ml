@@ -1,0 +1,33 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* EventControllerLegacy: EventControllerLegacy *)
+
+(** Provides raw access to the event stream.
+
+    It should only be used as a last resort if none of the other event
+    controllers or gestures do the job.
+
+    The class built on this module is in {!Ocgtk.Event_controller_legacy}. *)
+
+type t = [ `event_controller_legacy | `event_controller | `object_ ] Gobject.obj
+
+external gtype : unit -> Gobject.Type.t
+  = "ml_gtk_event_controller_legacy_get_type"
+
+external new_ : unit -> t = "ml_gtk_event_controller_legacy_new"
+(** Creates a new legacy event controller. *)
+
+(* Methods *)
+let on_event ?after obj ~callback =
+  let closure =
+    Gobject.Closure.create (fun argv ->
+        let event =
+          let v = Gobject.Closure.nth argv ~pos:1 in
+          Gobject.Value.get_object_exn v (Ocgdk_raw.Event.gtype ())
+        in
+        let result = callback ~event in
+        let v = Gobject.Closure.result argv in
+        let x = result in
+        Gobject.Value.set_boolean v x)
+  in
+  Gobject.Signal.connect obj ~name:"event" ~callback:closure
+    ~after:(Option.value after ~default:false)

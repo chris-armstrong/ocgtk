@@ -42,6 +42,7 @@ let create_context_with_mixed_enums () =
             member_doc = None;
             member_version = None;
             member_os = None;
+            deprecation = None;
           };
           {
             member_name = "WORD";
@@ -50,12 +51,14 @@ let create_context_with_mixed_enums () =
             member_doc = None;
             member_version = None;
             member_os = None;
+            deprecation = None;
           };
         ];
       functions = [];
       enum_doc = None;
       enum_version = None;
       enum_os = None;
+      deprecation = None;
     }
   in
 
@@ -66,6 +69,7 @@ let create_context_with_mixed_enums () =
         repository_c_includes = [];
         repository_includes = [];
         repository_packages = [];
+        repository_doc_format = None;
       };
     classes = [];
     interfaces = [];
@@ -76,6 +80,8 @@ let create_context_with_mixed_enums () =
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
     cross_references = StringMap.empty;
+    target_library = Raw_library;
+    doc_index = StringMap.empty;
   }
 
 (* Helper: Create a context with local and external bitfields to test
@@ -106,6 +112,7 @@ let create_context_with_mixed_bitfields () =
             flag_doc = None;
             flag_version = None;
             flag_os = None;
+            deprecation = None;
           };
           {
             flag_name = "ACTIVE";
@@ -114,11 +121,13 @@ let create_context_with_mixed_bitfields () =
             flag_doc = None;
             flag_version = None;
             flag_os = None;
+            deprecation = None;
           };
         ];
       bitfield_doc = None;
       bitfield_version = None;
       bitfield_os = None;
+      deprecation = None;
     }
   in
 
@@ -129,6 +138,7 @@ let create_context_with_mixed_bitfields () =
         repository_c_includes = [];
         repository_includes = [];
         repository_packages = [];
+        repository_doc_format = None;
       };
     classes = [];
     interfaces = [];
@@ -139,6 +149,8 @@ let create_context_with_mixed_bitfields () =
     module_groups = Hashtbl.create 0;
     current_cycle_classes = [];
     cross_references = StringMap.empty;
+    target_library = Raw_library;
+    doc_index = StringMap.empty;
   }
 
 (* Test: Local enums produce correct forward declarations (Val_<Enum>, <Enum>_val) *)

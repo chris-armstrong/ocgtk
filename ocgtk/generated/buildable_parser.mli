@@ -1,0 +1,24 @@
+(** A sub-parser for [GtkBuildable] implementations.
+
+    Its methods, signals and properties are on {!class-type-buildable_parser_t}.
+    Its constructors are under {!section-constructors}. The functions it is
+    built on are in {!Ocgtk.Raw.Buildable_parser}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [BuildableParser].}
+
+    A sub-parser for [GtkBuildable] implementations. *)
+class type buildable_parser_t = object
+  (** {2:conversions Conversions} *)
+
+  method as_buildable_parser : Raw.Buildable_parser.t
+end
+
+class buildable_parser : Raw.Buildable_parser.t -> buildable_parser_t
+(** Wraps a raw handle of {!Ocgtk.Raw.Buildable_parser.t}. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

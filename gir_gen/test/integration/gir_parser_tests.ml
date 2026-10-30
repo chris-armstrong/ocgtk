@@ -42,9 +42,8 @@ let test_parse_simple_class () =
   Alcotest.(check string) "C type should be GtkButton" "GtkButton" button.c_type;
   Alcotest.(check (option string))
     "Parent should be Widget" (Some "Widget") button.parent;
-  (* Note: The parser currently does not parse class-level documentation *)
   Alcotest.(check (option string))
-    "Doc is not parsed for classes" None button.class_doc
+    "Class doc is parsed" (Some "A button widget") button.class_doc
 
 let test_parse_class_without_ctype () =
   let gir_xml =
@@ -63,6 +62,27 @@ let test_parse_class_without_ctype () =
   (* When c:type is missing, parser should generate it as "Gtk" + name *)
   Alcotest.(check string)
     "C type should default to GtkCustomWidget" "GtkCustomWidget" widget.c_type
+
+let test_parse_class_abstract () =
+  let gir_xml =
+    wrap_namespace
+      {|
+    <class name="Widget" c:type="GtkWidget" abstract="1">
+    </class>
+    <class name="Button" c:type="GtkButton" parent="Widget">
+    </class>
+  |}
+  in
+  let _, _, classes, _, _, _, _, _ = parse_gir_string gir_xml in
+  let is_abstract name =
+    List.exists
+      (fun (cls : Gir_gen_lib.Types.gir_class) ->
+        String.equal cls.class_name name && cls.abstract)
+      classes
+  in
+  Alcotest.(check bool) "abstract=\"1\" is abstract" true (is_abstract "Widget");
+  Alcotest.(check bool)
+    "no attribute is not abstract" false (is_abstract "Button")
 
 let test_parse_class_with_constructors () =
   let gir_xml =
@@ -171,7 +191,7 @@ let test_parse_class_with_properties () =
     wrap_namespace
       {|
     <class name="Button" c:type="GtkButton" parent="Widget">
-      <property name="label" writable="1" readable="1">
+      <property name="label" writable="1" readable="1" default-value="NULL">
         <doc>The button label</doc>
         <type name="utf8" c:type="gchar*"/>
       </property>
@@ -197,15 +217,18 @@ let test_parse_class_with_properties () =
   Alcotest.(check bool)
     "Property is not construct-only" false label_prop.construct_only;
   Alcotest.(check string) "Property type" "utf8" label_prop.prop_type.name;
-  (* Note: The parser currently does not parse property documentation *)
   Alcotest.(check (option string))
-    "Property doc is not parsed" None label_prop.prop_doc;
+    "Property doc is parsed" (Some "The button label") label_prop.prop_doc;
+  Alcotest.(check (option string))
+    "default-value= is parsed" (Some "NULL") label_prop.prop_default;
 
   let underline_prop =
     List.find (fun p -> p.prop_name = "use-underline") button.properties
   in
   Alcotest.(check bool)
-    "Property is construct-only" true underline_prop.construct_only
+    "Property is construct-only" true underline_prop.construct_only;
+  Alcotest.(check (option string))
+    "no default-value= attribute" None underline_prop.prop_default
 
 let signal_run_when_to_string : signal_run_when option -> string = function
   | None -> "none"
@@ -1515,6 +1538,8 @@ let tests =
     Alcotest.test_case "Parse simple class" `Quick test_parse_simple_class;
     Alcotest.test_case "Parse class without c:type" `Quick
       test_parse_class_without_ctype;
+    Alcotest.test_case "Parse class abstract attribute" `Quick
+      test_parse_class_abstract;
     Alcotest.test_case "Parse class with constructors" `Quick
       test_parse_class_with_constructors;
     Alcotest.test_case "Parse class with methods" `Quick

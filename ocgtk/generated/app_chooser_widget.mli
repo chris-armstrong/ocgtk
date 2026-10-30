@@ -1,0 +1,171 @@
+(** [GtkAppChooserWidget] is a widget for selecting applications.
+
+    Its methods, signals and properties are on
+    {!class-type-app_chooser_widget_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgtk.Raw.App_chooser_widget}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [AppChooserWidget].}
+
+    Inherits from: {{!Ocgtk.Widget.class-type-widget_t}Ocgtk.Widget}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.App_chooser.class-type-app_chooser_t}Ocgtk.App_chooser}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+
+    [GtkAppChooserWidget] is a widget for selecting applications.
+
+    It is the main building block for
+    {{!Ocgtk.App_chooser_dialog.class-type-app_chooser_dialog_t}[Gtk.AppChooserDialog]}.
+    Most applications only need to use the latter; but you can use this widget
+    as part of a larger widget if you have special needs.
+
+    [GtkAppChooserWidget] offers detailed control over what applications are
+    shown, using the
+    {{!Ocgtk.App_chooser_widget.class-type-app_chooser_widget_t.method-get_show_default}
+     [Gtk.AppChooserWidget:show-default]},
+    {{!Ocgtk.App_chooser_widget.class-type-app_chooser_widget_t.method-get_show_recommended}
+     [Gtk.AppChooserWidget:show-recommended]},
+    {{!Ocgtk.App_chooser_widget.class-type-app_chooser_widget_t.method-get_show_fallback}
+     [Gtk.AppChooserWidget:show-fallback]},
+    {{!Ocgtk.App_chooser_widget.class-type-app_chooser_widget_t.method-get_show_other}
+     [Gtk.AppChooserWidget:show-other]} and
+    {{!Ocgtk.App_chooser_widget.class-type-app_chooser_widget_t.method-get_show_all}
+     [Gtk.AppChooserWidget:show-all]} properties. See the
+    {{!Ocgtk.App_chooser.class-type-app_chooser_t}[Gtk.AppChooser]}
+    documentation for more information about these groups of applications.
+
+    To keep track of the selected application, use the
+    {{!Ocgtk.App_chooser_widget.class-type-app_chooser_widget_t.method-on_application_selected}
+     [Gtk.AppChooserWidget::application-selected]} and
+    {{!Ocgtk.App_chooser_widget.class-type-app_chooser_widget_t.method-on_application_activated}
+     [Gtk.AppChooserWidget::application-activated]} signals.
+
+    {b CSS nodes}
+
+    [GtkAppChooserWidget] has a single CSS node with name appchooser. *)
+class type app_chooser_widget_t = object
+  inherit Widget.widget_t
+  inherit App_chooser.app_chooser_t
+
+  (** {2:signals Signals} *)
+
+  method on_application_activated :
+    ?after:bool ->
+    callback:(application:Ocgio.App_info.app_info_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+  (** Emitted when an application item is activated from the widget's list.
+
+      This usually happens when the user double clicks an item, or an item is
+      selected and the user presses one of the keys Space, Shift+Space, Return
+      or Enter. *)
+
+  method on_application_selected :
+    ?after:bool ->
+    callback:(application:Ocgio.App_info.app_info_t -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+  (** Emitted when an application item is selected from the widget's list. *)
+
+  (** {2:methods Methods} *)
+
+  method get_default_text : unit -> string option
+  (** Returns the text that is shown if there are not applications that can
+      handle the content type. *)
+
+  method get_show_all : unit -> bool
+  (** Gets whether the app chooser should show all applications in a flat list.
+  *)
+
+  method get_show_default : unit -> bool
+  (** Gets whether the app chooser should show the default handler for the
+      content type in a separate section. *)
+
+  method get_show_fallback : unit -> bool
+  (** Gets whether the app chooser should show related applications for the
+      content type in a separate section. *)
+
+  method get_show_other : unit -> bool
+  (** Gets whether the app chooser should show applications which are unrelated
+      to the content type. *)
+
+  method get_show_recommended : unit -> bool
+  (** Gets whether the app chooser should show recommended applications for the
+      content type in a separate section. *)
+
+  method set_default_text : string -> unit
+  (** Sets the text that is shown if there are not applications that can handle
+      the content type. *)
+
+  method set_show_all : bool -> unit
+  (** Sets whether the app chooser should show all applications in a flat list.
+  *)
+
+  method set_show_default : bool -> unit
+  (** Sets whether the app chooser should show the default handler for the
+      content type in a separate section. *)
+
+  method set_show_fallback : bool -> unit
+  (** Sets whether the app chooser should show related applications for the
+      content type in a separate section. *)
+
+  method set_show_other : bool -> unit
+  (** Sets whether the app chooser should show applications which are unrelated
+      to the content type. *)
+
+  method set_show_recommended : bool -> unit
+  (** Sets whether the app chooser should show recommended applications for the
+      content type in a separate section. *)
+
+  (** {2:conversions Conversions} *)
+
+  method as_app_chooser_widget : Raw.App_chooser_widget.t
+end
+
+class app_chooser_widget : Raw.App_chooser_widget.t -> app_chooser_widget_t
+(** Wraps a raw handle of {!Ocgtk.Raw.App_chooser_widget.t}. *)
+
+(** {1:description Description}
+
+    [GtkAppChooserWidget] is a widget for selecting applications.
+
+    It is the main building block for
+    {{!Ocgtk.App_chooser_dialog.class-type-app_chooser_dialog_t}[Gtk.AppChooserDialog]}.
+    Most applications only need to use the latter; but you can use this widget
+    as part of a larger widget if you have special needs.
+
+    [GtkAppChooserWidget] offers detailed control over what applications are
+    shown, using the
+    {{!Ocgtk.App_chooser_widget.class-type-app_chooser_widget_t.method-get_show_default}
+     [Gtk.AppChooserWidget:show-default]},
+    {{!Ocgtk.App_chooser_widget.class-type-app_chooser_widget_t.method-get_show_recommended}
+     [Gtk.AppChooserWidget:show-recommended]},
+    {{!Ocgtk.App_chooser_widget.class-type-app_chooser_widget_t.method-get_show_fallback}
+     [Gtk.AppChooserWidget:show-fallback]},
+    {{!Ocgtk.App_chooser_widget.class-type-app_chooser_widget_t.method-get_show_other}
+     [Gtk.AppChooserWidget:show-other]} and
+    {{!Ocgtk.App_chooser_widget.class-type-app_chooser_widget_t.method-get_show_all}
+     [Gtk.AppChooserWidget:show-all]} properties. See the
+    {{!Ocgtk.App_chooser.class-type-app_chooser_t}[Gtk.AppChooser]}
+    documentation for more information about these groups of applications.
+
+    To keep track of the selected application, use the
+    {{!Ocgtk.App_chooser_widget.class-type-app_chooser_widget_t.method-on_application_selected}
+     [Gtk.AppChooserWidget::application-selected]} and
+    {{!Ocgtk.App_chooser_widget.class-type-app_chooser_widget_t.method-on_application_activated}
+     [Gtk.AppChooserWidget::application-activated]} signals.
+
+    {b CSS nodes}
+
+    [GtkAppChooserWidget] has a single CSS node with name appchooser. *)
+
+(** {1:constructors Constructors} *)
+
+val new_ : string -> app_chooser_widget_t
+(** Creates a new [GtkAppChooserWidget] for applications that can handle content
+    of the given type. *)

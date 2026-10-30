@@ -1,0 +1,69 @@
+class type viewport_t = object
+  inherit Widget.widget_t
+  inherit Scrollable.scrollable_t
+
+  (** {2:methods Methods} *)
+
+  method get_child : unit -> Widget.widget_t option
+  (** Gets the child widget of [viewport]. *)
+
+  method get_scroll_to_focus : unit -> bool
+  (** Gets whether the viewport is scrolling to keep the focused child in view.
+  *)
+
+  method scroll_to : Widget.widget_t -> Raw.Scroll_info.t option -> unit
+  (** Scrolls a descendant of the viewport into view.
+
+      The viewport and the descendant must be visible and mapped for this
+      function to work, otherwise no scrolling will be performed. *)
+
+  method set_child : Widget.widget_t option -> unit
+  (** Sets the child widget of [viewport]. *)
+
+  method set_scroll_to_focus : bool -> unit
+  (** Sets whether the viewport should automatically scroll to keep the focused
+      child in view. *)
+
+  (** {2:conversions Conversions} *)
+
+  method as_viewport : Raw.Viewport.t
+end
+
+(* High-level class for Viewport *)
+class viewport (obj : Raw.Viewport.t) : viewport_t =
+  object (self)
+    inherit Widget.widget (obj :> Raw.Widget.t)
+    inherit Scrollable.scrollable (Raw.Scrollable.from_gobject obj)
+
+    method get_child : unit -> Widget.widget_t option =
+      fun () ->
+        Option.map
+          (fun ret -> new Widget.widget ret)
+          (Raw.Viewport.get_child obj)
+
+    method get_scroll_to_focus : unit -> bool =
+      fun () -> Raw.Viewport.get_scroll_to_focus obj
+
+    method scroll_to : Widget.widget_t -> Raw.Scroll_info.t option -> unit =
+      fun descendant scroll ->
+        let descendant = descendant#as_widget in
+        Raw.Viewport.scroll_to obj descendant scroll
+
+    method set_child : Widget.widget_t option -> unit =
+      fun child ->
+        let child = Option.map (fun c -> c#as_widget) child in
+        Raw.Viewport.set_child obj child
+
+    method set_scroll_to_focus : bool -> unit =
+      fun scroll_to_focus ->
+        Raw.Viewport.set_scroll_to_focus obj scroll_to_focus
+
+    method as_viewport = obj
+  end
+
+let new_ (hadjustment : Adjustment.adjustment_t option)
+    (vadjustment : Adjustment.adjustment_t option) : viewport_t =
+  let hadjustment = Option.map (fun c -> c#as_adjustment) hadjustment in
+  let vadjustment = Option.map (fun c -> c#as_adjustment) vadjustment in
+  let obj_ = Raw.Viewport.new_ hadjustment vadjustment in
+  new viewport obj_

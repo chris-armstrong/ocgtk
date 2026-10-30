@@ -154,6 +154,14 @@ let process = function
 
 ---
 
+## 8. Do Not Match `None` for Unit or Defaults
+
+A `match` whose `None` arm is `()` or a literal default is replaced by
+`Option.iter` or `Option.map` / `Option.value` / `Option.fold`. Full rule and
+examples are in [core-idioms.md](./core-idioms.md#option-handling-never-match-none-for-unit-or-defaults).
+
+---
+
 ## Checklist
 
 Before submitting code, verify:
@@ -164,3 +172,4 @@ Before submitting code, verify:
 - [ ] Fields destructured in pattern, not accessed after
 - [ ] Or-patterns used for shared handling
 - [ ] No deeply nested match expressions
+- [ ] No `match … | None -> ()` or `match … | None -> <default>` - use `Option` combinators

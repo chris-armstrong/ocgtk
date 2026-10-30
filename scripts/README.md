@@ -30,7 +30,7 @@ After generation, run `dune build` to compile the updated bindings.
 
 ### Override files
 
-Per-namespace override files live in `ocgtk/overrides/` and are committed to the
+Per-namespace override files live in `overrides/` and are committed to the
 repository. See [gir_gen/README.md — Override System](../gir_gen/README.md#override-system)
 for the file format and editing workflow.
 
@@ -44,3 +44,33 @@ for the file format and editing workflow.
 - Code generation is **not** part of the normal dune build flow
 - Generated files are committed to the repository
 - Only run this script when you need to regenerate bindings (e.g., after updating GIR files, gir_gen, or override files)
+
+## doc-preview-landing.sh
+
+Writes the landing `index.html` at the root of a rendered odoc HTML tree. It
+links the conventions page and each package's odoc root, and records the ref, commit and odoc warnings
+(total and buckets) of the build. The doc preview workflow
+(`.github/workflows/doc-preview.yml`) runs it before deploying to `gh-pages`.
+
+```bash
+opam exec -- dune build @doc
+rm -rf /tmp/site && cp -r _build/default/_doc/_html /tmp/site && chmod -R u+w /tmp/site
+DOC_PREVIEW_REF=main DOC_PREVIEW_SHA=$(git rev-parse HEAD) \
+  ./scripts/doc-preview-landing.sh /tmp/site
+```
+
+Copy the tree out first: dune leaves `_build` read-only. All environment
+variables are optional; see the script header for the list.
+
+## doc_diff
+
+The diff of the rendered odoc HTML of a base commit and the working tree
+lives in the generator project. See
+[gir_gen/tools/doc_diff/README.md](../gir_gen/tools/doc_diff/README.md).
+
+## doc_warnings
+
+The classifier of the odoc warnings in a `dune build @doc` log, which the doc
+preview workflow uses for its job summary and the landing page, lives in the
+generator project. See
+[gir_gen/tools/doc_warnings/README.md](../gir_gen/tools/doc_warnings/README.md).

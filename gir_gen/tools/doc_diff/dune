@@ -1,0 +1,6 @@
+; diff -r of the rendered odoc HTML of a base commit and the working tree.
+; See README.md.
+
+(executable
+ (name doc_diff)
+ (libraries unix cmdliner))

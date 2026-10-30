@@ -1,0 +1,45 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* TextNode: TextNode *)
+
+(** A render node drawing a set of glyphs.
+
+    The class built on this module is in {!Ocgsk.Text_node}. *)
+
+type t = [ `text_node | `render_node ] Gobject.obj
+
+external gtype : unit -> Gobject.Type.t = "ml_gsk_text_node_get_type"
+
+external new_ :
+  Ocpango_raw.Font.t ->
+  Ocpango_raw.Glyph_string.t ->
+  Ocgdk_raw.Rgb_a.t ->
+  Ocgraphene_raw.Point.t ->
+  t = "ml_gsk_text_node_new"
+(** Creates a render node that renders the given glyphs.
+
+    Note that [color] may not be used if the font contains color glyphs. *)
+
+(* Methods *)
+
+external has_color_glyphs : t -> bool = "ml_gsk_text_node_has_color_glyphs"
+(** Checks whether the text [node] has color glyphs. *)
+
+external get_offset : t -> Ocgraphene_raw.Point.t
+  = "ml_gsk_text_node_get_offset"
+(** Retrieves the offset applied to the text. *)
+
+external get_num_glyphs : t -> int = "ml_gsk_text_node_get_num_glyphs"
+(** Retrieves the number of glyphs in the text node. *)
+
+external get_glyphs : t -> Ocpango_raw.Glyph_info.t array * int
+  = "ml_gsk_text_node_get_glyphs"
+(** Retrieves the glyph information in the [node]. *)
+
+external get_font : t -> Ocpango_raw.Font.t = "ml_gsk_text_node_get_font"
+(** Returns the font used by the text [node]. *)
+
+external get_color : t -> Ocgdk_raw.Rgb_a.t = "ml_gsk_text_node_get_color"
+(** Retrieves the color used by the text [node].
+
+    The value returned by this function will not be correct if the render node
+    was created for a non-sRGB color. *)

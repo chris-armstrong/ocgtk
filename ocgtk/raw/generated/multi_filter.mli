@@ -1,0 +1,34 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* MultiFilter: MultiFilter *)
+
+(** Base class for filters that combine multiple filters.
+
+    The class built on this module is in {!Ocgtk.Multi_filter}. *)
+
+type t = [ `multi_filter | `filter | `object_ ] Gobject.obj
+
+external gtype : unit -> Gobject.Type.t = "ml_gtk_multi_filter_get_type"
+
+(* Methods *)
+
+external remove : t -> int -> unit = "ml_gtk_multi_filter_remove"
+(** Removes a filter.
+
+    If [position] is larger than the number of filters, nothing happens. *)
+
+external append : t -> Filter.t -> unit = "ml_gtk_multi_filter_append"
+(** Adds a filter. *)
+
+(* Properties *)
+
+external get_item_type : t -> Gobject.Type.t
+  = "ml_gtk_multi_filter_get_item_type"
+(** The type of items.
+
+    See
+    {{!Ocgio.Raw.List_model.val-get_item_type}[Gio.ListModel.get_item_type]}. *)
+
+external get_n_items : t -> int = "ml_gtk_multi_filter_get_n_items"
+(** The number of items.
+
+    See {{!Ocgio.Raw.List_model.val-get_n_items}[Gio.ListModel.get_n_items]}. *)

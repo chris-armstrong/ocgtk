@@ -1,4 +1,4 @@
-open Ocgtk_gtk.Gtk
+open Ocgtk
 open Calc_core
 
 (* Escape text for safe use in Pango markup (XML escaping) *)
@@ -77,9 +77,7 @@ let create_display_label text =
   label
 
 let setup_css_provider () =
-  let provider =
-    new Css_provider.css_provider (Wrappers.Css_provider.new_ ())
-  in
+  let provider = new Css_provider.css_provider (Raw.Css_provider.new_ ()) in
   provider#load_from_string css_theme;
   provider
 
@@ -123,8 +121,7 @@ let handle_button_click ui text () =
   state_ref := new_state;
   update_display ui ()
 
-(* GDK keysym constants for non-printable keys.
-   GDK_KEY_* constants are not yet generated (Milestone 4), hardcode for now. *)
+(* GDK keysym values for non-printable keys. *)
 let gdk_key_return = 0xff0d
 let gdk_key_kp_enter = 0xff8d
 let gdk_key_escape = 0xff1b
@@ -228,9 +225,7 @@ let build (window : Window.window_t) =
       ignore
         (Array.fold_left
            (fun col_offset text ->
-             let btn =
-               new Button.button (Wrappers.Button.new_with_label text)
-             in
+             let btn = new Button.button (Raw.Button.new_with_label text) in
              btn#add_css_class "calculator-button";
              (match text with
              | "C" -> btn#add_css_class "calculator-button-clear"

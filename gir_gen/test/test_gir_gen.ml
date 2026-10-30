@@ -26,7 +26,21 @@ let () =
       ("Signatures (ML)", Signature_tests.tests);
       (* Constants generation (pure unit) *)
       ("Constant Code", Constant_code_tests.tests);
+      ("Enum Code", Enum_code_tests.tests);
+      ("Entity Doc", Entity_doc_tests.tests);
+      ("Class Gen Inheritance", Class_gen_inheritance_tests.tests);
+      (* Doc_translate — pure translation engine (no wiring) *)
+      ("Doc Parse", Doc_parse_tests.tests);
+      ("Doc Render", Doc_render_tests.tests);
+      ("Doc C Idiom", Doc_c_idiom_tests.tests);
+      ("Doc Translate", Doc_translate_tests.tests);
+      ("Doc Translate Corpus", Doc_translate_corpus_tests.tests);
+      ("Doc Emit", Doc_emit_tests.tests);
+      ("Doc Resolve", Doc_resolve_tests.tests);
+      ("Doc Index", Doc_index_tests.tests);
+      ("Emitted Members", Emitted_members_tests.tests);
       ("Dune File", Dune_file_tests.tests);
+      ("Module Paths", Module_paths_tests.tests);
       (* Layer 2 — Class Generation (pure unit/pipeline) *)
       ("Layer2 Method Wrappers", Method_wrapper_tests.tests);
       ("Constructor Wrappers", Constructor_wrapper_tests.tests);
@@ -34,16 +48,16 @@ let () =
       ("Signal Marshaller", Signal_marshaller_tests.tests);
       (* Interface Parsing (pure unit — no gir_gen.exe) *)
       ("Interface Parsing", Parsing_tests.test_suite);
+      ("Doc Parsing", Doc_parsing_tests.test_suite);
       (* Cross-namespace (pure unit/pipeline) *)
-      ("C Stub Header Include (Stage 5)", C_stub_include_tests.tests);
-      ("classify_type + Array Resolution (Phase 6)", Classify_type_tests.tests);
-      ("Dependency Includes (Stage 4)", Dependency_includes_tests.tests);
-      ("Dependency Exclusion (Stage 4)", Dependency_exclusion_tests.tests);
-      ("No External Enum Decls (Stage 2)", No_external_enum_decls_tests.tests);
-      ( "No External Bitfield Decls (Stage 3)",
-        No_external_bitfield_decls_tests.tests );
-      ("Header Pipeline Tests (Stage 8)", Header_pipeline_tests.tests);
-      ("Compilation Tests (Stage 8)", Compilation_tests.tests);
+      ("C Stub Header Include", C_stub_include_tests.tests);
+      ("classify_type + Array Resolution", Classify_type_tests.tests);
+      ("Dependency Includes", Dependency_includes_tests.tests);
+      ("Dependency Exclusion", Dependency_exclusion_tests.tests);
+      ("No External Enum Decls", No_external_enum_decls_tests.tests);
+      ("No External Bitfield Decls", No_external_bitfield_decls_tests.tests);
+      ("Header Pipeline Tests", Header_pipeline_tests.tests);
+      ("Compilation Tests", Compilation_tests.tests);
       (* Constant cross-namespace references (pure unit) *)
       ("Constant References", Constant_references_tests.tests);
       (* Override system *)

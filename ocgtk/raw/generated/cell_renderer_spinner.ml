@@ -1,0 +1,61 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* CellRendererSpinner: CellRendererSpinner *)
+
+(** Renders a spinning animation in a cell
+
+    [GtkCellRendererSpinner] renders a spinning animation in a cell, very
+    similar to [GtkSpinner]. It can often be used as an alternative to a
+    [GtkCellRendererProgress] for displaying indefinite activity, instead of
+    actual progress.
+
+    To start the animation in a cell, set the [GtkCellRendererSpinner:active]
+    property to [true] and increment the [GtkCellRendererSpinner:pulse] property
+    at regular intervals. The usual way to set the cell renderer properties for
+    each cell is to bind them to columns in your tree model using e.g.
+    {{!Ocgtk.Raw.Tree_view_column.val-add_attribute}[gtk_tree_view_column_add_attribute
+                                                     ()]}.
+
+    The class built on this module is in {!Ocgtk.Cell_renderer_spinner}. *)
+
+type t =
+  [ `cell_renderer_spinner | `cell_renderer | `initially_unowned | `object_ ]
+  Gobject.obj
+
+external gtype : unit -> Gobject.Type.t
+  = "ml_gtk_cell_renderer_spinner_get_type"
+
+external new_ : unit -> t = "ml_gtk_cell_renderer_spinner_new"
+(** Returns a new cell renderer which will show a spinner to indicate activity.
+*)
+
+(* Methods *)
+(* Properties *)
+
+external get_active : t -> bool = "ml_gtk_cell_renderer_spinner_get_active"
+(** Whether the spinner is active (ie. shown) in the cell *)
+
+external set_active : t -> bool -> unit
+  = "ml_gtk_cell_renderer_spinner_set_active"
+(** Whether the spinner is active (ie. shown) in the cell *)
+
+external get_pulse : t -> int = "ml_gtk_cell_renderer_spinner_get_pulse"
+(** Pulse of the spinner. Increment this value to draw the next frame of the
+    spinner animation. Usually, you would update this value in a timeout.
+
+    By default, the [GtkSpinner] widget draws one full cycle of the animation,
+    consisting of 12 frames, in 750 milliseconds. *)
+
+external set_pulse : t -> int -> unit = "ml_gtk_cell_renderer_spinner_set_pulse"
+(** Pulse of the spinner. Increment this value to draw the next frame of the
+    spinner animation. Usually, you would update this value in a timeout.
+
+    By default, the [GtkSpinner] widget draws one full cycle of the animation,
+    consisting of 12 frames, in 750 milliseconds. *)
+
+external get_size : t -> Ocgtk_enums.iconsize
+  = "ml_gtk_cell_renderer_spinner_get_size"
+(** The [GtkIconSize] value that specifies the size of the rendered spinner. *)
+
+external set_size : t -> Ocgtk_enums.iconsize -> unit
+  = "ml_gtk_cell_renderer_spinner_set_size"
+(** The [GtkIconSize] value that specifies the size of the rendered spinner. *)

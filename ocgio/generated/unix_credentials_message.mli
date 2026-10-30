@@ -1,0 +1,104 @@
+(** This
+    {{!Ocgio.Socket_control_message.class-type-socket_control_message_t}[Gio.SocketControlMessage]}
+    contains a {{!Ocgio.Credentials.class-type-credentials_t}[Gio.Credentials]}
+    instance. It may be sent using
+    {{!Ocgio.Socket.class-type-socket_t.method-send_message}[Gio.Socket.send_message]}
+    and received using [Gio.Socket.receive_message] over UNIX sockets (ie:
+    sockets in the [G_SOCKET_FAMILY_UNIX] family).
+
+    Its methods, signals and properties are on
+    {!class-type-unix_credentials_message_t}. Its full description is under
+    {!section-description}. Its constructors are under {!section-constructors}.
+    The functions it is built on are in {!Ocgio.Raw.Unix_credentials_message}.
+*)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [UnixCredentialsMessage].}
+
+    Inherits from:
+    {{!Ocgio.Socket_control_message.class-type-socket_control_message_t}Ocgio.Socket_control_message}
+
+    This
+    {{!Ocgio.Socket_control_message.class-type-socket_control_message_t}[Gio.SocketControlMessage]}
+    contains a {{!Ocgio.Credentials.class-type-credentials_t}[Gio.Credentials]}
+    instance. It may be sent using
+    {{!Ocgio.Socket.class-type-socket_t.method-send_message}[Gio.Socket.send_message]}
+    and received using [Gio.Socket.receive_message] over UNIX sockets (ie:
+    sockets in the [G_SOCKET_FAMILY_UNIX] family).
+
+    For an easier way to send and receive credentials over stream-oriented UNIX
+    sockets, see
+    {{!Ocgio.Unix_connection.class-type-unix_connection_t.method-send_credentials}
+     [Gio.UnixConnection.send_credentials]} and
+    {{!Ocgio.Unix_connection.class-type-unix_connection_t.method-receive_credentials}
+     [Gio.UnixConnection.receive_credentials]}. To receive credentials of a
+    foreign process connected to a socket, use
+    {{!Ocgio.Socket.class-type-socket_t.method-get_credentials}[Gio.Socket.get_credentials]}.
+
+    Since GLib 2.72, [GUnixCredentialMessage] is available on all platforms. It
+    requires underlying system support (such as Windows 10 with [AF_UNIX]) at
+    run time.
+
+    Before GLib 2.72, [<gio/gunixcredentialsmessage.h>] belonged to the
+    UNIX-specific GIO interfaces, thus you had to use the [gio-unix-2.0.pc]
+    pkg-config file when using it. This is no longer necessary since GLib 2.72.
+*)
+class type unix_credentials_message_t = object
+  inherit Socket_control_message.socket_control_message_t
+
+  (** {2:methods Methods} *)
+
+  method get_credentials : unit -> Credentials.credentials_t
+  (** Gets the credentials stored in [message]. *)
+
+  (** {2:conversions Conversions} *)
+
+  method as_unix_credentials_message : Raw.Unix_credentials_message.t
+end
+
+class unix_credentials_message :
+  Raw.Unix_credentials_message.t ->
+  unix_credentials_message_t
+(** Wraps a raw handle of {!Ocgio.Raw.Unix_credentials_message.t}. *)
+
+(** {1:description Description}
+
+    This
+    {{!Ocgio.Socket_control_message.class-type-socket_control_message_t}[Gio.SocketControlMessage]}
+    contains a {{!Ocgio.Credentials.class-type-credentials_t}[Gio.Credentials]}
+    instance. It may be sent using
+    {{!Ocgio.Socket.class-type-socket_t.method-send_message}[Gio.Socket.send_message]}
+    and received using [Gio.Socket.receive_message] over UNIX sockets (ie:
+    sockets in the [G_SOCKET_FAMILY_UNIX] family).
+
+    For an easier way to send and receive credentials over stream-oriented UNIX
+    sockets, see
+    {{!Ocgio.Unix_connection.class-type-unix_connection_t.method-send_credentials}
+     [Gio.UnixConnection.send_credentials]} and
+    {{!Ocgio.Unix_connection.class-type-unix_connection_t.method-receive_credentials}
+     [Gio.UnixConnection.receive_credentials]}. To receive credentials of a
+    foreign process connected to a socket, use
+    {{!Ocgio.Socket.class-type-socket_t.method-get_credentials}[Gio.Socket.get_credentials]}.
+
+    Since GLib 2.72, [GUnixCredentialMessage] is available on all platforms. It
+    requires underlying system support (such as Windows 10 with [AF_UNIX]) at
+    run time.
+
+    Before GLib 2.72, [<gio/gunixcredentialsmessage.h>] belonged to the
+    UNIX-specific GIO interfaces, thus you had to use the [gio-unix-2.0.pc]
+    pkg-config file when using it. This is no longer necessary since GLib 2.72.
+*)
+
+(** {1:constructors Constructors} *)
+
+val new_ : unit -> unix_credentials_message_t
+(** Creates a new
+    {{!Ocgio.Unix_credentials_message.class-type-unix_credentials_message_t}[GUnixCredentialsMessage]}
+    with credentials matching the current processes. *)
+
+val new_with_credentials :
+  Credentials.credentials_t -> unix_credentials_message_t
+(** Creates a new
+    {{!Ocgio.Unix_credentials_message.class-type-unix_credentials_message_t}[GUnixCredentialsMessage]}
+    holding [credentials]. *)

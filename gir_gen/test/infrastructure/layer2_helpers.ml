@@ -15,6 +15,7 @@ let create_test_class_with_parent ~name ~c_type ?parent:(parent_val = None) () =
     parent = parent_val;
     implements = [];
     introspectable = true;
+    abstract = false;
     constructors = [];
     methods = [];
     properties = [];
@@ -22,6 +23,7 @@ let create_test_class_with_parent ~name ~c_type ?parent:(parent_val = None) () =
     class_doc = None;
     version = None;
     os = None;
+    deprecation = None;
   }
 
 (* Create a simple parent class for testing inheritance *)
@@ -41,6 +43,7 @@ let create_test_class_with_methods ~name ~c_type ~methods () =
     parent = None;
     implements = [];
     introspectable = true;
+    abstract = false;
     constructors = [];
     methods;
     properties = [];
@@ -48,6 +51,7 @@ let create_test_class_with_methods ~name ~c_type ~methods () =
     class_doc = None;
     version = None;
     os = None;
+    deprecation = None;
   }
 
 (* ========================================================================= *)
@@ -69,6 +73,7 @@ let create_test_method ~name ~c_identifier () =
         array = None;
       };
     doc = None;
+    return_doc = None;
     throws = false;
     get_property = None;
     set_property = None;
@@ -76,6 +81,7 @@ let create_test_method ~name ~c_identifier () =
     version = None;
     version_namespace = None;
     os = None;
+    deprecation = None;
   }
 
 (* Create a test method with a single parameter *)
@@ -89,6 +95,7 @@ let create_test_method_with_param ~name ~c_identifier ~param_name ~param_type ()
       nullable = false;
       varargs = false;
       caller_allocates = false;
+      param_doc = None;
     }
   in
   {
@@ -104,6 +111,7 @@ let create_test_method_with_param ~name ~c_identifier ~param_name ~param_type ()
         array = None;
       };
     doc = None;
+    return_doc = None;
     throws = false;
     get_property = None;
     set_property = None;
@@ -111,6 +119,7 @@ let create_test_method_with_param ~name ~c_identifier ~param_name ~param_type ()
     version = None;
     version_namespace = None;
     os = None;
+    deprecation = None;
   }
 
 (* Create a test method with multiple parameters *)
@@ -128,6 +137,7 @@ let create_test_method_with_params ~name ~c_identifier ~params () =
         array = None;
       };
     doc = None;
+    return_doc = None;
     throws = false;
     get_property = None;
     set_property = None;
@@ -135,6 +145,7 @@ let create_test_method_with_params ~name ~c_identifier ~params () =
     version = None;
     version_namespace = None;
     os = None;
+    deprecation = None;
   }
 
 (* Create a test method with a return type *)
@@ -145,6 +156,7 @@ let create_test_method_with_return ~name ~c_identifier ~return_type () =
     parameters = [];
     return_type;
     doc = None;
+    return_doc = None;
     throws = false;
     get_property = None;
     set_property = None;
@@ -152,6 +164,7 @@ let create_test_method_with_return ~name ~c_identifier ~return_type () =
     version = None;
     version_namespace = None;
     os = None;
+    deprecation = None;
   }
 
 (* Create a test method that throws errors *)
@@ -169,6 +182,7 @@ let create_test_method_throwing ~name ~c_identifier () =
         array = None;
       };
     doc = None;
+    return_doc = None;
     throws = true;
     get_property = None;
     set_property = None;
@@ -176,6 +190,7 @@ let create_test_method_throwing ~name ~c_identifier () =
     version = None;
     version_namespace = None;
     os = None;
+    deprecation = None;
   }
 
 (* ========================================================================= *)
@@ -393,9 +408,11 @@ let create_test_signal ~name =
       };
     sig_parameters = [];
     doc = None;
+    return_doc = None;
     version = None;
     version_namespace = None;
     os = None;
+    deprecation = None;
     run_when = None;
     action = false;
     no_recurse = false;
@@ -409,9 +426,11 @@ let create_test_signal_with_return ~name ~return_type =
     return_type;
     sig_parameters = [];
     doc = None;
+    return_doc = None;
     version = None;
     version_namespace = None;
     os = None;
+    deprecation = None;
     run_when = None;
     action = false;
     no_recurse = false;
@@ -425,9 +444,11 @@ let create_test_signal_with_params ~name ~return_type ~params =
     return_type;
     sig_parameters = params;
     doc = None;
+    return_doc = None;
     version = None;
     version_namespace = None;
     os = None;
+    deprecation = None;
     run_when = None;
     action = false;
     no_recurse = false;
@@ -443,6 +464,7 @@ let create_test_class_with_signals ~name ~c_type ~signals () =
     parent = None;
     implements = [];
     introspectable = true;
+    abstract = false;
     constructors = [];
     methods = [];
     properties = [];
@@ -450,6 +472,7 @@ let create_test_class_with_signals ~name ~c_type ~signals () =
     class_doc = None;
     version = None;
     os = None;
+    deprecation = None;
   }
 
 (* ========================================================================= *)

@@ -1,4 +1,4 @@
-(* Tests for Phase 1: gir_interface type extensions and parser.
+(* Tests for gir_interface type extensions and parser.
  *
  * Verifies that parse_interface correctly extracts the 4 new fields:
  *   glib_type_name, glib_get_type, prerequisites, introspectable

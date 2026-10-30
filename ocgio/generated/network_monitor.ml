@@ -1,0 +1,105 @@
+class type network_monitor_t = object
+  (** {2:signals Signals} *)
+
+  method on_network_changed :
+    ?after:bool ->
+    callback:(network_available:bool -> unit) ->
+    unit ->
+    Gobject.Signal.handler_id
+  (** Emitted when the network configuration changes. *)
+
+  (** {2:methods Methods} *)
+
+  method can_reach :
+    Socket_connectable.socket_connectable_t ->
+    Cancellable.cancellable_t option ->
+    (bool, GError.t) result
+  (** Attempts to determine whether or not the host pointed to by [connectable]
+      can be reached, without actually trying to connect to it.
+
+      This may return [true] even when [GNetworkMonitor:network-available] is
+      [false], if, for example, [monitor] can determine that [connectable]
+      refers to a host on a local network.
+
+      If [monitor] believes that an attempt to connect to [connectable] will
+      succeed, it will return [true]. Otherwise, it will return [false] and set
+      [error] to an appropriate error (such as [G_IO_ERROR_HOST_UNREACHABLE]).
+
+      Note that although this does not attempt to connect to [connectable], it
+      may still block for a brief period of time (eg, trying to do multicast DNS
+      on the local network), so if you do not want to block, you should use
+      [g_network_monitor_can_reach_async ()]. *)
+
+  method can_reach_finish :
+    Async_result.async_result_t -> (bool, GError.t) result
+  (** Finishes an async network connectivity test. See
+      [g_network_monitor_can_reach_async ()]. *)
+
+  method get_connectivity : unit -> Enums.networkconnectivity
+  [@@ocaml.doc
+    "Gets a more detailed networking state than\n\
+     [g_network_monitor_get_network_available ()].\n\n\
+     If [GNetworkMonitor:network-available] is [false], then the\n\
+     connectivity state will be [G_NETWORK_CONNECTIVITY_LOCAL].\n\n\
+     If [GNetworkMonitor:network-available] is [true], then the\n\
+     connectivity state will be [G_NETWORK_CONNECTIVITY_FULL] (if there\n\
+     is full Internet connectivity), [G_NETWORK_CONNECTIVITY_LIMITED] (if\n\
+     the host has a default route, but appears to be unable to actually\n\
+     reach the full Internet), or [G_NETWORK_CONNECTIVITY_PORTAL] (if the\n\
+     host is trapped behind a \"captive portal\" that requires some sort\n\
+     of login or acknowledgement before allowing full Internet access).\n\n\
+     Note that in the case of [G_NETWORK_CONNECTIVITY_LIMITED] and\n\
+     [G_NETWORK_CONNECTIVITY_PORTAL], it is possible that some sites are\n\
+     reachable but others are not. In this case, applications can\n\
+     attempt to connect to remote servers, but should gracefully fall\n\
+     back to their \"offline\" behavior if the connection attempt fails."]
+
+  method get_network_available : unit -> bool
+  [@@ocaml.doc
+    "Checks if the network is available. \"Available\" here means that the\n\
+     system has a default route available for at least one of IPv4 or\n\
+     IPv6. It does not necessarily imply that the public Internet is\n\
+     reachable. See [GNetworkMonitor:network-available] for more details."]
+
+  method get_network_metered : unit -> bool
+  (** Checks if the network is metered. See [GNetworkMonitor:network-metered]
+      for more details. *)
+
+  (** {2:conversions Conversions} *)
+
+  method as_network_monitor : Raw.Network_monitor.t
+end
+
+(* High-level class for NetworkMonitor *)
+class network_monitor (obj : Raw.Network_monitor.t) : network_monitor_t =
+  object (self)
+    method on_network_changed ?(after = false) ~callback () =
+      Raw.Network_monitor.on_network_changed ~after self#as_network_monitor
+        ~callback
+
+    method can_reach :
+        Socket_connectable.socket_connectable_t ->
+        Cancellable.cancellable_t option ->
+        (bool, GError.t) result =
+      fun connectable cancellable ->
+        let connectable = connectable#as_socket_connectable in
+        let cancellable = Option.map (fun c -> c#as_cancellable) cancellable in
+        Raw.Network_monitor.can_reach obj connectable cancellable
+
+    method can_reach_finish :
+        Async_result.async_result_t -> (bool, GError.t) result =
+      fun result ->
+        let result = result#as_async_result in
+        Raw.Network_monitor.can_reach_finish obj result
+
+    method get_connectivity : unit -> Enums.networkconnectivity =
+      fun () -> Raw.Network_monitor.get_connectivity obj
+
+    method get_network_available : unit -> bool =
+      fun () -> Raw.Network_monitor.get_network_available obj
+
+    method get_network_metered : unit -> bool =
+      fun () -> Raw.Network_monitor.get_network_metered obj
+
+    method as_network_monitor = obj
+  end

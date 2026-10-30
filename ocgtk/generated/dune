@@ -1,0 +1,25 @@
+; GENERATED CODE - DO NOT EDIT
+
+(library
+ (name ocgtk)
+ (public_name ocgtk)
+ (synopsis "OCaml bindings for Gtk")
+ (flags :standard -w -3-6-9-27-32-33-34-50-7 -open Ocglib)
+ (libraries
+  ocglib
+  ocgtk.raw
+  ocgtk.enums
+  ocgdk
+  ocgdkpixbuf
+  ocgio
+  ocgraphene
+  ocgsk
+  ocpango
+  ocpangocairo
+  occairo))
+
+(documentation
+ (package ocgtk)
+ (mld_files modules))
+
+(copy_files# ../core/*.{ml,mli})

@@ -1,0 +1,218 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* Shim module for Socket from cyclic group Socket_and__socket_connection *)
+
+(** A [GSocket] is a low-level networking primitive. It is a more or less direct
+    mapping of the BSD socket API in a portable GObject based API. It supports
+    both the UNIX socket implementations and winsock2 on Windows.
+
+    Its methods, signals and properties are on {!class-type-socket_t}. Its full
+    description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgio.Raw.Socket}. *)
+
+(** {1:class Class} *)
+
+class type socket_t = Socket_and__socket_connection.socket_t
+(** {b The methods, signals and properties of a [Socket].}
+
+    Implements:
+    - {{!Ocgio.Datagram_based.class-type-datagram_based_t}Ocgio.Datagram_based}
+    - {{!Ocgio.Initable.class-type-initable_t}Ocgio.Initable}
+
+    A [GSocket] is a low-level networking primitive. It is a more or less direct
+    mapping of the BSD socket API in a portable GObject based API. It supports
+    both the UNIX socket implementations and winsock2 on Windows.
+
+    [GSocket] is the platform independent base upon which the higher level
+    network primitives are based. Applications are not typically meant to use it
+    directly, but rather through classes like
+    {{!Ocgio.Socket_client.class-type-socket_client_t}[Gio.SocketClient]},
+    {{!Ocgio.Socket_service.class-type-socket_service_t}[Gio.SocketService]} and
+    {{!Ocgio.Socket_connection.class-type-socket_connection_t}[Gio.SocketConnection]}.
+    However there may be cases where direct use of [GSocket] is useful.
+
+    [GSocket] implements the
+    {{!Ocgio.Initable.class-type-initable_t}[Gio.Initable]} interface, so if it
+    is manually constructed by e.g. [GObject.Object.new] you must call
+    {{!Ocgio.Initable.class-type-initable_t.method-init}[Gio.Initable.init]} and
+    check the results before using the object. This is done automatically in
+    {{!Ocgio.Socket.val-new_}[Gio.Socket.new]} and
+    {{!Ocgio.Socket.val-new_from_fd}[Gio.Socket.new_from_fd]}, so these
+    functions can return [None].
+
+    Sockets operate in two general modes, blocking or non-blocking. When in
+    blocking mode all operations (which don’t take an explicit blocking
+    parameter) block until the requested operation is finished or there is an
+    error. In non-blocking mode all calls that would block return immediately
+    with a [G_IO_ERROR_WOULD_BLOCK] error. To know when a call would
+    successfully run you can call [Gio.Socket.condition_check], or
+    [Gio.Socket.condition_wait]. You can also use [Gio.Socket.create_source] and
+    attach it to a [GLib.MainContext] to get callbacks when I/O is possible.
+    Note that all sockets are always set to non blocking mode in the system, and
+    blocking mode is emulated in [GSocket].
+
+    When working in non-blocking mode applications should always be able to
+    handle getting a [G_IO_ERROR_WOULD_BLOCK] error even when some other
+    function said that I/O was possible. This can easily happen in case of a
+    race condition in the application, but it can also happen for other reasons.
+    For instance, on Windows a socket is always seen as writable until a write
+    returns [G_IO_ERROR_WOULD_BLOCK].
+
+    [GSocket]s can be either connection oriented or datagram based. For
+    connection oriented types you must first establish a connection by either
+    connecting to an address or accepting a connection from another address. For
+    connectionless socket types the target/source address is specified or
+    received in each I/O operation.
+
+    All socket file descriptors are set to be close-on-exec.
+
+    Note that creating a [GSocket] causes the signal [SIGPIPE] to be ignored for
+    the remainder of the program. If you are writing a command-line utility that
+    uses [GSocket], you may need to take into account the fact that your program
+    will not automatically be killed if it tries to write to [stdout] after it
+    has been closed.
+
+    Like most other APIs in GLib, [GSocket] is not inherently thread safe. To
+    use a [GSocket] concurrently from multiple threads, you must implement your
+    own locking.
+
+    {b Nagle’s algorithm}
+
+    Since GLib 2.80, [GSocket] will automatically set the [TCP_NODELAY] option
+    on all [G_SOCKET_TYPE_STREAM] sockets. This disables
+    {{:https://en.wikipedia.org/wiki/Nagle%27s_algorithm}Nagle’s algorithm} as
+    it typically does more harm than good on modern networks.
+
+    If your application needs Nagle’s algorithm enabled, call
+    {{!Ocgio.Socket.class-type-socket_t.method-set_option}[Gio.Socket.set_option]}
+    after constructing a [GSocket] to enable it:
+
+    {[
+    socket = g_socket_new (…, G_SOCKET_TYPE_STREAM, …);
+    if (socket != NULL)
+      {
+        g_socket_set_option (socket, IPPROTO_TCP, TCP_NODELAY, FALSE, &local_error);
+        // handle error if needed
+      }
+    ]} *)
+
+class socket : Raw.Socket.t -> socket_t
+(** Wraps a raw handle of {!Ocgio.Raw.Socket.t}. *)
+
+(** {1:description Description}
+
+    A [GSocket] is a low-level networking primitive. It is a more or less direct
+    mapping of the BSD socket API in a portable GObject based API. It supports
+    both the UNIX socket implementations and winsock2 on Windows.
+
+    [GSocket] is the platform independent base upon which the higher level
+    network primitives are based. Applications are not typically meant to use it
+    directly, but rather through classes like
+    {{!Ocgio.Socket_client.class-type-socket_client_t}[Gio.SocketClient]},
+    {{!Ocgio.Socket_service.class-type-socket_service_t}[Gio.SocketService]} and
+    {{!Ocgio.Socket_connection.class-type-socket_connection_t}[Gio.SocketConnection]}.
+    However there may be cases where direct use of [GSocket] is useful.
+
+    [GSocket] implements the
+    {{!Ocgio.Initable.class-type-initable_t}[Gio.Initable]} interface, so if it
+    is manually constructed by e.g. [GObject.Object.new] you must call
+    {{!Ocgio.Initable.class-type-initable_t.method-init}[Gio.Initable.init]} and
+    check the results before using the object. This is done automatically in
+    {{!Ocgio.Socket.val-new_}[Gio.Socket.new]} and
+    {{!Ocgio.Socket.val-new_from_fd}[Gio.Socket.new_from_fd]}, so these
+    functions can return [None].
+
+    Sockets operate in two general modes, blocking or non-blocking. When in
+    blocking mode all operations (which don’t take an explicit blocking
+    parameter) block until the requested operation is finished or there is an
+    error. In non-blocking mode all calls that would block return immediately
+    with a [G_IO_ERROR_WOULD_BLOCK] error. To know when a call would
+    successfully run you can call [Gio.Socket.condition_check], or
+    [Gio.Socket.condition_wait]. You can also use [Gio.Socket.create_source] and
+    attach it to a [GLib.MainContext] to get callbacks when I/O is possible.
+    Note that all sockets are always set to non blocking mode in the system, and
+    blocking mode is emulated in [GSocket].
+
+    When working in non-blocking mode applications should always be able to
+    handle getting a [G_IO_ERROR_WOULD_BLOCK] error even when some other
+    function said that I/O was possible. This can easily happen in case of a
+    race condition in the application, but it can also happen for other reasons.
+    For instance, on Windows a socket is always seen as writable until a write
+    returns [G_IO_ERROR_WOULD_BLOCK].
+
+    [GSocket]s can be either connection oriented or datagram based. For
+    connection oriented types you must first establish a connection by either
+    connecting to an address or accepting a connection from another address. For
+    connectionless socket types the target/source address is specified or
+    received in each I/O operation.
+
+    All socket file descriptors are set to be close-on-exec.
+
+    Note that creating a [GSocket] causes the signal [SIGPIPE] to be ignored for
+    the remainder of the program. If you are writing a command-line utility that
+    uses [GSocket], you may need to take into account the fact that your program
+    will not automatically be killed if it tries to write to [stdout] after it
+    has been closed.
+
+    Like most other APIs in GLib, [GSocket] is not inherently thread safe. To
+    use a [GSocket] concurrently from multiple threads, you must implement your
+    own locking.
+
+    {b Nagle’s algorithm}
+
+    Since GLib 2.80, [GSocket] will automatically set the [TCP_NODELAY] option
+    on all [G_SOCKET_TYPE_STREAM] sockets. This disables
+    {{:https://en.wikipedia.org/wiki/Nagle%27s_algorithm}Nagle’s algorithm} as
+    it typically does more harm than good on modern networks.
+
+    If your application needs Nagle’s algorithm enabled, call
+    {{!Ocgio.Socket.class-type-socket_t.method-set_option}[Gio.Socket.set_option]}
+    after constructing a [GSocket] to enable it:
+
+    {[
+    socket = g_socket_new (…, G_SOCKET_TYPE_STREAM, …);
+    if (socket != NULL)
+      {
+        g_socket_set_option (socket, IPPROTO_TCP, TCP_NODELAY, FALSE, &local_error);
+        // handle error if needed
+      }
+    ]} *)
+
+(** {1:constructors Constructors} *)
+
+val new_ :
+  Enums.socketfamily ->
+  Enums.sockettype ->
+  Enums.socketprotocol ->
+  (socket_t, GError.t) result
+(** Creates a new {{!Ocgio.Socket.class-type-socket_t}[GSocket]} with the
+    defined family, type and protocol. If [protocol] is 0
+    ({{!Ocgio.Enums.type-socketprotocol.constructor-DEFAULT}[G_SOCKET_PROTOCOL_DEFAULT]})
+    the default protocol type for the family and type is used.
+
+    The [protocol] is a family and type specific int that specifies what kind of
+    protocol to use. {{!Ocgio.Enums.type-socketprotocol}[GSocketProtocol]} lists
+    several common ones. Many families only support one protocol, and use 0 for
+    this, others support several and using 0 means to use the default protocol
+    for the family and type.
+
+    The protocol id is passed directly to the operating system, so you can use
+    protocols not listed in
+    {{!Ocgio.Enums.type-socketprotocol}[GSocketProtocol]} if you know the
+    protocol number used for it. *)
+
+val new_from_fd : int -> (socket_t, GError.t) result
+(** Creates a new {{!Ocgio.Socket.class-type-socket_t}[GSocket]} from a native
+    file descriptor or winsock SOCKET handle.
+
+    This reads all the settings from the file descriptor so that all properties
+    should work. Note that the file descriptor will be set to non-blocking mode,
+    independent on the blocking mode of the
+    {{!Ocgio.Socket.class-type-socket_t}[GSocket]}.
+
+    On success, the returned {{!Ocgio.Socket.class-type-socket_t}[GSocket]}
+    takes ownership of [fd]. On failure, the caller must close [fd] themselves.
+
+    Since GLib 2.46, it is no longer a fatal error to call this on a non-socket
+    descriptor. Instead, a GError will be set with code
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-FAILED}[G_IO_ERROR_FAILED]} *)

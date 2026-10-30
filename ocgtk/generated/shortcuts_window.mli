@@ -1,0 +1,233 @@
+(** A [GtkShortcutsWindow] shows information about the keyboard shortcuts and
+    gestures of an application.
+
+    Its methods, signals and properties are on {!class-type-shortcuts_window_t}.
+    Its full description is under {!section-description}. Its constructors are
+    under {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Shortcuts_window}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [ShortcutsWindow].}
+
+    Inherits from: {{!Ocgtk.Window.class-type-window_t}Ocgtk.Window}
+
+    Implements:
+    - {{!Ocgtk.Accessible.class-type-accessible_t}Ocgtk.Accessible}
+    - {{!Ocgtk.Buildable.class-type-buildable_t}Ocgtk.Buildable}
+    - {{!Ocgtk.Constraint_target.class-type-constraint_target_t}Ocgtk.Constraint_target}
+    - {{!Ocgtk.Native.class-type-native_t}Ocgtk.Native}
+    - {{!Ocgtk.Root.class-type-root_t}Ocgtk.Root}
+    - {{!Ocgtk.Shortcut_manager.class-type-shortcut_manager_t}Ocgtk.Shortcut_manager}
+
+    A [GtkShortcutsWindow] shows information about the keyboard shortcuts and
+    gestures of an application.
+
+    The shortcuts can be grouped, and you can have multiple sections in this
+    window, corresponding to the major modes of your application.
+
+    Additionally, the shortcuts can be filtered by the current view, to avoid
+    showing information that is not relevant in the current application context.
+
+    The recommended way to construct a [GtkShortcutsWindow] is with
+    {{!Ocgtk.Builder.class-type-builder_t}[Gtk.Builder]}, by using the [<child>]
+    tag to populate a [GtkShortcutsWindow] with one or more
+    {{!Ocgtk.Shortcuts_section.class-type-shortcuts_section_t}[Gtk.ShortcutsSection]}
+    objects, which contain one or more
+    {{!Ocgtk.Shortcuts_group.class-type-shortcuts_group_t}[Gtk.ShortcutsGroup]}
+    instances, which, in turn, contain
+    {{!Ocgtk.Shortcuts_shortcut.class-type-shortcuts_shortcut_t}[Gtk.ShortcutsShortcut]}
+    instances.
+
+    If you need to add a section programmatically, use
+    {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t.method-add_section}[Gtk.ShortcutsWindow.add_section]}
+    instead of
+    {{!Ocgtk.Window.class-type-window_t.method-set_child}[Gtk.Window.set_child]},
+    as the shortcuts window manages its children directly.
+
+    {b A simple example:}
+
+    A simple example
+
+    This example has as single section. As you can see, the shortcut groups are
+    arranged in columns, and spread across several pages if there are too many
+    to find on a single page.
+
+    The .ui file for this example can be found
+    {{:https://gitlab.gnome.org/GNOME/gtk/tree/main/demos/gtk-demo/shortcuts-gedit.ui}here}.
+
+    {b An example with multiple views:}
+
+    An example with multiple views
+
+    This example shows a [GtkShortcutsWindow] that has been configured to show
+    only the shortcuts relevant to the “Stopwatch” view.
+
+    The .ui file for this example can be found
+    {{:https://gitlab.gnome.org/GNOME/gtk/tree/main/demos/gtk-demo/shortcuts-clocks.ui}here}.
+
+    {b An example with multiple sections:}
+
+    An example with multiple sections
+
+    This example shows a [GtkShortcutsWindow] with two sections, “Editor
+    Shortcuts” and “Terminal Shortcuts”.
+
+    The .ui file for this example can be found
+    {{:https://gitlab.gnome.org/GNOME/gtk/tree/main/demos/gtk-demo/shortcuts-builder.ui}here}.
+
+    {b Shortcuts and Gestures}
+
+    The following signals have default keybindings:
+
+    - {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t.method-on_close}[Gtk.ShortcutsWindow::close]}
+    - {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t.method-on_search}[Gtk.ShortcutsWindow::search]}
+
+    {b CSS nodes}
+
+    [GtkShortcutsWindow] has a single CSS node with the name [window] and style
+    class [.shortcuts]. *)
+class type shortcuts_window_t = object
+  inherit Window.window_t
+
+  (** {2:signals Signals} *)
+
+  method on_close :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the user uses a keybinding to close the window.
+
+      This is a keybinding signal.
+
+      The default binding for this signal is the <kbd>Escape</kbd> key. *)
+
+  method on_search :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the user uses a keybinding to start a search.
+
+      This is a keybinding signal.
+
+      The default binding for this signal is <kbd>Control</kbd>+<kbd>F</kbd>. *)
+
+  (** {2:methods Methods} *)
+
+  method add_section : Shortcuts_section.shortcuts_section_t -> unit
+  (** Adds a section to the shortcuts window.
+
+      This is the programmatic equivalent to using [Gtk.Builder] and a [<child>]
+      tag to add the child.
+
+      Using [Gtk.Window.set_child] is not appropriate as the shortcuts window
+      manages its children internally. *)
+
+  (** {2:properties Properties} *)
+
+  method section_name : string
+  (** The name of the section to show.
+
+      This should be the section-name of one of the [GtkShortcutsSection]
+      objects that are in this shortcuts window. *)
+
+  method set_section_name : string -> unit
+  (** The name of the section to show.
+
+      This should be the section-name of one of the [GtkShortcutsSection]
+      objects that are in this shortcuts window. *)
+
+  method view_name : string
+  (** The view name by which to filter the contents.
+
+      This should correspond to the [Gtk.ShortcutsGroup:view] property of some
+      of the [Gtk.ShortcutsGroup] objects that are inside this shortcuts window.
+
+      Set this to [None] to show all groups. *)
+
+  method set_view_name : string -> unit
+  (** The view name by which to filter the contents.
+
+      This should correspond to the [Gtk.ShortcutsGroup:view] property of some
+      of the [Gtk.ShortcutsGroup] objects that are inside this shortcuts window.
+
+      Set this to [None] to show all groups. *)
+
+  (** {2:conversions Conversions} *)
+
+  method as_shortcuts_window : Raw.Shortcuts_window.t
+end
+
+class shortcuts_window : Raw.Shortcuts_window.t -> shortcuts_window_t
+(** Wraps a raw handle of {!Ocgtk.Raw.Shortcuts_window.t}. *)
+
+(** {1:description Description}
+
+    A [GtkShortcutsWindow] shows information about the keyboard shortcuts and
+    gestures of an application.
+
+    The shortcuts can be grouped, and you can have multiple sections in this
+    window, corresponding to the major modes of your application.
+
+    Additionally, the shortcuts can be filtered by the current view, to avoid
+    showing information that is not relevant in the current application context.
+
+    The recommended way to construct a [GtkShortcutsWindow] is with
+    {{!Ocgtk.Builder.class-type-builder_t}[Gtk.Builder]}, by using the [<child>]
+    tag to populate a [GtkShortcutsWindow] with one or more
+    {{!Ocgtk.Shortcuts_section.class-type-shortcuts_section_t}[Gtk.ShortcutsSection]}
+    objects, which contain one or more
+    {{!Ocgtk.Shortcuts_group.class-type-shortcuts_group_t}[Gtk.ShortcutsGroup]}
+    instances, which, in turn, contain
+    {{!Ocgtk.Shortcuts_shortcut.class-type-shortcuts_shortcut_t}[Gtk.ShortcutsShortcut]}
+    instances.
+
+    If you need to add a section programmatically, use
+    {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t.method-add_section}[Gtk.ShortcutsWindow.add_section]}
+    instead of
+    {{!Ocgtk.Window.class-type-window_t.method-set_child}[Gtk.Window.set_child]},
+    as the shortcuts window manages its children directly.
+
+    {b A simple example:}
+
+    A simple example
+
+    This example has as single section. As you can see, the shortcut groups are
+    arranged in columns, and spread across several pages if there are too many
+    to find on a single page.
+
+    The .ui file for this example can be found
+    {{:https://gitlab.gnome.org/GNOME/gtk/tree/main/demos/gtk-demo/shortcuts-gedit.ui}here}.
+
+    {b An example with multiple views:}
+
+    An example with multiple views
+
+    This example shows a [GtkShortcutsWindow] that has been configured to show
+    only the shortcuts relevant to the “Stopwatch” view.
+
+    The .ui file for this example can be found
+    {{:https://gitlab.gnome.org/GNOME/gtk/tree/main/demos/gtk-demo/shortcuts-clocks.ui}here}.
+
+    {b An example with multiple sections:}
+
+    An example with multiple sections
+
+    This example shows a [GtkShortcutsWindow] with two sections, “Editor
+    Shortcuts” and “Terminal Shortcuts”.
+
+    The .ui file for this example can be found
+    {{:https://gitlab.gnome.org/GNOME/gtk/tree/main/demos/gtk-demo/shortcuts-builder.ui}here}.
+
+    {b Shortcuts and Gestures}
+
+    The following signals have default keybindings:
+
+    - {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t.method-on_close}[Gtk.ShortcutsWindow::close]}
+    - {{!Ocgtk.Shortcuts_window.class-type-shortcuts_window_t.method-on_search}[Gtk.ShortcutsWindow::search]}
+
+    {b CSS nodes}
+
+    [GtkShortcutsWindow] has a single CSS node with the name [window] and style
+    class [.shortcuts]. *)
+
+(** {1:constructors Constructors} *)
+
+(** This class is not instantiated directly - it is used as a return value by
+    methods on other classes. *)

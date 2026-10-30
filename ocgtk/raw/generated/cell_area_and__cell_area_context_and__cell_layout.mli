@@ -1,0 +1,1018 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* Combined modules for cyclic dependencies *)
+
+(** The layer 1 modules of {!Ocgtk.Raw.Cell_area},
+    {!Ocgtk.Raw.Cell_area_context}, {!Ocgtk.Raw.Cell_layout}, defined together
+    because they refer to each other. Each has a module of its own that
+    re-exports it; use that module rather than this one. *)
+
+module rec Cell_area : sig
+  type t = [ `cell_area | `initially_unowned | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gtk_cell_area_get_type"
+
+  (* Methods *)
+
+  external stop_editing : t -> bool -> unit = "ml_gtk_cell_area_stop_editing"
+  (** Explicitly stops the editing of the currently edited cell.
+
+      If [canceled] is [true], the currently edited cell renderer will emit the
+      ::editing-canceled signal, otherwise the the ::editing-done signal will be
+      emitted on the current edit widget.
+
+      See
+      {{!Ocgtk.Raw.Cell_area.val-get_edited_cell}[gtk_cell_area_get_edited_cell
+                                                  ()]} and
+      {{!Ocgtk.Raw.Cell_area.val-get_edit_widget}[gtk_cell_area_get_edit_widget
+                                                  ()]}. *)
+
+  external snapshot :
+    t ->
+    Cell_area_context.t ->
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .Widget
+    .t ->
+    Snapshot.t ->
+    Ocgdk_raw.Rectangle.t ->
+    Ocgdk_raw.Rectangle.t ->
+    Ocgtk_enums.cellrendererstate ->
+    bool ->
+    unit
+    = "ml_gtk_cell_area_snapshot_bytecode" "ml_gtk_cell_area_snapshot_native"
+  (** Snapshots [area]’s cells according to [area]’s layout onto at the given
+      coordinates. *)
+
+  external set_focus_cell : t -> Cell_renderer.t option -> unit
+    = "ml_gtk_cell_area_set_focus_cell"
+  (** Explicitly sets the currently focused cell to [renderer].
+
+      This is generally called by implementations of [GtkCellAreaClass.focus()]
+      or [GtkCellAreaClass.event()], however it can also be used to implement
+      functions such as
+      {{!Ocgtk.Raw.Tree_view.val-set_cursor_on_cell}[gtk_tree_view_set_cursor_on_cell
+                                                     ()]}. *)
+
+  external request_renderer :
+    t ->
+    Cell_renderer.t ->
+    Ocgtk_enums.orientation ->
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .Widget
+    .t ->
+    int ->
+    int * int = "ml_gtk_cell_area_request_renderer"
+  (** This is a convenience function for [GtkCellArea] implementations to
+      request size for cell renderers. It’s important to use this function to
+      request size and then use
+      {{!Ocgtk.Raw.Cell_area.val-inner_cell_area}[gtk_cell_area_inner_cell_area
+                                                  ()]} at render and event time
+      since this function will add padding around the cell for focus painting.
+  *)
+
+  external remove_focus_sibling :
+    t -> Cell_renderer.t -> Cell_renderer.t -> unit
+    = "ml_gtk_cell_area_remove_focus_sibling"
+  (** Removes [sibling] from [renderer]’s focus sibling list (see
+      {{!Ocgtk.Raw.Cell_area.val-add_focus_sibling}[gtk_cell_area_add_focus_sibling
+                                                    ()]}). *)
+
+  external remove : t -> Cell_renderer.t -> unit = "ml_gtk_cell_area_remove"
+  (** Removes [renderer] from [area]. *)
+
+  external is_focus_sibling : t -> Cell_renderer.t -> Cell_renderer.t -> bool
+    = "ml_gtk_cell_area_is_focus_sibling"
+  (** Returns whether [sibling] is one of [renderer]’s focus siblings (see
+      {{!Ocgtk.Raw.Cell_area.val-add_focus_sibling}[gtk_cell_area_add_focus_sibling
+                                                    ()]}). *)
+
+  external is_activatable : t -> bool = "ml_gtk_cell_area_is_activatable"
+  (** Returns whether the area can do anything when activated, after applying
+      new attributes to [area]. *)
+
+  external inner_cell_area :
+    t ->
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .Widget
+    .t ->
+    Ocgdk_raw.Rectangle.t ->
+    Ocgdk_raw.Rectangle.t = "ml_gtk_cell_area_inner_cell_area"
+  (** This is a convenience function for [GtkCellArea] implementations to get
+      the inner area where a given [GtkCellRenderer] will be rendered. It
+      removes any padding previously added by
+      {{!Ocgtk.Raw.Cell_area.val-request_renderer}[gtk_cell_area_request_renderer
+                                                   ()]}. *)
+
+  external has_renderer : t -> Cell_renderer.t -> bool
+    = "ml_gtk_cell_area_has_renderer"
+  (** Checks if [area] contains [renderer]. *)
+
+  external get_request_mode : t -> Ocgtk_enums.sizerequestmode
+    = "ml_gtk_cell_area_get_request_mode"
+  (** Gets whether the area prefers a height-for-width layout or a
+      width-for-height layout. *)
+
+  external get_preferred_width_for_height :
+    t ->
+    Cell_area_context.t ->
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .Widget
+    .t ->
+    int ->
+    int * int = "ml_gtk_cell_area_get_preferred_width_for_height"
+  (** Retrieves a cell area’s minimum and natural width if it would be given the
+      specified [height].
+
+      [area] stores some geometrical information in [context] along the way
+      while calling
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_height}[gtk_cell_area_get_preferred_height
+                                                       ()]}. It’s important to
+      perform a series of
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_height}[gtk_cell_area_get_preferred_height
+                                                       ()]} requests with
+      [context] first and then call
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_width_for_height}[gtk_cell_area_get_preferred_width_for_height
+                                                                 ()]} on each
+      cell area individually to get the height for width of each fully requested
+      row.
+
+      If at some point, the height of a single row changes, it should be
+      requested with
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_height}[gtk_cell_area_get_preferred_height
+                                                       ()]} again and then the
+      full height of the requested rows checked again with
+      {{!Ocgtk.Raw.Cell_area_context.val-get_preferred_height}[gtk_cell_area_context_get_preferred_height
+                                                               ()]}. *)
+
+  external get_preferred_width :
+    t ->
+    Cell_area_context.t ->
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .Widget
+    .t ->
+    int * int = "ml_gtk_cell_area_get_preferred_width"
+  (** Retrieves a cell area’s initial minimum and natural width.
+
+      [area] will store some geometrical information in [context] along the way;
+      when requesting sizes over an arbitrary number of rows, it’s not important
+      to check the [minimum_width] and [natural_width] of this call but rather
+      to consult
+      {{!Ocgtk.Raw.Cell_area_context.val-get_preferred_width}[gtk_cell_area_context_get_preferred_width
+                                                              ()]} after a
+      series of requests. *)
+
+  external get_preferred_height_for_width :
+    t ->
+    Cell_area_context.t ->
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .Widget
+    .t ->
+    int ->
+    int * int = "ml_gtk_cell_area_get_preferred_height_for_width"
+  (** Retrieves a cell area’s minimum and natural height if it would be given
+      the specified [width].
+
+      [area] stores some geometrical information in [context] along the way
+      while calling
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_width}[gtk_cell_area_get_preferred_width
+                                                      ()]}. It’s important to
+      perform a series of
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_width}[gtk_cell_area_get_preferred_width
+                                                      ()]} requests with
+      [context] first and then call
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_height_for_width}[gtk_cell_area_get_preferred_height_for_width
+                                                                 ()]} on each
+      cell area individually to get the height for width of each fully requested
+      row.
+
+      If at some point, the width of a single row changes, it should be
+      requested with
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_width}[gtk_cell_area_get_preferred_width
+                                                      ()]} again and then the
+      full width of the requested rows checked again with
+      {{!Ocgtk.Raw.Cell_area_context.val-get_preferred_width}[gtk_cell_area_context_get_preferred_width
+                                                              ()]}. *)
+
+  external get_preferred_height :
+    t ->
+    Cell_area_context.t ->
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .Widget
+    .t ->
+    int * int = "ml_gtk_cell_area_get_preferred_height"
+  (** Retrieves a cell area’s initial minimum and natural height.
+
+      [area] will store some geometrical information in [context] along the way;
+      when requesting sizes over an arbitrary number of rows, it’s not important
+      to check the [minimum_height] and [natural_height] of this call but rather
+      to consult
+      {{!Ocgtk.Raw.Cell_area_context.val-get_preferred_height}[gtk_cell_area_context_get_preferred_height
+                                                               ()]} after a
+      series of requests. *)
+
+  external get_focus_siblings : t -> Cell_renderer.t -> Cell_renderer.t list
+    = "ml_gtk_cell_area_get_focus_siblings"
+  (** Gets the focus sibling cell renderers for [renderer]. *)
+
+  external get_focus_from_sibling :
+    t -> Cell_renderer.t -> Cell_renderer.t option
+    = "ml_gtk_cell_area_get_focus_from_sibling"
+  (** Gets the [GtkCellRenderer] which is expected to be focusable for which
+      [renderer] is, or may be a sibling.
+
+      This is handy for [GtkCellArea] subclasses when handling events, after
+      determining the renderer at the event location it can then chose to
+      activate the focus cell for which the event cell may have been a sibling.
+  *)
+
+  external get_focus_cell : t -> Cell_renderer.t option
+    = "ml_gtk_cell_area_get_focus_cell"
+  (** Retrieves the currently focused cell for [area] *)
+
+  external get_edited_cell : t -> Cell_renderer.t option
+    = "ml_gtk_cell_area_get_edited_cell"
+  (** Gets the [GtkCellRenderer] in [area] that is currently being edited. *)
+
+  external get_edit_widget : t -> Cell_editable.t option
+    = "ml_gtk_cell_area_get_edit_widget"
+  (** Gets the [GtkCellEditable] widget currently used to edit the currently
+      edited cell. *)
+
+  external get_current_path_string : t -> string
+    = "ml_gtk_cell_area_get_current_path_string"
+  (** Gets the current [GtkTreePath] string for the currently applied
+      [GtkTreeIter], this is implicitly updated when
+      {{!Ocgtk.Raw.Cell_area.val-apply_attributes}[gtk_cell_area_apply_attributes
+                                                   ()]} is called and can be
+      used to interact with renderers from [GtkCellArea] subclasses. *)
+
+  external get_cell_at_position :
+    t ->
+    Cell_area_context.t ->
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .Widget
+    .t ->
+    Ocgdk_raw.Rectangle.t ->
+    int ->
+    int ->
+    Cell_renderer.t * Ocgdk_raw.Rectangle.t
+    = "ml_gtk_cell_area_get_cell_at_position_bytecode"
+      "ml_gtk_cell_area_get_cell_at_position_native"
+  (** Gets the [GtkCellRenderer] at [x] and [y] coordinates inside [area] and
+      optionally returns the full cell allocation for it inside [cell_area]. *)
+
+  external get_cell_allocation :
+    t ->
+    Cell_area_context.t ->
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .Widget
+    .t ->
+    Cell_renderer.t ->
+    Ocgdk_raw.Rectangle.t ->
+    Ocgdk_raw.Rectangle.t = "ml_gtk_cell_area_get_cell_allocation"
+  (** Derives the allocation of [renderer] inside [area] if [area] were to be
+      rendered in [cell_area]. *)
+
+  external focus : t -> Ocgtk_enums.directiontype -> bool
+    = "ml_gtk_cell_area_focus"
+  (** This should be called by the [area]’s owning layout widget when focus is
+      to be passed to [area], or moved within [area] for a given [direction] and
+      row data.
+
+      Implementing [GtkCellArea] classes should implement this method to receive
+      and navigate focus in its own way particular to how it lays out cells. *)
+
+  external event :
+    t ->
+    Cell_area_context.t ->
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .Widget
+    .t ->
+    Ocgdk_raw.Event.t ->
+    Ocgdk_raw.Rectangle.t ->
+    Ocgtk_enums.cellrendererstate ->
+    int = "ml_gtk_cell_area_event_bytecode" "ml_gtk_cell_area_event_native"
+  (** Delegates event handling to a [GtkCellArea]. *)
+
+  external create_context : t -> Cell_area_context.t
+    = "ml_gtk_cell_area_create_context"
+  (** Creates a [GtkCellArea]Context to be used with [area] for all purposes.
+      [GtkCellArea]Context stores geometry information for rows for which it was
+      operated on, it is important to use the same context for the same row of
+      data at all times (i.e. one should render and handle events with the same
+      [GtkCellArea]Context which was used to request the size of those rows of
+      data). *)
+
+  external copy_context : t -> Cell_area_context.t -> Cell_area_context.t
+    = "ml_gtk_cell_area_copy_context"
+  (** This is sometimes needed for cases where rows need to share alignments in
+      one orientation but may be separately grouped in the opposing orientation.
+
+      For instance, [GtkIconView] creates all icons (rows) to have the same
+      width and the cells theirin to have the same horizontal alignments.
+      However each row of icons may have a separate collective height.
+      [GtkIconView] uses this to request the heights of each row based on a
+      context which was already used to request all the row widths that are to
+      be displayed. *)
+
+  external cell_set_property :
+    t -> Cell_renderer.t -> string -> Gobject.Value.t -> unit
+    = "ml_gtk_cell_area_cell_set_property"
+  (** Sets a cell property for [renderer] in [area]. *)
+
+  external cell_get_property :
+    t -> Cell_renderer.t -> string -> Gobject.Value.t -> unit
+    = "ml_gtk_cell_area_cell_get_property"
+  (** Gets the value of a cell property for [renderer] in [area]. *)
+
+  external attribute_get_column : t -> Cell_renderer.t -> string -> int
+    = "ml_gtk_cell_area_attribute_get_column"
+  (** Returns the model column that an attribute has been mapped to, or -1 if
+      the attribute is not mapped. *)
+
+  external attribute_disconnect : t -> Cell_renderer.t -> string -> unit
+    = "ml_gtk_cell_area_attribute_disconnect"
+  (** Disconnects [attribute] for the [renderer] in [area] so that attribute
+      will no longer be updated with values from the model. *)
+
+  external attribute_connect : t -> Cell_renderer.t -> string -> int -> unit
+    = "ml_gtk_cell_area_attribute_connect"
+  (** Connects an [attribute] to apply values from [column] for the
+      [GtkTreeModel] in use. *)
+
+  external apply_attributes :
+    t -> Tree_model.t -> Tree_iter.t -> bool -> bool -> unit
+    = "ml_gtk_cell_area_apply_attributes"
+  (** Applies any connected attributes to the renderers in [area] by pulling the
+      values from [tree_model]. *)
+
+  external add_focus_sibling : t -> Cell_renderer.t -> Cell_renderer.t -> unit
+    = "ml_gtk_cell_area_add_focus_sibling"
+  (** Adds [sibling] to [renderer]’s focusable area, focus will be drawn around
+      [renderer] and all of its siblings if [renderer] can focus for a given
+      row.
+
+      Events handled by focus siblings can also activate the given focusable
+      [renderer]. *)
+
+  external add : t -> Cell_renderer.t -> unit = "ml_gtk_cell_area_add"
+  (** Adds [renderer] to [area] with the default child cell properties. *)
+
+  external activate_cell :
+    t ->
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .Widget
+    .t ->
+    Cell_renderer.t ->
+    Ocgdk_raw.Event.t ->
+    Ocgdk_raw.Rectangle.t ->
+    Ocgtk_enums.cellrendererstate ->
+    bool
+    = "ml_gtk_cell_area_activate_cell_bytecode"
+      "ml_gtk_cell_area_activate_cell_native"
+  (** This is used by [GtkCellArea] subclasses when handling events to activate
+      cells, the base [GtkCellArea] class activates cells for keyboard events
+      for free in its own GtkCellArea->activate() implementation. *)
+
+  external activate :
+    t ->
+    Cell_area_context.t ->
+    Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+    .Widget
+    .t ->
+    Ocgdk_raw.Rectangle.t ->
+    Ocgtk_enums.cellrendererstate ->
+    bool ->
+    bool
+    = "ml_gtk_cell_area_activate_bytecode" "ml_gtk_cell_area_activate_native"
+  (** Activates [area], usually by activating the currently focused cell,
+      however some subclasses which embed widgets in the area can also activate
+      a widget if it currently has the focus. *)
+
+  (* Properties *)
+
+  val on_focus_changed :
+    ?after:bool ->
+    t ->
+    callback:(renderer:Cell_renderer.t -> path:string -> unit) ->
+    Gobject.Signal.handler_id
+  (** Indicates that focus changed on this [area]. This signal is emitted either
+      as a result of focus handling or event handling.
+
+      It's possible that the signal is emitted even if the currently focused
+      renderer did not change, this is because focus may change to the same
+      renderer in the same cell area for a different row of data. *)
+
+  val on_remove_editable :
+    ?after:bool ->
+    t ->
+    callback:(renderer:Cell_renderer.t -> editable:Cell_editable.t -> unit) ->
+    Gobject.Signal.handler_id
+  (** Indicates that editing finished on [renderer] and that [editable] should
+      be removed from the owning cell-layouting widget. *)
+end
+[@@ocaml.doc
+  "An abstract class for laying out [GtkCellRenderer]s\n\n\
+   The [GtkCellArea] is an abstract class for \
+   {{!Ocgtk.Raw.Cell_layout}[Gtk.CellLayout]}\n\
+   widgets (also referred to as \"layouting widgets\") to interface with\n\
+   an arbitrary number of {{!Ocgtk.Raw.Cell_renderer}[Gtk.CellRenderer]}s and \
+   interact with the user\n\
+   for a given {{!Ocgtk.Raw.Tree_model}[Gtk.TreeModel]} row.\n\n\
+   The cell area handles events, focus navigation, drawing and\n\
+   size requests and allocations for a given row of data.\n\n\
+   Usually users dont have to interact with the [GtkCellArea] directly\n\
+   unless they are implementing a cell-layouting widget themselves.\n\n\
+   {b Requesting area sizes}\n\n\
+   As outlined in\n\
+   GtkWidget’s geometry management section,\n\
+   GTK uses a height-for-width\n\
+   geometry management system to compute the sizes of widgets and user\n\
+   interfaces. [GtkCellArea] uses the same semantics to calculate the\n\
+   size of an area for an arbitrary number of [GtkTreeModel] rows.\n\n\
+   When requesting the size of a cell area one needs to calculate\n\
+   the size for a handful of rows, and this will be done differently by\n\
+   different layouting widgets. For instance a \
+   {{!Ocgtk.Raw.Tree_view_column}[Gtk.TreeViewColumn]}\n\
+   always lines up the areas from top to bottom while a \
+   {{!Ocgtk.Raw.Icon_view}[Gtk.IconView]}\n\
+   on the other hand might enforce that all areas received the same\n\
+   width and wrap the areas around, requesting height for more cell\n\
+   areas when allocated less width.\n\n\
+   It’s also important for areas to maintain some cell\n\
+   alignments with areas rendered for adjacent rows (cells can\n\
+   appear “columnized” inside an area even when the size of\n\
+   cells are different in each row). For this reason the [GtkCellArea]\n\
+   uses a {{!Ocgtk.Raw.Cell_area_context}[Gtk.CellAreaContext]} object to \
+   store the alignments\n\
+   and sizes along the way (as well as the overall largest minimum\n\
+   and natural size for all the rows which have been calculated\n\
+   with the said context).\n\n\
+   The {{!Ocgtk.Raw.Cell_area_context}[Gtk.CellAreaContext]} is an opaque \
+   object specific to the\n\
+   [GtkCellArea] which created it (see \
+   {{!Ocgtk.Raw.Cell_area.val-create_context}[Gtk.CellArea.create_context]}).\n\n\
+   The owning cell-layouting widget can create as many contexts as\n\
+   it wishes to calculate sizes of rows which should receive the\n\
+   same size in at least one orientation (horizontally or vertically),\n\
+   However, it’s important that the same \
+   {{!Ocgtk.Raw.Cell_area_context}[Gtk.CellAreaContext]} which\n\
+   was used to request the sizes for a given [GtkTreeModel] row be\n\
+   used when rendering or processing events for that row.\n\n\
+   In order to request the width of all the rows at the root level\n\
+   of a [GtkTreeModel] one would do the following:\n\n\
+   {[\n\
+   GtkTreeIter iter;\n\
+   int minimum_width;\n\
+   int natural_width;\n\n\
+   valid = gtk_tree_model_get_iter_first (model, &iter);\n\
+   while (valid)\n\
+  \  {\n\
+  \    gtk_cell_area_apply_attributes (area, model, &iter, FALSE, FALSE);\n\
+  \    gtk_cell_area_get_preferred_width (area, context, widget, NULL, NULL);\n\n\
+  \    valid = gtk_tree_model_iter_next (model, &iter);\n\
+  \  }\n\n\
+   gtk_cell_area_context_get_preferred_width (context, &minimum_width, \
+   &natural_width);\n\
+   ]}\n\n\
+   Note that in this example it’s not important to observe the\n\
+   returned minimum and natural width of the area for each row\n\
+   unless the cell-layouting object is actually interested in the\n\
+   widths of individual rows. The overall width is however stored\n\
+   in the accompanying [GtkCellAreaContext] object and can be consulted\n\
+   at any time.\n\n\
+   This can be useful since [GtkCellLayout] widgets usually have to\n\
+   support requesting and rendering rows in treemodels with an\n\
+   exceedingly large amount of rows. The [GtkCellLayout] widget in\n\
+   that case would calculate the required width of the rows in an\n\
+   idle or timeout source (see [GLib.timeout_add]) and when the widget\n\
+   is requested its actual width in [Gtk.Widget.measure]\n\
+   it can simply consult the width accumulated so far in the\n\
+   [GtkCellAreaContext] object.\n\n\
+   A simple example where rows are rendered from top to bottom and\n\
+   take up the full width of the layouting widget would look like:\n\n\
+   {[\n\
+   static void\n\
+   foo_get_preferred_width (GtkWidget *widget,\n\
+  \                         int       *minimum_size,\n\
+  \                         int       *natural_size)\n\
+   {\n\
+  \  Foo *self = FOO (widget);\n\
+  \  FooPrivate *priv = foo_get_instance_private (self);\n\n\
+  \  foo_ensure_at_least_one_handfull_of_rows_have_been_requested (self);\n\n\
+  \  gtk_cell_area_context_get_preferred_width (priv->context, minimum_size, \
+   natural_size);\n\
+   }\n\
+   ]}\n\n\
+   In the above example the [Foo] widget has to make sure that some\n\
+   row sizes have been calculated (the amount of rows that [Foo] judged\n\
+   was appropriate to request space for in a single timeout iteration)\n\
+   before simply returning the amount of space required by the area via\n\
+   the [GtkCellAreaContext].\n\n\
+   Requesting the height for width (or width for height) of an area is\n\
+   a similar task except in this case the [GtkCellAreaContext] does not\n\
+   store the data (actually, it does not know how much space the layouting\n\
+   widget plans to allocate it for every row. It’s up to the layouting\n\
+   widget to render each row of data with the appropriate height and\n\
+   width which was requested by the [GtkCellArea]).\n\n\
+   In order to request the height for width of all the rows at the\n\
+   root level of a [GtkTreeModel] one would do the following:\n\n\
+   {[\n\
+   GtkTreeIter iter;\n\
+   int minimum_height;\n\
+   int natural_height;\n\
+   int full_minimum_height = 0;\n\
+   int full_natural_height = 0;\n\n\
+   valid = gtk_tree_model_get_iter_first (model, &iter);\n\
+   while (valid)\n\
+  \  {\n\
+  \    gtk_cell_area_apply_attributes (area, model, &iter, FALSE, FALSE);\n\
+  \    gtk_cell_area_get_preferred_height_for_width (area, context, widget,\n\
+  \                                                  width, &minimum_height, \
+   &natural_height);\n\n\
+  \    if (width_is_for_allocation)\n\
+  \       cache_row_height (&iter, minimum_height, natural_height);\n\n\
+  \    full_minimum_height += minimum_height;\n\
+  \    full_natural_height += natural_height;\n\n\
+  \    valid = gtk_tree_model_iter_next (model, &iter);\n\
+  \  }\n\
+   ]}\n\n\
+   Note that in the above example we would need to cache the heights\n\
+   returned for each row so that we would know what sizes to render the\n\
+   areas for each row. However we would only want to really cache the\n\
+   heights if the request is intended for the layouting widgets real\n\
+   allocation.\n\n\
+   In some cases the layouting widget is requested the height for an\n\
+   arbitrary for_width, this is a special case for layouting widgets\n\
+   who need to request size for tens of thousands  of rows. For this\n\
+   case it’s only important that the layouting widget calculate\n\
+   one reasonably sized chunk of rows and return that height\n\
+   synchronously. The reasoning here is that any layouting widget is\n\
+   at least capable of synchronously calculating enough height to fill\n\
+   the screen height (or scrolled window height) in response to a single\n\
+   call to [Gtk.Widget.measure]. Returning\n\
+   a perfect height for width that is larger than the screen area is\n\
+   inconsequential since after the layouting receives an allocation\n\
+   from a scrolled window it simply continues to drive the scrollbar\n\
+   values while more and more height is required for the row heights\n\
+   that are calculated in the background.\n\n\
+   {b Rendering Areas}\n\n\
+   Once area sizes have been acquired at least for the rows in the\n\
+   visible area of the layouting widget they can be rendered at\n\
+   [Gtk.Widget.snapshot] time.\n\n\
+   A crude example of how to render all the rows at the root level\n\
+   runs as follows:\n\n\
+   {[\n\
+   GtkAllocation allocation;\n\
+   GdkRectangle cell_area = { 0, };\n\
+   GtkTreeIter iter;\n\
+   int minimum_width;\n\
+   int natural_width;\n\n\
+   gtk_widget_get_allocation (widget, &allocation);\n\
+   cell_area.width = allocation.width;\n\n\
+   valid = gtk_tree_model_get_iter_first (model, &iter);\n\
+   while (valid)\n\
+  \  {\n\
+  \    cell_area.height = get_cached_height_for_row (&iter);\n\n\
+  \    gtk_cell_area_apply_attributes (area, model, &iter, FALSE, FALSE);\n\
+  \    gtk_cell_area_render (area, context, widget, cr,\n\
+  \                          &cell_area, &cell_area, state_flags, FALSE);\n\n\
+  \    cell_area.y += cell_area.height;\n\n\
+  \    valid = gtk_tree_model_iter_next (model, &iter);\n\
+  \  }\n\
+   ]}\n\n\
+   Note that the cached height in this example really depends on how\n\
+   the layouting widget works. The layouting widget might decide to\n\
+   give every row its minimum or natural height or, if the model content\n\
+   is expected to fit inside the layouting widget without scrolling, it\n\
+   would make sense to calculate the allocation for each row at\n\
+   the time the widget is allocated using [Gtk.distribute_natural_allocation].\n\n\
+   {b Handling Events and Driving Keyboard Focus}\n\n\
+   Passing events to the area is as simple as handling events on any\n\
+   normal widget and then passing them to the \
+   {{!Ocgtk.Raw.Cell_area.val-event}[Gtk.CellArea.event]}\n\
+   API as they come in. Usually [GtkCellArea] is only interested in\n\
+   button events, however some customized derived areas can be implemented\n\
+   who are interested in handling other events. Handling an event can\n\
+   trigger the \
+   {{!Ocgtk.Raw.Cell_area.val-on_focus_changed}[Gtk.CellArea::focus-changed]} \
+   signal to fire; as well\n\
+   as [Gtk.CellArea::add-editable] in the case that an editable cell\n\
+   was clicked and needs to start editing. You can call\n\
+   {{!Ocgtk.Raw.Cell_area.val-stop_editing}[Gtk.CellArea.stop_editing]} at any \
+   time to cancel any cell editing\n\
+   that is currently in progress.\n\n\
+   The [GtkCellArea] drives keyboard focus from cell to cell in a way\n\
+   similar to [GtkWidget]. For layouting widgets that support giving\n\
+   focus to cells it’s important to remember to pass [GTK_CELL_RENDERER_FOCUSED]\n\
+   to the area functions for the row that has focus and to tell the\n\
+   area to paint the focus at render time.\n\n\
+   Layouting widgets that accept focus on cells should implement the\n\
+   [Gtk.Widget.focus] virtual method. The layouting widget is always\n\
+   responsible for knowing where [GtkTreeModel] rows are rendered inside\n\
+   the widget, so at [Gtk.Widget.focus] time the layouting widget\n\
+   should use the [GtkCellArea] methods to navigate focus inside the area\n\
+   and then observe the {{!Ocgtk.Enums.type-directiontype}[Gtk.DirectionType]} \
+   to pass the focus to adjacent\n\
+   rows and areas.\n\n\
+   A basic example of how the [Gtk.Widget.focus] virtual method\n\
+   should be implemented:\n\n\
+   {[\n\
+   static gboolean\n\
+   foo_focus (GtkWidget       *widget,\n\
+  \           GtkDirectionType direction)\n\
+   {\n\
+  \  Foo *self = FOO (widget);\n\
+  \  FooPrivate *priv = foo_get_instance_private (self);\n\
+  \  int focus_row = priv->focus_row;\n\
+  \  gboolean have_focus = FALSE;\n\n\
+  \  if (!gtk_widget_has_focus (widget))\n\
+  \    gtk_widget_grab_focus (widget);\n\n\
+  \  valid = gtk_tree_model_iter_nth_child (priv->model, &iter, NULL, \
+   priv->focus_row);\n\
+  \  while (valid)\n\
+  \    {\n\
+  \      gtk_cell_area_apply_attributes (priv->area, priv->model, &iter, \
+   FALSE, FALSE);\n\n\
+  \      if (gtk_cell_area_focus (priv->area, direction))\n\
+  \        {\n\
+  \           priv->focus_row = focus_row;\n\
+  \           have_focus = TRUE;\n\
+  \           break;\n\
+  \        }\n\
+  \      else\n\
+  \        {\n\
+  \          if (direction == GTK_DIR_RIGHT ||\n\
+  \              direction == GTK_DIR_LEFT)\n\
+  \            break;\n\
+  \          else if (direction == GTK_DIR_UP ||\n\
+  \                   direction == GTK_DIR_TAB_BACKWARD)\n\
+  \           {\n\
+  \              if (focus_row == 0)\n\
+  \                break;\n\
+  \              else\n\
+  \               {\n\
+  \                  focus_row--;\n\
+  \                  valid = gtk_tree_model_iter_nth_child (priv->model, \
+   &iter, NULL, focus_row);\n\
+  \               }\n\
+  \            }\n\
+  \          else\n\
+  \            {\n\
+  \              if (focus_row == last_row)\n\
+  \                break;\n\
+  \              else\n\
+  \                {\n\
+  \                  focus_row++;\n\
+  \                  valid = gtk_tree_model_iter_next (priv->model, &iter);\n\
+  \                }\n\
+  \            }\n\
+  \        }\n\
+  \    }\n\
+  \    return have_focus;\n\
+   }\n\
+   ]}\n\n\
+   Note that the layouting widget is responsible for matching the\n\
+   [GtkDirectionType] values to the way it lays out its cells.\n\n\
+   {b Cell Properties}\n\n\
+   The [GtkCellArea] introduces cell properties for [GtkCellRenderer]s.\n\
+   This provides some general interfaces for defining the relationship\n\
+   cell areas have with their cells. For instance in a \
+   {{!Ocgtk.Raw.Cell_area_box}[Gtk.CellAreaBox]}\n\
+   a cell might “expand” and receive extra space when the area is allocated\n\
+   more than its full natural request, or a cell might be configured to “align”\n\
+   with adjacent rows which were requested and rendered with the same\n\
+   [GtkCellAreaContext].\n\n\
+   Use [Gtk.CellAreaClass.install_cell_property] to install cell\n\
+   properties for a cell area class and [Gtk.CellAreaClass.find_cell_property]\n\
+   or [Gtk.CellAreaClass.list_cell_properties] to get information about\n\
+   existing cell properties.\n\n\
+   To set the value of a cell property, use \
+   {{!Ocgtk.Raw.Cell_area.val-cell_set_property}[Gtk.CellArea.cell_set_property]},\n\
+   [Gtk.CellArea.cell_set] or [Gtk.CellArea.cell_set_valist]. To obtain\n\
+   the value of a cell property, use \
+   {{!Ocgtk.Raw.Cell_area.val-cell_get_property}[Gtk.CellArea.cell_get_property]}\n\
+   [Gtk.CellArea.cell_get] or [Gtk.CellArea.cell_get_valist].\n\n\
+   The class built on this module is in {!Ocgtk.Cell_area}."]
+
+(** Stores geometrical information for a series of rows in a GtkCellArea
+
+    The [GtkCellAreaContext] object is created by a given [GtkCellArea]
+    implementation via its [GtkCellAreaClass.create_context()] virtual method
+    and is used to store cell sizes and alignments for a series of
+    [GtkTreeModel] rows that are requested and rendered in the same context.
+
+    [GtkCellLayout] widgets can create any number of contexts in which to
+    request and render groups of data rows. However, it’s important that the
+    same context which was used to request sizes for a given [GtkTreeModel] row
+    also be used for the same row when calling other [GtkCellArea] APIs such as
+    [gtk_cell_area_render ()] and
+    {{!Ocgtk.Raw.Cell_area.val-event}[gtk_cell_area_event ()]}.
+
+    The class built on this module is in {!Ocgtk.Cell_area_context}. *)
+and Cell_area_context : sig
+  type t = [ `cell_area_context | `object_ ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gtk_cell_area_context_get_type"
+
+  (* Methods *)
+
+  external reset : t -> unit = "ml_gtk_cell_area_context_reset"
+  (** Resets any previously cached request and allocation data.
+
+      When underlying [GtkTreeModel] data changes its important to reset the
+      context if the content size is allowed to shrink. If the content size is
+      only allowed to grow (this is usually an option for views rendering large
+      data stores as a measure of optimization), then only the row that changed
+      or was inserted needs to be (re)requested with
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_width}[gtk_cell_area_get_preferred_width
+                                                      ()]}.
+
+      When the new overall size of the context requires that the allocated size
+      changes (or whenever this allocation changes at all), the variable row
+      sizes need to be re-requested for every row.
+
+      For instance, if the rows are displayed all with the same width from top
+      to bottom then a change in the allocated width necessitates a
+      recalculation of all the displayed row heights using
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_height_for_width}[gtk_cell_area_get_preferred_height_for_width
+                                                                 ()]}. *)
+
+  external push_preferred_width : t -> int -> int -> unit
+    = "ml_gtk_cell_area_context_push_preferred_width"
+  (** Causes the minimum and/or natural width to grow if the new proposed sizes
+      exceed the current minimum and natural width.
+
+      This is used by [GtkCellAreaContext] implementations during the request
+      process over a series of [GtkTreeModel] rows to progressively push the
+      requested width over a series of
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_width}[gtk_cell_area_get_preferred_width
+                                                      ()]} requests. *)
+
+  external push_preferred_height : t -> int -> int -> unit
+    = "ml_gtk_cell_area_context_push_preferred_height"
+  (** Causes the minimum and/or natural height to grow if the new proposed sizes
+      exceed the current minimum and natural height.
+
+      This is used by [GtkCellAreaContext] implementations during the request
+      process over a series of [GtkTreeModel] rows to progressively push the
+      requested height over a series of
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_height}[gtk_cell_area_get_preferred_height
+                                                       ()]} requests. *)
+
+  external get_preferred_width_for_height : t -> int -> int * int
+    = "ml_gtk_cell_area_context_get_preferred_width_for_height"
+  (** Gets the accumulative preferred width for [height] for all rows which have
+      been requested for the same said [height] with this context.
+
+      After
+      {{!Ocgtk.Raw.Cell_area_context.val-reset}[gtk_cell_area_context_reset ()]}
+      is called and/or before ever requesting the size of a [GtkCellArea], the
+      returned values are -1. *)
+
+  external get_preferred_width : t -> int * int
+    = "ml_gtk_cell_area_context_get_preferred_width"
+  (** Gets the accumulative preferred width for all rows which have been
+      requested with this context.
+
+      After
+      {{!Ocgtk.Raw.Cell_area_context.val-reset}[gtk_cell_area_context_reset ()]}
+      is called and/or before ever requesting the size of a [GtkCellArea], the
+      returned values are 0. *)
+
+  external get_preferred_height_for_width : t -> int -> int * int
+    = "ml_gtk_cell_area_context_get_preferred_height_for_width"
+  (** Gets the accumulative preferred height for [width] for all rows which have
+      been requested for the same said [width] with this context.
+
+      After
+      {{!Ocgtk.Raw.Cell_area_context.val-reset}[gtk_cell_area_context_reset ()]}
+      is called and/or before ever requesting the size of a [GtkCellArea], the
+      returned values are -1. *)
+
+  external get_preferred_height : t -> int * int
+    = "ml_gtk_cell_area_context_get_preferred_height"
+  (** Gets the accumulative preferred height for all rows which have been
+      requested with this context.
+
+      After
+      {{!Ocgtk.Raw.Cell_area_context.val-reset}[gtk_cell_area_context_reset ()]}
+      is called and/or before ever requesting the size of a [GtkCellArea], the
+      returned values are 0. *)
+
+  external get_area : t -> Cell_area.t = "ml_gtk_cell_area_context_get_area"
+  (** Fetches the [GtkCellArea] this [context] was created by.
+
+      This is generally unneeded by layouting widgets; however, it is important
+      for the context implementation itself to fetch information about the area
+      it is being used for.
+
+      For instance at [GtkCellAreaContextClass.allocate()] time it’s important
+      to know details about any cell spacing that the [GtkCellArea] is
+      configured with in order to compute a proper allocation. *)
+
+  external get_allocation : t -> int * int
+    = "ml_gtk_cell_area_context_get_allocation"
+  (** Fetches the current allocation size for [context].
+
+      If the context was not allocated in width or height, or if the context was
+      recently reset with
+      {{!Ocgtk.Raw.Cell_area_context.val-reset}[gtk_cell_area_context_reset ()]},
+      the returned value will be -1. *)
+
+  external allocate : t -> int -> int -> unit
+    = "ml_gtk_cell_area_context_allocate"
+  (** Allocates a width and/or a height for all rows which are to be rendered
+      with [context].
+
+      Usually allocation is performed only horizontally or sometimes vertically
+      since a group of rows are usually rendered side by side vertically or
+      horizontally and share either the same width or the same height. Sometimes
+      they are allocated in both horizontal and vertical orientations producing
+      a homogeneous effect of the rows. This is generally the case for
+      [GtkTreeView] when [GtkTreeView:fixed-height-mode] is enabled. *)
+
+  (* Properties *)
+
+  external get_minimum_height : t -> int
+    = "ml_gtk_cell_area_context_get_minimum_height"
+  (** The minimum height for the [GtkCellArea] in this context for all
+      [GtkTreeModel] rows that this context was requested for using
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_height}[gtk_cell_area_get_preferred_height
+                                                       ()]}. *)
+
+  external get_minimum_width : t -> int
+    = "ml_gtk_cell_area_context_get_minimum_width"
+  (** The minimum width for the [GtkCellArea] in this context for all
+      [GtkTreeModel] rows that this context was requested for using
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_width}[gtk_cell_area_get_preferred_width
+                                                      ()]}. *)
+
+  external get_natural_height : t -> int
+    = "ml_gtk_cell_area_context_get_natural_height"
+  (** The natural height for the [GtkCellArea] in this context for all
+      [GtkTreeModel] rows that this context was requested for using
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_height}[gtk_cell_area_get_preferred_height
+                                                       ()]}. *)
+
+  external get_natural_width : t -> int
+    = "ml_gtk_cell_area_context_get_natural_width"
+  (** The natural width for the [GtkCellArea] in this context for all
+      [GtkTreeModel] rows that this context was requested for using
+      {{!Ocgtk.Raw.Cell_area.val-get_preferred_width}[gtk_cell_area_get_preferred_width
+                                                      ()]}. *)
+end
+
+and Cell_layout : sig
+  type t = [ `cell_layout ] Gobject.obj
+
+  external gtype : unit -> Gobject.Type.t = "ml_gtk_cell_layout_get_type"
+
+  external from_gobject : 'a Gobject.obj -> t
+    = "ml_gtk_cell_layout_from_gobject"
+
+  (* Methods *)
+
+  external reorder : t -> Cell_renderer.t -> int -> unit
+    = "ml_gtk_cell_layout_reorder"
+  (** Re-inserts [cell] at [position].
+
+      Note that [cell] has already to be packed into [cell_layout] for this to
+      function properly. *)
+
+  external pack_start : t -> Cell_renderer.t -> bool -> unit
+    = "ml_gtk_cell_layout_pack_start"
+  (** Packs the [cell] into the beginning of [cell_layout]. If [expand] is
+      [false], then the [cell] is allocated no more space than it needs. Any
+      unused space is divided evenly between cells for which [expand] is [true].
+
+      Note that reusing the same cell renderer is not supported. *)
+
+  external pack_end : t -> Cell_renderer.t -> bool -> unit
+    = "ml_gtk_cell_layout_pack_end"
+  (** Adds the [cell] to the end of [cell_layout]. If [expand] is [false], then
+      the [cell] is allocated no more space than it needs. Any unused space is
+      divided evenly between cells for which [expand] is [true].
+
+      Note that reusing the same cell renderer is not supported. *)
+
+  external get_cells : t -> Cell_renderer.t list
+    = "ml_gtk_cell_layout_get_cells"
+  (** Returns the cell renderers which have been added to [cell_layout]. *)
+
+  external get_area : t -> Cell_area.t option = "ml_gtk_cell_layout_get_area"
+  (** Returns the underlying [GtkCellArea] which might be [cell_layout] if
+      called on a [GtkCellArea] or might be [None] if no [GtkCellArea] is used
+      by [cell_layout]. *)
+
+  external clear_attributes : t -> Cell_renderer.t -> unit
+    = "ml_gtk_cell_layout_clear_attributes"
+  (** Clears all existing attributes previously set with
+      [gtk_cell_layout_set_attributes ()]. *)
+
+  external clear : t -> unit = "ml_gtk_cell_layout_clear"
+  (** Unsets all the mappings on all renderers on [cell_layout] and removes all
+      renderers from [cell_layout]. *)
+
+  external add_attribute : t -> Cell_renderer.t -> string -> int -> unit
+    = "ml_gtk_cell_layout_add_attribute"
+  [@@ocaml.doc
+    "Adds an attribute mapping to the list in [cell_layout].\n\n\
+    \  The [column] is the column of the model to get a value from, and the\n\
+    \  [attribute] is the property on [cell] to be set from that value. So for\n\
+    \  example if column 2 of the model contains strings, you could have the\n\
+    \  “text” attribute of a [GtkCellRendererText] get its values from column 2.\n\
+    \  In this context \"attribute\" and \"property\" are used interchangeably."]
+end
+[@@ocaml.doc
+  "An interface for packing cells\n\n\
+   [GtkCellLayout] is an interface to be implemented by all objects which\n\
+   want to provide a [GtkTreeViewColumn] like API for packing cells,\n\
+   setting attributes and data funcs.\n\n\
+   One of the notable features provided by implementations of\n\
+   [GtkCellLayout] are attributes. Attributes let you set the properties\n\
+   in flexible ways. They can just be set to constant values like regular\n\
+   properties. But they can also be mapped to a column of the underlying\n\
+   tree model with [gtk_cell_layout_set_attributes ()], which means that the \
+   value\n\
+   of the attribute can change from cell to cell as they are rendered by\n\
+   the cell renderer. Finally, it is possible to specify a function with\n\
+   [gtk_cell_layout_set_cell_data_func ()] that is called to determine the\n\
+   value of the attribute for each cell that is rendered.\n\n\
+   {b GtkCellLayouts as GtkBuildable}\n\n\
+   Implementations of GtkCellLayout which also implement the GtkBuildable\n\
+   interface ([GtkCellView], [GtkIconView], [GtkComboBox],\n\
+   [GtkEntryCompletion], [GtkTreeViewColumn]) accept [GtkCellRenderer] objects\n\
+   as [<child>] elements in UI definitions. They support a custom [<attributes>]\n\
+   element for their children, which can contain multiple [<attribute>]\n\
+   elements. Each [<attribute>] element has a name attribute which specifies\n\
+   a property of the cell renderer; the content of the element is the\n\
+   attribute value.\n\n\
+   This is an example of a UI definition fragment specifying attributes:\n\n\
+   {[\n\
+   <object class=\"GtkCellView\">\n\
+  \  <child>\n\
+  \    <object class=\"GtkCellRendererText\"/>\n\
+  \    <attributes>\n\
+  \      <attribute name=\"text\">0</attribute>\n\
+  \    </attributes>\n\
+  \  </child>\n\
+   </object>\n\
+   ]}\n\n\
+   Furthermore for implementations of [GtkCellLayout] that use a [GtkCellArea]\n\
+   to lay out cells (all [GtkCellLayout]s in GTK use a [GtkCellArea])\n\
+   cell properties can also be defined\n\
+   in the format by specifying the custom [<cell-packing>] attribute which can\n\
+   contain multiple [<property>] elements.\n\n\
+   Here is a UI definition fragment specifying cell properties:\n\n\
+   {[\n\
+   <object class=\"GtkTreeViewColumn\">\n\
+  \  <child>\n\
+  \    <object class=\"GtkCellRendererText\"/>\n\
+  \    <cell-packing>\n\
+  \      <property name=\"align\">True</property>\n\
+  \      <property name=\"expand\">False</property>\n\
+  \    </cell-packing>\n\
+  \  </child>\n\
+   </object>\n\
+   ]}\n\n\
+   {b Subclassing GtkCellLayout implementations}\n\n\
+   When subclassing a widget that implements [GtkCellLayout] like\n\
+   [GtkIconView] or [GtkComboBox], there are some considerations related\n\
+   to the fact that these widgets internally use a [GtkCellArea].\n\
+   The cell area is exposed as a construct-only property by these\n\
+   widgets. This means that it is possible to e.g. do\n\n\
+   {[\n\
+   GtkWIdget *combo =\n\
+  \  g_object_new (GTK_TYPE_COMBO_BOX, \"cell-area\", my_cell_area, NULL);\n\
+   ]}\n\n\
+   to use a custom cell area with a combo box. But construct properties\n\
+   are only initialized after instance [init()]\n\
+   functions have run, which means that using functions which rely on\n\
+   the existence of the cell area in your subclass [init()] function will\n\
+   cause the default cell area to be instantiated. In this case, a provided\n\
+   construct property value will be ignored (with a warning, to alert\n\
+   you to the problem).\n\n\
+   {[\n\
+   static void\n\
+   my_combo_box_init (MyComboBox *b)\n\
+   {\n\
+  \  GtkCellRenderer *cell;\n\n\
+  \  cell = gtk_cell_renderer_pixbuf_new ();\n\n\
+  \  // The following call causes the default cell area for combo boxes,\n\
+  \  // a GtkCellAreaBox, to be instantiated\n\
+  \  gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (b), cell, FALSE);\n\
+  \  ...\n\
+   }\n\n\
+   GtkWidget *\n\
+   my_combo_box_new (GtkCellArea *area)\n\
+   {\n\
+  \  // This call is going to cause a warning about area being ignored\n\
+  \  return g_object_new (MY_TYPE_COMBO_BOX, \"cell-area\", area, NULL);\n\
+   }\n\
+   ]}\n\n\
+   If supporting alternative cell areas with your derived widget is\n\
+   not important, then this does not have to concern you. If you want\n\
+   to support alternative cell areas, you can do so by moving the\n\
+   problematic calls out of [init()] and into a [constructor()]\n\
+   for your class.\n\n\
+   The class built on this module is in {!Ocgtk.Cell_layout}."]

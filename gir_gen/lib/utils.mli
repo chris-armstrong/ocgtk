@@ -10,13 +10,6 @@ val extract_namespace_from_c_type : string -> StdLabels.String.t option
 val normalize_class_name : string -> string
 val module_name_of_class : string -> string
 val internal_namespace_to_module_name : string -> string
-val library_wrapper_name : string -> string
-val external_namespace_to_module_name : string -> string
-val enums_module_name : Types.generation_context -> Types.gir_enum -> string
-
-val bitfields_module_name :
-  Types.generation_context -> Types.gir_bitfield -> string
-
 val read_filter_file : string -> string list
 val reserved_identifiers : string list
 val sanitize_identifier : string -> string
@@ -59,8 +52,6 @@ val ml_property_setter_name :
 
 val ocaml_bitfield_name : Types.gir_bitfield -> string
 val ocaml_enum_name : Types.gir_enum -> string
-val layer2_module_name : string -> string
-val layer2_module_filename : string -> string
 val class_type_name : string -> string
 val accessor_name : string -> string
 val name_to_parts : ctx:Types.generation_context -> string -> string * string

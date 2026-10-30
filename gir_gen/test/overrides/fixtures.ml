@@ -46,6 +46,6 @@ let synthetic_gir_xml =
 </repository>|}
 
 (** Write [synthetic_gir_xml] to [pipeline_tmp/<test_name>/synthetic.gir] and
-    return the path. Pipeline-test discipline (Phase 1.5): no [/tmp] paths. *)
+    return the path. Pipeline-test discipline: no [/tmp] paths. *)
 let write_synthetic_gir ~test_name =
   Pipeline_tmp.write_file ~test_name ~filename:"synthetic.gir" synthetic_gir_xml

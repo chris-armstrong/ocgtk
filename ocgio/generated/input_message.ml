@@ -1,0 +1,11 @@
+class type input_message_t = object
+  (** {2:conversions Conversions} *)
+
+  method as_input_message : Raw.Input_message.t
+end
+
+(* High-level class for InputMessage *)
+class input_message (obj : Raw.Input_message.t) : input_message_t =
+  object (self)
+    method as_input_message = obj
+  end

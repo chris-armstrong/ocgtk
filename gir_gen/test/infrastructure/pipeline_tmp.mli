@@ -1,7 +1,7 @@
 (** Per-test temp directory for pipeline tests.
 
-    Pipeline tests (tier 2 in the test classification — see Phase 1.5 of
-    [docs/plans/test-suite-remediation.md]) must use this module rather than
+    Pipeline tests (tier 2 in the test classification of
+    [gir_gen/test/GIR_GEN_TESTING.md]) must use this module rather than
     [Filename.temp_file] or hard-coded [/tmp] paths. *)
 
 val make_dir : string -> string

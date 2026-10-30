@@ -1,0 +1,109 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* NetworkMonitor: NetworkMonitor *)
+
+(** [GNetworkMonitor] provides an easy-to-use cross-platform API for monitoring
+    network connectivity. On Linux, the available implementations are based on
+    the kernel's netlink interface and on NetworkManager.
+
+    There is also an implementation for use inside Flatpak sandboxes.
+
+    The class built on this module is in {!Ocgio.Network_monitor}. *)
+
+type t = [ `network_monitor ] Gobject.obj
+
+external gtype : unit -> Gobject.Type.t = "ml_gio_network_monitor_get_type"
+
+external from_gobject : 'a Gobject.obj -> t
+  = "ml_gio_network_monitor_from_gobject"
+
+(* Methods *)
+
+external get_network_metered : t -> bool
+  = "ml_g_network_monitor_get_network_metered"
+(** Checks if the network is metered. See
+    {{!Ocgio.Raw.Network_monitor.val-get_network_metered}[GNetworkMonitor:network-metered]}
+    for more details. *)
+
+external get_network_available : t -> bool
+  = "ml_g_network_monitor_get_network_available"
+[@@ocaml.doc
+  "Checks if the network is available. \"Available\" here means that the\n\
+   system has a default route available for at least one of IPv4 or\n\
+   IPv6. It does not necessarily imply that the public Internet is\n\
+   reachable. See \
+   {{!Ocgio.Raw.Network_monitor.val-get_network_available}[GNetworkMonitor:network-available]} \
+   for more details."]
+
+external get_connectivity : t -> Ocgio_enums.networkconnectivity
+  = "ml_g_network_monitor_get_connectivity"
+[@@ocaml.doc
+  "Gets a more detailed networking state than\n\
+   {{!Ocgio.Raw.Network_monitor.val-get_network_available}[g_network_monitor_get_network_available \
+   ()]}.\n\n\
+   If \
+   {{!Ocgio.Raw.Network_monitor.val-get_network_available}[GNetworkMonitor:network-available]} \
+   is [false], then the\n\
+   connectivity state will be \
+   {{!Ocgio.Enums.type-networkconnectivity.constructor-LOCAL}[G_NETWORK_CONNECTIVITY_LOCAL]}.\n\n\
+   If \
+   {{!Ocgio.Raw.Network_monitor.val-get_network_available}[GNetworkMonitor:network-available]} \
+   is [true], then the\n\
+   connectivity state will be \
+   {{!Ocgio.Enums.type-networkconnectivity.constructor-FULL}[G_NETWORK_CONNECTIVITY_FULL]} \
+   (if there\n\
+   is full Internet connectivity), \
+   {{!Ocgio.Enums.type-networkconnectivity.constructor-LIMITED}[G_NETWORK_CONNECTIVITY_LIMITED]} \
+   (if\n\
+   the host has a default route, but appears to be unable to actually\n\
+   reach the full Internet), or \
+   {{!Ocgio.Enums.type-networkconnectivity.constructor-PORTAL}[G_NETWORK_CONNECTIVITY_PORTAL]} \
+   (if the\n\
+   host is trapped behind a \"captive portal\" that requires some sort\n\
+   of login or acknowledgement before allowing full Internet access).\n\n\
+   Note that in the case of \
+   {{!Ocgio.Enums.type-networkconnectivity.constructor-LIMITED}[G_NETWORK_CONNECTIVITY_LIMITED]} \
+   and\n\
+   {{!Ocgio.Enums.type-networkconnectivity.constructor-PORTAL}[G_NETWORK_CONNECTIVITY_PORTAL]}, \
+   it is possible that some sites are\n\
+   reachable but others are not. In this case, applications can\n\
+   attempt to connect to remote servers, but should gracefully fall\n\
+   back to their \"offline\" behavior if the connection attempt fails."]
+
+external can_reach_finish : t -> Async_result.t -> (bool, GError.t) result
+  = "ml_g_network_monitor_can_reach_finish"
+(** Finishes an async network connectivity test. See
+    [g_network_monitor_can_reach_async ()]. *)
+
+external can_reach :
+  t ->
+  Socket_address_and__socket_address_enumerator_and__socket_connectable
+  .Socket_connectable
+  .t ->
+  Cancellable.t option ->
+  (bool, GError.t) result = "ml_g_network_monitor_can_reach"
+(** Attempts to determine whether or not the host pointed to by [connectable]
+    can be reached, without actually trying to connect to it.
+
+    This may return [true] even when
+    {{!Ocgio.Raw.Network_monitor.val-get_network_available}[GNetworkMonitor:network-available]}
+    is [false], if, for example, [monitor] can determine that [connectable]
+    refers to a host on a local network.
+
+    If [monitor] believes that an attempt to connect to [connectable] will
+    succeed, it will return [true]. Otherwise, it will return [false] and set
+    [error] to an appropriate error (such as
+    {{!Ocgio.Enums.type-ioerrorenum.constructor-HOST_UNREACHABLE}[G_IO_ERROR_HOST_UNREACHABLE]}).
+
+    Note that although this does not attempt to connect to [connectable], it may
+    still block for a brief period of time (eg, trying to do multicast DNS on
+    the local network), so if you do not want to block, you should use
+    [g_network_monitor_can_reach_async ()]. *)
+
+(* Properties *)
+
+val on_network_changed :
+  ?after:bool ->
+  t ->
+  callback:(network_available:bool -> unit) ->
+  Gobject.Signal.handler_id
+(** Emitted when the network configuration changes. *)

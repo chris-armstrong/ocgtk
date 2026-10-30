@@ -1,0 +1,119 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* AppChooserWidget: AppChooserWidget *)
+
+(** [GtkAppChooserWidget] is a widget for selecting applications.
+
+    It is the main building block for
+    {{!Ocgtk.Raw.App_chooser_dialog}[Gtk.AppChooserDialog]}. Most applications
+    only need to use the latter; but you can use this widget as part of a larger
+    widget if you have special needs.
+
+    [GtkAppChooserWidget] offers detailed control over what applications are
+    shown, using the
+    {{!Ocgtk.Raw.App_chooser_widget.val-get_show_default}[Gtk.AppChooserWidget:show-default]},
+    {{!Ocgtk.Raw.App_chooser_widget.val-get_show_recommended}[Gtk.AppChooserWidget:show-recommended]},
+    {{!Ocgtk.Raw.App_chooser_widget.val-get_show_fallback}[Gtk.AppChooserWidget:show-fallback]},
+    {{!Ocgtk.Raw.App_chooser_widget.val-get_show_other}[Gtk.AppChooserWidget:show-other]}
+    and
+    {{!Ocgtk.Raw.App_chooser_widget.val-get_show_all}[Gtk.AppChooserWidget:show-all]}
+    properties. See the {{!Ocgtk.Raw.App_chooser}[Gtk.AppChooser]} documentation
+    for more information about these groups of applications.
+
+    To keep track of the selected application, use the
+    {{!Ocgtk.Raw.App_chooser_widget.val-on_application_selected}[Gtk.AppChooserWidget::application-selected]}
+    and
+    {{!Ocgtk.Raw.App_chooser_widget.val-on_application_activated}[Gtk.AppChooserWidget::application-activated]}
+    signals.
+
+    {b CSS nodes}
+
+    [GtkAppChooserWidget] has a single CSS node with name appchooser.
+
+    The class built on this module is in {!Ocgtk.App_chooser_widget}. *)
+
+type t =
+  [ `app_chooser_widget | `widget | `initially_unowned | `object_ ] Gobject.obj
+
+external gtype : unit -> Gobject.Type.t = "ml_gtk_app_chooser_widget_get_type"
+
+external new_ : string -> t = "ml_gtk_app_chooser_widget_new"
+(** Creates a new [GtkAppChooserWidget] for applications that can handle content
+    of the given type. *)
+
+(* Methods *)
+
+external set_show_recommended : t -> bool -> unit
+  = "ml_gtk_app_chooser_widget_set_show_recommended"
+(** Sets whether the app chooser should show recommended applications for the
+    content type in a separate section. *)
+
+external set_show_other : t -> bool -> unit
+  = "ml_gtk_app_chooser_widget_set_show_other"
+(** Sets whether the app chooser should show applications which are unrelated to
+    the content type. *)
+
+external set_show_fallback : t -> bool -> unit
+  = "ml_gtk_app_chooser_widget_set_show_fallback"
+(** Sets whether the app chooser should show related applications for the
+    content type in a separate section. *)
+
+external set_show_default : t -> bool -> unit
+  = "ml_gtk_app_chooser_widget_set_show_default"
+(** Sets whether the app chooser should show the default handler for the content
+    type in a separate section. *)
+
+external set_show_all : t -> bool -> unit
+  = "ml_gtk_app_chooser_widget_set_show_all"
+(** Sets whether the app chooser should show all applications in a flat list. *)
+
+external set_default_text : t -> string -> unit
+  = "ml_gtk_app_chooser_widget_set_default_text"
+(** Sets the text that is shown if there are not applications that can handle
+    the content type. *)
+
+external get_show_recommended : t -> bool
+  = "ml_gtk_app_chooser_widget_get_show_recommended"
+(** Gets whether the app chooser should show recommended applications for the
+    content type in a separate section. *)
+
+external get_show_other : t -> bool = "ml_gtk_app_chooser_widget_get_show_other"
+(** Gets whether the app chooser should show applications which are unrelated to
+    the content type. *)
+
+external get_show_fallback : t -> bool
+  = "ml_gtk_app_chooser_widget_get_show_fallback"
+(** Gets whether the app chooser should show related applications for the
+    content type in a separate section. *)
+
+external get_show_default : t -> bool
+  = "ml_gtk_app_chooser_widget_get_show_default"
+(** Gets whether the app chooser should show the default handler for the content
+    type in a separate section. *)
+
+external get_show_all : t -> bool = "ml_gtk_app_chooser_widget_get_show_all"
+(** Gets whether the app chooser should show all applications in a flat list. *)
+
+external get_default_text : t -> string option
+  = "ml_gtk_app_chooser_widget_get_default_text"
+(** Returns the text that is shown if there are not applications that can handle
+    the content type. *)
+
+(* Properties *)
+
+val on_application_activated :
+  ?after:bool ->
+  t ->
+  callback:(application:Ocgio_raw.App_info.t -> unit) ->
+  Gobject.Signal.handler_id
+(** Emitted when an application item is activated from the widget's list.
+
+    This usually happens when the user double clicks an item, or an item is
+    selected and the user presses one of the keys Space, Shift+Space, Return or
+    Enter. *)
+
+val on_application_selected :
+  ?after:bool ->
+  t ->
+  callback:(application:Ocgio_raw.App_info.t -> unit) ->
+  Gobject.Signal.handler_id
+(** Emitted when an application item is selected from the widget's list. *)

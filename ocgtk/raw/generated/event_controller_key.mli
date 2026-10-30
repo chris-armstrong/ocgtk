@@ -1,0 +1,75 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* EventControllerKey: EventControllerKey *)
+
+(** Provides access to key events.
+
+    The class built on this module is in {!Ocgtk.Event_controller_key}. *)
+
+type t = [ `event_controller_key | `event_controller | `object_ ] Gobject.obj
+
+external gtype : unit -> Gobject.Type.t = "ml_gtk_event_controller_key_get_type"
+
+external new_ : unit -> t = "ml_gtk_event_controller_key_new"
+(** Creates a new event controller that will handle key events. *)
+
+(* Methods *)
+
+external set_im_context : t -> Im_context.t option -> unit
+  = "ml_gtk_event_controller_key_set_im_context"
+(** Sets the input method context of the key [controller]. *)
+
+external get_im_context : t -> Im_context.t option
+  = "ml_gtk_event_controller_key_get_im_context"
+(** Gets the input method context of the key [controller]. *)
+
+external get_group : t -> int = "ml_gtk_event_controller_key_get_group"
+(** Gets the key group of the current event of this [controller].
+
+    See {{!Ocgdk.Raw.Key_event.val-get_layout}[Gdk.KeyEvent.get_layout]}. *)
+
+external forward :
+  t ->
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+  .Widget
+  .t ->
+  bool = "ml_gtk_event_controller_key_forward"
+(** Forwards the current event of this [controller] to a [widget].
+
+    This function can only be used in handlers for the
+    {{!Ocgtk.Raw.Event_controller_key.val-on_key_pressed}[Gtk.EventControllerKey::key-pressed]},
+    {{!Ocgtk.Raw.Event_controller_key.val-on_key_released}[Gtk.EventControllerKey::key-released]}
+    or
+    {{!Ocgtk.Raw.Event_controller_key.val-on_modifiers}[Gtk.EventControllerKey::modifiers]}
+    signals. *)
+
+val on_im_update :
+  ?after:bool -> t -> callback:(unit -> unit) -> Gobject.Signal.handler_id
+(** Emitted whenever the input method context filters away a keypress and
+    prevents the [controller] receiving it.
+
+    See
+    {{!Ocgtk.Raw.Event_controller_key.val-set_im_context}[Gtk.EventControllerKey.set_im_context]}
+    and
+    {{!Ocgtk.Raw.Im_context.val-filter_keypress}[Gtk.IMContext.filter_keypress]}.
+*)
+
+val on_key_pressed :
+  ?after:bool ->
+  t ->
+  callback:(keyval:int -> keycode:int -> state:Ocgdk_enums.modifiertype -> bool) ->
+  Gobject.Signal.handler_id
+(** Emitted whenever a key is pressed. *)
+
+val on_key_released :
+  ?after:bool ->
+  t ->
+  callback:(keyval:int -> keycode:int -> state:Ocgdk_enums.modifiertype -> unit) ->
+  Gobject.Signal.handler_id
+(** Emitted whenever a key is released. *)
+
+val on_modifiers :
+  ?after:bool ->
+  t ->
+  callback:(state:Ocgdk_enums.modifiertype -> bool) ->
+  Gobject.Signal.handler_id
+(** Emitted whenever the state of modifier keys and pointer buttons change. *)

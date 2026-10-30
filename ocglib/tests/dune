@@ -1,0 +1,74 @@
+; Tests for ocglib: GLib and GObject without GTK
+
+(test
+ (name test_gobj)
+ (package ocglib)
+ (modules test_gobj)
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib alcotest))
+
+(test
+ (name test_gvariant)
+ (package ocglib)
+ (modules test_gvariant)
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib alcotest))
+
+(test
+ (name test_gvariant_type)
+ (package ocglib)
+ (modules test_gvariant_type)
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib alcotest))
+
+(test
+ (name test_glib_bytes)
+ (package ocglib)
+ (modules test_glib_bytes)
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib alcotest))
+
+(test
+ (name test_bounded_int)
+ (package ocglib)
+ (modules test_bounded_int)
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib alcotest))
+
+; Test-only C helpers that invoke GClosures the way GLib's signal
+; machinery does
+
+(library
+ (name gobject_test_helpers)
+ (wrapped false)
+ (modules gobject_test_helpers)
+ (foreign_stubs
+  (language c)
+  (names ml_gobject_test_helpers)
+  (flags
+   -fPIC
+   (:include %{project_root}/ocglib/cflag-glib.sexp)))
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib))
+
+(test
+ (name test_closure_stress)
+ (package ocglib)
+ (modules test_closure_stress)
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib alcotest gobject_test_helpers))
+
+(test
+ (name test_closure_with_gc)
+ (package ocglib)
+ (modules test_closure_with_gc)
+ (flags
+  (:standard -open Ocglib))
+ (libraries ocglib alcotest gobject_test_helpers))

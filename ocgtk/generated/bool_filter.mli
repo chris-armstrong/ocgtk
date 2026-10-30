@@ -1,0 +1,45 @@
+(** Evaluates a boolean expression to determine whether to include items.
+
+    Its methods, signals and properties are on {!class-type-bool_filter_t}. Its
+    constructors are under {!section-constructors}. The functions it is built on
+    are in {!Ocgtk.Raw.Bool_filter}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [BoolFilter].}
+
+    Inherits from: {{!Ocgtk.Filter.class-type-filter_t}Ocgtk.Filter}
+
+    Evaluates a boolean expression to determine whether to include items. *)
+class type bool_filter_t = object
+  inherit Filter.filter_t
+
+  (** {2:methods Methods} *)
+
+  method get_expression : unit -> Expression.expression_t option
+  (** Gets the expression that the filter evaluates for each item. *)
+
+  method get_invert : unit -> bool
+  (** Returns whether the filter inverts the expression. *)
+
+  method set_expression : Expression.expression_t option -> unit
+  (** Sets the expression that the filter uses to check if items should be
+      filtered.
+
+      The expression must have a value type of [G_TYPE_BOOLEAN]. *)
+
+  method set_invert : bool -> unit
+  (** Sets whether the filter should invert the expression. *)
+
+  (** {2:conversions Conversions} *)
+
+  method as_bool_filter : Raw.Bool_filter.t
+end
+
+class bool_filter : Raw.Bool_filter.t -> bool_filter_t
+(** Wraps a raw handle of {!Ocgtk.Raw.Bool_filter.t}. *)
+
+(** {1:constructors Constructors} *)
+
+val new_ : Expression.expression_t option -> bool_filter_t
+(** Creates a new bool filter. *)

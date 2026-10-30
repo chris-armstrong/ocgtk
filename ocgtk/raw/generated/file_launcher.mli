@@ -1,0 +1,63 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* FileLauncher: FileLauncher *)
+
+(** Asynchronous API to open a file with an application.
+
+    [GtkFileLauncher] collects the arguments that are needed to open the file.
+
+    Depending on system configuration, user preferences and available APIs, this
+    may or may not show an app chooser dialog or launch the default application
+    right away.
+
+    The operation is started with the [Gtk.FileLauncher.launch] function.
+
+    To launch uris that don't represent files, use
+    {{!Ocgtk.Raw.Uri_launcher}[Gtk.UriLauncher]}.
+
+    The class built on this module is in {!Ocgtk.File_launcher}. *)
+
+type t = [ `file_launcher | `object_ ] Gobject.obj
+
+external gtype : unit -> Gobject.Type.t = "ml_gtk_file_launcher_get_type"
+
+external new_ : Ocgio_raw.File.t option -> t = "ml_gtk_file_launcher_new"
+(** Creates a new [GtkFileLauncher] object. *)
+
+(* Methods *)
+
+external set_writable : t -> bool -> unit = "ml_gtk_file_launcher_set_writable"
+(** Sets whether to make the file writable for the handler. *)
+
+external set_file : t -> Ocgio_raw.File.t option -> unit
+  = "ml_gtk_file_launcher_set_file"
+(** Sets the file that will be opened. *)
+
+external set_always_ask : t -> bool -> unit
+  = "ml_gtk_file_launcher_set_always_ask"
+(** Sets whether to always ask the user which app to use.
+
+    If false, the file might be opened with a default app or the previous
+    choice. *)
+
+external open_containing_folder_finish :
+  t -> Ocgio_raw.Async_result.t -> (bool, GError.t) result
+  = "ml_gtk_file_launcher_open_containing_folder_finish"
+(** Finishes the [Gtk.FileLauncher.open_containing_folder] call and returns the
+    result. *)
+
+external launch_finish :
+  t -> Ocgio_raw.Async_result.t -> (bool, GError.t) result
+  = "ml_gtk_file_launcher_launch_finish"
+(** Finishes the [Gtk.FileLauncher.launch] call and returns the result. *)
+
+external get_writable : t -> bool = "ml_gtk_file_launcher_get_writable"
+(** Returns whether to make the file writable for the handler. *)
+
+external get_file : t -> Ocgio_raw.File.t option
+  = "ml_gtk_file_launcher_get_file"
+(** Gets the file that will be opened. *)
+
+external get_always_ask : t -> bool = "ml_gtk_file_launcher_get_always_ask"
+(** Returns whether to ask the user which app to use. *)
+
+(* Properties *)

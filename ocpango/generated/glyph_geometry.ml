@@ -1,0 +1,11 @@
+class type glyph_geometry_t = object
+  (** {2:conversions Conversions} *)
+
+  method as_glyph_geometry : Raw.Glyph_geometry.t
+end
+
+(* High-level class for GlyphGeometry *)
+class glyph_geometry (obj : Raw.Glyph_geometry.t) : glyph_geometry_t =
+  object (self)
+    method as_glyph_geometry = obj
+  end

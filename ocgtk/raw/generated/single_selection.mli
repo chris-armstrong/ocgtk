@@ -1,0 +1,101 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* SingleSelection: SingleSelection *)
+
+(** A selection model that allows selecting a single item.
+
+    Note that the selection is {i persistent} -- if the selected item is removed
+    and re-added in the same
+    {{!Ocgio.Raw.List_model.val-on_items_changed}[Gio.ListModel::items-changed]}
+    emission, it stays selected. In particular, this means that changing the
+    sort order of an underlying sort model will preserve the selection.
+
+    The class built on this module is in {!Ocgtk.Single_selection}. *)
+
+type t = [ `single_selection | `object_ ] Gobject.obj
+
+external gtype : unit -> Gobject.Type.t = "ml_gtk_single_selection_get_type"
+
+external new_ : Ocgio_raw.List_model.t option -> t
+  = "ml_gtk_single_selection_new"
+(** Creates a new selection to handle [model]. *)
+
+(* Methods *)
+
+external set_selected : t -> int -> unit
+  = "ml_gtk_single_selection_set_selected"
+(** Selects the item at the given position.
+
+    If the list does not have an item at [position] or
+    {{!Ocgtk.Constants.invalid_list_position}[GTK_INVALID_LIST_POSITION]} is
+    given, the behavior depends on the value of the
+    {{!Ocgtk.Raw.Single_selection.val-get_autoselect}[Gtk.SingleSelection:autoselect]}
+    property: If it is set, no change will occur and the old item will stay
+    selected. If it is unset, the selection will be unset and no item will be
+    selected. This also applies if
+    {{!Ocgtk.Raw.Single_selection.val-get_can_unselect}[Gtk.SingleSelection:can-unselect]}
+    is set to [false]. *)
+
+external set_model : t -> Ocgio_raw.List_model.t option -> unit
+  = "ml_gtk_single_selection_set_model"
+(** Sets the model that [self] should wrap.
+
+    If [model] is [None], [self] will be empty. *)
+
+external set_can_unselect : t -> bool -> unit
+  = "ml_gtk_single_selection_set_can_unselect"
+(** If [true], unselecting the current item via
+    {{!Ocgtk.Raw.Selection_model.val-unselect_item}[gtk_selection_model_unselect_item
+                                                    ()]} is supported.
+
+    Note that setting
+    {{!Ocgtk.Raw.Single_selection.val-get_autoselect}[Gtk.SingleSelection:autoselect]}
+    will cause unselecting to not work, so it practically makes no sense to set
+    both at the same time. *)
+
+external set_autoselect : t -> bool -> unit
+  = "ml_gtk_single_selection_set_autoselect"
+(** Enables or disables autoselect.
+
+    If [autoselect] is [true], [self] will enforce that an item is always
+    selected. It will select a new item when the currently selected item is
+    deleted and it will disallow unselecting the current item. *)
+
+external get_selected_item : t -> [ `object_ ] Gobject.obj option
+  = "ml_gtk_single_selection_get_selected_item"
+(** Gets the selected item.
+
+    If no item is selected, [None] is returned. *)
+
+external get_selected : t -> int = "ml_gtk_single_selection_get_selected"
+(** Gets the position of the selected item.
+
+    If no item is selected,
+    {{!Ocgtk.Constants.invalid_list_position}[GTK_INVALID_LIST_POSITION]} is
+    returned. *)
+
+external get_model : t -> Ocgio_raw.List_model.t option
+  = "ml_gtk_single_selection_get_model"
+(** Gets the model that [self] is wrapping. *)
+
+external get_can_unselect : t -> bool
+  = "ml_gtk_single_selection_get_can_unselect"
+(** If [true],
+    {{!Ocgtk.Raw.Selection_model.val-unselect_item}[gtk_selection_model_unselect_item
+                                                    ()]} is supported and allows
+    unselecting the selected item. *)
+
+external get_autoselect : t -> bool = "ml_gtk_single_selection_get_autoselect"
+(** Checks if autoselect has been enabled or disabled via
+    {{!Ocgtk.Raw.Single_selection.val-set_autoselect}[gtk_single_selection_set_autoselect
+                                                      ()]}. *)
+
+(* Properties *)
+
+external get_item_type : t -> Gobject.Type.t
+  = "ml_gtk_single_selection_get_item_type"
+(** The type of items. See
+    {{!Ocgio.Raw.List_model.val-get_item_type}[Gio.ListModel.get_item_type]}. *)
+
+external get_n_items : t -> int = "ml_gtk_single_selection_get_n_items"
+(** The number of items. See
+    {{!Ocgio.Raw.List_model.val-get_n_items}[Gio.ListModel.get_n_items]}. *)

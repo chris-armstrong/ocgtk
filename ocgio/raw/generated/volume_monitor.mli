@@ -1,0 +1,132 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* VolumeMonitor: VolumeMonitor *)
+
+(** [GVolumeMonitor] is for listing the user interesting devices and volumes on
+    the computer. In other words, what a file selector or file manager would
+    show in a sidebar.
+
+    [GVolumeMonitor] is not thread-default-context aware (see
+    [GLib.MainContext.push_thread_default]), and so should not be used other
+    than from the main thread, with no thread-default-context active.
+
+    In order to receive updates about volumes and mounts monitored through GVFS,
+    a main loop must be running.
+
+    The class built on this module is in {!Ocgio.Volume_monitor}. *)
+
+type t = [ `volume_monitor | `object_ ] Gobject.obj
+
+external gtype : unit -> Gobject.Type.t = "ml_gio_volume_monitor_get_type"
+
+(* Methods *)
+
+external get_volumes : t -> App_info_cycle_64c425a0.Volume.t list
+  = "ml_g_volume_monitor_get_volumes"
+(** Gets a list of the volumes on the system. *)
+
+external get_volume_for_uuid :
+  t -> string -> App_info_cycle_64c425a0.Volume.t option
+  = "ml_g_volume_monitor_get_volume_for_uuid"
+(** Finds a {{!Ocgio.Raw.Volume}[GVolume]} object by its UUID (see
+    {{!Ocgio.Raw.Volume.val-get_uuid}[g_volume_get_uuid ()]}) *)
+
+external get_mounts : t -> App_info_cycle_64c425a0.Mount.t list
+  = "ml_g_volume_monitor_get_mounts"
+(** Gets a list of the mounts on the system. *)
+
+external get_mount_for_uuid :
+  t -> string -> App_info_cycle_64c425a0.Mount.t option
+  = "ml_g_volume_monitor_get_mount_for_uuid"
+(** Finds a {{!Ocgio.Raw.Mount}[GMount]} object by its UUID (see
+    {{!Ocgio.Raw.Mount.val-get_uuid}[g_mount_get_uuid ()]}) *)
+
+external get_connected_drives : t -> App_info_cycle_64c425a0.Drive.t list
+  = "ml_g_volume_monitor_get_connected_drives"
+(** Gets a list of drives connected to the system. *)
+
+val on_drive_changed :
+  ?after:bool ->
+  t ->
+  callback:(drive:App_info_cycle_64c425a0.Drive.t -> unit) ->
+  Gobject.Signal.handler_id
+(** Emitted when a drive changes. *)
+
+val on_drive_connected :
+  ?after:bool ->
+  t ->
+  callback:(drive:App_info_cycle_64c425a0.Drive.t -> unit) ->
+  Gobject.Signal.handler_id
+(** Emitted when a drive is connected to the system. *)
+
+val on_drive_disconnected :
+  ?after:bool ->
+  t ->
+  callback:(drive:App_info_cycle_64c425a0.Drive.t -> unit) ->
+  Gobject.Signal.handler_id
+(** Emitted when a drive is disconnected from the system. *)
+
+val on_drive_eject_button :
+  ?after:bool ->
+  t ->
+  callback:(drive:App_info_cycle_64c425a0.Drive.t -> unit) ->
+  Gobject.Signal.handler_id
+(** Emitted when the eject button is pressed on [drive]. *)
+
+val on_drive_stop_button :
+  ?after:bool ->
+  t ->
+  callback:(drive:App_info_cycle_64c425a0.Drive.t -> unit) ->
+  Gobject.Signal.handler_id
+(** Emitted when the stop button is pressed on [drive]. *)
+
+val on_mount_added :
+  ?after:bool ->
+  t ->
+  callback:(mount:App_info_cycle_64c425a0.Mount.t -> unit) ->
+  Gobject.Signal.handler_id
+(** Emitted when a mount is added. *)
+
+val on_mount_changed :
+  ?after:bool ->
+  t ->
+  callback:(mount:App_info_cycle_64c425a0.Mount.t -> unit) ->
+  Gobject.Signal.handler_id
+(** Emitted when a mount changes. *)
+
+val on_mount_pre_unmount :
+  ?after:bool ->
+  t ->
+  callback:(mount:App_info_cycle_64c425a0.Mount.t -> unit) ->
+  Gobject.Signal.handler_id
+(** May be emitted when a mount is about to be removed.
+
+    This signal depends on the backend and is only emitted if GIO was used to
+    unmount. *)
+
+val on_mount_removed :
+  ?after:bool ->
+  t ->
+  callback:(mount:App_info_cycle_64c425a0.Mount.t -> unit) ->
+  Gobject.Signal.handler_id
+(** Emitted when a mount is removed. *)
+
+val on_volume_added :
+  ?after:bool ->
+  t ->
+  callback:(volume:App_info_cycle_64c425a0.Volume.t -> unit) ->
+  Gobject.Signal.handler_id
+(** Emitted when a mountable volume is added to the system. *)
+
+val on_volume_changed :
+  ?after:bool ->
+  t ->
+  callback:(volume:App_info_cycle_64c425a0.Volume.t -> unit) ->
+  Gobject.Signal.handler_id
+(** Emitted when mountable volume is changed. *)
+
+val on_volume_removed :
+  ?after:bool ->
+  t ->
+  callback:(volume:App_info_cycle_64c425a0.Volume.t -> unit) ->
+  Gobject.Signal.handler_id
+(** Emitted when a mountable volume is removed from the system. *)

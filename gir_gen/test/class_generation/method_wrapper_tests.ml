@@ -115,7 +115,7 @@ let test_hierarchy_parameter_coercion () =
   in
 
   let _mli_code =
-    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx
+    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx ~class_doc:None
       ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~methods:[ meth ] ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
@@ -148,7 +148,7 @@ let test_nullable_parameter_handling () =
 
   (* Generate Layer 2 class signature *)
   let mli_code =
-    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx
+    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx ~class_doc:None
       ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~methods:[ meth ] ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
@@ -179,7 +179,7 @@ let test_return_value_wrapping () =
 
   (* Generate Layer 2 class signature *)
   let mli_code =
-    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx
+    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx ~class_doc:None
       ~class_name:"Container" ~c_type:"GtkContainer" ~parent_chain:[ "Widget" ]
       ~methods:[ meth ] ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
@@ -191,7 +191,7 @@ let test_return_value_wrapping () =
   (* Verify the method signature has widget return type using AST inspection *)
   Layer2_helpers.validate_method_type_annotation_sig ~signature:mli_ast
     ~class_name:"container_t" ~method_name:"get_child"
-    ~expected_type:"unit -> GWidget.widget_t"
+    ~expected_type:"unit -> Widget.widget_t"
 
 (* ========================================================================= *)
 (* Test 4: Void Method *)
@@ -215,7 +215,7 @@ let test_void_method () =
   in
 
   let mli_code =
-    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx
+    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx ~class_doc:None
       ~class_name:"Widget" ~c_type:"GtkWidget" ~parent_chain:[]
       ~methods:[ meth ] ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
@@ -261,7 +261,7 @@ let test_multiple_parameters () =
   in
 
   let mli_code =
-    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx
+    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx ~class_doc:None
       ~class_name:"Widget" ~c_type:"GtkWidget" ~parent_chain:[]
       ~methods:[ meth ] ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
@@ -388,7 +388,7 @@ let test_property_getter_wrapper () =
 
   (* Generate Layer 2 class signature *)
   let mli_code =
-    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx
+    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx ~class_doc:None
       ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~methods:[ get_label_method ] ~properties:[ label_property ] ~signals:[]
       ~constructors:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
@@ -452,7 +452,7 @@ let test_property_setter_wrapper () =
 (* Test 10: Inheritance Generation *)
 (* ========================================================================= *)
 
-(* Test that generated classes inherit from parent via GWidget.widget *)
+(* Test that generated classes inherit from parent via Widget.widget *)
 let test_inheritance_generation () =
   let ctx = create_test_context () in
 
@@ -474,9 +474,9 @@ let test_inheritance_generation () =
   (* Parse the generated code into AST *)
   let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
 
-  (* Validate that the generated class inherits from GWidget.widget via parent_name *)
+  (* Validate that the generated class inherits from Widget.widget via parent_name *)
   Layer2_helpers.validate_class_inherits ~structure:ml_ast ~class_name:"button"
-    ~parent_class:"GWidget.widget"
+    ~parent_class:"Widget.widget"
 
 (* ========================================================================= *)
 (* Test 11: Signal Handler L2 Forwarder *)
@@ -484,7 +484,7 @@ let test_inheritance_generation () =
 
 (* Test that classes with signals emit L2 method forwarders instead of
    inheriting from a _signals class. The button class must contain an
-   on_clicked method whose body forwards to Button.on_clicked via
+   on_clicked method whose body forwards to Raw.Button.on_clicked via
    self#as_button. No inherit from Gbutton_signals.button_signals. *)
 let test_signal_handler_l2_forwarder () =
   let ctx = create_test_context () in
@@ -508,8 +508,8 @@ let test_signal_handler_l2_forwarder () =
   let method_field = find_method class_decl "on_clicked" in
   let method_body = get_method_body method_field in
 
-  (* Body must forward to Button.on_clicked *)
-  assert_method_body_calls method_body "Button" "on_clicked";
+  (* Body must forward to Raw.Button.on_clicked *)
+  assert_method_body_calls method_body "Raw.Button" "on_clicked";
 
   (* Body must reference self#as_button *)
   if not (Ml_ast_helpers.contains_method_send method_body "as_button") then
@@ -521,8 +521,7 @@ let test_signal_handler_l2_forwarder () =
   in
   if List.mem "Gbutton_signals.button_signals" inherit_clauses then
     Alcotest.fail
-      "button class must not inherit from Gbutton_signals.button_signals after \
-       Stage 3"
+      "button class must not inherit from Gbutton_signals.button_signals"
 
 (* ========================================================================= *)
 (* Test 13: Class Accessor Method *)
@@ -596,9 +595,10 @@ let test_method_conflict_detection () =
 
   let mli_code =
     Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx:updated_ctx
-      ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
-      ~methods:[ button_show_method ] ~properties:[] ~signals:[]
-      ~constructors:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
+      ~class_doc:None ~class_name:"Button" ~c_type:"GtkButton"
+      ~parent_chain:[ "Widget" ] ~methods:[ button_show_method ] ~properties:[]
+      ~signals:[] ~constructors:[]
+      ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
   in
 
   Fmt.epr "Generated .ml code for conflict test:\n%s\n\n" ml_code;
@@ -699,7 +699,7 @@ let test_layer2_signature_consistency () =
   in
 
   let mli_code =
-    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx
+    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx ~class_doc:None
       ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~methods ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
@@ -1002,7 +1002,7 @@ let test_throws_method_result_wrapping () =
 
   (* Generate Layer 2 class signature *)
   let mli_code =
-    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx
+    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx ~class_doc:None
       ~class_name:"FileChooser" ~c_type:"GtkFileChooser"
       ~parent_chain:[ "Widget" ] ~methods:[ load_file_method ] ~properties:[]
       ~signals:[] ~constructors:[]
@@ -1064,7 +1064,7 @@ let test_throws_method_result_wrapping () =
 
   (* Generate Layer 2 class signature with both methods *)
   let mli_code_with_void =
-    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx
+    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx ~class_doc:None
       ~class_name:"FileChooser" ~c_type:"GtkFileChooser"
       ~parent_chain:[ "Widget" ]
       ~methods:[ load_file_method; create_directory_method ]
@@ -1124,7 +1124,7 @@ let test_throws_method_result_wrapping () =
 (* Test 18: Parent Inherit in Class Implementation (.ml) *)
 (* ========================================================================= *)
 
-(* Test that Button class inherits from GWidget.widget in the implementation *)
+(* Test that Button class inherits from Widget.widget in the implementation *)
 let test_parent_inherit_in_implementation () =
   let ctx = create_test_context () in
 
@@ -1142,22 +1142,22 @@ let test_parent_inherit_in_implementation () =
   (* Parse the generated code into AST *)
   let ml_ast = Ml_ast_helpers.parse_implementation ml_code in
 
-  (* Validate that the button class inherits from GWidget.widget *)
+  (* Validate that the button class inherits from Widget.widget *)
   Layer2_helpers.validate_class_inherits ~structure:ml_ast ~class_name:"button"
-    ~parent_class:"GWidget.widget"
+    ~parent_class:"Widget.widget"
 
 (* ========================================================================= *)
 (* Test 19: Parent Inherit in Class Type (.mli) *)
 (* ========================================================================= *)
 
-(* Test that button_t class type inherits from GWidget.widget_t in the signature *)
+(* Test that button_t class type inherits from Widget.widget_t in the signature *)
 let test_parent_inherit_in_class_type () =
   let ctx = create_test_context () in
 
   (* Generate class signature for Button with parent chain *)
   (* Note: Widget is already in ctx from create_test_context *)
   let mli_code =
-    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx
+    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx ~class_doc:None
       ~class_name:"Button" ~c_type:"GtkButton" ~parent_chain:[ "Widget" ]
       ~methods:[] ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
@@ -1168,9 +1168,9 @@ let test_parent_inherit_in_class_type () =
   (* Parse the generated code into AST *)
   let mli_ast = Ml_ast_helpers.parse_interface mli_code in
 
-  (* Validate that the button_t class type inherits from GWidget.widget_t *)
+  (* Validate that the button_t class type inherits from Widget.widget_t *)
   Layer2_helpers.validate_class_type_inherits ~signature:mli_ast
-    ~class_name:"button_t" ~parent_class_type:"GWidget.widget_t"
+    ~class_name:"button_t" ~parent_class_type:"Widget.widget_t"
 
 (* ========================================================================= *)
 (* Test 20: Cyclic Cluster Skips Parent Inherit *)
@@ -1220,14 +1220,14 @@ let test_cyclic_cluster_skips_parent_inherit () =
   (* Should NOT contain any GWidget inherit since both are in the same cluster *)
   let has_gwidget_inherit =
     List.exists
-      (fun c -> String.length c > 0 && String.equal c "GWidget.widget")
+      (fun c -> String.length c > 0 && String.equal c "Widget.widget")
       inherit_clauses
   in
 
   if has_gwidget_inherit then
     Alcotest.fail
       (Fmt.str
-         "Button should NOT inherit from GWidget.widget when in same cluster. \
+         "Button should NOT inherit from Widget.widget when in same cluster. \
           Inherits: [%s]"
          (String.concat "; " inherit_clauses))
 
@@ -1242,7 +1242,7 @@ let make_glist_of_widget ?(nullable = false) () =
   make_gir_type ~name:"GLib.List" ~c_type:"GList*" ~nullable ~array:arr ()
 
 (** A method that returns GLib.List<Widget> should:
-    - have signature returning GWidget.widget_t list
+    - have signature returning Widget.widget_t list
     - have body that calls List.map to wrap each element *)
 let test_glist_return_wrapping () =
   let ctx = create_test_context () in
@@ -1260,7 +1260,7 @@ let test_glist_return_wrapping () =
       ~constructors:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
   in
   let mli_code =
-    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx
+    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx ~class_doc:None
       ~class_name:"Container" ~c_type:"GtkContainer" ~parent_chain:[ "Widget" ]
       ~methods:[ get_children_method ] ~properties:[] ~signals:[]
       ~constructors:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
@@ -1275,7 +1275,7 @@ let test_glist_return_wrapping () =
   (* Verify .mli signature uses Layer 2 type *)
   Layer2_helpers.validate_method_type_annotation_sig ~signature:mli_ast
     ~class_name:"container_t" ~method_name:"get_children"
-    ~expected_type:"unit -> GWidget.widget_t list";
+    ~expected_type:"unit -> Widget.widget_t list";
 
   (* Verify .ml method body calls List.map to wrap elements *)
   let container_class = find_class ml_ast "container" in
@@ -1287,7 +1287,7 @@ let test_glist_return_wrapping () =
        class objects"
 
 (** A method that throws AND returns GLib.List<Widget> should:
-    - have signature returning (GWidget.widget_t list, GError.t) result
+    - have signature returning (Widget.widget_t list, GError.t) result
     - have body that calls Result.map with a List.map *)
 let test_glist_return_throws_wrapping () =
   let ctx = create_test_context () in
@@ -1299,7 +1299,7 @@ let test_glist_return_throws_wrapping () =
   in
 
   let mli_code =
-    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx
+    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx ~class_doc:None
       ~class_name:"Container" ~c_type:"GtkContainer" ~parent_chain:[ "Widget" ]
       ~methods:[ lookup_method ] ~properties:[] ~signals:[] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
@@ -1319,7 +1319,7 @@ let test_glist_return_throws_wrapping () =
   (* Verify .mli signature returns a result type *)
   Layer2_helpers.validate_method_type_annotation_sig ~signature:mli_ast
     ~class_name:"container_t" ~method_name:"lookup_widgets"
-    ~expected_type:"unit -> (GWidget.widget_t list, GError.t) result";
+    ~expected_type:"unit -> (Widget.widget_t list, GError.t) result";
 
   (* Verify .ml body calls Result.map *)
   let container_class = find_class ml_ast "container" in
@@ -1330,7 +1330,7 @@ let test_glist_return_throws_wrapping () =
       "lookup_widgets body should call Result.map to wrap throws+GList return"
 
 (** A method that accepts GLib.List<Widget> as a parameter should:
-    - have signature accepting GWidget.widget_t list
+    - have signature accepting Widget.widget_t list
     - have body with a List.map let-binding to unwrap to Layer 1 before the call
 *)
 let test_glist_param_unwrapping () =
@@ -1354,7 +1354,7 @@ let test_glist_param_unwrapping () =
       ~constructors:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
   in
   let mli_code =
-    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx
+    Gir_gen_lib.Generate.Class_gen.generate_class_signature ~ctx ~class_doc:None
       ~class_name:"Container" ~c_type:"GtkContainer" ~parent_chain:[ "Widget" ]
       ~methods:[ set_children_method ] ~properties:[] ~signals:[]
       ~constructors:[] ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
@@ -1369,7 +1369,7 @@ let test_glist_param_unwrapping () =
   (* Verify .mli signature accepts Layer 2 type *)
   Layer2_helpers.validate_method_type_annotation_sig ~signature:mli_ast
     ~class_name:"container_t" ~method_name:"set_children"
-    ~expected_type:"GWidget.widget_t list -> unit";
+    ~expected_type:"Widget.widget_t list -> unit";
 
   (* Verify .ml body uses List.map to unwrap the L2 list to L1 *)
   let container_class = find_class ml_ast "container" in

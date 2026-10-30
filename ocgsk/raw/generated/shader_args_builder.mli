@@ -1,0 +1,74 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* ShaderArgsBuilder: ShaderArgsBuilder *)
+
+(** Builds the uniforms data for a [GskGLShader].
+
+    The class built on this module is in {!Ocgsk.Shader_args_builder}. *)
+
+type t = [ `shader_args_builder ] Gobject.obj
+
+external gtype : unit -> Gobject.Type.t = "ml_gsk_shader_args_builder_get_type"
+
+external new_ : Gl_shader.t -> Glib_bytes.t option -> t
+  = "ml_gsk_shader_args_builder_new"
+(** Allocates a builder that can be used to construct a new uniform data chunk.
+*)
+
+(* Methods *)
+
+external to_args : t -> Glib_bytes.t = "ml_gsk_shader_args_builder_to_args"
+(** Creates a new [GBytes] args from the current state of the given [builder].
+
+    Any uniforms of the shader that have not been explicitly set on the
+    [builder] are zero-initialized.
+
+    The given [GskShaderArgsBuilder] is reset once this function returns; you
+    cannot call this function multiple times on the same [builder] instance.
+
+    This function is intended primarily for bindings. C code should use
+    [Gsk.ShaderArgsBuilder.free_to_args]. *)
+
+external set_vec4 : t -> int -> Ocgraphene_raw.Vec4.t -> unit
+  = "ml_gsk_shader_args_builder_set_vec4"
+(** Sets the value of the uniform [idx].
+
+    The uniform must be of vec4 type. *)
+
+external set_vec3 : t -> int -> Ocgraphene_raw.Vec3.t -> unit
+  = "ml_gsk_shader_args_builder_set_vec3"
+(** Sets the value of the uniform [idx].
+
+    The uniform must be of vec3 type. *)
+
+external set_vec2 : t -> int -> Ocgraphene_raw.Vec2.t -> unit
+  = "ml_gsk_shader_args_builder_set_vec2"
+(** Sets the value of the uniform [idx].
+
+    The uniform must be of vec2 type. *)
+
+external set_uint : t -> int -> UInt32.t -> unit
+  = "ml_gsk_shader_args_builder_set_uint"
+(** Sets the value of the uniform [idx].
+
+    The uniform must be of uint type. *)
+
+external set_int : t -> int -> Int32.t -> unit
+  = "ml_gsk_shader_args_builder_set_int"
+(** Sets the value of the uniform [idx].
+
+    The uniform must be of int type. *)
+
+external set_float : t -> int -> float -> unit
+  = "ml_gsk_shader_args_builder_set_float"
+(** Sets the value of the uniform [idx].
+
+    The uniform must be of float type. *)
+
+external set_bool : t -> int -> bool -> unit
+  = "ml_gsk_shader_args_builder_set_bool"
+(** Sets the value of the uniform [idx].
+
+    The uniform must be of bool type. *)
+
+external ref : t -> t = "ml_gsk_shader_args_builder_ref"
+(** Increases the reference count of a [GskShaderArgsBuilder] by one. *)

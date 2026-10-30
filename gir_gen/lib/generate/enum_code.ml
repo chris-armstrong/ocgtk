@@ -22,42 +22,62 @@ let variant_name_of_member name =
     guard (no trailing newline required) *)
 let emit_member_branch ~namespace ~class_version ~member_version ~fallback_line
     ~branch buf =
-  match Version_guard.resolve_guard ~class_version ~member_version with
-  | Error _ | Ok (Version_guard.No_guard | Version_guard.Class_guard _) ->
-      Buffer.add_string buf branch
-  | Ok (Version_guard.Member_guard v) -> (
-      match Version_guard.emit_c_guard namespace v ~is_opening:true with
-      | Error _ -> Buffer.add_string buf branch
-      | Ok guard_if -> (
-          bprintf buf "%s\n%s\n" guard_if branch;
-          (match fallback_line with
-          | None -> ()
-          | Some fb -> bprintf buf "%s\n%s\n" Version_guard.c_guard_else fb);
-          match Version_guard.emit_c_guard namespace v ~is_opening:false with
-          | Ok guard_endif -> Buffer.add_string buf (guard_endif ^ "\n")
-          | Error _ -> Buffer.add_string buf "#endif\n"))
+  let member_guard =
+    match Version_guard.resolve_guard ~class_version ~member_version with
+    | Ok (Version_guard.Member_guard v) -> Some v
+    | Error _ | Ok (Version_guard.No_guard | Version_guard.Class_guard _) ->
+        None
+  in
+  let opening =
+    Option.bind member_guard (fun v ->
+        Version_guard.emit_c_guard namespace v ~is_opening:true
+        |> Result.to_option
+        |> Option.map (fun guard_if -> (v, guard_if)))
+  in
+  match opening with
+  | None -> Buffer.add_string buf branch
+  | Some (v, guard_if) -> (
+      bprintf buf "%s\n%s\n" guard_if branch;
+      Option.iter (fun fb ->
+          bprintf buf "%s\n%s\n" Version_guard.c_guard_else fb)
+      @@ fallback_line;
+      match Version_guard.emit_c_guard namespace v ~is_opening:false with
+      | Ok guard_endif -> Buffer.add_string buf (guard_endif ^ "\n")
+      | Error _ -> Buffer.add_string buf "#endif\n")
+
+(* The doc of an enumeration or bitfield type. It goes on the type whose
+   constructors the members' docs are on: for a bitfield, the flag type. *)
+let type_doc ~refs ?since doc =
+  Doc_emit.item_doc ~indent:"" ?since ~refs ~context:Doc_translate.Member doc
+
+(* What follows a type's closing bracket: its doc attribute, which ends with a
+   blank line, or just the blank line. *)
+let after_type doc =
+  match Doc_emit.after_item doc with "" -> "\n" | attribute -> attribute
 
 (* Generate OCaml enum type definition plus val declarations for converters *)
-let generate_ocaml_enum enum =
+let generate_ocaml_enum ~refs enum =
   let buf = Buffer.create 512 in
   let lower_name = Utils.ocaml_enum_name enum in
 
   bprintf buf "(* %s - enumeration *)\n" enum.enum_name;
-  (match enum.enum_doc with
-  | Some doc -> bprintf buf "(** %s *)\n" (Utils.sanitize_doc doc)
-  | None -> ());
+  let doc = type_doc ~refs ?since:enum.enum_version enum.enum_doc in
+  bprintf buf "%s" (Doc_emit.before_item doc);
 
   bprintf buf "type %s = [\n" lower_name;
 
   List.iteri
     ~f:(fun i member ->
       let vname = variant_name_of_member member.member_name in
-      (match member.member_doc with
-      | Some doc -> bprintf buf "  (** %s *)\n" (Utils.sanitize_doc doc)
-      | None -> ());
       bprintf buf "  | `%s" vname;
+      (* Odoc renders a polymorphic-variant member doc only when it follows
+         the tag, so the doc goes after it, not before. *)
+      bprintf buf "%s"
+        (Doc_emit.member_suffix
+           (Doc_emit.item_doc ~indent:"  " ~refs ~context:Doc_translate.Member
+              member.member_doc));
       if i < List.length enum.members - 1 then bprintf buf "\n"
-      else bprintf buf "\n]\n\n")
+      else bprintf buf "\n]\n%s" (after_type doc))
     enum.members;
 
   bprintf buf "val %s_of_int : int -> %s\n" lower_name lower_name;
@@ -67,26 +87,28 @@ let generate_ocaml_enum enum =
 
 (* Generate OCaml bitfield type definition plus val declarations for
    converters *)
-let generate_ocaml_bitfield bitfield =
+let generate_ocaml_bitfield ~refs bitfield =
   let buf = Buffer.create 512 in
   let lower_name = Utils.ocaml_bitfield_name bitfield in
 
   bprintf buf "(* %s - bitfield/flags *)\n" bitfield.bitfield_name;
-  (match bitfield.bitfield_doc with
-  | Some doc -> bprintf buf "(** %s *)\n" (Utils.sanitize_doc doc)
-  | None -> ());
+  let doc =
+    type_doc ~refs ?since:bitfield.bitfield_version bitfield.bitfield_doc
+  in
+  bprintf buf "%s" (Doc_emit.before_item doc);
 
   bprintf buf "type %s_flag = [\n" lower_name;
 
   List.iteri
     ~f:(fun i flag ->
       let vname = variant_name_of_member flag.flag_name in
-      (match flag.flag_doc with
-      | Some doc -> bprintf buf "  (** %s *)\n" (Utils.sanitize_doc doc)
-      | None -> ());
       bprintf buf "  | `%s" vname;
+      bprintf buf "%s"
+        (Doc_emit.member_suffix
+           (Doc_emit.item_doc ~indent:"  " ~refs ~context:Doc_translate.Member
+              flag.flag_doc));
       if i < List.length bitfield.flags - 1 then bprintf buf "\n"
-      else bprintf buf "\n]\n\n")
+      else bprintf buf "\n]\n%s" (after_type doc))
     bitfield.flags;
 
   bprintf buf "type %s = %s_flag list\n\n" lower_name lower_name;

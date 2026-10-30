@@ -7,7 +7,7 @@ in `exclude_list.ml`, `filtering.ml`, and `gir_parser.ml`.
 ## Files
 
 ```
-ocgtk/overrides/          # One file per namespace, committed to the repo
+overrides/                # One file per namespace, committed to the repo
   cairo.sexp
   gio.sexp
   gdk.sexp

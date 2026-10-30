@@ -1,0 +1,60 @@
+{0 Gsk classes and records}
+
+{!Ocgsk} has one module for each Gsk class and record, with the externals they are built on in {!Ocgsk.Raw} and the enumerations and bitfields in {!Ocgsk.Enums}. See {%html:<a href="../ocgtk/conventions.html">the conventions page</a>%} for how the bindings are organised: the two layers, the anatomy of a class module, and how names, types, signals and properties are mapped.
+
+{1 Classes}
+
+{!modules:
+  Ocgsk.Blend_node
+  Ocgsk.Blur_node
+  Ocgsk.Border_node
+  Ocgsk.Cairo_node
+  Ocgsk.Cairo_renderer
+  Ocgsk.Clip_node
+  Ocgsk.Color_matrix_node
+  Ocgsk.Color_node
+  Ocgsk.Component_transfer_node
+  Ocgsk.Conic_gradient_node
+  Ocgsk.Container_node
+  Ocgsk.Cross_fade_node
+  Ocgsk.Debug_node
+  Ocgsk.Fill_node
+  Ocgsk.Gl_shader
+  Ocgsk.Gl_shader_node
+  Ocgsk.Inset_shadow_node
+  Ocgsk.Linear_gradient_node
+  Ocgsk.Mask_node
+  Ocgsk.Opacity_node
+  Ocgsk.Outset_shadow_node
+  Ocgsk.Radial_gradient_node
+  Ocgsk.Render_node
+  Ocgsk.Renderer
+  Ocgsk.Repeat_node
+  Ocgsk.Repeating_linear_gradient_node
+  Ocgsk.Repeating_radial_gradient_node
+  Ocgsk.Rounded_clip_node
+  Ocgsk.Shadow_node
+  Ocgsk.Stroke_node
+  Ocgsk.Subsurface_node
+  Ocgsk.Text_node
+  Ocgsk.Texture_node
+  Ocgsk.Texture_scale_node
+  Ocgsk.Transform_node
+}
+
+{1 Records}
+
+{!modules:
+  Ocgsk.Color_stop
+  Ocgsk.Component_transfer
+  Ocgsk.Parse_location
+  Ocgsk.Path
+  Ocgsk.Path_builder
+  Ocgsk.Path_measure
+  Ocgsk.Path_point
+  Ocgsk.Rounded_rect
+  Ocgsk.Shader_args_builder
+  Ocgsk.Shadow
+  Ocgsk.Stroke
+  Ocgsk.Transform
+}

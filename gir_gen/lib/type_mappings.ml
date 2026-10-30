@@ -5,9 +5,20 @@ open Types
 
 let or_else f opt = match opt with Some _ -> opt | None -> f ()
 
+(* A cyclic group member's layer 2 module is the group's combined module only
+   while the group itself is generated (its combined module and member
+   modules, where the member module would be a dependency cycle). Elsewhere it
+   is the member module, the public path. *)
+let layer2_class_module ~ctx name =
+  match Hashtbl.find_opt ctx.module_groups name with
+  | Some combined_module_name when List.mem name ~set:ctx.current_cycle_classes
+    ->
+      combined_module_name
+  | Some _ | None -> Utils.module_name_of_class name
+
 let calculate_layer2_class ~class_module ~class_name =
   {
-    class_module = "G" ^ class_module;
+    class_module;
     class_type = class_name ^ "_t";
     class_ml_name = class_name;
     class_layer1_accessor = "as_" ^ class_name;
@@ -15,19 +26,20 @@ let calculate_layer2_class ~class_module ~class_name =
 
 (** Map a cross-namespace type reference to a type mapping. This function is
     used to convert a cross-reference to a type mapping.*)
-let map_cross_reference_to_type_mapping ~ctx:_ ~namespace
+let map_cross_reference_to_type_mapping ~ctx ~namespace
     (cr : cross_reference_entity) : type_mapping =
-  let external_namespace = Utils.external_namespace_to_module_name namespace in
-
+  let layer2_module =
+    Module_paths.cross_ns_layer2_module ~namespace cr.cr_name
+  in
   {
     ocaml_type =
       (match cr.cr_type with
       | Crt_Class _ | Crt_Record _ | Crt_Interface ->
-          external_namespace ^ ".Wrappers."
-          ^ Utils.module_name_of_class cr.cr_name
-          ^ ".t"
+          Module_paths.cross_ns_layer1_module ~ctx ~namespace cr.cr_name ^ ".t"
       | Crt_Bitfield | Crt_Enum | Crt_Constant ->
-          external_namespace ^ "." ^ String.lowercase_ascii cr.cr_name);
+          Module_paths.namespace_enums_module ~ctx namespace
+          ^ "."
+          ^ String.lowercase_ascii cr.cr_name);
     c_type = cr.cr_c_type;
     c_to_ml =
       (match cr.cr_type with
@@ -45,8 +57,7 @@ let map_cross_reference_to_type_mapping ~ctx:_ ~namespace
           let c_name = Utils.ocaml_class_name cr.cr_name in
           Some
             {
-              class_module =
-                external_namespace ^ "." ^ Utils.module_name_of_class cr.cr_name;
+              class_module = layer2_module;
               class_type = c_name ^ "_t";
               class_ml_name = c_name;
               class_layer1_accessor = "as_" ^ c_name;
@@ -55,8 +66,7 @@ let map_cross_reference_to_type_mapping ~ctx:_ ~namespace
           let c_name = Utils.ocaml_interface_name cr.cr_name in
           Some
             {
-              class_module =
-                external_namespace ^ "." ^ Utils.module_name_of_class cr.cr_name;
+              class_module = layer2_module;
               class_type = c_name ^ "_t";
               class_ml_name = c_name;
               class_layer1_accessor = "as_" ^ c_name;
@@ -65,8 +75,7 @@ let map_cross_reference_to_type_mapping ~ctx:_ ~namespace
           let c_name = Utils.ocaml_record_name cr.cr_name in
           Some
             {
-              class_module =
-                external_namespace ^ "." ^ Utils.module_name_of_class cr.cr_name;
+              class_module = layer2_module;
               class_type = c_name ^ "_t";
               class_ml_name = c_name;
               class_layer1_accessor = "as_" ^ c_name;
@@ -222,7 +231,7 @@ let type_mappings : (string * Types.type_mapping) list =
         transfer_strategy = Ts_none;
       } );
     (* GObject namespace types — not generated from GIR, mapped to
-       hand-written wrappers in src/common/gobject.ml *)
+       hand-written wrappers in ocglib/gobject.ml *)
     ( "GObject.Object",
       {
         ocaml_type = "[`object_] Gobject.obj";
@@ -417,7 +426,7 @@ let type_mappings : (string * Types.type_mapping) list =
       } );
     (* guint64 uses the integers library (already a dependency via GVariant).
        wrappers.h includes <ocaml_integers.h> to expose Uint64_val/integers_copy_uint64.
-       Exposed as UInt64.t (via src/common/uInt64.ml) for consistency with the other
+       Exposed as UInt64.t (via ocglib/uInt64.ml) for consistency with the other
        bounded integer modules — the underlying type is still Unsigned.UInt64.t. *)
     ( "guint64",
       {
@@ -550,22 +559,7 @@ let lookup_record ~records ~lookup_str =
   |> Option.map (fun record -> (record, is_pointer, is_boxed_record record))
 
 let calculate_class_or_interface_or_record_module_name ~ctx ~name =
-  (* Check if this interface is in the current cycle being generated *)
-  if List.mem name ~set:ctx.current_cycle_classes then
-    (* Within the same cycle, use just the submodule name *)
-    Utils.module_name_of_class name
-  else
-    match Hashtbl.find_opt ctx.module_groups name with
-    | Some combined_module_name ->
-        let simple_module_name = Utils.module_name_of_class name in
-        (* Check if this is a cyclic module by comparing names *)
-        if not (String.equal combined_module_name simple_module_name) then
-          (* For cyclic modules, we need CombinedModule.InterfaceName.t *)
-          combined_module_name ^ "." ^ simple_module_name
-        else
-          (* Single module *)
-          combined_module_name
-    | None -> Utils.module_name_of_class name
+  Module_paths.same_ns_layer1_module ~ctx name
 
 (* Attempt to find a class mapping in the context in the current namespace *)
 let find_class_mapping ~ctx ~lookup_str =
@@ -578,11 +572,7 @@ let find_class_mapping ~ctx ~lookup_str =
   in
   let ocaml_type = module_name ^ ".t" in
   let ocaml_class_name = Utils.ocaml_class_name cls.class_name in
-  let ocaml_class_module =
-    match Hashtbl.find_opt ctx.module_groups cls.class_name with
-    | Some combined_module_name -> combined_module_name
-    | None -> Utils.module_name_of_class cls.class_name
-  in
+  let ocaml_class_module = layer2_class_module ~ctx cls.class_name in
   Some
     {
       ocaml_type;
@@ -610,11 +600,7 @@ let find_interface_mapping ~ctx ~lookup_str =
     (* Look up the module name from module_groups table *)
     module_name ^ ".t"
   in
-  let ocaml_class_module =
-    match Hashtbl.find_opt ctx.module_groups iface.interface_name with
-    | Some combined_module_name -> combined_module_name
-    | None -> Utils.module_name_of_class iface.interface_name
-  in
+  let ocaml_class_module = layer2_class_module ~ctx iface.interface_name in
 
   let ocaml_class_name = Utils.ocaml_class_name iface.interface_name in
   Some
@@ -668,7 +654,9 @@ let find_enum_mapping ~ctx ~lookup_str =
       ctx.enums
   in
   (* Use the context's namespace for enums from the current library *)
-  let namespace = Utils.enums_module_name ctx enum in
+  let namespace =
+    Module_paths.namespace_enums_module ~ctx ctx.namespace.namespace_name
+  in
   let c_namespace = ctx.namespace.namespace_name in
   Some
     {
@@ -692,7 +680,9 @@ let find_bitfield_mapping ~ctx ~lookup_str =
       ctx.bitfields
   in
   (* Use the context's namespace for bitfields from the current library *)
-  let namespace = Utils.bitfields_module_name ctx bitfield in
+  let namespace =
+    Module_paths.namespace_enums_module ~ctx ctx.namespace.namespace_name
+  in
   let c_namespace = ctx.namespace.namespace_name in
   Some
     {

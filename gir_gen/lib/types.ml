@@ -28,6 +28,12 @@ and gir_type = {
 
 type gir_direction = In | Out | InOut
 
+type gir_deprecation = {
+  deprecated : bool;
+  deprecated_version : string option;
+  deprecated_doc : string option; (* <doc-deprecated> prose *)
+}
+
 type gir_param = {
   param_name : string;
   param_type : gir_type;
@@ -36,6 +42,7 @@ type gir_param = {
   varargs : bool;
   caller_allocates : bool;
       (* True if caller allocates the buffer for out params *)
+  param_doc : string option; (* <doc> child of the <parameter> element *)
 }
 
 type gir_method = {
@@ -44,6 +51,7 @@ type gir_method = {
   return_type : gir_type;
   parameters : gir_param list;
   doc : string option;
+  return_doc : string option; (* <doc> child of the <return-value> element *)
   throws : bool;
   get_property : string option;
   set_property : string option;
@@ -51,6 +59,7 @@ type gir_method = {
   version : string option;
   version_namespace : string option;
   os : Os_filter.t option;
+  deprecation : gir_deprecation option;
 }
 
 type gir_function = {
@@ -59,11 +68,13 @@ type gir_function = {
   return_type : gir_type;
   parameters : gir_param list;
   doc : string option;
+  return_doc : string option; (* <doc> child of the <return-value> element *)
   throws : bool;
   introspectable : bool;
   version : string option;
   version_namespace : string option;
   os : Os_filter.t option;
+  deprecation : gir_deprecation option;
 }
 
 type signal_run_when = RunFirst | RunLast | RunCleanup
@@ -73,6 +84,7 @@ type gir_signal = {
   return_type : gir_type;
   sig_parameters : gir_param list;
   doc : string option;
+  return_doc : string option; (* <doc> child of the <return-value> element *)
   version : string option;
   version_namespace : string option;
   os : Os_filter.t option;
@@ -80,6 +92,7 @@ type gir_signal = {
   action : bool;
   no_recurse : bool;
   no_hooks : bool;
+  deprecation : gir_deprecation option;
 }
 
 type gir_constructor = {
@@ -92,6 +105,7 @@ type gir_constructor = {
   version : string option;
   version_namespace : string option;
   os : Os_filter.t option;
+  deprecation : gir_deprecation option;
 }
 
 type gir_property = {
@@ -101,9 +115,11 @@ type gir_property = {
   writable : bool;
   construct_only : bool;
   prop_doc : string option;
+  prop_default : string option;  (** GIR [default-value=], a C value. *)
   version : string option;
   version_namespace : string option;
   os : Os_filter.t option;
+  deprecation : gir_deprecation option;
 }
 
 type gir_record_field = {
@@ -114,6 +130,7 @@ type gir_record_field = {
   field_doc : string option;
   field_version : string option;
   field_os : Os_filter.t option;
+  deprecation : gir_deprecation option;
 }
 
 type gir_record = {
@@ -134,6 +151,7 @@ type gir_record = {
   record_doc : string option;
   version : string option;
   os : Os_filter.t option;
+  deprecation : gir_deprecation option;
 }
 
 type gir_enum_member = {
@@ -143,6 +161,7 @@ type gir_enum_member = {
   member_doc : string option;
   member_version : string option;
   member_os : Os_filter.t option;
+  deprecation : gir_deprecation option;
 }
 
 type gir_enum = {
@@ -153,6 +172,7 @@ type gir_enum = {
   enum_doc : string option;
   enum_version : string option;
   enum_os : Os_filter.t option;
+  deprecation : gir_deprecation option;
 }
 
 type gir_bitfield_member = {
@@ -162,6 +182,7 @@ type gir_bitfield_member = {
   flag_doc : string option;
   flag_version : string option;
   flag_os : Os_filter.t option;
+  deprecation : gir_deprecation option;
 }
 
 type gir_constant = {
@@ -173,6 +194,7 @@ type gir_constant = {
   version : string option;
   os : Os_filter.t option;
   introspectable : bool;
+  deprecation : gir_deprecation option;
 }
 
 type gir_bitfield = {
@@ -182,6 +204,7 @@ type gir_bitfield = {
   bitfield_doc : string option;
   bitfield_version : string option;
   bitfield_os : Os_filter.t option;
+  deprecation : gir_deprecation option;
 }
 
 type gir_class = {
@@ -195,6 +218,8 @@ type gir_class = {
   parent : string option;
   implements : string list;
   introspectable : bool;
+  abstract : bool;
+      (** GIR [abstract="1"]: the class has no instances of its own type. *)
   constructors : gir_constructor list;
   methods : gir_method list;
   properties : gir_property list;
@@ -202,6 +227,7 @@ type gir_class = {
   class_doc : string option;
   version : string option;
   os : Os_filter.t option;
+  deprecation : gir_deprecation option;
 }
 
 type gir_interface = {
@@ -218,6 +244,7 @@ type gir_interface = {
   interface_doc : string option;
   version : string option;
   os : Os_filter.t option;
+  deprecation : gir_deprecation option;
 }
 
 (* Unified entity type for classes, interfaces, and records *)
@@ -239,6 +266,7 @@ type entity = {
   signals : gir_signal list;
   version : string option;
   os : Os_filter.t option;
+  deprecation : gir_deprecation option;
 }
 
 let entity_of_class (cls : gir_class) : entity =
@@ -255,6 +283,7 @@ let entity_of_class (cls : gir_class) : entity =
     signals = cls.signals;
     version = cls.version;
     os = cls.os;
+    deprecation = cls.deprecation;
   }
 
 let entity_of_interface (intf : gir_interface) : entity =
@@ -271,6 +300,7 @@ let entity_of_interface (intf : gir_interface) : entity =
     signals = intf.signals;
     version = intf.version;
     os = intf.os;
+    deprecation = intf.deprecation;
   }
 
 let entity_of_record (rec_ : gir_record) : entity =
@@ -287,6 +317,7 @@ let entity_of_record (rec_ : gir_record) : entity =
     signals = [];
     version = rec_.version;
     os = rec_.os;
+    deprecation = rec_.deprecation;
   }
 
 let entity_glib_get_type (e : entity) : string option =
@@ -439,6 +470,8 @@ type gir_repository = {
   repository_includes : gir_include list;
   repository_c_includes : string list;
   repository_packages : string list;
+  repository_doc_format : string option;
+      (* <doc:format name=...> of the repository (diagnostics only) *)
 }
 
 type cross_reference_type =
@@ -456,10 +489,28 @@ type cross_reference_type =
   | Crt_Constant
 [@@deriving sexp]
 
+type cross_reference_layer_members = {
+  crl_methods : (string * string) list; [@sexp.list]
+  crl_constructors : (string * string) list; [@sexp.list]
+  crl_signals : (string * string) list; [@sexp.list]
+  crl_properties : (string * string) list; [@sexp.list]
+}
+[@@deriving sexp]
+
+type cross_reference_members = {
+  crm_l1 : cross_reference_layer_members;
+  crm_l2 : cross_reference_layer_members;
+  crm_c_methods : (string * string) list; [@sexp.list]
+  crm_c_constructors : (string * string) list; [@sexp.list]
+}
+[@@deriving sexp]
+
 type cross_reference_entity = {
   cr_name : string;
   cr_type : cross_reference_type;
   cr_c_type : string;
+  cr_members : cross_reference_members option; [@sexp.option]
+  cr_enum_members : (string * string) list option; [@sexp.option]
 }
 [@@deriving sexp]
 
@@ -482,6 +533,71 @@ type generation_context_namespace_cross_references = {
   ncr_entities : cross_reference_entity StringMap.t;
 }
 
+(** Each namespace's generated OCaml lives in two libraries: layer 1 in the raw
+    library ([Ocgio_raw]), layer 2 in the main library ([Ocgio]). The same type
+    is named differently from each (see [Module_paths]). *)
+type target_library = Raw_library | Main_library
+
+(** The kinds of type a doc reference can link to: those with a generated module
+    or enumeration type. *)
+type doc_type_kind =
+  | Dk_class
+  | Dk_interface
+  | Dk_record
+  | Dk_enum
+  | Dk_bitfield
+
+type doc_member_names = {
+  dm_methods : string StringMap.t;
+  dm_constructors : string StringMap.t;
+  dm_signals : string StringMap.t;
+  dm_properties : string StringMap.t;
+      (** The accessor a property reference links to. *)
+}
+(** The members a type emits at one layer: GIR name to OCaml name. Signal and
+    property names are in GIR form, with hyphens. *)
+
+type doc_type_members = { dm_l1 : doc_member_names; dm_l2 : doc_member_names }
+(** The members a type emits at each layer (see [Emitted_members]). *)
+
+type doc_c_member_kind = Dc_method | Dc_constructor | Dc_enum_member
+
+type doc_c_symbol = {
+  dc_kind : doc_c_member_kind;
+  dc_type : string;  (** The GIR name of the type that declares it. *)
+  dc_member : string;  (** Its GIR name. *)
+}
+(** A method, constructor, or enumeration or bitfield member, found by its C
+    identifier. *)
+
+type doc_index_namespace = {
+  di_types : doc_type_kind StringMap.t;
+  di_constants : string StringMap.t;  (** GIR name to OCaml value name. *)
+  di_members : doc_type_members StringMap.t;
+      (** By GIR type name. Another namespace has them only when its references
+          file lists members. *)
+  di_enum_members : string StringMap.t StringMap.t;
+      (** By enumeration or bitfield GIR name, then by member name in upper case
+          with underscores: the polymorphic variant tag. Likewise for another
+          namespace. *)
+  di_c_types : string StringMap.t;  (** C type name to GIR type name. *)
+  di_c_constants : string StringMap.t;
+      (** C identifier to GIR constant name. *)
+  di_c_symbols : doc_c_symbol StringMap.t;
+      (** By C identifier. Likewise for another namespace. *)
+  di_members_listed : bool;
+      (** Whether the member tables are filled: always for the current
+          namespace, and for another one when its references file lists members.
+          An older file has no member tables, so its members can't be checked.
+      *)
+}
+(** What a doc reference into one namespace can link to: its generated types,
+    constants and members, keyed by GIR name and by C name (see [Doc_index]). *)
+
+type doc_index = doc_index_namespace StringMap.t
+(** The namespaces a doc reference can link into, keyed by GIR namespace name:
+    the current one and those with a references file. *)
+
 type generation_context = {
   namespace : gir_namespace;
   repository : gir_repository;
@@ -496,4 +612,7 @@ type generation_context = {
   current_cycle_classes : string list;
       (* Class names in the current cyclic module being generated *)
   cross_references : generation_context_namespace_cross_references StringMap.t;
+  target_library : target_library;
+      (* Library the code being generated belongs to; decides module paths *)
+  doc_index : doc_index; (* What doc references can link to; see [Doc_index] *)
 }

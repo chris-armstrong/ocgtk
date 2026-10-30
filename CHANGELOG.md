@@ -4,6 +4,85 @@ All notable changes to **ocgtk** are documented here. Entries are grouped by
 release; the `0.1~preview*` series is the initial preview track toward a
 usable OCaml GTK 4 binding library.
 
+## [Unreleased]
+
+### Breaking: one package per library
+
+- **One opam package per namespace** — `occairo`, `ocgio`, `ocgraphene`,
+  `ocgdkpixbuf`, `ocpango`, `ocpangocairo`, `ocgdk`, `ocgsk` and `ocgtk`,
+  each in its own top-level directory and declared in the root
+  `dune-project`. **`ocgtk` is now Gtk only**; in `0.1~preview2` it was the
+  umbrella for every library, and the umbrella `Ocgtk` module and the
+  `ocgtk.<ns>` sub-libraries are gone.
+- **Flat module paths** — `Ocgtk_gio.Gio.File` is now `Ocgio.File`; layer 1
+  (`Ocgtk_gio.Gio.Wrappers.File`) is `Ocgio.Raw.File`; enums
+  (`Ocgtk_gio.Gio_enums`) are `Ocgio.Enums`; constants are
+  `Ocgio.Constants`. Layer 2 modules lose their `G` prefix
+  (`GButton` is `Ocgtk.Button`), and `GMain` and `GVersion` are
+  `Ocgtk.Main` and `Ocgtk.Version`.
+- **Three libraries per package** — `<pkg>.enums`, `<pkg>.raw` and `<pkg>`;
+  users depend on `<pkg>` alone. The raw libraries install their C headers
+  (`gio_decls.h`, ...), so C stubs include them without a directory.
+- **Tests** live in each package's `tests/` directory, and run only for that
+  package under `opam install --with-test`.
+
+### API documentation
+
+The generated bindings now carry the upstream GTK documentation, and
+`dune build @doc` produces browsable odoc HTML for every package.
+
+- **Upstream docs in every binding** — the documentation in each library's
+  GObject Introspection (GIR) file is translated from its markdown dialect
+  to odoc markup and emitted on modules, classes, methods, constructors,
+  signals, properties, enums and constants, in both the low-level
+  `Oc<ns>.Raw` modules and the object-oriented modules.
+- **Rewritten for OCaml** — C idioms are replaced with their OCaml forms
+  (`%TRUE` is `true`, `%NULL` is `None`, `gboolean` is `bool`), and
+  sentences telling the caller to free or unref a value are removed, since
+  the garbage collector owns every value.
+- **Cross-references link** — references to other types, methods, signals,
+  properties, enum values and constants (written as gi-docgen links, gtk-doc
+  `#Type`/`%CONSTANT` sigils or C function names) link to the generated
+  OCaml item, across packages. References to anything not generated, such
+  as GLib or GObject, stay as code. odoc 3.2 does not resolve links in the
+  docs of class methods, so the references there also stay as code.
+- **Class pages** — each class module starts with a short guide to the
+  page, its class type lists its parent class and interfaces and groups its
+  members under Signals, Methods, Properties and Conversions, and every
+  class has a Constructors section that says why when there are none.
+  Undocumented constructors and properties get a generated description with
+  a link to the upstream C documentation.
+- **Index and conventions pages** — each package has an index page and a
+  list of its modules, and a conventions page explains the two binding
+  layers, naming, type mappings, signals and properties.
+
+### Packaging
+
+- **ocglib** — the GLib/GObject runtime (`Gobject`, `Gvariant`, `GError`,
+  …) is a separate opam package and wrapped library, `ocglib`, that needs
+  only GLib's development files, not GTK's. Every other package depends on
+  it; its modules are `Ocglib.Gobject` and so on.
+- **New conf packages** — `conf-cairo-gobject`, `conf-pangocairo`,
+  `conf-gdk-pixbuf-2` and `conf-graphene-1` install each library's
+  development files through depexts. `conf-cairo-gobject` exists because
+  `conf-cairo` does not install `cairo-gobject` on Fedora and CentOS.
+
+### Platforms
+
+- **Windows unsupported** — MSYS2 deprecated its MINGW64 environment and no
+  longer ships GTK 4 there, and opam cannot yet build OCaml in the UCRT64
+  environment that does. `conf-gtk4` is no longer available on Windows, and
+  the Windows release check is disabled until opam supports UCRT64.
+- **Release checks** now cover Ubuntu 22.04, 24.04, 26.04 and 26.10, Debian
+  12 and 13, Fedora 43 and 44, CentOS Stream 9 and 10, openSUSE Leap 16.0
+  and Tumbleweed, Alpine 3.24, Arch Linux and macOS (Homebrew). Ubuntu
+  25.04, Fedora 40 and openSUSE Leap 15.6 (all end of life) are dropped.
+- **conf-gtk4** — depexts trimmed to the checked platforms: MacPorts and
+  the `rhel` distribution entry are removed.
+- **OCaml versions** — CI builds with OCaml 5.5, and the release checks add
+  a job that installs every package on OCaml 4.14, the oldest the packages
+  accept.
+
 ## [0.1~preview2] — 2026-06-24
 
 Completes **Milestone 2 (signal handling with parameters)** and brings broad

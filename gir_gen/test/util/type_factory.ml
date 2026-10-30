@@ -33,6 +33,7 @@ let make_gir_param ~param_name ~param_type ?direction ?nullable ?varargs
     nullable = Option.value nullable ~default:false;
     varargs = Option.value varargs ~default:false;
     caller_allocates = Option.value caller_allocates ~default:false;
+    param_doc = None;
   }
 
 let make_gir_method ~method_name ~c_identifier ~return_type ?parameters ?doc
@@ -43,6 +44,7 @@ let make_gir_method ~method_name ~c_identifier ~return_type ?parameters ?doc
     return_type;
     parameters = Option.value parameters ~default:[];
     doc;
+    return_doc = None;
     throws = Option.value throws ~default:false;
     introspectable = Option.value introspectable ~default:true;
     get_property;
@@ -50,6 +52,7 @@ let make_gir_method ~method_name ~c_identifier ~return_type ?parameters ?doc
     version;
     version_namespace = None;
     os = None;
+    deprecation = None;
   }
 
 let make_gir_function ~function_name ~c_identifier ~return_type ?parameters ?doc
@@ -60,11 +63,13 @@ let make_gir_function ~function_name ~c_identifier ~return_type ?parameters ?doc
     return_type;
     parameters = Option.value parameters ~default:[];
     doc;
+    return_doc = None;
     throws = Option.value throws ~default:false;
     introspectable = Option.value introspectable ~default:true;
     version;
     version_namespace = None;
     os = None;
+    deprecation = None;
   }
 
 let make_gir_signal ~signal_name ~return_type ?(sig_parameters = []) ?doc
@@ -75,9 +80,11 @@ let make_gir_signal ~signal_name ~return_type ?(sig_parameters = []) ?doc
     return_type;
     sig_parameters;
     doc;
+    return_doc = None;
     version;
     version_namespace = None;
     os = None;
+    deprecation = None;
     run_when;
     action;
     no_recurse;
@@ -96,10 +103,12 @@ let make_gir_constructor ~ctor_name ~c_identifier ?(ctor_parameters = [])
     version;
     version_namespace = None;
     os = None;
+    deprecation = None;
   }
 
 let make_gir_property ~prop_name ~prop_type ?(readable = true)
-    ?(writable = true) ?(construct_only = false) ?prop_doc ?version () =
+    ?(writable = true) ?(construct_only = false) ?prop_doc ?prop_default
+    ?version () =
   {
     prop_name;
     prop_type;
@@ -107,9 +116,11 @@ let make_gir_property ~prop_name ~prop_type ?(readable = true)
     writable;
     construct_only;
     prop_doc;
+    prop_default;
     version;
     version_namespace = None;
     os = None;
+    deprecation = None;
   }
 
 let make_gir_record_field ~field_name ?field_type ?(readable = true)
@@ -122,6 +133,7 @@ let make_gir_record_field ~field_name ?field_type ?(readable = true)
     field_doc;
     field_version = None;
     field_os = None;
+    deprecation = None;
   }
 
 let make_gir_record ?(record_name = "TestRecord") ?(c_type = "TestRecord")
@@ -146,6 +158,7 @@ let make_gir_record ?(record_name = "TestRecord") ?(c_type = "TestRecord")
     record_doc;
     version;
     os = None;
+    deprecation = None;
   }
 
 let make_gir_enum_member ?(member_name = "NONE") ?(member_value = 0)
@@ -157,6 +170,7 @@ let make_gir_enum_member ?(member_name = "NONE") ?(member_value = 0)
     member_doc;
     member_version = None;
     member_os = None;
+    deprecation = None;
   }
 
 let make_gir_enum ?(enum_name = "TestEnum") ?(enum_c_type = "TestEnum")
@@ -169,6 +183,7 @@ let make_gir_enum ?(enum_name = "TestEnum") ?(enum_c_type = "TestEnum")
     enum_doc;
     enum_version;
     enum_os = None;
+    deprecation = None;
   }
 
 let make_gir_bitfield_member ?(flag_name = "NONE") ?(flag_value = 0)
@@ -180,6 +195,7 @@ let make_gir_bitfield_member ?(flag_name = "NONE") ?(flag_value = 0)
     flag_doc;
     flag_version = None;
     flag_os = None;
+    deprecation = None;
   }
 
 let make_gir_bitfield ?(bitfield_name = "TestFlags")
@@ -192,6 +208,7 @@ let make_gir_bitfield ?(bitfield_name = "TestFlags")
     bitfield_doc;
     bitfield_version;
     bitfield_os = None;
+    deprecation = None;
   }
 
 let make_gir_constant ?(constant_name = "TestConstant")
@@ -206,13 +223,14 @@ let make_gir_constant ?(constant_name = "TestConstant")
     constant_doc;
     version;
     os = None;
+    deprecation = None;
     introspectable;
   }
 
 let make_gir_class ?(class_name = "TestClass") ?(c_type = "TestClass") ?parent
     ?(glib_get_type = None) ?(implements = []) ?(introspectable = true)
-    ?(constructors = []) ?(methods = []) ?(properties = []) ?(signals = [])
-    ?class_doc ?version () =
+    ?(abstract = false) ?(constructors = []) ?(methods = []) ?(properties = [])
+    ?(signals = []) ?class_doc ?version () =
   {
     class_name;
     c_type;
@@ -220,6 +238,7 @@ let make_gir_class ?(class_name = "TestClass") ?(c_type = "TestClass") ?parent
     parent;
     implements;
     introspectable;
+    abstract;
     constructors;
     methods;
     properties;
@@ -227,6 +246,7 @@ let make_gir_class ?(class_name = "TestClass") ?(c_type = "TestClass") ?parent
     class_doc;
     version;
     os = None;
+    deprecation = None;
   }
 
 let make_gir_interface ?(interface_name = "TestInterface")
@@ -248,6 +268,7 @@ let make_gir_interface ?(interface_name = "TestInterface")
     interface_doc;
     version;
     os = None;
+    deprecation = None;
   }
 
 let make_entity ?(kind = Class (make_gir_class ())) ?(name = "TestEntity")
@@ -267,6 +288,7 @@ let make_entity ?(kind = Class (make_gir_class ())) ?(name = "TestEntity")
     signals;
     version;
     os;
+    deprecation = None;
   }
 
 let make_ocaml_class ?(class_module = "Test") ?(class_type = "test")
@@ -302,7 +324,12 @@ let make_gir_include ?(include_name = "GObject") ?(include_version = "2.0") () =
 
 let make_gir_repository ?(repository_includes = [])
     ?(repository_c_includes = []) ?(repository_packages = []) () =
-  { repository_includes; repository_c_includes; repository_packages }
+  {
+    repository_includes;
+    repository_c_includes;
+    repository_packages;
+    repository_doc_format = None;
+  }
 
 let make_cross_reference_type ?parent = function
   | `Class -> Crt_Class { parent; implements = [] }
@@ -313,8 +340,9 @@ let make_cross_reference_type ?parent = function
   | `Constant -> Crt_Constant
 
 let make_cross_reference_entity ?(cr_name = "TestEntity")
-    ?(cr_type = Crt_Interface) ?(cr_c_type = "TestEntity") () =
-  { cr_name; cr_type; cr_c_type }
+    ?(cr_type = Crt_Interface) ?(cr_c_type = "TestEntity") ?cr_members
+    ?cr_enum_members () =
+  { cr_name; cr_type; cr_c_type; cr_members; cr_enum_members }
 
 let make_cross_reference_namespace ?(cr_namespace_name = "Test")
     ?(cr_namespace_packages = []) ?(cr_namespace_includes = [])
@@ -347,7 +375,7 @@ let make_generation_context ?(namespace = make_gir_namespace ())
     ?(repository = make_gir_repository ()) ?(classes = []) ?(interfaces = [])
     ?(enums = []) ?(bitfields = []) ?(records = []) ?(constants = [])
     ?module_groups ?(current_cycle_classes = [])
-    ?(cross_references = StringMap.empty) () =
+    ?(cross_references = StringMap.empty) ?(target_library = Raw_library) () =
   let module_groups_table =
     match module_groups with
     | None -> Hashtbl.create 0
@@ -368,6 +396,8 @@ let make_generation_context ?(namespace = make_gir_namespace ())
     module_groups = module_groups_table;
     current_cycle_classes;
     cross_references;
+    target_library;
+    doc_index = StringMap.empty;
   }
 
 let void_type = make_gir_type ~name:"none" ~c_type:"void" ()

@@ -11,9 +11,9 @@ open Alcotest
 (* Try to initialize GTK once for all tests *)
 let gtk_available =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     true
-  with GMain.Error _ -> false
+  with Main.Error _ -> false
 
 (* Helper to skip tests when GTK is not available *)
 let require_gtk f () = if not gtk_available then skip () else f ()
@@ -26,7 +26,7 @@ let test_fixed_module_accessible () =
 
 let test_fixed_creation () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let fixed = Fixed.new_ () in
     check bool "Fixed created" true true;
 
@@ -34,12 +34,12 @@ let test_fixed_creation () =
     let _widget = Fixed.as_widget fixed in
     check bool "Fixed as_widget works" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_fixed_put_move () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let fixed = Fixed.new_ () in
     let child = Box.new_ `HORIZONTAL 0 in
     let child_widget = Box.as_widget child in
@@ -56,7 +56,7 @@ let test_fixed_put_move () =
     Fixed.remove fixed child_widget;
     check bool "Fixed remove works" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* ========== GtkPaned Tests ========== *)
@@ -67,19 +67,19 @@ let test_paned_module_accessible () =
 
 let test_paned_creation () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let paned = Paned.new_ `HORIZONTAL in
     check bool "Paned created" true true;
 
     let _widget = Paned.as_widget paned in
     check bool "Paned as_widget works" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_paned_children () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let paned = Paned.new_ `HORIZONTAL in
     let child1 = Box.new_ `VERTICAL 0 in
     let child2 = Box.new_ `VERTICAL 0 in
@@ -101,12 +101,12 @@ let test_paned_children () =
     Paned.set_end_child paned None;
     check bool "Paned children removed" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_paned_properties () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let paned = Paned.new_ `VERTICAL in
 
     (* Position *)
@@ -131,7 +131,7 @@ let test_paned_properties () =
     Paned.set_shrink_end_child paned false;
     check bool "Shrink end" false (Paned.get_shrink_end_child paned)
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* ========== GtkNotebook Tests ========== *)
@@ -142,19 +142,19 @@ let test_notebook_module_accessible () =
 
 let test_notebook_creation () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let notebook = Notebook.new_ () in
     check int "Notebook starts with 0 pages" 0 (Notebook.get_n_pages notebook);
 
     let _widget = Notebook.as_widget notebook in
     check bool "Notebook as_widget works" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_notebook_pages () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let notebook = Notebook.new_ () in
     let page1 = Box.new_ `VERTICAL 0 in
     let page2 = Box.new_ `VERTICAL 0 in
@@ -173,12 +173,12 @@ let test_notebook_pages () =
     Notebook.remove_page notebook 0;
     check int "1 page after removal" 1 (Notebook.get_n_pages notebook)
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_notebook_navigation () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let notebook = Notebook.new_ () in
     let page1 = Box.new_ `VERTICAL 0 in
     let page2 = Box.new_ `VERTICAL 0 in
@@ -197,12 +197,12 @@ let test_notebook_navigation () =
     Notebook.next_page notebook;
     check int "Next page" 1 (Notebook.get_current_page notebook)
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_notebook_properties () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let notebook = Notebook.new_ () in
 
     (* Show tabs *)
@@ -217,7 +217,7 @@ let test_notebook_properties () =
     Notebook.set_scrollable notebook true;
     check bool "Scrollable on" true (Notebook.get_scrollable notebook)
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* ========== GtkStack Tests ========== *)
@@ -229,19 +229,19 @@ let test_stack_module_accessible () =
 
 let test_stack_creation () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let stack = Stack.new_ () in
     check bool "Stack created" true true;
 
     let _widget = Stack.as_widget stack in
     check bool "Stack as_widget works" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_stack_children () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let stack = Stack.new_ () in
     let child1 = Box.new_ `VERTICAL 0 in
     let child2 = Box.new_ `VERTICAL 0 in
@@ -264,12 +264,12 @@ let test_stack_children () =
     Stack.remove stack (Box.as_widget child1);
     check bool "Stack child removed" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_stack_transitions () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
     let stack = Stack.new_ () in
 
     (* Transition type *)
@@ -282,42 +282,42 @@ let test_stack_transitions () =
     Stack.set_transition_duration stack 500;
     check int "Transition duration" 500 (Stack.get_transition_duration stack)
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* ========== High-Level Wrapper Tests ========== *)
 
 let test_gfixed_wrapper () =
   try
-    let _ = GMain.init () in
-    let fixed = new GFixed.fixed (Fixed.new_ ()) in
-    let child = new GBox.box (Box.new_ `HORIZONTAL 0) in
+    let _ = Main.init () in
+    let fixed = new Fixed.fixed (Fixed.new_ ()) in
+    let child = new Box.box (Box.new_ `HORIZONTAL 0) in
 
     (* Test high-level put *)
     fixed#put child 25.0 35.0;
     let x, y = fixed#get_child_position child in
-    check (float 0.01) "GFixed x" 25.0 x;
-    check (float 0.01) "GFixed y" 35.0 y;
+    check (float 0.01) "Fixed x" 25.0 x;
+    check (float 0.01) "Fixed y" 35.0 y;
 
     (* Test high-level move *)
     fixed#move child 50.0 60.0;
     let x2, y2 = fixed#get_first_child ()#get_position (child :> GObj.widget) in
-    check (float 0.01) "GFixed moved x" 50.0 x2;
-    check (float 0.01) "GFixed moved y" 60.0 y2;
+    check (float 0.01) "Fixed moved x" 50.0 x2;
+    check (float 0.01) "Fixed moved y" 60.0 y2;
 
     (* Test remove *)
     fixed#remove (child :> GObj.widget);
-    check bool "GFixed wrapper works" true true
+    check bool "Fixed wrapper works" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_gpaned_wrapper () =
   try
-    let _ = GMain.init () in
-    let paned = GPaned.hpaned () in
-    let child1 = GBox.vbox () in
-    let child2 = GBox.vbox () in
+    let _ = Main.init () in
+    let paned = Paned.hpaned () in
+    let child1 = Box.vbox () in
+    let child2 = Box.vbox () in
 
     (* Test add1/add2 convenience methods *)
     paned#add1 (child1 :> GObj.widget);
@@ -325,64 +325,64 @@ let test_gpaned_wrapper () =
 
     (* Test properties *)
     paned#set_position 150;
-    check int "GPaned position" 150 paned#position;
+    check int "Paned position" 150 paned#position;
 
     paned#set_wide_handle true;
-    check bool "GPaned wide handle" true paned#wide_handle;
+    check bool "Paned wide handle" true paned#wide_handle;
 
     paned#set_resize_start_child false;
-    check bool "GPaned resize start" false paned#resize_start_child;
+    check bool "Paned resize start" false paned#resize_start_child;
 
     (* Test vpaned creation *)
-    let _vpaned = GPaned.vpaned () in
-    check bool "GPaned vpaned created" true true
+    let _vpaned = Paned.vpaned () in
+    check bool "Paned vpaned created" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_gnotebook_wrapper () =
   try
-    let _ = GMain.init () in
-    let notebook = GNotebook.new_ () in
-    let page1 = GBox.vbox () in
-    let page2 = GBox.vbox () in
+    let _ = Main.init () in
+    let notebook = Notebook.new_ () in
+    let page1 = Box.vbox () in
+    let page2 = Box.vbox () in
 
     (* Test high-level append_page *)
     let idx1 = notebook#append_page (page1 :> GObj.widget) in
-    check int "GNotebook first page" 0 idx1;
-    check int "GNotebook 1 page" 1 notebook#n_pages;
+    check int "Notebook first page" 0 idx1;
+    check int "Notebook 1 page" 1 notebook#n_pages;
 
     (* Test prepend_page *)
     let idx2 = notebook#prepend_page (page2 :> GObj.widget) in
-    check int "GNotebook prepend index" 0 idx2;
-    check int "GNotebook 2 pages" 2 notebook#n_pages;
+    check int "Notebook prepend index" 0 idx2;
+    check int "Notebook 2 pages" 2 notebook#n_pages;
 
     (* Test navigation *)
     notebook#set_current_page 1;
-    check int "GNotebook current" 1 notebook#current_page;
+    check int "Notebook current" 1 notebook#current_page;
 
     notebook#prev_page ();
-    check int "GNotebook prev" 0 notebook#current_page;
+    check int "Notebook prev" 0 notebook#current_page;
 
     notebook#next_page ();
-    check int "GNotebook next" 1 notebook#current_page;
+    check int "Notebook next" 1 notebook#current_page;
 
     (* Test properties *)
     notebook#set_show_tabs false;
-    check bool "GNotebook show_tabs" false notebook#show_tabs;
+    check bool "Notebook show_tabs" false notebook#show_tabs;
 
     notebook#set_scrollable true;
-    check bool "GNotebook scrollable" true notebook#scrollable
+    check bool "Notebook scrollable" true notebook#scrollable
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_gstack_wrapper () =
   try
-    let _ = GMain.init () in
-    let stack = GStack.new_ () in
-    let child1 = GBox.vbox () in
-    let child2 = GBox.vbox () in
+    let _ = Main.init () in
+    let stack = Stack.new_ () in
+    let child1 = Box.vbox () in
+    let child2 = Box.vbox () in
 
     (* Test high-level add_named *)
     stack#add_named ~name:"first" (child1 :> GObj.widget);
@@ -391,44 +391,42 @@ let test_gstack_wrapper () =
     (* Test visible child management *)
     stack#set_visible_child_name "first";
     (match stack#visible_child_name with
-    | Some name -> check string "GStack visible name" "first" name
+    | Some name -> check string "Stack visible name" "first" name
     | None -> fail "No visible child");
 
     (* Test transitions *)
     stack#set_transition_type `CROSSFADE;
-    check bool "GStack transition type"
-      (`CROSSFADE = stack#transition_type)
-      true;
+    check bool "Stack transition type" (`CROSSFADE = stack#transition_type) true;
 
     stack#set_transition_duration 300;
-    check int "GStack duration" 300 stack#transition_duration
+    check int "Stack duration" 300 stack#transition_duration
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 (* ========== Integration Tests ========== *)
 
 let test_nested_containers () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
 
     (* Create a complex nested structure:
        Paned with:
        - Start: Notebook with 2 pages (each has a box)
        - End: Stack with 2 children (each has a grid) *)
-    let paned = GPaned.hpaned () in
+    let paned = Paned.hpaned () in
 
     (* Create notebook for start pane *)
-    let notebook = GNotebook.new_ () in
-    let nb_page1 = GBox.vbox ~spacing:5 () in
-    let nb_page2 = GBox.hbox ~spacing:5 () in
+    let notebook = Notebook.new_ () in
+    let nb_page1 = Box.vbox ~spacing:5 () in
+    let nb_page2 = Box.hbox ~spacing:5 () in
     let _ = notebook#append_page (nb_page1 :> GObj.widget) in
     let _ = notebook#append_page (nb_page2 :> GObj.widget) in
 
     (* Create stack for end pane *)
-    let stack = GStack.new_ () in
-    let stack_child1 = GGrid.new_ () in
-    let stack_child2 = GGrid.new_ ~row_spacing:10 () in
+    let stack = Stack.new_ () in
+    let stack_child1 = Grid.new_ () in
+    let stack_child2 = Grid.new_ ~row_spacing:10 () in
     stack#add_named ~name:"grid1" (stack_child1 :> GObj.widget);
     stack#add_named ~name:"grid2" (stack_child2 :> GObj.widget);
 
@@ -448,18 +446,18 @@ let test_nested_containers () =
 
     check int "Nested: operations successful" 200 paned#position
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_fixed_with_containers () =
   try
-    let _ = GMain.init () in
+    let _ = Main.init () in
 
     (* Create fixed with various container types *)
-    let fixed = GFixed.new_ () in
-    let box = GBox.vbox () in
-    let grid = GGrid.new_ () in
-    let notebook = GNotebook.new_ () in
+    let fixed = Fixed.new_ () in
+    let box = Box.vbox () in
+    let grid = Grid.new_ () in
+    let notebook = Notebook.new_ () in
 
     (* Position containers absolutely *)
     fixed#put ~x:10.0 ~y:10.0 (box :> GObj.widget);
@@ -478,13 +476,13 @@ let test_fixed_with_containers () =
 
     check bool "Fixed with containers works" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let test_all_transitions () =
   try
-    let _ = GMain.init () in
-    let stack = GStack.new_ () in
+    let _ = Main.init () in
+    let stack = Stack.new_ () in
 
     (* Test all transition types *)
     let transitions =
@@ -530,7 +528,7 @@ let test_all_transitions () =
     List.iter test_transition transitions;
     check bool "All 23 transitions work" true true
   with
-  | GMain.Error _ -> skip ()
+  | Main.Error _ -> skip ()
   | e -> fail ("Unexpected error: " ^ Printexc.to_string e)
 
 let () =

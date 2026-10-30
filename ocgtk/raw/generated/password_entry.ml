@@ -1,0 +1,93 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* PasswordEntry: PasswordEntry *)
+
+(** A single-line text entry widget for entering passwords and other secrets.
+
+    An example GtkPasswordEntry
+
+    It does not show its contents in clear text, does not allow to copy it to
+    the clipboard, and it shows a warning when Caps Lock is engaged. If the
+    underlying platform allows it, [GtkPasswordEntry] will also place the text
+    in a non-pageable memory area, to avoid it being written out to disk by the
+    operating system.
+
+    Optionally, it can offer a way to reveal the contents in clear text.
+
+    [GtkPasswordEntry] provides only minimal API and should be used with the
+    {{!Ocgtk.Raw.Editable}[Gtk.Editable]} API.
+
+    {b CSS Nodes}
+
+    {[
+    entry.password
+    ╰── text
+        ├── image.caps-lock-indicator
+        ┊
+    ]}
+
+    [GtkPasswordEntry] has a single CSS node with name entry that carries a
+    .passwordstyle class. The text Css node below it has a child with name image
+    and style class .caps-lock-indicator for the Caps Lock icon, and possibly
+    other children.
+
+    {b Accessibility}
+
+    [GtkPasswordEntry] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-TEXT_BOX}[Gtk.AccessibleRole.text_box]}
+    role.
+
+    The class built on this module is in {!Ocgtk.Password_entry}. *)
+
+type t =
+  [ `password_entry | `widget | `initially_unowned | `object_ ] Gobject.obj
+
+external gtype : unit -> Gobject.Type.t = "ml_gtk_password_entry_get_type"
+
+external new_ : unit -> t = "ml_gtk_password_entry_new"
+(** Creates a [GtkPasswordEntry]. *)
+
+(* Methods *)
+
+external set_show_peek_icon : t -> bool -> unit
+  = "ml_gtk_password_entry_set_show_peek_icon"
+(** Sets whether the entry should have a clickable icon to reveal the contents.
+
+    Setting this to [false] also hides the text again. *)
+
+external set_extra_menu : t -> Ocgio_raw.Menu_model.t option -> unit
+  = "ml_gtk_password_entry_set_extra_menu"
+(** Sets a menu model to add when constructing the context menu for [entry]. *)
+
+external get_show_peek_icon : t -> bool
+  = "ml_gtk_password_entry_get_show_peek_icon"
+(** Returns whether the entry is showing an icon to reveal the contents. *)
+
+external get_extra_menu : t -> Ocgio_raw.Menu_model.t option
+  = "ml_gtk_password_entry_get_extra_menu"
+(** Gets the menu model set with
+    {{!Ocgtk.Raw.Password_entry.val-set_extra_menu}[gtk_password_entry_set_extra_menu
+                                                    ()]}. *)
+
+(* Properties *)
+
+external get_activates_default : t -> bool
+  = "ml_gtk_password_entry_get_activates_default"
+(** Whether to activate the default widget when Enter is pressed. *)
+
+external set_activates_default : t -> bool -> unit
+  = "ml_gtk_password_entry_set_activates_default"
+(** Whether to activate the default widget when Enter is pressed. *)
+
+external get_placeholder_text : t -> string
+  = "ml_gtk_password_entry_get_placeholder_text"
+(** The text that will be displayed in the [GtkPasswordEntry] when it is empty
+    and unfocused. *)
+
+external set_placeholder_text : t -> string -> unit
+  = "ml_gtk_password_entry_set_placeholder_text"
+(** The text that will be displayed in the [GtkPasswordEntry] when it is empty
+    and unfocused. *)
+
+let on_activate ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate" ~callback
+    ~after:(Option.value after ~default:false)

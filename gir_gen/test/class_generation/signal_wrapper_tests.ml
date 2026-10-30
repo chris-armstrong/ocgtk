@@ -1,11 +1,12 @@
 (* Signal_gen pure-data API unit tests.
-   All 14 test cases from the Phase 2 plan — replaces the 4 old tests
-   that called the now-removed generate_signal_class function. *)
+*)
 
 open Containers
 open Gir_gen_lib.Types
 module Signal_gen = Gir_gen_lib.Generate.Signal_gen
 module Signal_marshaller = Gir_gen_lib.Generate.Signal_marshaller
+
+let no_links = Gir_gen_lib.Generate.Doc_resolve.no_links ~namespace:"Gtk"
 
 (* ========================================================================= *)
 (* Shared context builders                                                    *)
@@ -97,10 +98,57 @@ let test_void_zero_param_emits_val_in_l1_val () =
   let emission =
     expect_ok "clicked classify" (Signal_gen.classify ~ctx signal) Fun.id
   in
-  let l1_val = Signal_gen.emit_l1_val ~current_class:"Button" emission in
+  let l1_val =
+    Signal_gen.emit_l1_val ~refs:no_links ~current_class:"Button" emission
+  in
   let ast = Ml_ast_helpers.parse_interface l1_val in
   Helpers.assert_some "val on_clicked in interface"
     (Ml_ast_helpers.find_value_declaration_sig ast "on_clicked")
+
+(* ========================================================================= *)
+(* Signal docs on the L1 val and the L2 method                               *)
+(* ========================================================================= *)
+
+let documented_clicked_emission () =
+  let signal =
+    Type_factory.make_gir_signal ~signal_name:"clicked"
+      ~return_type:Type_factory.void_type ~doc:"Emitted when clicked." ()
+  in
+  expect_ok "clicked classify"
+    (Signal_gen.classify ~ctx:shared_ctx signal)
+    Fun.id
+
+let test_signal_doc_on_l1_val () =
+  let ast =
+    Ml_ast_helpers.parse_interface
+      (Signal_gen.emit_l1_val ~refs:no_links ~current_class:"Button"
+         (documented_clicked_emission ()))
+  in
+  Helpers.expect_some "val on_clicked"
+    (Ml_ast_helpers.find_value_declaration_sig ast "on_clicked")
+  @@ fun vd ->
+  Alcotest.(check (option string))
+    "translated signal doc" (Some " Emitted when clicked. ")
+    (Ml_ast_helpers.doc_of_attributes vd.pval_attributes)
+
+let test_signal_doc_on_l2_method () =
+  let class_type =
+    "class type button_t = object\n"
+    ^ Signal_gen.emit_l2_method_sig ~refs:no_links
+        ~current_layer2_module:"Button"
+        (documented_clicked_emission ())
+    ^ "end\n"
+  in
+  let ast = Ml_ast_helpers.parse_interface class_type in
+  Helpers.expect_some "class type button_t"
+    (Ml_ast_helpers.find_class_type_declaration ast "button_t")
+  @@ fun ct ->
+  Helpers.expect_some "method on_clicked"
+    (Ml_ast_helpers.find_method_in_class_type ct.pci_expr "on_clicked")
+  @@ fun field ->
+  Alcotest.(check (option string))
+    "translated signal doc" (Some " Emitted when clicked. ")
+    (Ml_ast_helpers.doc_of_attributes field.pctf_attributes)
 
 (* ========================================================================= *)
 (* Case 2: void signal with primitive params uses Closure.create             *)
@@ -137,7 +185,9 @@ let test_void_primitive_params_uses_closure_create () =
          "create")
   then Alcotest.fail "on_pressed body should call Gobject.Closure.create";
   (* The l1_val callback type must have labelled params n_press:int, x:float, y:float *)
-  let l1_val = Signal_gen.emit_l1_val ~current_class:"Button" emission in
+  let l1_val =
+    Signal_gen.emit_l1_val ~refs:no_links ~current_class:"Button" emission
+  in
   let val_ast = Ml_ast_helpers.parse_interface l1_val in
   Helpers.expect_some "on_pressed val declaration"
     (Ml_ast_helpers.find_value_declaration_sig val_ast "on_pressed")
@@ -196,7 +246,9 @@ let test_bool_return_zero_param_uses_closure_create () =
          "create")
   then Alcotest.fail "on_close_request body should call Gobject.Closure.create";
   (* L1 val callback type must have a bool return type *)
-  let l1_val = Signal_gen.emit_l1_val ~current_class:"Button" emission in
+  let l1_val =
+    Signal_gen.emit_l1_val ~refs:no_links ~current_class:"Button" emission
+  in
   let val_ast = Ml_ast_helpers.parse_interface l1_val in
   Helpers.expect_some "on_close_request val declaration"
     (Ml_ast_helpers.find_value_declaration_sig val_ast "on_close_request")
@@ -291,11 +343,11 @@ let test_mixed_params_key_pressed_shape () =
   in
   Alcotest.(check string)
     "getter_expr"
-    "Ocgtk_gdk.Gdk_enums.modifiertype_of_int (Gobject.Value.get_flags_int v)"
+    "Ocgdk_enums.modifiertype_of_int (Gobject.Value.get_flags_int v)"
     third_m.getter_expr;
   Alcotest.(check string)
     "setter_expr"
-    "Gobject.Value.set_flags_int v (Ocgtk_gdk.Gdk_enums.modifiertype_to_int x)"
+    "Gobject.Value.set_flags_int v (Ocgdk_enums.modifiertype_to_int x)"
     third_m.setter_expr
 
 (* ========================================================================= *)
@@ -494,7 +546,9 @@ let test_l1_obj_is_positional_not_labelled () =
   let emission =
     expect_ok "clicked classify" (Signal_gen.classify ~ctx signal) Fun.id
   in
-  let l1_val = Signal_gen.emit_l1_val ~current_class:"Button" emission in
+  let l1_val =
+    Signal_gen.emit_l1_val ~refs:no_links ~current_class:"Button" emission
+  in
   let ast = Ml_ast_helpers.parse_interface l1_val in
   Helpers.expect_some "on_clicked val declaration"
     (Ml_ast_helpers.find_value_declaration_sig ast "on_clicked")
@@ -600,7 +654,7 @@ let test_l2_has_no_inherit_signals_line () =
       "L2 method output should not contain any 'inherit *_signals' clause"
 
 (* ========================================================================= *)
-(* Stage 2 integration: generate_ml_interface emits L1 signal bindings       *)
+(* Integration: generate_ml_interface emits L1 signal bindings       *)
 (* ========================================================================= *)
 
 module Ml_interface = Gir_gen_lib.Generate.Ml_interface
@@ -641,7 +695,7 @@ let test_l1_let_in_generated_module_impl () =
     (Ml_ast_helpers.find_let_binding ast "on_clicked")
 
 (* ========================================================================= *)
-(* Stage 3: class_gen body contains on_signal method forwarders               *)
+(* class_gen body contains on_signal method forwarders               *)
 (* ========================================================================= *)
 
 module Class_gen = Gir_gen_lib.Generate.Class_gen
@@ -676,11 +730,13 @@ let test_l2_class_body_contains_on_signal_method () =
   Helpers.expect_some "could not extract body of method 'on_clicked'"
     (Ml_ast_helpers.get_method_body cf)
   @@ fun body ->
-  (* Body must forward to Button.on_clicked *)
-  if not (Ml_ast_helpers.method_body_calls_function body "Button" "on_clicked")
+  (* Body must forward to Raw.Button.on_clicked *)
+  if
+    not
+      (Ml_ast_helpers.method_body_calls_function body "Raw.Button" "on_clicked")
   then
     Alcotest.fail
-      "on_clicked body should call Button.on_clicked (L1 forwarder missing)";
+      "on_clicked body should call Raw.Button.on_clicked (L1 forwarder missing)";
   (* Body must reference self#as_button *)
   if not (Ml_ast_helpers.contains_method_send body "as_button") then
     Alcotest.fail "on_clicked body should reference self#as_button"
@@ -691,7 +747,7 @@ let test_l2_class_type_contains_on_signal_method_sig () =
   let clicked_signal = make_clicked_signal () in
   (* Act: generate the L2 class signature (.mli) *)
   let mli_code =
-    Class_gen.generate_class_signature ~ctx ~class_name:"Button"
+    Class_gen.generate_class_signature ~ctx ~class_doc:None ~class_name:"Button"
       ~c_type:"GtkButton" ~parent_chain:[] ~methods:[] ~properties:[]
       ~signals:[ clicked_signal ] ~constructors:[]
       ~entity_kind:Gir_gen_lib.Generate.Filtering.Class
@@ -904,6 +960,10 @@ let test_e2e_cross_ns_class_param_l1_interface () =
 
 let tests =
   [
+    Alcotest.test_case "signal doc on the L1 val" `Quick
+      test_signal_doc_on_l1_val;
+    Alcotest.test_case "signal doc on the L2 method" `Quick
+      test_signal_doc_on_l2_method;
     Alcotest.test_case "void zero-param: connect_simple in L1 let" `Quick
       test_void_zero_param_emits_connect_simple_in_l1_let;
     Alcotest.test_case "void zero-param: val on_clicked in L1 val" `Quick

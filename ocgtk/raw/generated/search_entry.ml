@@ -1,0 +1,173 @@
+(* GENERATED CODE - DO NOT EDIT *)
+(* SearchEntry: SearchEntry *)
+
+(** A single-line text entry widget for use as a search entry.
+
+    The main API for interacting with a [GtkSearchEntry] as entry is the
+    [GtkEditable] interface.
+
+    An example GtkSearchEntry
+
+    It will show an inactive symbolic “find” icon when the search entry is
+    empty, and a symbolic “clear” icon when there is text. Clicking on the
+    “clear” icon will empty the search entry.
+
+    To make filtering appear more reactive, it is a good idea to not react to
+    every change in the entry text immediately, but only after a short delay. To
+    support this, [GtkSearchEntry] emits the
+    {{!Ocgtk.Raw.Search_entry.val-on_search_changed}[Gtk.SearchEntry::search-changed]}
+    signal which can be used instead of the
+    {{!Ocgtk.Raw.Editable.val-on_changed}[Gtk.Editable::changed]} signal.
+
+    The
+    {{!Ocgtk.Raw.Search_entry.val-on_previous_match}[Gtk.SearchEntry::previous-match]},
+    {{!Ocgtk.Raw.Search_entry.val-on_next_match}[Gtk.SearchEntry::next-match]}
+    and
+    {{!Ocgtk.Raw.Search_entry.val-on_stop_search}[Gtk.SearchEntry::stop-search]}
+    signals can be used to implement moving between search results and ending
+    the search.
+
+    Often, [GtkSearchEntry] will be fed events by means of being placed inside a
+    {{!Ocgtk.Raw.Search_bar}[Gtk.SearchBar]}. If that is not the case, you can
+    use
+    {{!Ocgtk.Raw.Search_entry.val-set_key_capture_widget}[Gtk.SearchEntry.set_key_capture_widget]}
+    to let it capture key input from another widget.
+
+    [GtkSearchEntry] provides only minimal API and should be used with the
+    {{!Ocgtk.Raw.Editable}[Gtk.Editable]} API.
+
+    {b Shortcuts and Gestures}
+
+    The following signals have default keybindings:
+
+    - {{!Ocgtk.Raw.Search_entry.val-on_activate}[Gtk.SearchEntry::activate]}
+    - {{!Ocgtk.Raw.Search_entry.val-on_next_match}[Gtk.SearchEntry::next-match]}
+    - {{!Ocgtk.Raw.Search_entry.val-on_previous_match}[Gtk.SearchEntry::previous-match]}
+    - {{!Ocgtk.Raw.Search_entry.val-on_stop_search}[Gtk.SearchEntry::stop-search]}
+
+    {b CSS Nodes}
+
+    {[
+    entry.search
+    ╰── text
+    ]}
+
+    [GtkSearchEntry] has a single CSS node with name entry that carries a
+    [.search] style class, and the text node is a child of that.
+
+    {b Accessibility}
+
+    [GtkSearchEntry] uses the
+    {{!Ocgtk.Enums.type-accessiblerole.constructor-SEARCH_BOX}[Gtk.AccessibleRole.search_box]}
+    role.
+
+    The class built on this module is in {!Ocgtk.Search_entry}. *)
+
+type t = [ `search_entry | `widget | `initially_unowned | `object_ ] Gobject.obj
+
+external gtype : unit -> Gobject.Type.t = "ml_gtk_search_entry_get_type"
+
+external new_ : unit -> t = "ml_gtk_search_entry_new"
+(** Creates a [GtkSearchEntry]. *)
+
+(* Methods *)
+
+external set_search_delay : t -> int -> unit
+  = "ml_gtk_search_entry_set_search_delay"
+(** Set the delay to be used between the last keypress and the
+    {{!Ocgtk.Raw.Search_entry.val-on_search_changed}[Gtk.SearchEntry::search-changed]}
+    signal being emitted. *)
+
+external set_placeholder_text : t -> string option -> unit
+  = "ml_gtk_search_entry_set_placeholder_text"
+(** Sets the placeholder text associated with [entry]. *)
+
+external set_key_capture_widget :
+  t ->
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+  .Widget
+  .t
+  option ->
+  unit = "ml_gtk_search_entry_set_key_capture_widget"
+(** Sets [widget] as the widget that [entry] will capture key events from.
+
+    Key events are consumed by the search entry to start or continue a search.
+
+    If the entry is part of a [GtkSearchBar], it is preferable to call
+    {{!Ocgtk.Raw.Search_bar.val-set_key_capture_widget}[Gtk.SearchBar.set_key_capture_widget]}
+    instead, which will reveal the entry in addition to triggering the search
+    entry.
+
+    Note that despite the name of this function, the events are only 'captured'
+    in the bubble phase, which means that editable child widgets of [widget]
+    will receive text input before it gets captured. If that is not desired, you
+    can capture and forward the events yourself with
+    {{!Ocgtk.Raw.Event_controller_key.val-forward}[Gtk.EventControllerKey.forward]}.
+*)
+
+external set_input_purpose : t -> Ocgtk_enums.inputpurpose -> unit
+  = "ml_gtk_search_entry_set_input_purpose"
+(** Sets the input purpose of [entry]. *)
+
+external set_input_hints : t -> Ocgtk_enums.inputhints -> unit
+  = "ml_gtk_search_entry_set_input_hints"
+(** Sets the input hints for [entry]. *)
+
+external get_search_delay : t -> int = "ml_gtk_search_entry_get_search_delay"
+(** Get the delay to be used between the last keypress and the
+    {{!Ocgtk.Raw.Search_entry.val-on_search_changed}[Gtk.SearchEntry::search-changed]}
+    signal being emitted. *)
+
+external get_placeholder_text : t -> string option
+  = "ml_gtk_search_entry_get_placeholder_text"
+(** Gets the placeholder text associated with [entry]. *)
+
+external get_key_capture_widget :
+  t ->
+  Event_controller_and__layout_child_and__layout_manager_and__root_and__tooltip_and__widget
+  .Widget
+  .t
+  option = "ml_gtk_search_entry_get_key_capture_widget"
+(** Gets the widget that [entry] is capturing key events from. *)
+
+external get_input_purpose : t -> Ocgtk_enums.inputpurpose
+  = "ml_gtk_search_entry_get_input_purpose"
+(** Gets the input purpose of [entry]. *)
+
+external get_input_hints : t -> Ocgtk_enums.inputhints
+  = "ml_gtk_search_entry_get_input_hints"
+(** Gets the input purpose for [entry]. *)
+
+(* Properties *)
+
+external get_activates_default : t -> bool
+  = "ml_gtk_search_entry_get_activates_default"
+(** Whether to activate the default widget when Enter is pressed. *)
+
+external set_activates_default : t -> bool -> unit
+  = "ml_gtk_search_entry_set_activates_default"
+(** Whether to activate the default widget when Enter is pressed. *)
+
+let on_activate ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"activate" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_next_match ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"next-match" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_previous_match ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"previous-match" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_search_changed ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"search-changed" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_search_started ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"search-started" ~callback
+    ~after:(Option.value after ~default:false)
+
+let on_stop_search ?after obj ~callback =
+  Gobject.Signal.connect_simple obj ~name:"stop-search" ~callback
+    ~after:(Option.value after ~default:false)

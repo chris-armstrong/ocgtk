@@ -1,0 +1,26 @@
+{0 ocgraphene}
+
+The {b ocgraphene} package provides OCaml bindings for Graphene:
+lightweight 3D transform and geometry types (vectors, matrices, rectangles)
+used by Gsk and Gtk. They are generated from Graphene's GObject
+introspection data.
+
+{%html:<a href="../ocgtk/conventions.html">The conventions page</a>%} explains how the bindings are organised and how GObject maps onto OCaml.
+
+{1 Modules}
+
+The library is reached as {!Ocgraphene}, with one module per class, interface or
+record, such as {!Ocgraphene.Rect} and {!Ocgraphene.Matrix}.
+
+{b {{!page-modules}All records}}
+
+{ul
+{- {!Ocgraphene.Enums} — enumerations and bitfields. }
+{- {!Ocgraphene.Constants} — constants. }
+{- {!Ocgraphene.Raw} — the C externals and abstract types the modules above are
+   built on. }
+}
+
+{1 Dependencies}
+
+It builds on {!Ocglib} (GLib and GObject).

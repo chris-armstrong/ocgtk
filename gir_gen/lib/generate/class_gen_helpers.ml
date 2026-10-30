@@ -1,4 +1,4 @@
-(* Helper functions extracted from class_gen.ml (Phase 1) *)
+(* Helper functions extracted from class_gen.ml *)
 
 open StdLabels
 open Types
@@ -9,7 +9,6 @@ include Common
 (* Helper types and functions *)
 
 type module_names = { layer1 : string; layer2 : string }
-type property_filters = { method_names : string list; base_names : string list }
 
 let sanitize_name = Utils.ocaml_class_name
 
@@ -24,15 +23,7 @@ let require_type ~location ~gir_type_name (type_opt : string option) : string =
 
 let get_module_names ~ctx class_name =
   let layer1 = Class_utils.get_qualified_module_name ~ctx class_name in
-  { layer1; layer2 = Utils.layer2_module_name class_name }
-
-let get_property_filters ~ctx ~class_name ~methods properties =
-  {
-    method_names =
-      Filtering.property_method_names ~ctx ~class_name ~methods properties;
-    base_names =
-      Filtering.property_base_names ~ctx ~class_name ~methods properties;
-  }
+  { layer1; layer2 = Module_paths.layer2_module_name class_name }
 
 (* Helper to check if a class name is in the same cluster *)
 let is_same_cluster_class ~same_cluster_classes class_name =

@@ -227,6 +227,28 @@ let test_fallback_method_suppresses_unused_params () =
   in
   assert_contains ~label:"(void) suppression" ~expected:"(void)" output
 
+let cairo_ctx =
+  Type_factory.make_generation_context
+    ~namespace:(Type_factory.make_gir_namespace ~namespace_name:"cairo" ())
+    ()
+
+let test_fallback_get_type_defines_stub_and_message () =
+  let v = { major = 1; minor = 18; micro = 0 } in
+  let output =
+    emit_fallback_get_type_stub ~ctx:cairo_ctx ~class_name:"Glyph"
+      ~ml_name:"ml_cairo_glyph_get_type" ~version:v
+  in
+  let stubs =
+    C_parser.parse_c_code output
+    |> List.filter (fun (f : C_ast.c_function) ->
+        String.equal f.name "ml_cairo_glyph_get_type")
+  in
+  Alcotest.(check int) "one get_type stub" 1 (List.length stubs);
+  (* The test C parser reads the [>=] in the message as an assignment, so the
+     call is checked as text. *)
+  assert_contains ~label:"fails at run time"
+    ~expected:"caml_failwith(\"Glyph requires Cairo >= 1.18\");" output
+
 (* ========================================================================= *)
 (* Test suite *)
 (* ========================================================================= *)
@@ -255,4 +277,7 @@ let test_suite =
     ( "fallback_method_suppresses_unused_params",
       `Quick,
       test_fallback_method_suppresses_unused_params );
+    ( "fallback_get_type_defines_stub_and_message",
+      `Quick,
+      test_fallback_get_type_defines_stub_and_message );
   ]

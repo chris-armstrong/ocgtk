@@ -4,14 +4,6 @@ open StdLabels
 open Gen_buffer
 open Types
 
-(** Check if a method should be generated in the interface. Delegates to the
-    shared [Filtering.should_skip_method_binding] so that layer 0 (C stubs) and
-    layer 1 (OCaml externals) agree on what is emitted. [entity_kind] is
-    forwarded so the predicate folds in the record copy/free/unref filter in one
-    place. *)
-let should_generate_method ~ctx ~entity_kind (meth : gir_method) =
-  not (Filtering.should_skip_method_binding ~ctx ~entity_kind meth)
-
 (** Build the OCaml method signature type string *)
 let build_method_signature ~ctx ~class_name (meth : gir_method) =
   let param_types =
@@ -49,9 +41,10 @@ let format_method_external ~buf ~ocaml_name ~ml_name ~param_count ~full_type =
     (Layer1_helpers.format_external ~ocaml_name ~signature:full_type ~ml_name
        ~param_count)
 
-(** Generate a single method declaration and write it to the buffer *)
-let generate_method_decl ~ctx ~class_name ~c_type ~c_symbol_prefix ~entity_kind
-    ~buf (meth : gir_method) =
+(** Generate a single method declaration and write it to the buffer. The caller
+    selects the methods ({!Emitted_members.l1_methods}). *)
+let generate_method_decl ~ctx ~class_name ~c_type ~c_symbol_prefix ~buf
+    (meth : gir_method) =
   let ml_name = Utils.ml_method_name ~class_name meth in
   let ocaml_name =
     Utils.ocaml_function_name ~class_name ~c_type ?c_symbol_prefix
@@ -63,12 +56,14 @@ let generate_method_decl ~ctx ~class_name ~c_type ~c_symbol_prefix ~entity_kind
       meth.parameters
   in
   let param_count = 1 + List.length in_params in
+  let doc =
+    Doc_emit.item_doc ~indent:""
+      ~ret_shape:(Doc_translate.ret_shape_of_throws meth.throws)
+      ~refs:(Doc_resolve.env_of_ctx ctx)
+      ~context:Doc_translate.Member meth.doc
+  in
+  bprintf buf "%s" (Doc_emit.before_item doc);
 
-  if should_generate_method ~ctx ~entity_kind meth then begin
-    (match meth.doc with
-    | Some doc -> bprintf buf "(** %s *)\n" (Utils.sanitize_doc doc)
-    | None -> ());
-
-    let full_type = build_method_signature ~ctx ~class_name meth in
-    format_method_external ~buf ~ocaml_name ~ml_name ~param_count ~full_type
-  end
+  let full_type = build_method_signature ~ctx ~class_name meth in
+  format_method_external ~buf ~ocaml_name ~ml_name ~param_count ~full_type;
+  bprintf buf "%s" (Doc_emit.after_item doc)

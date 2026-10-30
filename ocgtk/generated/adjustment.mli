@@ -1,0 +1,166 @@
+(** A model for a numeric value.
+
+    Its methods, signals and properties are on {!class-type-adjustment_t}. Its
+    full description is under {!section-description}. Its constructors are under
+    {!section-constructors}. The functions it is built on are in
+    {!Ocgtk.Raw.Adjustment}. *)
+
+(** {1:class Class} *)
+
+(** {b The methods, signals and properties of a [Adjustment].}
+
+    Inherits from: [GObject.InitiallyUnowned]
+
+    A model for a numeric value.
+
+    The [GtkAdjustment] has an associated lower and upper bound. It also
+    contains step and page increments, and a page size.
+
+    Adjustments are used within several GTK widgets, including
+    {{!Ocgtk.Spin_button.class-type-spin_button_t}[Gtk.SpinButton]},
+    {{!Ocgtk.Viewport.class-type-viewport_t}[Gtk.Viewport]},
+    {{!Ocgtk.Scrollbar.class-type-scrollbar_t}[Gtk.Scrollbar]} and
+    {{!Ocgtk.Scale.class-type-scale_t}[Gtk.Scale]}.
+
+    The [GtkAdjustment] object does not update the value itself. Instead it is
+    left up to the owner of the [GtkAdjustment] to control the value. *)
+class type adjustment_t = object
+  (** {2:signals Signals} *)
+
+  method on_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when one or more of the [GtkAdjustment] properties have been
+      changed.
+
+      Note that the [Gtk.Adjustment:value] property is covered by the
+      [Gtk.Adjustment::value-changed] signal. *)
+
+  method on_value_changed :
+    ?after:bool -> callback:(unit -> unit) -> unit -> Gobject.Signal.handler_id
+  (** Emitted when the value has been changed. *)
+
+  (** {2:methods Methods} *)
+
+  method clamp_page : float -> float -> unit
+  (** Updates the value of the adjustment to ensure that the given range is
+      contained in the current page.
+
+      The current page goes from [value] to [value] + [page-size]. If the range
+      is larger than the page size, then only the start of it will be in the
+      current page.
+
+      A [Gtk.Adjustment::value-changed] signal will be emitted if the value is
+      changed. *)
+
+  method configure : float -> float -> float -> float -> float -> float -> unit
+  (** Sets all properties of the adjustment at once.
+
+      Use this function to avoid multiple emissions of the
+      [Gtk.Adjustment::changed] signal. See [Gtk.Adjustment.set_lower] for an
+      alternative way of compressing multiple emissions of
+      [Gtk.Adjustment::changed] into one. *)
+
+  method get_lower : unit -> float
+  (** Retrieves the minimum value of the adjustment. *)
+
+  method get_minimum_increment : unit -> float
+  (** Gets the smaller of step increment and page increment. *)
+
+  method get_page_increment : unit -> float
+  (** Retrieves the page increment of the adjustment. *)
+
+  method get_page_size : unit -> float
+  (** Retrieves the page size of the adjustment. *)
+
+  method get_step_increment : unit -> float
+  (** Retrieves the step increment of the adjustment. *)
+
+  method get_upper : unit -> float
+  (** Retrieves the maximum value of the adjustment. *)
+
+  method get_value : unit -> float
+  (** Gets the current value of the adjustment. *)
+
+  method set_lower : float -> unit
+  (** Sets the minimum value of the adjustment.
+
+      When setting multiple adjustment properties via their individual setters,
+      multiple [Gtk.Adjustment::changed] signals will be emitted. However, since
+      the emission of the [Gtk.Adjustment::changed] signal is tied to the
+      emission of the ::notify signals of the changed properties, it’s possible
+      to compress the [Gtk.Adjustment::changed] signals into one by calling
+      [g_object_freeze_notify ()] and [g_object_thaw_notify ()] around the calls
+      to the individual setters.
+
+      Alternatively, using a single [g_object_set ()] for all the properties to
+      change, or using [Gtk.Adjustment.configure] has the same effect. *)
+
+  method set_page_increment : float -> unit
+  (** Sets the page increment of the adjustment.
+
+      See [Gtk.Adjustment.set_lower] about how to compress multiple emissions of
+      the [Gtk.Adjustment::changed] signal when setting multiple adjustment
+      properties. *)
+
+  method set_page_size : float -> unit
+  (** Sets the page size of the adjustment.
+
+      See [Gtk.Adjustment.set_lower] about how to compress multiple emissions of
+      the [Gtk.Adjustment::changed] signal when setting multiple adjustment
+      properties. *)
+
+  method set_step_increment : float -> unit
+  (** Sets the step increment of the adjustment.
+
+      See [Gtk.Adjustment.set_lower] about how to compress multiple emissions of
+      the [Gtk.Adjustment::changed] signal when setting multiple adjustment
+      properties. *)
+
+  method set_upper : float -> unit
+  (** Sets the maximum value of the adjustment.
+
+      Note that values will be restricted by [upper - page-size] if the
+      page-size property is nonzero.
+
+      See [Gtk.Adjustment.set_lower] about how to compress multiple emissions of
+      the [Gtk.Adjustment::changed] signal when setting multiple adjustment
+      properties. *)
+
+  method set_value : float -> unit
+  (** Sets the [GtkAdjustment] value.
+
+      The value is clamped to lie between [Gtk.Adjustment:lower] and
+      [Gtk.Adjustment:upper].
+
+      Note that for adjustments which are used in a [GtkScrollbar], the
+      effective range of allowed values goes from [Gtk.Adjustment:lower] to
+      [Gtk.Adjustment:upper] - [Gtk.Adjustment:page-size]. *)
+
+  (** {2:conversions Conversions} *)
+
+  method as_adjustment : Raw.Adjustment.t
+end
+
+class adjustment : Raw.Adjustment.t -> adjustment_t
+(** Wraps a raw handle of {!Ocgtk.Raw.Adjustment.t}. *)
+
+(** {1:description Description}
+
+    A model for a numeric value.
+
+    The [GtkAdjustment] has an associated lower and upper bound. It also
+    contains step and page increments, and a page size.
+
+    Adjustments are used within several GTK widgets, including
+    {{!Ocgtk.Spin_button.class-type-spin_button_t}[Gtk.SpinButton]},
+    {{!Ocgtk.Viewport.class-type-viewport_t}[Gtk.Viewport]},
+    {{!Ocgtk.Scrollbar.class-type-scrollbar_t}[Gtk.Scrollbar]} and
+    {{!Ocgtk.Scale.class-type-scale_t}[Gtk.Scale]}.
+
+    The [GtkAdjustment] object does not update the value itself. Instead it is
+    left up to the owner of the [GtkAdjustment] to control the value. *)
+
+(** {1:constructors Constructors} *)
+
+val new_ : float -> float -> float -> float -> float -> float -> adjustment_t
+(** Creates a new [GtkAdjustment]. *)

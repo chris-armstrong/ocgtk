@@ -79,3 +79,15 @@ val generate_combined_ml_modules :
       with a glib_type_name emit the external.
 
     Returns: Generated OCaml source code with 'module rec' declarations *)
+
+val generate_cycle_member_shim :
+  output_mode:output_mode ->
+  refs:Doc_resolve.env ->
+  combined_module_name:string ->
+  member_name:string ->
+  member_doc:string option ->
+  string
+(** The layer 1 module of a member of a cycle, outside the combined module:
+    [include App_info_cycle_<hash>.File], so that other namespaces can name it
+    [Ocgio_raw.File]. Its signature keeps its types equal to the combined
+    module's, and carries the member's module doc. *)

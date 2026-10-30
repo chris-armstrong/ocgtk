@@ -1,0 +1,4 @@
+(test
+ (name test_odoc_warnings)
+ (package gir_gen)
+ (libraries odoc_warnings alcotest fmt))

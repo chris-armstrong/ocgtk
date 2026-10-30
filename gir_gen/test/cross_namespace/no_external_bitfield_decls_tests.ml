@@ -1,4 +1,4 @@
-(* Cross-namespace tests - Stage 3: Remove External Bitfield Forward Declarations
+(* Cross-namespace tests: Remove External Bitfield Forward Declarations
    
    Tests that generated header files do NOT contain forward declarations
    for external bitfields. External bitfield declarations now come from included headers. *)
@@ -36,7 +36,7 @@ let create_context_with_external_bitfield () =
     ~repository:(Type_factory.make_gir_repository ())
     ()
 
-(* Stage 3 Test: Generated header should NOT contain forward declarations
+(* Generated header should NOT contain forward declarations
    for external bitfields. These declarations now come from included headers. *)
 let test_header_does_not_contain_external_bitfield_decls () =
   let ctx = create_context_with_external_bitfield () in
@@ -48,7 +48,7 @@ let test_header_does_not_contain_external_bitfield_decls () =
       ~interfaces:[] ()
   in
 
-  Helpers.log_generated_c_code "gtk_decls.h (Stage 3 test)" header_content;
+  Helpers.log_generated_c_code "gtk_decls.h (test)" header_content;
 
   (* Positive: local GTK bitfield forward declarations SHOULD be present *)
   assert_forward_decl_exists header_content "GtkStateFlags" "Val_";
@@ -59,7 +59,7 @@ let test_header_does_not_contain_external_bitfield_decls () =
   assert_forward_decl_not_exists header_content "GdkEventMask" "Val_";
   assert_forward_decl_not_exists header_content "GdkEventMask_val" ""
 
-(* Stage 3 Test: Verify that generate_forward_decls only processes local bitfields *)
+(* Verify that generate_forward_decls only processes local bitfields *)
 let test_generate_forward_decls_only_local_bitfields () =
   let open Gir_gen_lib.Types in
   (* Create a local bitfield *)
@@ -71,6 +71,7 @@ let test_generate_forward_decls_only_local_bitfields () =
       bitfield_doc = None;
       bitfield_version = None;
       bitfield_os = None;
+      deprecation = None;
     }
   in
 
@@ -83,6 +84,7 @@ let test_generate_forward_decls_only_local_bitfields () =
       bitfield_doc = None;
       bitfield_version = None;
       bitfield_os = None;
+      deprecation = None;
     }
   in
 
@@ -108,7 +110,7 @@ let test_generate_forward_decls_only_local_bitfields () =
   Alcotest.(check string)
     "Empty bitfield list produces empty output" "" empty_decls
 
-(* Stage 3 Test: Verify bitfield proto emission function is not exported for external use *)
+(* Verify bitfield proto emission function is not exported for external use *)
 let test_emit_bitfield_proto_not_exported () =
   (* The emit_bitfield_proto function should not be used for external bitfields.
      We verify this by checking that the function signature is clean. *)
@@ -134,11 +136,10 @@ let test_emit_bitfield_proto_not_exported () =
 let tests =
   [
     Alcotest.test_case
-      "Header does not contain external bitfield forward declarations (Stage 3)"
-      `Quick test_header_does_not_contain_external_bitfield_decls;
-    Alcotest.test_case
-      "generate_forward_decls only processes local bitfields (Stage 3)" `Quick
-      test_generate_forward_decls_only_local_bitfields;
-    Alcotest.test_case "emit_bitfield_proto not exported from C_stubs (Stage 3)"
-      `Quick test_emit_bitfield_proto_not_exported;
+      "Header does not contain external bitfield forward declarations" `Quick
+      test_header_does_not_contain_external_bitfield_decls;
+    Alcotest.test_case "generate_forward_decls only processes local bitfields"
+      `Quick test_generate_forward_decls_only_local_bitfields;
+    Alcotest.test_case "emit_bitfield_proto not exported from C_stubs" `Quick
+      test_emit_bitfield_proto_not_exported;
   ]

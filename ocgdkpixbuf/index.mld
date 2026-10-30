@@ -1,0 +1,25 @@
+{0 ocgdkpixbuf}
+
+The {b ocgdkpixbuf} package provides OCaml bindings for GdkPixbuf: image
+loading, scaling and pixel-buffer manipulation. They are generated from
+GdkPixbuf's GObject introspection data.
+
+{%html:<a href="../ocgtk/conventions.html">The conventions page</a>%} explains how the bindings are organised and how GObject maps onto OCaml.
+
+{1 Modules}
+
+The library is reached as {!Ocgdkpixbuf}, with one module per class, interface or
+record, such as {!Ocgdkpixbuf.Pixbuf} and {!Ocgdkpixbuf.Pixbuf_loader}.
+
+{b {{!page-modules}All classes and records}}
+
+{ul
+{- {!Ocgdkpixbuf.Enums} — enumerations and bitfields. }
+{- {!Ocgdkpixbuf.Constants} — constants. }
+{- {!Ocgdkpixbuf.Raw} — the C externals and abstract types the modules above are
+   built on. }
+}
+
+{1 Dependencies}
+
+It builds on {!Ocglib} (GLib and GObject) and {!Ocgio}.

@@ -81,9 +81,10 @@ val l2_callback_type : current_layer2_module:string -> signal_emission -> string
     Exposed primarily for tests; production callers use {!emit_l2_method_sig}.
 *)
 
-val emit_l1_val : current_class:string -> signal_emission -> string
+val emit_l1_val :
+  refs:Doc_resolve.env -> current_class:string -> signal_emission -> string
 (** [emit_l1_val ~current_class e] returns a single [val] declaration for
-    insertion into the L1 [.mli] of [current_class].
+    insertion into the L1 [.mli] of [current_class], with the signal's doc.
 
     Same-namespace GObject references to [current_class] render as bare
     [t option] to avoid the standalone module's self-alias error; all other
@@ -145,9 +146,13 @@ val emit_l2_method :
     does not trigger OCaml warning 16. *)
 
 val emit_l2_method_sig :
-  current_layer2_module:string -> signal_emission -> string
+  refs:Doc_resolve.env ->
+  current_layer2_module:string ->
+  signal_emission ->
+  string
 (** [emit_l2_method_sig ~current_layer2_module e] returns a class type method
-    signature for insertion into a generated L2 class type body.
+    signature, with the signal's doc, for insertion into a generated L2 class
+    type body.
 
     GObject params and returns render as their L2 class types (e.g.
     [widget_t option]), qualified by [current_layer2_module] only when the

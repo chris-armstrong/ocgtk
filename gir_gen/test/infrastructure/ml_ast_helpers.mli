@@ -54,6 +54,20 @@ val is_unit_type : Ppxlib.Parsetree.core_type -> bool
 val is_string_type : Ppxlib.Parsetree.core_type -> bool
 val is_string_option_type : Ppxlib.Parsetree.core_type -> bool
 val is_result_type_with_ginfo_error : Ppxlib.Parsetree.core_type -> bool
+
+val doc_of_attributes : Ppxlib.Parsetree.attributes -> string option
+(** The text of an [ocaml.doc] attribute, which is also what a doc comment
+    before or after an item parses to. *)
+
+val floating_docs : Ppxlib.Parsetree.signature -> string list
+(** The floating docs ([ocaml.text]) of a signature, in order. *)
+
+val module_preamble : Ppxlib.Parsetree.signature -> string option
+(** The text of the first floating doc ([ocaml.text]) of a signature. *)
+
+val type_declaration_doc : Ppxlib.Parsetree.type_declaration -> string option
+(** The type's doc, from a doc comment or an [ocaml.doc] attribute. *)
+
 val get_variant_tags : Ppxlib.Parsetree.type_declaration -> string list
 val wraps_gobject_obj : Ppxlib.Parsetree.type_declaration -> bool
 val is_polymorphic_variant : Ppxlib.Parsetree.type_declaration -> bool
@@ -85,6 +99,9 @@ val find_method_in_class_type :
   Ppxlib.Parsetree.class_type ->
   string ->
   Ppxlib.Parsetree.class_type_field option
+
+val class_type_floating_docs : Ppxlib.Parsetree.class_type -> string list
+(** The floating docs ([ocaml.text]) in a class type body, in order. *)
 
 val get_method_type_from_class_type_field :
   Ppxlib.Parsetree.class_type_field -> Ppxlib.Parsetree.core_type option
@@ -181,3 +198,14 @@ val no_closure_nth_at_pos_zero : Ppxlib.Parsetree.expression -> bool
 
 val collect_labelled_args_of_call :
   Ppxlib.Parsetree.expression -> string -> string list
+
+val module_aliases : Ppxlib.Parsetree.structure -> (string * string) list
+(** Top-level [module A = B.C] aliases of a structure, as [("A", "B.C")], in
+    order. *)
+
+val included_modules : Ppxlib.Parsetree.structure -> string list
+(** Top-level [include M] items of a structure, as module paths, in order. *)
+
+val strengthened_includes : Ppxlib.Parsetree.signature -> string list
+(** Top-level [include module type of struct include M end] items of a
+    signature, as the paths [M], in order. *)

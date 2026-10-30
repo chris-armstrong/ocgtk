@@ -94,6 +94,7 @@ val make_gir_property :
   ?writable:bool ->
   ?construct_only:bool ->
   ?prop_doc:string ->
+  ?prop_default:string ->
   ?version:string ->
   unit ->
   Gir_gen_lib.Types.gir_property
@@ -179,6 +180,7 @@ val make_gir_class :
   ?glib_get_type:string option ->
   ?implements:string list ->
   ?introspectable:bool ->
+  ?abstract:bool ->
   ?constructors:Gir_gen_lib.Types.gir_constructor list ->
   ?methods:Gir_gen_lib.Types.gir_method list ->
   ?properties:Gir_gen_lib.Types.gir_property list ->
@@ -270,6 +272,8 @@ val make_cross_reference_entity :
   ?cr_name:string ->
   ?cr_type:Gir_gen_lib.Types.cross_reference_type ->
   ?cr_c_type:string ->
+  ?cr_members:Gir_gen_lib.Types.cross_reference_members ->
+  ?cr_enum_members:(string * string) list ->
   unit ->
   Gir_gen_lib.Types.cross_reference_entity
 
@@ -300,6 +304,7 @@ val make_generation_context :
   ?cross_references:
     Gir_gen_lib.Types.generation_context_namespace_cross_references
     Gir_gen_lib.Types.StringMap.t ->
+  ?target_library:Gir_gen_lib.Types.target_library ->
   unit ->
   Gir_gen_lib.Types.generation_context
 

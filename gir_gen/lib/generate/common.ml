@@ -9,5 +9,4 @@ module StringSet = Set.Make (String)
 type module_names = { layer1 : string; layer2 : string }
 (** Shared module names type *)
 
-type property_filters = { method_names : string list; base_names : string list }
 (** Shared property filters type *)

@@ -1,0 +1,24 @@
+class type list_base_t = object
+  inherit Widget.widget_t
+  inherit Orientable.orientable_t
+  inherit Scrollable.scrollable_t
+
+  (** {2:properties Properties} *)
+
+  method orientation : Enums.orientation
+  (** The orientation of the list. See GtkOrientable:orientation for details. *)
+
+  (** {2:conversions Conversions} *)
+
+  method as_list_base : Raw.List_base.t
+end
+
+(* High-level class for ListBase *)
+class list_base (obj : Raw.List_base.t) : list_base_t =
+  object (self)
+    inherit Widget.widget (obj :> Raw.Widget.t)
+    inherit Orientable.orientable (Raw.Orientable.from_gobject obj)
+    inherit Scrollable.scrollable (Raw.Scrollable.from_gobject obj)
+    method orientation = Raw.List_base.get_orientation obj
+    method as_list_base = obj
+  end
